@@ -37,6 +37,12 @@ RSpec.describe 'Full-text snippets in catalog search results', type: :feature, c
       expect(page).to have_content('Ledger of the harbor master')
       expect(page).to have_no_css('.ocr_snippet')
     end
+
+    it 'still links the result to the work with the query for the viewers' do
+      visit '/catalog?q=quinquereme&search_field=all_fields'
+
+      expect(page).to have_link('Ledger of the harbor master', href: /\?highlight=true&q=quinquereme\z/)
+    end
   end
 
   context 'when the keyword only matches the full text of a file set' do

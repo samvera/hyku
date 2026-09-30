@@ -33,6 +33,14 @@ RSpec.describe Site, type: :model do
 
       described_class.reset!
     end
+
+    it "clears the memoized flexible metadata profile" do
+      Hyrax::Current.flexible_schema = 'Tenant A profile'
+
+      described_class.reset!
+
+      expect(Hyrax::Current.flexible_schema).to be_nil
+    end
   end
 
   describe ".instance" do
@@ -106,6 +114,15 @@ RSpec.describe Site, type: :model do
 
         Apartment::Tenant.switch!(new_account.tenant)
         expect(described_class.instance.application_name).to eq('new site')
+      end
+
+      it 'does not carry the previous tenant\'s flexible metadata profile' do
+        Apartment::Tenant.switch!(old_account.tenant)
+        Hyrax::Current.flexible_schema = 'old tenant profile'
+
+        Apartment::Tenant.switch!(new_account.tenant)
+
+        expect(Hyrax::Current.flexible_schema).to be_nil
       end
 
       # RequestStore.store is Thread.current[:request_store] (pure thread-local), so

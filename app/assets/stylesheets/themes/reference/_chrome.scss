@@ -24,10 +24,10 @@ $ref-chrome: join($ref-chrome-home, $ref-chrome-show, comma);
   // bootstrap pins `.navbar + .container { padding: .5rem !important }` on both
   // axes, so the frame's own vertical padding has to answer it in kind
   #content-wrapper {
-    @include ref-gutter;
-    max-width: none;
-    padding-bottom: 48px !important;
-    padding-top: 28px !important;
+    margin: 0 auto;
+    max-width: 1280px;
+    padding: 28px 24px 48px !important;
+    width: 100%;
   }
 
   // ---- headings ----
@@ -360,7 +360,41 @@ $ref-chrome: join($ref-chrome-home, $ref-chrome-show, comma);
   }
 }
 
-// ---- content pages and contact form ----
+body.reference.hyrax-pages-show {
+  #content_block_page {
+    margin: 0 auto;
+    max-width: 1280px;
+    padding-bottom: 40px;
+    padding-top: 28px;
+    text-align: left;
+  }
+
+  #content_block_page,
+  #content_block_page p,
+  #content_block_page li {
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+  }
+}
+
+// ---- contact form ----
+body.reference.hyrax-contact_form-new,
+body.reference.hyrax-contact_form-create {
+  #content-wrapper {
+    margin: 0 auto;
+    max-width: 960px;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    width: 100%;
+  }
+
+  #content-wrapper > .alert {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
 #{$ref-chrome-home} {
   #content_block_page {
     p,
@@ -403,15 +437,12 @@ $ref-chrome: join($ref-chrome-home, $ref-chrome-show, comma);
   }
 
   .breadcrumb {
-    @include ref-gutter;
     background: $ref-surface;
     border: 0;
-    border-bottom: 1px solid $ref-rule;
     border-radius: 0;
     font-size: 14px;
     margin: 0;
-    padding-bottom: 13px;
-    padding-top: 13px;
+    padding: 13px 0;
 
     .breadcrumb-item {
       color: $ref-ink-label;
@@ -471,10 +502,15 @@ $ref-chrome: join($ref-chrome-home, $ref-chrome-show, comma);
     padding-right: 0;
   }
 
-  .hyc-body,
+  .hyc-body {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .hyc-blacklight,
   .container-fluid {
-    @include ref-gutter;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .container-fluid {

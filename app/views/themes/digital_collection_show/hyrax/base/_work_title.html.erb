@@ -11,7 +11,7 @@
     <% end %>
   </div>
 
-  <% date = Array(presenter.date_created).first.presence || Array(presenter.date_issued).first %>
+  <% date = Array(presenter.date_created).first.presence || Array(presenter.try(:date_issued)).first %>
   <% byline = [all_authors(presenter).first, date].compact_blank %>
   <% if byline.any? %>
     <p class="dc-show-byline"><%= safe_join(byline, ' · ') %></p>

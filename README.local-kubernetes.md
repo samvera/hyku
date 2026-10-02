@@ -13,13 +13,10 @@ kubectl --context docker-desktop cluster-info
 ```
 
 `kubectl config current-context` must print `docker-desktop`. Do not continue if
-it names a remote cluster.
+it names  the prod cluster.
 
 Set `ANTLEAF_HYKU_DB_PASSWORD` and `ANTLEAF_HYKU_ADMIN_PASSWORD` to local
-passwords. From the repository root, run `./bin/deploy_local` to install the
-operator, database, and Hyku. The script refuses to run unless the current
-context is `docker-desktop` and explicitly sets that context for every cluster
-operation.
+passwords. 
 
 ## Install the PostgreSQL operator
 
@@ -128,10 +125,6 @@ On a fresh PostgreSQL volume, CloudNativePG's bootstrap creates the
 `pg_trgm` extensions before Hyku runs its database setup. The `hyrax`
 application user remains non-superuser. Bootstrap SQL only runs when a new
 database volume is initialized.
-
-If you already have data in the previously bundled `hyku-postgresql` database,
-changing these values does not migrate it. Keep that volume and export/import
-its data before switching the application to the standalone cluster.
 
 ## Remove the Hyku application
 

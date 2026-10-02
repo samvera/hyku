@@ -406,26 +406,43 @@ body.digital_collection_show.public-facing {
   }
 
   // ---- announcement band ----
-  #announcement_text {
-    background: $dc-notice;
-    border-bottom: 1px solid var(--dc-accent, #{$dc-accent});
-    padding-bottom: 14px;
-    padding-top: 14px;
+  .dc-announcement {
+    background: var(--dc-info-tint, #{$dc-info-tint});
+    border: 0;
+    padding-bottom: $dc-space-3;
+    padding-top: $dc-space-3;
   }
 
-  // Hyrax's _home-page.scss styles div#announcement as a red alert
-  #announcement_text > div#announcement {
+  .dc-announcement-inner {
     @include dc-column;
     @include dc-gutter;
+    align-items: baseline;
+    color: $dc-ink;
+    display: flex;
+    font-size: $dc-text-sm;
+    gap: $dc-space-2;
+    line-height: $dc-leading-snug;
+  }
+
+  .dc-announcement-icon {
+    color: var(--dc-info, #{$dc-info});
+    flex: none;
+  }
+
+  .dc-announcement-label {
+    flex: none;
+    font-weight: $dc-weight-heading;
+  }
+
+  // Hyrax's _home-page.scss styles div#announcement as a red alert by ID
+  .dc-announcement div#announcement {
     background-color: transparent;
     border: 0;
     border-radius: 0;
     color: $dc-ink;
-    font-size: 14px;
-    line-height: 1.55;
+    margin: 0;
     overflow-wrap: anywhere;
-    padding-bottom: 0;
-    padding-top: 0;
+    padding: 0;
     text-align: left;
 
     p:last-child {
@@ -439,18 +456,23 @@ body.digital_collection_show.public-facing {
 
   // ---- footer ----
   footer.navbar {
+    border-top: $dc-border solid $dc-button-edge-on-dark;
     color: var(--dc-chrome-ink, #{$dc-chrome-ink});
-    font-size: 14px;
-    line-height: 1.6;
-    padding: 24px 0;
+    font-size: $dc-text-sm;
+    line-height: $dc-leading-snug;
+    padding: $dc-space-6 0;
 
     .navbar-text {
       @include dc-column;
       @include dc-gutter;
       color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+      row-gap: $dc-space-4;
       width: 100%;
 
       > [class*="col-"] {
+        display: flex;
+        flex-direction: column;
+        gap: $dc-space-1;
         padding-left: 0;
         padding-right: 0;
       }
@@ -459,17 +481,27 @@ body.digital_collection_show.public-facing {
       .p-lg-2 { padding: 0 !important; }
     }
 
-    .navbar-link {
+    a.navbar-link,
+    .navbar-link a {
       @include dc-underline;
+      border-radius: var(--dc-radius, #{$dc-radius});
       color: var(--dc-footer-link, #{$dc-footer-link});
+      margin: 0 -3px;
+      padding: 2px 3px;
 
       &:hover,
       &:focus {
-        color: var(--dc-footer-link-hover, #{$dc-chrome-ink});
+        color: var(--dc-footer-link-hover, #{$dc-footer-link-hover});
       }
 
       &:focus-visible {
-        @include dc-focus-ring(var(--dc-chrome-ink, #{$dc-chrome-ink}));
+        @include dc-focus-ring($offset: 0, $on: dark);
+      }
+    }
+
+    @media (max-width: $dc-nav-collapse-max) {
+      .navbar-text > [class*="col-"] {
+        align-items: center;
       }
     }
   }

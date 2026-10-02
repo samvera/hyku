@@ -1,0 +1,9 @@
+<% if display_content_block? @announcement_text %>
+  <div id="announcement_text" class="dc-announcement">
+    <div class="dc-announcement-inner">
+      <span class="fa fa-info-circle dc-announcement-icon" aria-hidden="true"></span>
+      <strong class="dc-announcement-label"><%= t('digital_collection.chrome.notice') %></strong>
+      <%= displayable_content_block @announcement_text, id: 'announcement', role: 'complementary', 'aria-label': t('digital_collection.chrome.announcement_label') %>
+    </div>
+  </div>
+<% end %>

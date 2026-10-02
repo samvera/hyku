@@ -13,7 +13,7 @@ module SharedSearchHelper
     request_params = extract_request_params(request)
     url = build_url(id, request_params, account_cname, base_route_name)
 
-    append_query_params(url, model, params)
+    append_query_params(url, params)
   end
 
   private
@@ -56,18 +56,16 @@ module SharedSearchHelper
     get_url(id: id, request: request_params, account_cname: account_cname, base_route_name: base_route_name)
   end
 
-  # Appends the appropriate query parameters to the base URL based on the model and params.
+  # Carries the search query to the work page, where PDF.js reads q and the Universal Viewer
+  # reads highlight, so both open with the hits highlighted.
   #
   # @param url [String] the base URL
-  # @param model [Object] the model object (e.g., work or collection)
   # @param params [Hash] the query parameters, which may include search queries
-  # @return [String] the URL with appended query parameters, if applicable
-  def append_query_params(url, model, params)
-    if params[:q].present? && model.any_highlighting_in_all_text_fields?
-      "#{url}?parent_query=#{params[:q]}&highlight=true"
-    else
-      url
-    end
+  # @return [String] the URL with the query appended, if there is one
+  def append_query_params(url, params)
+    return url if params[:q].blank?
+
+    "#{url}?#{{ q: params[:q], highlight: true }.to_query}"
   end
 
   # Constructs a URL with the given parameters.

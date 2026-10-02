@@ -45,9 +45,9 @@
 
   <dataDir>${solr.blacklight-core.data.dir:}</dataDir>
 
-  <!-- solr.search.LRUCache/FastLRUCache were removed in Solr 9 (replaced by
-       solr.CaffeineCache); the class names are overridable per-cluster via
-       sysprop so Solr 8 keeps its current default and a Solr 9 deployment can
+   <!-- solr.search.LRUCache/FastLRUCache were removed in Solr 9 (replaced by
+        solr.CaffeineCache); the class names are overridable per-cluster via
+        sysprop so Solr 8 keeps its current default and a Solr 9 deployment can
        pass e.g. -Dsolr.filterCache.class=solr.CaffeineCache. -->
   <query>
     <filterCache class="${solr.filterCache.class:solr.search.FastLRUCache}"

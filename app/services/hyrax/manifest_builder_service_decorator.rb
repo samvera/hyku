@@ -4,7 +4,7 @@
 #   - change `&amp;` to `&` in the Universal Viewer
 #   - never unescape scrubbed manifest strings, so escaped markup never becomes a tag
 #     (Hyrax's deep_sanitize, IiifPrint's canvas labels in sanitize_v3)
-#   - mark v3 manifests as paged
+#   - mark v3 manifests as paged, unless their pages carry file set metadata
 
 module Hyrax
   module ManifestBuilderServiceDecorator
@@ -41,8 +41,14 @@ module Hyrax
         canvas['label']['none'] = labels[canvas['id']].map { |text| loof(text) } if canvas.dig('label', 'none')
       end
       # OVERRIDE
-      returning_hash['viewingHint'] = 'paged'
-      returning_hash
+      mark_paged(returning_hash, presenter)
+    end
+
+    # Facing pages would show two pages' file set metadata in the viewer's one
+    # panel, so a manifest whose pages carry their own opens one page at a time.
+    def mark_paged(hash, presenter)
+      hash['viewingHint'] = 'paged' unless presenter.try(:file_set_pages?)
+      hash
     end
   end
 end
@@ -60,9 +66,7 @@ module Hyrax
       return super unless Flipflop.iiif_ranges?
 
       manifest = manifest_factory.new(presenter).to_h
-      hash = deep_sanitize(JSON.parse(manifest.to_json))
-      hash['viewingHint'] = 'paged'
-      hash
+      mark_paged(deep_sanitize(JSON.parse(manifest.to_json)), presenter)
     end
   end
 end

@@ -11,9 +11,6 @@ module Hyku
   class ProfileManifestMetadata
     LEADING_FIELDS = [[:title], [:description, :abstract]].freeze
     SKIPPED_FIELDS = [:admin_note].freeze
-    # The HTML a IIIF v3 metadata value may carry (Presentation API 3.0, section 4.5).
-    ALLOWED_TAGS = %w[a b br i img p small span sub sup].freeze
-    ALLOWED_ATTRIBUTES = %w[href target rel src alt].freeze
 
     # Whether a work's manifest metadata comes from its profile: flexible metadata
     # is on, and the work was indexed under a profile. Hyku's show page gates on
@@ -111,9 +108,7 @@ module Hyku
     end
 
     def sanitize(html)
-      fragment = Nokogiri::HTML.fragment(html)
-      fragment.css('a[href^="/"]').each { |a| a['href'] = File.join(base_url, a['href']) }
-      Rails::Html::SafeListSanitizer.new.sanitize(fragment.to_html, tags: ALLOWED_TAGS, attributes: ALLOWED_ATTRIBUTES).strip
+      Hyku::IiifMetadataHtml.sanitize(html, base_url:)
     end
 
     # Title and description lead even without a view block (the show page renders

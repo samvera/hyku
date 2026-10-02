@@ -88,4 +88,54 @@ RSpec.describe Hyku::DateRangeYears do
       expect(years.length).to eq described_class::MAX_INTERVAL_SPAN
     end
   end
+
+  describe '.call with common non-EDTF forms' do
+    it 'spans a hyphenated year range' do
+      expect(described_class.call('1940-1943')).to eq [1940, 1941, 1942, 1943]
+    end
+
+    it 'spans a hyphenated year range with spaces' do
+      expect(described_class.call('1940 - 1942')).to eq [1940, 1941, 1942]
+    end
+
+    it 'still reads an ISO year-month as one year, not a range' do
+      expect(described_class.call('1962-11', '1962-11-05')).to eq [1962]
+    end
+
+    it 'reads every year in a comma-separated list' do
+      expect(described_class.call('1860, 1861, 1864')).to eq [1860, 1861, 1864]
+    end
+
+    it 'reads each part of a semicolon-separated list' do
+      expect(described_class.call('1940-1942; 1950')).to eq [1940, 1941, 1942, 1950]
+    end
+
+    it 'reads past a circa prefix' do
+      expect(described_class.call('ca. 1967', 'Circa 1956', 'c. 1900')).to eq [1900, 1956, 1967]
+    end
+  end
+
+  describe '.call with EDTF sets' do
+    it 'reads every member of a one-of set' do
+      expect(described_class.call('[1667,1668,1670..1672]')).to eq [1667, 1668, 1670, 1671, 1672]
+    end
+
+    it 'reads every member of an all-of set' do
+      expect(described_class.call('{1960,1961}')).to eq [1960, 1961]
+    end
+
+    it 'keeps the readable endpoint of an open run in a set' do
+      expect(described_class.call('[..1760]', '{1985..}')).to eq [1760, 1985]
+    end
+  end
+
+  describe '.call with catalog decade forms' do
+    it 'drops a decade written with a trailing hyphen, bracketed or not' do
+      expect(described_class.call('[192-?]', 'ca. 197-', '199-')).to be_empty
+    end
+
+    it 'still reads a three-digit year that opens a range' do
+      expect(described_class.call('950-1050')).to eq [950]
+    end
+  end
 end

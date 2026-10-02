@@ -14,7 +14,8 @@
   }
 
   #content-wrapper > .alert {
-    margin: 16px $ref-gutter;
+    margin: 16px auto;
+    max-width: 1280px;
   }
 
   // ---- hero ----
@@ -43,7 +44,7 @@
   }
 
   .ref-hero-content {
-    @include ref-gutter;
+    @include ref-gutter($max: 1280px);
     align-items: flex-end;
     display: flex;
     gap: 40px;
@@ -317,7 +318,7 @@
   }
 
   .ref-browse-inner {
-    @include ref-gutter;
+    @include ref-gutter($max: 1280px);
     padding-bottom: 44px;
     padding-top: 44px;
   }
@@ -400,7 +401,7 @@
 
   // ---- recent deposits ----
   .ref-recent-inner {
-    @include ref-gutter;
+    @include ref-gutter($max: 1280px);
     padding-bottom: 44px;
     padding-top: 44px;
   }
@@ -518,7 +519,7 @@
   }
 
   .ref-featured-inner {
-    @include ref-gutter;
+    @include ref-gutter($max: 1280px);
     display: grid;
     gap: 26px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -768,7 +769,7 @@
   }
 
   .ref-label-band-inner {
-    @include ref-gutter(192px, 96px);
+    @include ref-gutter($max: 1280px);
     display: grid;
     gap: 36px;
     grid-template-columns: 340px minmax(0, 1fr);
@@ -912,7 +913,7 @@
 
   // ---- home page text ----
   .ref-home-text {
-    @include ref-gutter;
+    @include ref-gutter($max: 1280px);
     padding-bottom: 34px;
     padding-top: 38px;
 

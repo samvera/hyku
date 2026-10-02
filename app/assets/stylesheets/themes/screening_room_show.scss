@@ -10,10 +10,15 @@
   #content-wrapper {
     max-width: none;
     padding: 0;
+    width: 100%;
   }
 
   #content-wrapper > .alert {
     margin: 16px $scr-gutter-xl;
+  }
+
+  &.public-facing .scr-searchbar {
+    @include scr-gutter($important: true, $max: 1280px);
   }
 
   // ---- editor actions ----
@@ -26,7 +31,7 @@
   }
 
   .scr-show-actions {
-    @include scr-gutter;
+    @include scr-gutter($max: 1280px);
     padding-bottom: 10px;
     padding-top: 10px;
 
@@ -121,6 +126,8 @@
   // ---- viewer ----
   .scr-viewer {
     background: #000;
+    margin: 0 auto;
+    max-width: 1280px;
 
     // the viewer's iframe is positioned absolutely, so the frame it fills has
     // to be the positioned ancestor or it climbs over the masthead
@@ -143,6 +150,8 @@
     align-items: center;
     display: flex;
     justify-content: center;
+    margin: 0 auto;
+    max-width: 1280px;
     padding: 24px;
 
     img {
@@ -156,16 +165,16 @@
   // the text below the viewer sits inside a wider margin than the full-bleed
   // rows above it, so the description's measure reads as the column width
   .scr-show-body {
+    @include scr-gutter($max: 1280px);
     align-items: start;
     display: grid;
     gap: 48px;
     grid-template-columns: minmax(0, 1fr) 400px;
-    padding: 36px $scr-gutter-xl * 3 56px;
+    padding-top: 36px;
+    padding-bottom: 56px;
 
     @media (max-width: $scr-desktop-max) {
       grid-template-columns: minmax(0, 1fr) 320px;
-      padding-left: $scr-gutter-lg * 3;
-      padding-right: $scr-gutter-lg * 3;
     }
 
     @media (max-width: $scr-laptop-max) {

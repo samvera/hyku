@@ -30,7 +30,7 @@ body.screening_room_show.public-facing {
 
   // ---- masthead ----
   #masthead {
-    @include scr-gutter;
+    @include scr-gutter($max: 1600px);
     color: $scr-ink-body;
     align-items: center;
     background-color: var(--scr-chrome, #{$scr-chrome}) !important;
@@ -155,7 +155,7 @@ body.screening_room_show.public-facing {
 
   // ---- announcement band ----
   #announcement_text {
-    @include scr-gutter;
+    @include scr-gutter($max: 1600px);
     background: var(--scr-notice, #{$scr-notice});
     border-bottom: 1px solid var(--scr-notice-rule, #{$scr-notice-rule});
     padding-bottom: 14px;
@@ -168,7 +168,7 @@ body.screening_room_show.public-facing {
       color: $scr-ink;
       font-size: 15px;
       padding-top: 0;
-      text-align: left;
+      text-align: center;
 
       > :last-child {
         margin-bottom: 0;
@@ -215,7 +215,7 @@ body.screening_room_show.public-facing {
 
   .scr-searchbar,
   nav[aria-label='Root Menu'] {
-    @include scr-gutter($important: true);
+    @include scr-gutter($important: true, $max: 1600px);
     background-color: var(--scr-chrome-soft, #{$scr-chrome-soft}) !important;
     color: $scr-ink-body;
     border-bottom: 1px solid var(--scr-rule, #{$scr-rule}) !important;
@@ -329,7 +329,7 @@ body.screening_room_show.public-facing {
 
   // ---- footer ----
   footer.navbar {
-    @include scr-gutter($important: true);
+    @include scr-gutter($important: true, $max: 1600px);
     background-color: var(--scr-chrome-deep, #{$scr-chrome-deep}) !important;
     color: $scr-ink-footer;
     border-top: 1px solid var(--scr-rule, #{$scr-rule});

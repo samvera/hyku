@@ -1,22 +1,35 @@
 // ---- reference mixins ----
 
-@mixin ref-gutter($desktop: $ref-gutter, $laptop: $ref-gutter-laptop) {
-  padding-left: $desktop;
-  padding-right: $desktop;
+@mixin ref-gutter($desktop: $ref-gutter, $laptop: $ref-gutter-laptop, $important: false, $max: null) {
+  $bang: if($important, unquote('!important'), null);
+
+  padding-left: $desktop $bang;
+  padding-right: $desktop $bang;
+
+  @if $max {
+    $bp: $max + $desktop * 2;
+    @if $bp <= $ref-laptop-max {
+      $bp: $ref-laptop-max + 1;
+    }
+    @media (min-width: #{$bp}) {
+      padding-left: calc(50% - #{$max / 2}) $bang;
+      padding-right: calc(50% - #{$max / 2}) $bang;
+    }
+  }
 
   @media (max-width: $ref-laptop-max) {
-    padding-left: $laptop;
-    padding-right: $laptop;
+    padding-left: $laptop $bang;
+    padding-right: $laptop $bang;
   }
 
   @media (max-width: $ref-tablet-max) {
-    padding-left: $ref-gutter-tablet;
-    padding-right: $ref-gutter-tablet;
+    padding-left: $ref-gutter-tablet $bang;
+    padding-right: $ref-gutter-tablet $bang;
   }
 
   @media (max-width: $ref-mobile-max) {
-    padding-left: $ref-gutter-mobile;
-    padding-right: $ref-gutter-mobile;
+    padding-left: $ref-gutter-mobile $bang;
+    padding-right: $ref-gutter-mobile $bang;
   }
 }
 

@@ -8,6 +8,7 @@
   #content-wrapper {
     max-width: none;
     padding: 0;
+    width: 100%;
     // .navbar + .container pins a 0.5rem top padding, itself !important
     padding-top: 0 !important;
   }
@@ -18,11 +19,10 @@
 
   // ---- breadcrumb ----
   .breadcrumb {
-    @include hrt-gutter($laptop: 32px);
+    @include hrt-gutter($max: 1280px - $hrt-gutter * 2);
     background: $hrt-surface;
-    border-bottom: 1px solid $hrt-rule-light;
+    border: 0;
     border-radius: 0;
-    border-top: 0;
     font-size: 14px;
     margin: 0;
     padding-bottom: 14px;
@@ -44,6 +44,8 @@
   // ---- page frame ----
   .hrt-show {
     @include hrt-gutter($laptop: 32px);
+    margin: 0 auto;
+    max-width: 1280px;
     padding-bottom: 48px;
     padding-top: 30px;
   }

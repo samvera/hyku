@@ -12,9 +12,7 @@
          data-previous="<%= t('digital_collection.homepage.browse.previous') %>"
          data-next="<%= t('digital_collection.homepage.browse.next') %>"
          data-page="<%= t('digital_collection.homepage.browse.page') %>">
-  <div class="dc-section-head">
-    <h2 class="dc-section-title" id="dc-browse-heading"><%= t('digital_collection.homepage.browse.heading') %></h2>
-
+  <%= dc_section_head t('digital_collection.homepage.browse.heading'), id: 'dc-browse-heading' do %>
     <% if collections.any? %>
       <div class="dc-browse-controls" role="group" aria-label="<%= t('digital_collection.homepage.browse.view_label') %>" hidden data-dc-browse-controls>
         <div class="dc-view-toggle">
@@ -27,7 +25,7 @@
         </button>
       </div>
     <% end %>
-  </div>
+  <% end %>
 
   <% if collections.any? %>
     <ul class="dc-collections list-unstyled" data-dc-browse-items>

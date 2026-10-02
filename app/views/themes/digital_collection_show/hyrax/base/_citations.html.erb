@@ -1,9 +1,6 @@
 <% citations = all_authors(presenter).any? ? theme_citations(presenter) : {} %>
-<section class="dc-panel dc-cite" aria-labelledby="dc-cite-label">
-  <div class="dc-panel-head">
-    <h2 class="dc-panel-label" id="dc-cite-label"><%= t('hyrax.base.citations.header') %></h2>
-  </div>
-
+<%= render layout: 'hyrax/base/dc_panel',
+           locals: { modifier: 'dc-cite', label_id: 'dc-cite-label', label: t('hyrax.base.citations.header') } do %>
   <div class="dc-panel-body" data-citation>
     <% if citations.any? %>
       <select class="dc-cite-picker" data-citation-picker
@@ -32,4 +29,4 @@
                 polymorphic_path([main_app, presenter], format: 'endnote'),
                 class: 'dc-cite-export' %>
   </div>
-</section>
+<% end %>

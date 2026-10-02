@@ -154,6 +154,22 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
 
         expect(Nokogiri::HTML(response.body).at_css("section[aria-labelledby='dc-featured-heading'] form .dc-reorder")).to be_present
       end
+
+      it 'fills each reorder form with its own list, wording and save button' do
+        get root_path
+        doc = Nokogiri::HTML(response.body)
+        works = doc.at_css("section[aria-labelledby='dc-featured-heading'] form")
+        collections = doc.at_css("section[aria-labelledby='dc-fc-heading'] form")
+
+        expect(works.at_css('.dc-reorder#dd')['data-unfeature-confirm']).to eq(I18n.t('digital_collection.homepage.featured.unfeature_confirm'))
+        expect(works.at_css('.dc-featured-hint').text).to eq(I18n.t('digital_collection.homepage.featured.reorder_hint'))
+        expect(works.at_css("input[type='submit'].dc-control")['value']).to eq(I18n.t('digital_collection.homepage.featured.save_order'))
+        expect(collections.at_css('.dc-reorder#ff')['data-unfeature-confirm']).to eq(I18n.t('digital_collection.homepage.featured_collections.unfeature_confirm'))
+        expect(collections.at_css('.dc-featured-hint').text).to eq(I18n.t('digital_collection.homepage.featured_collections.reorder_hint'))
+        expect(collections.at_css("input[type='submit'].dc-control")['value']).to eq(I18n.t('digital_collection.homepage.featured_collections.save_order'))
+        expect(collections.at_css('.dc-featured-row > a.dc-featured-thumb.dc-featured-thumb-wide img')).to be_present
+        expect(collections.at_css('.dc-featured-row h3.dc-featured-title a').text).to eq('Harbor Photographs')
+      end
     end
   end
 

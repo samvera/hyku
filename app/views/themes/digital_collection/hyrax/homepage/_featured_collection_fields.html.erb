@@ -1,16 +1,8 @@
 <% branding = CollectionBrandingInfo.where(collection_id: featured.id, role: "banner").first %>
 <% banner = branding ? "/" + branding.local_path.split("/")[-4..-1].join("/") : nil %>
 
-<article class="dc-featured-row">
-  <%= link_to hyrax.collection_path(featured.id), class: 'dc-featured-thumb dc-featured-thumb-wide',
-              tabindex: -1, aria: { hidden: true } do %>
-    <img src="<%= banner || banner_image %>" alt="">
-  <% end %>
-
-  <div class="dc-featured-body">
-    <h3 class="dc-featured-title">
-      <%= link_to Array(featured.title).first.presence || featured.try(:title_or_label),
-                  hyrax.collection_path(featured.id) %>
-    </h3>
-  </div>
-</article>
+<%= render layout: 'hyrax/homepage/dc_featured_row',
+           locals: { url: hyrax.collection_path(featured.id), thumb_class: 'dc-featured-thumb-wide',
+                     title: Array(featured.title).first.presence || featured.try(:title_or_label) } do %>
+  <img src="<%= banner || banner_image %>" alt="">
+<% end %>

@@ -2,14 +2,10 @@
 <% members = presenter.member_presenters(ids) %>
 
 <% if members.present? || can?(:edit, presenter.id) %>
-  <section class="dc-panel dc-items" id="dc-items" aria-labelledby="dc-items-label">
-    <div class="dc-panel-head">
-      <h2 class="dc-panel-label" id="dc-items-label"><%= t('hyrax.base.items.header') %></h2>
-      <% if members.present? %>
-        <span class="dc-panel-count"><%= ids.total_count %></span>
-      <% end %>
-    </div>
-
+  <%= render layout: 'hyrax/base/dc_panel',
+             locals: { modifier: 'dc-items', section_id: 'dc-items', label_id: 'dc-items-label', label: t('hyrax.base.items.header'),
+                       count: (ids.total_count if members.present?),
+                       empty: (t('hyrax.base.items.empty', type: presenter.human_readable_type) if members.blank?) } do %>
     <% if members.present? %>
       <ul class="dc-item-list list-unstyled">
         <% members.each do |member| %>
@@ -42,8 +38,6 @@
                        route_set: main_app, params: { anchor: 'dc-items' } %>
         </nav>
       <% end %>
-    <% elsif can? :edit, presenter.id %>
-      <p class="dc-panel-empty"><%= t('hyrax.base.items.empty', type: presenter.human_readable_type) %></p>
     <% end %>
-  </section>
+  <% end %>
 <% end %>

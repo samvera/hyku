@@ -1,0 +1,24 @@
+<article class="dc-featured-row">
+  <%= link_to url, class: token_list('dc-featured-thumb', local_assigns[:thumb_class]), tabindex: -1, aria: { hidden: true },
+              data: local_assigns.fetch(:link_data, {}) do %>
+    <%= yield %>
+  <% end %>
+
+  <div class="dc-featured-body">
+    <h3 class="dc-featured-title">
+      <%= link_to title, url, data: local_assigns.fetch(:link_data, {}) %>
+    </h3>
+
+    <% if local_assigns[:meta].present? %>
+      <p class="dc-featured-meta"><%= safe_join(meta, ' · ') %></p>
+    <% end %>
+
+    <% if local_assigns[:description].present? %>
+      <p class="dc-featured-desc"><%= description %></p>
+    <% end %>
+  </div>
+
+  <% if local_assigns[:badge].present? %>
+    <%= dc_badge(badge) %>
+  <% end %>
+</article>

@@ -3,7 +3,7 @@
 // Targets stock DOM; no new partials.
 
 body.catalog-index.digital_collection.public-facing {
-  --dc-cat-thumb: 200px;
+  --dc-width-result-thumb: #{$dc-width-result-thumb};
 
   // ---- page grid ----
   .dc-searchbar {
@@ -271,7 +271,7 @@ body.catalog-index.digital_collection.public-facing {
 
   .search-result-wrapper {
     display: grid;
-    grid-template-columns: var(--dc-cat-thumb) minmax(0, 1fr);
+    grid-template-columns: var(--dc-width-result-thumb) minmax(0, 1fr);
     gap: 12px 24px;
     margin: 0;
 
@@ -425,7 +425,7 @@ body.catalog-index.digital_collection.public-facing {
 
   // ---- tablet ----
   @media (max-width: $dc-tablet-max) {
-    --dc-cat-thumb: 140px;
+    --dc-width-result-thumb: #{$dc-width-result-thumb-tablet};
 
     #content-wrapper > .row {
       display: flex;
@@ -539,7 +539,7 @@ body.catalog-index.digital_collection.public-facing {
 
   // ---- phone ----
   @media (max-width: $dc-mobile-max) {
-    --dc-cat-thumb: 96px;
+    --dc-width-result-thumb: #{$dc-width-result-thumb-mobile};
 
     li.document {
       padding: 16px 0 !important; // counters Bootstrap .pb-3 !important
@@ -547,7 +547,7 @@ body.catalog-index.digital_collection.public-facing {
 
     .search-result-wrapper {
       grid-template-areas: "thumb head" "meta meta";
-      grid-template-columns: var(--dc-cat-thumb) minmax(0, 1fr);
+      grid-template-columns: var(--dc-width-result-thumb) minmax(0, 1fr);
       gap: 6px 12px;
     }
 

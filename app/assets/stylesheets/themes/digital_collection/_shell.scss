@@ -34,8 +34,8 @@ body.digital_collection_show.public-facing {
       // background with !important; this bar is the nav, not the chrome band
       background-color: var(--dc-button, #{$dc-button}) !important;
       margin: 0 auto;
-      max-width: $dc-header-max;
-      min-height: $dc-masthead-height;
+      max-width: $dc-width-header-max;
+      min-height: $dc-height-masthead;
       padding-bottom: 0;
       padding-top: 0;
     }
@@ -212,7 +212,7 @@ body.digital_collection_show.public-facing {
 
   // ---- announcement band ----
   #announcement_text {
-    background: var(--dc-notice, #{$dc-notice});
+    background: $dc-notice;
     border-bottom: 1px solid var(--dc-accent, #{$dc-accent});
     padding-bottom: 14px;
     padding-top: 14px;
@@ -276,6 +276,16 @@ body.digital_collection_show.public-facing {
       &:focus-visible {
         @include dc-focus-ring(var(--dc-chrome-ink, #{$dc-chrome-ink}));
       }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0ms !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0ms !important;
     }
   }
 }

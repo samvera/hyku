@@ -1,0 +1,5 @@
+<% title = t("hyrax.pages.tabs.#{@page.name}") %>
+<% provide :page_title, title %>
+
+<h1 class="sr-only"><%= title %></h1>
+<%= dc_content_block @page, class: 'row', id: 'content_block_page' %>

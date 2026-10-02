@@ -183,7 +183,7 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
   describe 'content blocks' do
     it 'shows the default hero headline without marketing text, and the marketing text when set' do
       get root_path
-      expect(Nokogiri::HTML(response.body).at_css('.dc-hero-plate h2.dc-hero-headline')).to be_present
+      expect(Nokogiri::HTML(response.body).at_css('.dc-hero-plate h1.dc-hero-headline')).to be_present
 
       ContentBlock.marketing_text = '<p>Letters, maps and photographs</p>'
       get root_path

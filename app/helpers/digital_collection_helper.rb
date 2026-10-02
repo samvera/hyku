@@ -33,6 +33,26 @@ module DigitalCollectionHelper
     [t('hyrax.toolbar.profile.logout'), main_app.destroy_user_session_path]
   end
 
+  # rubocop:disable Rails/OutputSafety
+  def dc_content_block(content_block, **options)
+    return if content_block&.value.blank?
+
+    fragment = Nokogiri::HTML::DocumentFragment.parse(content_block.value)
+    fragment.css('h1').each { |heading| heading.name = 'h2' }
+    tag.div(raw(fragment.to_html), **options)
+  end
+
+  def dc_hero_headline(content_block)
+    fragment = Nokogiri::HTML::DocumentFragment.parse(content_block.value)
+    headings = fragment.css('h1, h2, h3, h4, h5, h6')
+    return tag.div(raw(fragment.to_html), class: 'dc-hero-headline', role: 'heading', aria: { level: 1 }) if headings.empty?
+
+    headings.first.name = 'h1'
+    headings.drop(1).each { |heading| heading.name = 'h2' if heading.name == 'h1' }
+    tag.div(raw(fragment.to_html), class: 'dc-hero-headline')
+  end
+  # rubocop:enable Rails/OutputSafety
+
   def dc_badge(text, kind: nil, class_name: 'dc-badge')
     tag.span(text, class: token_list(class_name, "dc-badge-#{kind}" => kind))
   end

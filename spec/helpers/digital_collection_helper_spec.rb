@@ -88,6 +88,35 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
     end
   end
 
+  describe '#dc_content_block' do
+    it 'renders the block and turns its h1 headings into h2' do
+      html = helper.dc_content_block(ContentBlock.new(name: 'home_text', value: '<h1>Welcome</h1><p>Hello</p>'), id: 'x')
+
+      expect(Capybara.string(html)).to have_css('div#x > h2', text: 'Welcome')
+      expect(Capybara.string(html)).to have_no_css('h1')
+    end
+
+    it 'renders nothing for an empty block' do
+      expect(helper.dc_content_block(ContentBlock.new(name: 'home_text', value: ''))).to be_nil
+    end
+  end
+
+  describe '#dc_hero_headline' do
+    it 'marks text with no heading as the level one heading' do
+      html = Capybara.string(helper.dc_hero_headline(ContentBlock.new(name: 'marketing_text', value: '<p>Explore</p>')))
+
+      expect(html).to have_css('div.dc-hero-headline[role="heading"][aria-level="1"] p', text: 'Explore')
+    end
+
+    it 'promotes the first heading to h1 and demotes any other h1' do
+      html = Capybara.string(helper.dc_hero_headline(ContentBlock.new(name: 'marketing_text', value: '<h3>Maps</h3><h1>More</h1>')))
+
+      expect(html).to have_css('div.dc-hero-headline:not([role]) > h1', text: 'Maps')
+      expect(html).to have_css('div.dc-hero-headline > h2', text: 'More')
+      expect(html).to have_css('h1', count: 1)
+    end
+  end
+
   describe '#dc_badge' do
     it 'renders a dc-badge by default' do
       expect(helper.dc_badge('Image')).to eq('<span class="dc-badge">Image</span>')

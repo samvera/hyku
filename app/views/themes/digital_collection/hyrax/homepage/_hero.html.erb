@@ -8,9 +8,9 @@
   <div class="dc-hero-content">
     <div class="dc-hero-plate">
       <% if display_content_block? @marketing_text %>
-        <div class="dc-hero-headline"><%= displayable_content_block @marketing_text %></div>
+        <%= dc_hero_headline @marketing_text %>
       <% else %>
-        <h2 class="dc-hero-headline"><%= t('digital_collection.homepage.hero.headline') %></h2>
+        <h1 class="dc-hero-headline"><%= t('digital_collection.homepage.hero.headline') %></h1>
       <% end %>
 
       <div class="dc-hero-search">

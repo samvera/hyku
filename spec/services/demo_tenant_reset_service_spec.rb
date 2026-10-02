@@ -258,6 +258,47 @@ RSpec.describe DemoTenantResetService do
     end
   end
 
+  describe '#delete_stored_files!' do
+    subject(:service) { described_class.new(account:) }
+
+    let(:file_set) { instance_double(Hyrax::FileSet, id: 'fs-1') }
+    let(:file_metadata) do
+      instance_double(Hyrax::FileMetadata, file_identifier: Valkyrie::ID.new('disk://path/to/file'))
+    end
+
+    before do
+      allow(Hyrax.custom_queries).to receive(:find_files).with(file_set: file_set).and_return([file_metadata])
+    end
+
+    it 'deletes stored files and file metadata for a file set' do
+      expect(Valkyrie::StorageAdapter).to receive(:delete).with(id: file_metadata.file_identifier)
+      expect(Hyrax.persister).to receive(:delete).with(resource: file_metadata)
+      service.send(:delete_stored_files!, file_set)
+    end
+
+    it 'skips storage deletion when file_identifier is blank' do
+      allow(file_metadata).to receive(:file_identifier).and_return(nil)
+      expect(Valkyrie::StorageAdapter).not_to receive(:delete)
+      expect(Hyrax.persister).to receive(:delete).with(resource: file_metadata)
+      service.send(:delete_stored_files!, file_set)
+    end
+
+    it 'logs a warning and continues to the next file when one deletion fails' do
+      good_metadata = instance_double(Hyrax::FileMetadata,
+                                      file_identifier: Valkyrie::ID.new('disk://path/to/good'))
+      allow(Hyrax.custom_queries).to receive(:find_files)
+        .with(file_set: file_set).and_return([file_metadata, good_metadata])
+      allow(Valkyrie::StorageAdapter).to receive(:delete)
+        .with(id: file_metadata.file_identifier).and_raise(StandardError, 'gone')
+      allow(Valkyrie::StorageAdapter).to receive(:delete).with(id: good_metadata.file_identifier)
+
+      expect(Rails.logger).to receive(:warn).with(/failed to delete stored file/)
+      expect(Hyrax.persister).not_to receive(:delete).with(resource: file_metadata)
+      expect(Hyrax.persister).to receive(:delete).with(resource: good_metadata)
+      service.send(:delete_stored_files!, file_set)
+    end
+  end
+
   describe 'seed importer creation' do
     subject(:importer) { service.send(:create_importer!) }
 

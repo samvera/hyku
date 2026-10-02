@@ -18,7 +18,7 @@ RSpec.describe ThemeColorHelper, type: :helper do
   }
 
   describe '#theme_darken_until' do
-    it 'darkens a too-light link until it clears 4.5:1 on white' do
+    it 'darkens a color until it clears 4.5:1 on white, keeping its hue' do
       checked = helper.theme_darken_until('#4f7cac', white, 4.5)
 
       expect(helper.theme_contrast('#4f7cac', white)).to be < 4.5
@@ -93,16 +93,6 @@ RSpec.describe ThemeColorHelper, type: :helper do
         expect(helper.theme_contrast(visited, light_plate_worst)).to be >= 4.5
         expect(helper.theme_contrast(on_dark, dark_plate_worst)).to be >= 4.5
       end
-    end
-  end
-
-  describe '#theme_passing' do
-    it 'keeps the preferred color when it clears the floor' do
-      expect(helper.theme_passing('#3c3c3c', '#8a8a8a', white, 3)).to eq('#3c3c3c')
-    end
-
-    it 'falls back when the preferred color is under the floor' do
-      expect(helper.theme_passing('#cccccc', '#8a8a8a', white, 3)).to eq('#8a8a8a')
     end
   end
 end

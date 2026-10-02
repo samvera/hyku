@@ -328,10 +328,27 @@ body.public-facing .hyc-banner .hyc-title h1 {
 
 /* DIGITAL COLLECTION THEME CUSTOMIZATIONS */
 <% if home_page_theme == 'digital_collection' || show_page_theme == 'digital_collection_show' %>
+  <% dc_default_serif = appearance.headline_font.include?('Helvetica') %>
+  <% dc_default_sans = appearance.body_font.include?('Helvetica') %>
+  <% dc_surface = '#ffffff' %>
+  <% dc_hero_ground = '#2c2b29' %>
+  <% dc_light_plate_worst = theme_mix('#000000', '#ffffff', 0.92) %>
+  <% dc_dark_plate_worst = theme_mix('#ffffff', '#141312', 0.78) %>
+  <% dc_link = appearance.link_color %>
+  <% dc_info = theme_darken_until(dc_link, dc_surface, 4.5) %>
+  <% dc_success = theme_status_color(:success, dc_link) %>
+  <% dc_danger = theme_status_color(:danger, dc_link) %>
+  <% dc_visited = theme_visited_color(dc_link, dc_light_plate_worst) %>
 :root {
-  --dc-accent: <%= appearance.link_color %>;
-  --dc-link: <%= appearance.link_color %>;
+  --dc-serif: <%= dc_default_serif ? 'Georgia, Times New Roman, serif' : appearance.font_headline_family %>;
+  --dc-sans: <%= dc_default_sans ? 'Helvetica Neue, Helvetica, Arial, sans-serif' : appearance.font_body_family %>;
+  --dc-radius: 8px;
+  --dc-accent: <%= dc_link %>;
+  --dc-link: <%= dc_link %>;
   --dc-link-hover: <%= appearance.link_hover_color %>;
+  --dc-link-on-dark: <%= theme_lighten_until(dc_link, dc_dark_plate_worst, 5) %>;
+  --dc-link-visited: <%= dc_visited %>;
+  --dc-link-visited-on-dark: <%= theme_on_dark(dc_visited, dc_dark_plate_worst) %>;
   --dc-action: <%= appearance.primary_button_background_color %>;
   --dc-action-edge: <%= appearance.primary_button_border_color %>;
   --dc-action-ink: <%= appearance.primary_button_text_color %>;
@@ -345,6 +362,15 @@ body.public-facing .hyc-banner .hyc-title h1 {
   --dc-chrome-ink: <%= appearance.header_and_footer_text_color %>;
   --dc-footer-link: <%= appearance.footer_link_color %>;
   --dc-footer-link-hover: <%= appearance.footer_link_hover_color %>;
+  --dc-info: <%= dc_info %>;
+  --dc-info-on-dark: <%= theme_on_dark(dc_info, dc_hero_ground) %>;
+  --dc-info-tint: <%= theme_mix(dc_surface, dc_info, 0.1) %>;
+  --dc-success: <%= dc_success %>;
+  --dc-success-on-dark: <%= theme_on_dark(dc_success, dc_hero_ground) %>;
+  --dc-success-tint: <%= theme_mix(dc_surface, dc_success, 0.1) %>;
+  --dc-danger: <%= dc_danger %>;
+  --dc-danger-on-dark: <%= theme_on_dark(dc_danger, dc_hero_ground) %>;
+  --dc-danger-tint: <%= theme_mix(dc_surface, dc_danger, 0.1) %>;
 }
 <% end %>
 

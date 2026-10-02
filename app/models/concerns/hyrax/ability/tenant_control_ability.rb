@@ -15,7 +15,17 @@ module Hyrax
           cannot [:manage], :tenant_controls
         end
 
+        demo_account_abilities
         user_invite_abilities
+      end
+
+      # On a public demo tenant the admin credential is published, so a plain
+      # admin must not be able to change account-level settings (contact_email_to,
+      # cname, etc.). Superadmins and tenant superadmins retain full access.
+      def demo_account_abilities
+        return unless public_demo_tenant?
+
+        cannot [:edit, :update], Account unless tenant_superadmin? || superadmin?
       end
 
       # Inviting users is a tenant control on a public demo tenant. That flag

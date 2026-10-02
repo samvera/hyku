@@ -134,6 +134,29 @@ RSpec.describe DemoTenantResetService do
       expect(snap['featured_work_identifiers']).to eq []
       expect(snap['captured_at']).to be_present
     end
+
+    context 'when a snapshot already exists' do
+      before do
+        account.update!(demo_tenant_snapshot: snapshot)
+      end
+
+      it 'raises SnapshotExists by default' do
+        service = described_class.new(account:)
+        allow(service).to receive(:within_tenant).and_yield
+        expect { service.snapshot! }.to raise_error(described_class::SnapshotExists)
+      end
+
+      it 'overwrites when force: true' do
+        service = described_class.new(account:)
+        allow(service).to receive(:within_tenant).and_yield
+        Site.instance.update!(application_name: 'Updated Golden')
+
+        service.snapshot!(force: true)
+
+        snap = account.reload.demo_tenant_snapshot
+        expect(snap['site']['application_name']).to eq 'Updated Golden'
+      end
+    end
   end
 
   describe 'seed csv path' do

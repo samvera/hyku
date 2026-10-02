@@ -22,7 +22,7 @@ RSpec.describe 'shared/_demo_banner.html.erb', type: :view do
     end
 
     it 'states the reset schedule' do
-      expect(rendered).to have_content('reset nightly')
+      expect(rendered).to have_content('resets nightly')
     end
 
     it 'has an accessible dismiss control' do

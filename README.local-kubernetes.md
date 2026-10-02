@@ -113,12 +113,7 @@ http://antleaf-hyku.localhost.direct:3000
 
 The local values use the standalone CloudNativePG database plus bundled Redis,
 Solr, and ZooKeeper with Docker Desktop's `standard` storage class. They do not
-use production NFS, ingress, TLS, SMTP, or public hostnames. Background jobs run inline,
-so the application volumes use `ReadWriteOnce` claims without a separate worker
-pod. A local-only Rails initializer disables production's forced HTTPS redirect
-because the application is exposed through a plain HTTP port-forward.
-The local `SOLR_URL` points to `/solr/`; Hyku appends each account's collection
-name when creating and indexing a tenant.
+use production NFS, ingress, TLS, SMTP, or public hostnames. 
 
 On a fresh PostgreSQL volume, CloudNativePG's bootstrap creates the
 `shared_extensions` schema and the `hstore`, `uuid-ossp`, `pgcrypto`, and

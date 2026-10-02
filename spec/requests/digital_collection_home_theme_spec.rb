@@ -157,6 +157,13 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
     end
   end
 
+  describe 'hero' do
+    it 'opts the carousel in to the reduced-motion hold' do
+      get root_path
+      expect(Nokogiri::HTML(response.body).at_css('#dc-hero[data-theme-spotlight][data-spotlight-reduced-motion]')).to be_present
+    end
+  end
+
   describe 'content blocks' do
     it 'shows the default hero headline without marketing text, and the marketing text when set' do
       get root_path

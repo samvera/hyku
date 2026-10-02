@@ -15,7 +15,21 @@
           .find('[data-spotlight-hold-label]').text(button.data(held ? 'resumeLabel' : 'holdLabel'));
   }
 
+  function respectReducedMotion() {
+    if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    $('[data-theme-spotlight][data-spotlight-reduced-motion][data-ride]').each(function () {
+      var region = $(this);
+      var button = region.find('[data-spotlight-hold]');
+
+      region.removeAttr('data-ride');
+      button.attr('data-held', 'true')
+            .find('[data-spotlight-hold-label]').text(button.data('resumeLabel'));
+    });
+  }
+
   function bind() {
+    respectReducedMotion();
     $(document)
       .off('.themeSpotlight')
       .on('slide.bs.carousel.themeSpotlight', '[data-theme-spotlight]', function (event) {

@@ -195,7 +195,7 @@ body.catalog-index.digital_collection.public-facing {
 
   .sort-dropdown .dropdown-menu,
   .per_page-dropdown .dropdown-menu {
-    border-radius: 0;
+    border-radius: var(--dc-radius, #{$dc-radius});
 
     .dropdown-item:active,
     .dropdown-item.active {
@@ -225,6 +225,14 @@ body.catalog-index.digital_collection.public-facing {
     color: $dc-ink;
     padding: 8px 11px;
     position: relative;
+
+    &:first-child {
+      border-radius: var(--dc-radius, #{$dc-radius}) 0 0 var(--dc-radius, #{$dc-radius});
+    }
+
+    &:last-child {
+      border-radius: 0 var(--dc-radius, #{$dc-radius}) var(--dc-radius, #{$dc-radius}) 0;
+    }
 
     + .btn {
       margin-left: -1px;
@@ -279,7 +287,7 @@ body.catalog-index.digital_collection.public-facing {
     grid-column: 1 / -1;
     padding-bottom: 0 !important; // counters Bootstrap .pb-2 !important
 
-    .badge { border-radius: 0; margin: 0; }
+    .badge { border-radius: var(--dc-radius, #{$dc-radius}); margin: 0; }
   }
 
   h3.search-result-title {
@@ -390,7 +398,7 @@ body.catalog-index.digital_collection.public-facing {
   .record-padding .page-item {
     .page-link {
       border: 1px solid $dc-input-edge;
-      border-radius: $dc-radius;
+      border-radius: var(--dc-radius, #{$dc-radius});
       color: $dc-ink;
       min-width: 40px;
       padding: 8px 12px;

@@ -64,12 +64,12 @@
 
   // Hyrax _home-page.scss restores 4px on #search-field-header by ID
   #search-field-header {
-    border-radius: var(--dc-radius, #{$dc-radius});
+    border-radius: var(--dc-radius, #{$dc-radius}) 0 0 var(--dc-radius, #{$dc-radius});
   }
 
   .q.form-control {
     border: 1px solid $dc-input-edge;
-    border-radius: var(--dc-radius, #{$dc-radius});
+    border-radius: var(--dc-radius, #{$dc-radius}) 0 0 var(--dc-radius, #{$dc-radius});
     border-right: 0;
     box-shadow: none;
     color: $dc-ink-heading;
@@ -106,7 +106,7 @@
 
   #search-submit-header {
     align-items: center;
-    border-radius: var(--dc-radius, #{$dc-radius});
+    border-radius: 0 var(--dc-radius, #{$dc-radius}) var(--dc-radius, #{$dc-radius}) 0;
     display: inline-flex;
     font-size: 15px;
     font-weight: 700;

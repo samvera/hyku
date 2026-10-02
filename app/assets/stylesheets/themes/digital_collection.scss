@@ -209,7 +209,9 @@
 
       --dc-search-height: 44px;
 
-      .q.form-control {
+      .q.form-control,
+      #search-field-header {
+        border-radius: var(--dc-radius, #{$dc-radius});
         border-right: 1px solid $dc-input-edge;
         flex-basis: 100%;
       }
@@ -217,6 +219,10 @@
       .input-group-append {
         margin-top: 8px;
         width: 100%;
+      }
+
+      .input-group-append .dropdown-toggle {
+        border-radius: var(--dc-radius, #{$dc-radius}) 0 0 var(--dc-radius, #{$dc-radius});
       }
 
       #search-submit-header {
@@ -891,7 +897,7 @@
     align-self: flex-start;
     background: $dc-badge;
     border: 1px solid $dc-badge-edge;
-    border-radius: $dc-radius;
+    border-radius: var(--dc-radius, #{$dc-radius});
     color: $dc-ink;
     display: inline-flex;
     font-size: 11px;

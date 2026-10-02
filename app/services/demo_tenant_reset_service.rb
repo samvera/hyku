@@ -181,6 +181,7 @@ class DemoTenantResetService
   def destroy_all_of_model(model)
     count = 0
     Hyrax.query_service.find_all_of_model(model:).each do |resource|
+      delete_stored_files!(resource) if resource.is_a?(Hyrax::FileSet)
       Hyrax.persister.delete(resource:)
       begin
         Hyrax.index_adapter.delete(resource:)
@@ -192,6 +193,17 @@ class DemoTenantResetService
       log("failed to delete #{model} #{resource.id}: #{e.class}: #{e.message}", level: :warn)
     end
     log "removed #{count} #{model} records"
+  end
+
+  def delete_stored_files!(file_set)
+    Hyrax.custom_queries.find_files(file_set: file_set).each do |file_metadata|
+      Valkyrie::StorageAdapter.delete(id: file_metadata.file_identifier) if file_metadata.file_identifier.present?
+      Hyrax.persister.delete(resource: file_metadata)
+    rescue StandardError => e
+      log("failed to delete stored file for FileSet #{file_set.id}: #{e.class}: #{e.message}", level: :warn)
+    end
+  rescue StandardError => e
+    log("failed to look up stored files for FileSet #{file_set.id}: #{e.class}: #{e.message}", level: :warn)
   end
 
   # Clears index stragglers the model enumeration cannot see (for example

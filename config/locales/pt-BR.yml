@@ -979,7 +979,24 @@ pt-BR:
         heading: "Faz parte de"
   digital_collection:
     chrome:
-      toggle_navigation: "Alternar navegação"
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 notificação não lida"
+        other: "%{name}, %{count} notificações não lidas"
+      announcement_label: "Anúncio"
+      language: "Idioma"
+      masthead_label: "Navegação do site"
+      menu:
+        zero: "Menu"
+        one: "Menu, 1 notificação não lida"
+        other: "Menu, %{count} notificações não lidas"
+      notice: "Aviso:"
+      notifications:
+        zero: "Notificações"
+        one: "Notificações (1)"
+        other: "Notificações (%{count})"
+      signed_in_as: "Conectado como"
+      signed_in_as_name: "Conectado como %{name}"
     homepage:
       intro_label: "Introdução"
       hero:

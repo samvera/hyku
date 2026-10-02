@@ -1113,7 +1113,24 @@ zh:
         heading: "所属"
   digital_collection:
     chrome:
-      toggle_navigation: "切换导航"
+      account_label:
+        zero: "%{name}"
+        one: "%{name}，1 条未读通知"
+        other: "%{name}，%{count} 条未读通知"
+      announcement_label: "公告"
+      language: "语言"
+      masthead_label: "网站导航"
+      menu:
+        zero: "菜单"
+        one: "菜单，1 条未读通知"
+        other: "菜单，%{count} 条未读通知"
+      notice: "注意："
+      notifications:
+        zero: "通知"
+        one: "通知（1）"
+        other: "通知（%{count}）"
+      signed_in_as: "已登录为"
+      signed_in_as_name: "已登录为 %{name}"
     homepage:
       intro_label: "简介"
       hero:

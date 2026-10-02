@@ -1096,7 +1096,24 @@ it:
         heading: "Fa parte di"
   digital_collection:
     chrome:
-      toggle_navigation: "Attiva/disattiva la navigazione"
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 notifica non letta"
+        other: "%{name}, %{count} notifiche non lette"
+      announcement_label: "Annuncio"
+      language: "Lingua"
+      masthead_label: "Navigazione del sito"
+      menu:
+        zero: "Menu"
+        one: "Menu, 1 notifica non letta"
+        other: "Menu, %{count} notifiche non lette"
+      notice: "Avviso:"
+      notifications:
+        zero: "Notifiche"
+        one: "Notifiche (1)"
+        other: "Notifiche (%{count})"
+      signed_in_as: "Accesso effettuato come"
+      signed_in_as_name: "Accesso effettuato come %{name}"
     homepage:
       intro_label: "Introduzione"
       hero:

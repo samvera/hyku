@@ -1096,7 +1096,24 @@ es:
         heading: "Forma parte de"
   digital_collection:
     chrome:
-      toggle_navigation: "Alternar la navegación"
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 notificación no leída"
+        other: "%{name}, %{count} notificaciones no leídas"
+      announcement_label: "Anuncio"
+      language: "Idioma"
+      masthead_label: "Navegación del sitio"
+      menu:
+        zero: "Menú"
+        one: "Menú, 1 notificación no leída"
+        other: "Menú, %{count} notificaciones no leídas"
+      notice: "Aviso:"
+      notifications:
+        zero: "Notificaciones"
+        one: "Notificaciones (1)"
+        other: "Notificaciones (%{count})"
+      signed_in_as: "Sesión iniciada como"
+      signed_in_as_name: "Sesión iniciada como %{name}"
     homepage:
       intro_label: "Introducción"
       hero:

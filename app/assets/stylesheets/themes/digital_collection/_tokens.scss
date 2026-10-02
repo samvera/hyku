@@ -140,7 +140,7 @@ $dc-tablet-max: 1023px;
 $dc-nav-collapse-max: 991px;
 $dc-mobile-max: 767px;
 
-$dc-gutter: 28px;
+$dc-gutter: $dc-space-6;
 $dc-gutter-mobile: 16px;
 $dc-content-max: 1440px;
 $dc-control-height: 44px;
@@ -148,7 +148,7 @@ $dc-control-height-small: 36px;
 $dc-control-height-small-touch: 44px;
 $dc-hero-controls-reserve: 420px;
 
-$dc-width-header-max: 1920px;
+$dc-width-header-max: 1600px;
 $dc-height-masthead: 64px;
 $dc-width-hero-plate: 792px;
 $dc-width-hero-plate-laptop: 692px;

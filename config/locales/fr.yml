@@ -1101,7 +1101,24 @@ fr:
         heading: "Fait partie de"
   digital_collection:
     chrome:
-      toggle_navigation: "Afficher/masquer la navigation"
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 notification non lue"
+        other: "%{name}, %{count} notifications non lues"
+      announcement_label: "Annonce"
+      language: "Langue"
+      masthead_label: "Navigation du site"
+      menu:
+        zero: "Menu"
+        one: "Menu, 1 notification non lue"
+        other: "Menu, %{count} notifications non lues"
+      notice: "Avis :"
+      notifications:
+        zero: "Notifications"
+        one: "Notifications (1)"
+        other: "Notifications (%{count})"
+      signed_in_as: "Connecté en tant que"
+      signed_in_as_name: "Connecté en tant que %{name}"
     homepage:
       intro_label: "Introduction"
       hero:

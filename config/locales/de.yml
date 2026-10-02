@@ -1099,7 +1099,24 @@ de:
         heading: "Gehört zu"
   digital_collection:
     chrome:
-      toggle_navigation: "Navigation umschalten"
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 ungelesene Benachrichtigung"
+        other: "%{name}, %{count} ungelesene Benachrichtigungen"
+      announcement_label: "Ankündigung"
+      language: "Sprache"
+      masthead_label: "Website-Navigation"
+      menu:
+        zero: "Menü"
+        one: "Menü, 1 ungelesene Benachrichtigung"
+        other: "Menü, %{count} ungelesene Benachrichtigungen"
+      notice: "Hinweis:"
+      notifications:
+        zero: "Benachrichtigungen"
+        one: "Benachrichtigungen (1)"
+        other: "Benachrichtigungen (%{count})"
+      signed_in_as: "Angemeldet als"
+      signed_in_as_name: "Angemeldet als %{name}"
     homepage:
       intro_label: "Einführung"
       hero:

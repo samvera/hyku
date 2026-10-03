@@ -326,7 +326,7 @@ Rails.application.config.to_prepare do
   require 'hydra/derivatives'
   Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
 
-  Hyrax.publisher.subscribe(HyraxListener.new)
+  Hyku::ListenerSubscription.replace(HyraxListener.new)
 
   unless Hyrax::Transactions::Container.key?('collection_resource.save_collection_thumbnail')
     Hyrax::Transactions::Container.namespace('collection_resource') do |ops|

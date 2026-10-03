@@ -9,6 +9,7 @@
 #             contain the work being created
 #           - refuse a work type the tenant does not offer
 #           - let a controller choose its IIIF manifest presenter class
+#           - let a controller put file set metadata on its IIIF manifest's pages
 module Hyku
   # include this module after including Hyrax::WorksControllerBehavior to override
   # Hyrax::WorksControllerBehavior methods with the ones defined here
@@ -25,6 +26,7 @@ module Hyku
       self.show_presenter = Hyku::WorkShowPresenter
       class_attribute :iiif_manifest_presenter_class
       self.iiif_manifest_presenter_class = Hyrax::IiifManifestPresenter
+      class_attribute :iiif_file_set_metadata, default: false
 
       # These cache wrapper methods need to be in the top level so that they override other modules
       def show
@@ -92,6 +94,8 @@ module Hyku
       iiif_manifest_presenter_class.new(search_result_document(id: params[:id])).tap do |p|
         p.hostname = request.hostname
         p.ability = current_ability
+        # OVERRIDE
+        p.file_set_metadata = iiif_file_set_metadata
       end
     end
 

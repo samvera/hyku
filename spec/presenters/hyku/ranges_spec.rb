@@ -5,26 +5,7 @@ RSpec.describe Hyku::Ranges, :clean_repo do
     Hyrax::IiifManifestPresenter.new(SolrDocument.find(work.id.to_s))
   end
 
-  # Bypass the real file-storage stack: prepend a stub that makes every
-  # DisplayImagePresenter report a displayable image so the Ranges recursion
-  # and TOC structure can be exercised.
-  before(:all) do # rubocop:disable RSpec/BeforeAfterAll
-    stub_mod = Module.new do
-      def display_image
-        IIIFManifest::DisplayImage.new(id.to_s,
-                                       width: 640, height: 480,
-                                       format: 'image/png',
-                                       iiif_endpoint: nil)
-      end
-
-      def display_content
-        IIIFManifest::V3::DisplayContent.new(id.to_s,
-                                             width: 640, height: 480,
-                                             type: 'Image')
-      end
-    end
-    Hyrax::IiifManifestPresenter::DisplayImagePresenter.prepend(stub_mod)
-  end
+  include_context 'with displayable file sets'
 
   def create_image_file_set
     fs = valkyrie_create(:hyrax_file_set)

@@ -38,6 +38,18 @@ RSpec.describe Hyrax::GenericWorksController do
       expect(presenter).to be_an_instance_of Hyrax::IiifManifestPresenter
     end
 
+    it "leaves file set metadata off the canvases by default" do
+      expect(presenter.file_set_metadata).to be_falsey
+    end
+
+    context "when the controller turns on file set metadata" do
+      before { allow(described_class).to receive(:iiif_file_set_metadata).and_return(true) }
+
+      it "puts it on the canvases" do
+        expect(presenter.file_set_metadata).to be true
+      end
+    end
+
     context "when the controller configures its own presenter class" do
       let(:presenter_class) { Class.new(Hyrax::IiifManifestPresenter) }
 

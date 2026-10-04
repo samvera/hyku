@@ -48,6 +48,8 @@ attributes:
       - "resource_type_tesim"
     predicate: http://purl.org/dc/terms/type
     view:
+      display_label:
+        default: hyrax.oer.labels.resource_type
       render_as: "faceted"
       html_dl: true
     mappings:
@@ -62,8 +64,6 @@ attributes:
       - "date_created_tesim"
     predicate: http://purl.org/dc/terms/date
     view:
-      render_as: "linked"
-      search_field: 'date_created_tesim'
       html_dl: true
     mappings:
       simple_dc_pmh: dc:date
@@ -180,6 +180,7 @@ attributes:
       - "accessibility_feature_sim"
     predicate: http://schema.org/accessibilityFeature
     view:
+      render_as: "faceted"
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
@@ -194,6 +195,7 @@ attributes:
       - "accessibility_hazard_sim"
     predicate: http://schema.org/accessibilityHazard
     view:
+      render_as: "faceted"
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
@@ -208,6 +210,7 @@ attributes:
       - "accessibility_summary_sim"
     predicate: http://schema.org/accessibilitySummary
     view:
+      render_as: "faceted"
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
@@ -303,7 +306,6 @@ attributes:
       - "identifier_tesim"
     predicate: http://purl.org/dc/terms/identifier
     view:
-      render_as: "linked"
       search_field: 'identifier_tesim'
       html_dl: true
     mappings:
@@ -348,6 +350,8 @@ attributes:
       - "oer_size_tesim"
     predicate: http://purl.org/dc/terms/extent
     view:
+      display_label:
+        default: simple_form.labels.defaults.oer_size
       html_dl: true
     mappings:
       simple_dc_pmh: dc:format
@@ -377,6 +381,8 @@ attributes:
       - "related_url_tesim"
     predicate: http://www.w3.org/2000/01/rdf-schema#seeAlso
     view:
+      display_label:
+        default: simple_form.labels.defaults.related_url
       render_as: "external_link"
       html_dl: true
     mappings:
@@ -392,6 +398,7 @@ attributes:
       - "rights_holder_sim"
     predicate: http://purl.org/dc/terms/rightsHolder
     view:
+      render_as: "linked"
       html_dl: true
     mappings:
       simple_dc_pmh: dc:rights
@@ -405,6 +412,7 @@ attributes:
       - "rights_notes_tesim"
     predicate: https://hykucommons.org/terms/rights_notes
     view:
+      render_as: "linked"
       html_dl: true
     mappings:
       simple_dc_pmh: dc:rights

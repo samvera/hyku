@@ -192,6 +192,17 @@ view:
 
 None of these require app-side JavaScript or view overrides in Hyku; the editor, renderer, and partials all live upstream in Hyrax. See the Hyrax [`documentation/flexible_metadata.md`](https://github.com/samvera/hyrax/blob/main/documentation/flexible_metadata.md) "Rich-text fields" and "Featured display" sections for the editor toolbar and the renderer's allow-list.
 
+#### Which fields the show page lists
+
+Every work type renders its metadata rows through `hyrax/base/_attribute_rows_list`, which reads each field's display options (`render_as`, `display_label`, `search_field`, and the directives above) from its `view:` block.
+
+- **Records saved under the m3 profile** list every profile property that has a `view:` block, in profile order.
+- **Records on the YAML schema** list only the fields named in the `field_order` array of the work type's `_attribute_rows` partial (`app/views/hyrax/base/`, `hyrax/etds/`, `hyrax/oers/`), in that order. A field needs both a `view:` block in `config/metadata/*.yaml` and a `field_order` entry to appear.
+
+The choice is made per record, the same way Hyrax picks the profile or the YAML: a work indexed with a `schema_version` keeps the profile's list even if `HYRAX_FLEXIBLE` is later turned off, and a class left out of `HYRAX_FLEXIBLE_CLASSES` uses `field_order` even when flexible metadata is on. Fields with no value are skipped.
+
+Compound fields follow the same rules. With flexible metadata off, the compounds in `config/metadata/compound_metadata.yaml` (`participants`, `identifiers`, `relationships`) display only because each `field_order` names them; a new compound needs a `field_order` entry too. A compound with `view: { display: card }`, such as `relationships`, is left out of the metadata list and rendered as its own card by `render_compound_cards`, which every show page and show theme calls.
+
 #### Rich-text editing and display (`input_type: rich_text`, `render_as: html`)
 
 These two are independent but usually paired:

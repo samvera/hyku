@@ -1,0 +1,18 @@
+<%# Same per-record check view_options_for uses: a record saved under the m3 profile follows the profile's fields and order whatever the app setting, so field_order applies only to YAML-schema records %>
+<% fields = view_options_for(presenter) %>
+<% profile_driven = presenter.respond_to?(:flexible?) && presenter.flexible? %>
+<% fields = fields.slice(*field_order.map(&:to_s)) if local_assigns[:field_order] && !profile_driven %>
+<% fields.each do |field, options| %>
+  <%# Card-display compounds render separately via render_compound_cards, not inline %>
+  <% next if compound_card_field?(presenter, field) %>
+  <% render_field = conform_field(field, options) %>
+  <%# A field with no reader (e.g. a compound with no entries, which is not indexed) is empty; skip it rather than log a missing-method warning %>
+  <% next unless presenter.respond_to?(render_field) %>
+  <% view_options = conform_options(field, options) %>
+  <%# keeps admin_note behavior for backward compatibility... should be in metadata but may not be %>
+  <% if field.to_sym == :admin_note %>
+    <%= presenter.attribute_to_html(render_field, view_options) if presenter.editor? %>
+  <% else %>
+    <%= presenter.attribute_to_html(render_field, view_options) if field_visible?(view_options, presenter) %>
+  <% end %>
+<% end %>

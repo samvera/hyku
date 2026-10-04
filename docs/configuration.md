@@ -203,6 +203,39 @@ The choice is made per record, the same way Hyrax picks the profile or the YAML:
 
 Compound fields follow the same rules. With flexible metadata off, the compounds in `config/metadata/compound_metadata.yaml` (`participants`, `identifiers`, `relationships`) display only because each `field_order` names them; a new compound needs a `field_order` entry too. A compound with `view: { display: card }`, such as `relationships`, is left out of the metadata list and rendered as its own card by `render_compound_cards`, which every show page and show theme calls.
 
+#### Searching and faceting compound fields
+
+Compound sub-properties are indexed into Solr in both modes, but they are not searchable or facetable until they are registered in `CatalogController`.
+
+Hyrax's compound indexer writes a field per sub-property, named `<compound>_<sub-property>_<suffix>` with suffixes chosen by the sub-property's `type:` (a `string` gets `_sim` and `_tesim`, a `controlled` value gets `_sim`, a `url` or `work_or_url` gets `_ssim`). For the stock compounds that gives, for example, `participants_name_tesim`, `participants_name_sim`, and `participants_role_sim`. With flexible metadata off these exist for every work type; with it on they exist only for the classes the m3 profile lists in the compound's `available_on`.
+
+None of those fields is registered with Blacklight, so:
+
+- **Keyword search does not match them.** A catalog search uses the `all_fields` search field, whose `qf` is built from the show fields, `title_tesim`, `file_format_tesim`, and the `all_text` fields. Compound fields are not among them, and Hyku's Solr schema does not copy `*_tesim` into `all_text_timv` (that `copyField` is commented out in `solr/conf/schema.xml`).
+- **No facet appears.** The catalog's facets are the fixed `add_facet_field` list.
+- **Flexible mode does not register them either.** Hyrax's `FlexibleCatalogBehavior` adds search and facet fields only for m3 properties with a top-level `indexing:` list, and compounds and their sub-properties have none.
+
+To make a sub-property searchable, add its `_tesim` field to the `qf` of the `all_fields` search field (adding it to `default_solr_params` alone has no effect, because `all_fields` sets its own `qf`):
+
+```ruby
+config.add_search_field('all_fields', label: 'All Fields', include_in_advanced_search: false) do |field|
+  all_names = config.show_fields.values.map(&:field).join(" ")
+  title_name = 'title_tesim'
+  field.solr_parameters = {
+    qf: "#{all_names} #{title_name} file_format_tesim participants_name_tesim all_text_tsimv all_text_tsimv",
+    pf: title_name.to_s
+  }
+end
+```
+
+To facet on a sub-property, register its `_sim` field, and give it a label under `blacklight.search.fields.facet` in `config/locales/blacklight.*.yml`:
+
+```ruby
+config.add_facet_field 'participants_role_sim', limit: 5
+```
+
+The Solr field names are the same in both modes, so the same registrations apply.
+
 #### Rich-text editing and display (`input_type: rich_text`, `render_as: html`)
 
 These two are independent but usually paired:

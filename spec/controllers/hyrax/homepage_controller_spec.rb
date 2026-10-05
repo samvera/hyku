@@ -2,6 +2,23 @@
 RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
   routes { Hyrax::Engine.routes }
 
+  describe 'caching headers' do
+    it 'sends a short public Cache-Control for anonymous visitors' do
+      get :index
+      expect(response.headers['Cache-Control']).to include('public', 'max-age=300')
+    end
+
+    it 'does not set a session cookie for anonymous visitors' do
+      get :index
+      expect(response.headers['Set-Cookie']).to be_blank
+    end
+
+    it 'keeps the session when a flash message is present' do
+      get :index, flash: { notice: 'Signed out' }
+      expect(response.headers['Set-Cookie']).to be_present
+    end
+  end
+
   describe "#index" do
     let(:user) { create(:user) }
 

@@ -166,6 +166,30 @@ When the variable is unset, Hyku defaults it to the stock classes listed above p
 Every class named here must also be declared in the tenant's M3 profile
 (`classes:` section) and have its properties' `available_on` entries reference it.
 
+### IIIF viewer metadata
+
+When flexible metadata is on, a work's IIIF manifest takes its metadata from the work's M3 profile, so the viewer's information panel matches the work's show page.
+
+- **The item section** lists the title, the description (or the abstract when the profile has no `description`), links to the work's collections, and then every other property the show page displays, in profile order. Labels come from each property's `display_label`, controlled terms show their labels, and links match the show page.
+- **Only what an anonymous visitor sees** is included, because manifests are cached publicly. Properties marked `admin_only`, `editor_only` or `show_page: false` are left out, and so are child works and file sets an anonymous visitor cannot read, whoever requests the manifest.
+- **Page metadata:** a page that belongs to a child work shows that child work's metadata. A work's own pages show nothing extra, since the item section already covers the work.
+
+A work type can also show each file set's metadata on its page, from the profile's `Hyrax::FileSet` properties. Turn it on in the work type's controller:
+
+```ruby
+module Hyrax
+  class BooksController < ApplicationController
+    include Hyrax::WorksControllerBehavior
+    include Hyku::WorksControllerBehavior
+    self.iiif_file_set_metadata = true
+  end
+end
+```
+
+With it on, a child work's pages show the child work's metadata and then the file set's, and the viewer opens one page at a time rather than in two-page spreads, so each panel describes a single page.
+
+Works indexed without a flexible schema keep IiifPrint's manifest metadata, which comes from `IiifPrint.config.metadata_fields`.
+
 ### Documentation
 
 For comprehensive information about flexible metadata, including:

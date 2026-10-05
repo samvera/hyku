@@ -83,7 +83,10 @@ module Hyrax
           options: options,
           service: service
         }
-      rescue StandardError => e
+      # NotImplementedError is not a StandardError. An autocomplete authority
+      # registered as a local subauthority (mesh) raises it from #all; returning
+      # nil lets remote_vocabulary_options_for offer it as autocomplete.
+      rescue StandardError, NotImplementedError => e
         Rails.logger.warn "Failed to load controlled vocabulary for #{source}: #{e.message}"
         nil
       end

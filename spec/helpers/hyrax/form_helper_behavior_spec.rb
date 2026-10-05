@@ -223,5 +223,17 @@ RSpec.describe Hyrax::FormHelperBehavior, type: :helper do
         expect(config[:options].map(&:first)).to eq ['Special Collections']
       end
     end
+
+    # mesh is registered as a local subauthority so its terms can be searched,
+    # but it has no #all to list them for a select.
+    context 'with the mesh authority' do
+      before { allow(helper).to receive(:controlled_vocabulary_source_for).with(:mesh_subject).and_return('mesh') }
+
+      it 'renders as an autocomplete instead of raising' do
+        config = helper.controlled_vocabulary_options_for(:mesh_subject)
+
+        expect(config).to eq(type: 'autocomplete', url: '/authorities/search/local/mesh')
+      end
+    end
   end
 end

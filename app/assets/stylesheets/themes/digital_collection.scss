@@ -480,42 +480,8 @@
   }
 
   .dc-collection-plate {
+    @include dc-image-plate;
     aspect-ratio: 16 / 10;
-    background: $dc-surface-alt;
-    display: block;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .dc-collection-plate-blur {
-    filter: blur(26px) saturate(1.2);
-    height: 124%;
-    left: -12%;
-    object-fit: cover;
-    position: absolute;
-    top: -12%;
-    width: 124%;
-  }
-
-  .dc-collection-plate-scrim {
-    background: rgba(28, 27, 26, 0.14);
-    inset: 0;
-    position: absolute;
-  }
-
-  .dc-collection-plate-figure {
-    align-items: center;
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    position: relative;
-
-    img {
-      display: block;
-      height: 100%;
-      object-fit: cover;
-      width: 100%;
-    }
   }
 
   .dc-collection-body {

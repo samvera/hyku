@@ -312,6 +312,44 @@ $dc-heading-roles: (
   object-fit: cover;
 }
 
+@mixin dc-image-plate($fit: cover) {
+  background: $dc-surface-alt;
+  display: block;
+  overflow: hidden;
+  position: relative;
+
+  &-blur {
+    filter: blur(26px) saturate(1.2);
+    height: 124%;
+    left: -12%;
+    object-fit: cover;
+    position: absolute;
+    top: -12%;
+    width: 124%;
+  }
+
+  &-scrim {
+    background: $dc-plate-scrim;
+    inset: 0;
+    position: absolute;
+  }
+
+  &-figure {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    position: relative;
+
+    img {
+      display: block;
+      height: 100%;
+      object-fit: $fit;
+      width: 100%;
+    }
+  }
+}
+
 @mixin dc-joined($item: '*') {
   display: flex;
 

@@ -1146,6 +1146,7 @@ zh:
         unfeature_confirm: "要将此合集从精选列表中移除吗？"
         reorder_hint: "拖动以重新排列精选合集。"
         save_order: "保存排序"
+        remove: "从精选馆藏中移除 %{title}"
       browse:
         heading: "浏览馆藏"
         grid: "网格"
@@ -1170,6 +1171,7 @@ zh:
         unfeature_confirm: "要将此作品从精选列表中移除吗？"
         reorder_hint: "拖动以重新排列精选作品。"
         save_order: "保存顺序"
+        remove: "从精选作品中移除 %{title}"
       recent:
         heading: "最近添加"
         view_all: "查看全部最新作品"

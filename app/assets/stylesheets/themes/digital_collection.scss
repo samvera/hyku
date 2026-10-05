@@ -325,24 +325,7 @@
   }
 
   // ---- featured collections (admin-only editor) ----
-  .dc-featured-collections {
-    padding-bottom: 56px;
-  }
 
-  .dc-featured-thumb-wide {
-    height: 100px;
-    width: 280px;
-
-    @media (max-width: $dc-tablet-max) {
-      height: 80px;
-      width: 220px;
-    }
-
-    @media (max-width: $dc-mobile-max) {
-      height: 56px;
-      width: 140px;
-    }
-  }
 
   // ---- home sections ----
   .dc-home {
@@ -790,7 +773,7 @@
       font-size: inherit;
       list-style: none;
       min-height: 0;
-      padding: 0;
+      padding: 0 calc(#{$dc-control-height} + #{$dc-space-3});
       position: relative;
     }
 
@@ -813,64 +796,144 @@
       position: static;
     }
 
-    .dd-handle.dd3-handle,
-    .float-right a {
+    .dd-handle.dd3-handle {
       align-items: center;
       background: $dc-surface;
-      border: 1px solid $dc-hairline;
-      border-radius: $dc-radius;
-      color: $dc-ink;
+      border: $dc-border solid $dc-control-edge;
+      border-radius: var(--dc-radius, #{$dc-radius});
+      cursor: grab;
       display: inline-flex;
-      height: 28px;
+      font-size: 0;
+      height: $dc-control-height;
       justify-content: center;
+      left: 0;
       margin: 0;
+      overflow: hidden;
       padding: 0;
       position: absolute;
-      top: 2px;
-      width: 28px;
+      text-indent: 0;
+      top: 0;
+      white-space: nowrap;
+      width: $dc-control-height;
       z-index: 2;
-    }
-
-    .dd-handle.dd3-handle {
-      cursor: grab;
-      font-size: 0;
-      left: 8px;
 
       &::before {
-        color: $dc-ink;
-        content: '⠿';
-        top: 50%;
-        transform: translateY(-50%);
+        background: image-url('themes/digital_collection/icon-grip.svg') center / #{$dc-size-icon} #{$dc-size-icon} no-repeat;
+        content: '';
+        height: $dc-size-icon;
+        position: static;
+        width: $dc-size-icon;
       }
 
       &:active {
         cursor: grabbing;
       }
+
     }
 
-    .float-right {
+    .dc-reorder-remove {
       margin: 0;
 
       a {
-        color: $dc-ink-secondary;
-        font-size: 15px;
-        right: 8px;
-        text-decoration: none;
-      }
-
-      a:hover {
-        color: $dc-ink;
-      }
-
-      a:focus-visible {
-        @include dc-focus-ring;
+        @include dc-button(small);
+        height: $dc-control-height;
+        padding: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: $dc-control-height;
       }
     }
   }
 
+  .dc-reorder,
+  .dd-dragel {
+    @media (max-width: $dc-mobile-max) {
+      .dc-featured-thumb,
+      .dc-featured-meta,
+      .dc-featured-desc,
+      .dc-badge {
+        display: none;
+      }
+    }
+  }
+
+  .dc-featured-collections .dc-featured-list {
+    gap: $dc-space-2;
+  }
+
+  .dc-featured-collections .dd-placeholder {
+    min-height: calc(#{$dc-control-height} + 2 * #{$dc-space-3} + 2 * #{$dc-border});
+  }
+
+  .dc-featured-collections .dc-reorder,
+  .dd-dragel:has(.dc-featured-thumb-wide) {
+    .dd-item {
+      align-items: center;
+      background: $dc-surface;
+      border: $dc-border solid $dc-hairline;
+      border-radius: var(--dc-radius, #{$dc-radius});
+      display: flex;
+      gap: $dc-space-3;
+      padding: $dc-space-3;
+    }
+
+    .dd-handle.dd3-handle,
+    .dc-reorder-remove a {
+      flex: none;
+      position: static;
+    }
+
+    .dd3-content.card {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .col-sm-12 {
+      align-items: center;
+      display: flex;
+      gap: $dc-space-3;
+    }
+
+    .dc-featured-row {
+      align-items: center;
+      flex: 1;
+      flex-direction: row;
+      gap: $dc-space-3;
+      min-width: 0;
+    }
+
+    .dc-featured-thumb-wide {
+      height: $dc-height-thumb-recent;
+      width: $dc-width-thumb-recent;
+
+      img {
+        object-fit: cover;
+      }
+    }
+
+    .dc-featured-body {
+      align-items: center;
+      flex-direction: row;
+      gap: $dc-space-3;
+      justify-content: space-between;
+    }
+
+    .dc-featured-title {
+      font-size: $dc-text-base;
+      line-height: $dc-leading-snug;
+    }
+
+    .dc-featured-meta {
+      flex: none;
+    }
+  }
+
+
   .dd-placeholder {
     background: $dc-surface-alt;
-    border: 1px dashed $dc-hairline;
+    border: $dc-border dashed $dc-control-edge;
+    border-radius: var(--dc-radius, #{$dc-radius});
     min-height: 120px;
   }
 

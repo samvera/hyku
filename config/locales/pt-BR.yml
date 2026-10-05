@@ -1012,6 +1012,7 @@ pt-BR:
         unfeature_confirm: "Remover esta coleção da lista de destaques?"
         reorder_hint: "Arraste para reordenar as coleções em destaque."
         save_order: "Salvar ordem"
+        remove: "Remover %{title} das coleções em destaque"
       browse:
         heading: "Explorar acervos"
         grid: "Grade"
@@ -1036,6 +1037,7 @@ pt-BR:
         unfeature_confirm: "Remover esta obra da lista de destaques?"
         reorder_hint: "Arraste para reordenar as obras em destaque."
         save_order: "Salvar ordem"
+        remove: "Remover %{title} das obras em destaque"
       recent:
         heading: "Adicionados recentemente"
         view_all: "Ver todas as obras recentes"

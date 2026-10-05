@@ -1129,6 +1129,7 @@ it:
         unfeature_confirm: "Rimuovere questa collezione dagli elementi in evidenza?"
         reorder_hint: "Trascina per riordinare le collezioni in evidenza."
         save_order: "Salva ordine"
+        remove: "Rimuovi %{title} dalle collezioni in evidenza"
       browse:
         heading: "Esplora le collezioni"
         grid: "Griglia"
@@ -1153,6 +1154,7 @@ it:
         unfeature_confirm: "Rimuovere questa opera dagli elementi in evidenza?"
         reorder_hint: "Trascina per riordinare le opere in evidenza."
         save_order: "Salva ordine"
+        remove: "Rimuovi %{title} dalle opere in evidenza"
       recent:
         heading: "Aggiunti di recente"
         view_all: "Vedi tutte le opere recenti"

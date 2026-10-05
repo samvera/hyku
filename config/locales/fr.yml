@@ -1134,6 +1134,7 @@ fr:
         unfeature_confirm: "Retirer cette collection de la liste mise en avant ?"
         reorder_hint: "Faites glisser pour réordonner les collections."
         save_order: "Enregistrer l'ordre"
+        remove: "Retirer %{title} des collections en vedette"
       browse:
         heading: "Parcourir les collections"
         grid: "Grille"
@@ -1158,6 +1159,7 @@ fr:
         unfeature_confirm: "Retirer cette œuvre de la liste mise en avant ?"
         reorder_hint: "Faites glisser pour réordonner les œuvres."
         save_order: "Enregistrer l'ordre"
+        remove: "Retirer %{title} des œuvres en vedette"
       recent:
         heading: "Ajouts récents"
         view_all: "Voir toutes les œuvres récentes"

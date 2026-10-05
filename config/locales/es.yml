@@ -1129,6 +1129,7 @@ es:
         unfeature_confirm: "¿Quitar esta colección de la lista de destacadas?"
         reorder_hint: "Arrastre para reordenar las colecciones destacadas."
         save_order: "Guardar orden"
+        remove: "Quitar %{title} de las colecciones destacadas"
       browse:
         heading: "Explorar colecciones"
         grid: "Cuadrícula"
@@ -1153,6 +1154,7 @@ es:
         unfeature_confirm: "¿Quitar esta obra de la lista de destacadas?"
         reorder_hint: "Arrastre para reordenar las obras destacadas."
         save_order: "Guardar orden"
+        remove: "Quitar %{title} de las obras destacadas"
       recent:
         heading: "Añadidos recientemente"
         view_all: "Ver todas las obras recientes"

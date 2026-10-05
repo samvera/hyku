@@ -1,8 +1,7 @@
-<% branding = CollectionBrandingInfo.where(collection_id: featured.id, role: "banner").first %>
-<% banner = branding ? "/" + branding.local_path.split("/")[-4..-1].join("/") : nil %>
-
+<%# OVERRIDE Hyku 7.1.0: shared featured row with the collection banner and works count %>
 <%= render layout: 'hyrax/homepage/dc_featured_row',
            locals: { url: hyrax.collection_path(featured.id), thumb_class: 'dc-featured-thumb-wide',
-                     title: Array(featured.title).first.presence || featured.try(:title_or_label) } do %>
-  <img src="<%= banner || banner_image %>" alt="">
+                     title: Array(featured.title).first.presence || featured.try(:title_or_label),
+                     meta: [t('digital_collection.homepage.browse.works_count', count: dc_home.browse_works_count(featured))] } do %>
+  <img src="<%= dc_banner_src(featured.id) %>" alt="" data-dc-fallback="<%= banner_image %>">
 <% end %>

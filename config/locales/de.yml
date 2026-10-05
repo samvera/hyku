@@ -1132,6 +1132,7 @@ de:
         unfeature_confirm: "Diese Sammlung aus der Auswahl entfernen?"
         reorder_hint: "Ziehen, um die Reihenfolge der Sammlungen zu ändern."
         save_order: "Reihenfolge speichern"
+        remove: "%{title} aus den hervorgehobenen Sammlungen entfernen"
       browse:
         heading: "Sammlungen durchstöbern"
         grid: "Raster"
@@ -1156,6 +1157,7 @@ de:
         unfeature_confirm: "Dieses Werk aus der Auswahl entfernen?"
         reorder_hint: "Ziehen, um die Reihenfolge zu ändern."
         save_order: "Reihenfolge speichern"
+        remove: "%{title} aus den hervorgehobenen Werken entfernen"
       recent:
         heading: "Kürzlich hinzugefügt"
         view_all: "Alle neuen Werke anzeigen"

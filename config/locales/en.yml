@@ -996,6 +996,7 @@ en:
         unfeature_confirm: "Remove this collection from the featured list?"
         reorder_hint: "Drag to reorder featured collections."
         save_order: "Save order"
+        remove: "Remove %{title} from featured collections"
       browse:
         heading: "Browse collections"
         grid: "Grid"
@@ -1020,6 +1021,7 @@ en:
         unfeature_confirm: "Remove this work from the featured list?"
         reorder_hint: "Drag to reorder featured works."
         save_order: "Save order"
+        remove: "Remove %{title} from featured works"
       recent:
         heading: "Recently added works"
         view_all: "View all recent works"

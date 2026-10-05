@@ -170,6 +170,17 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
         expect(Nokogiri::HTML(response.body).at_css("section[aria-labelledby='dc-featured-heading'] form .dc-reorder")).to be_present
       end
 
+      it 'puts the collection title before its remove button and names the button' do
+        get root_path
+        row = Nokogiri::HTML(response.body).at_css('#ff .dd-item')
+        links = row.css('a[href]').reject { |a| a['tabindex'] == '-1' }
+
+        expect(links.map { |a| a['data-behavior'] }.last).to eq('unfeature')
+        expect(links.first.text.strip).to eq('Harbor Photographs')
+        expect(row.at_css('.dc-reorder-remove .sr-only').text).to eq('Remove Harbor Photographs from featured collections')
+        expect(row.css('h3.float-right')).to be_empty
+      end
+
       it 'fills each reorder form with its own list, wording and save button' do
         get root_path
         doc = Nokogiri::HTML(response.body)
@@ -190,6 +201,13 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
         get root_path
 
         expect(Nokogiri::HTML(response.body).at_css('.dc-featured-row a.dc-featured-thumb.dc-thumb-placeholder')).to be_present
+      end
+
+      it 'lists how many works each featured collection holds' do
+        get root_path
+
+        collections = Nokogiri::HTML(response.body).at_css("section[aria-labelledby='dc-fc-heading'] form")
+        expect(collections.at_css('.dc-featured-row').text).to include(I18n.t('digital_collection.homepage.browse.works_count', count: 0))
       end
     end
   end

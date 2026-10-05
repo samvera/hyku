@@ -46,6 +46,7 @@ jobs:
           config-name: ${{ env.IS_STAGING == 'true' && 'release-drafter-staging.yml' || 'release-drafter.yml' }}
           commitish: ${{ github.ref_name }}
           prerelease: ${{ env.IS_STAGING }}
+          disable-releaser: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -63,6 +64,7 @@ jobs:
 
           CURRENT=$(grep -oP "VERSION = '\K[^']+" config/initializers/version.rb)
           VERSION=$(ruby .github/scripts/release_version.rb "$CURRENT" "$RESOLVED_VERSION" "${{ env.IS_STAGING }}")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           if [ "$CURRENT" = "$VERSION" ]; then
             echo "Version already ${VERSION}, skipping bump"
             echo "bumped=false" >> "$GITHUB_OUTPUT"
@@ -72,7 +74,6 @@ jobs:
           sed -i "s/VERSION = '.*'/VERSION = '${VERSION}'/" config/initializers/version.rb
           echo "Updated version to ${VERSION}"
           echo "bumped=true" >> "$GITHUB_OUTPUT"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Commit version bump
         if: steps.bump.outputs.bumped == 'true'
@@ -86,12 +87,15 @@ jobs:
           git commit -m "Bump version to v${VERSION}"
           git push
 
-      - name: Re-draft with version bump commit
-        if: steps.bump.outputs.bumped == 'true'
+      - name: Draft release notes with resolved version
+        if: steps.bump.outputs.version != ''
         uses: release-drafter/release-drafter@v6
         with:
           config-name: ${{ env.IS_STAGING == 'true' && 'release-drafter-staging.yml' || 'release-drafter.yml' }}
           commitish: ${{ github.ref_name }}
+          version: ${{ steps.bump.outputs.version }}
+          name: v${{ steps.bump.outputs.version }}
+          tag: v${{ steps.bump.outputs.version }}
           prerelease: ${{ env.IS_STAGING }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -144,7 +144,6 @@ class CatalogController < ApplicationController
     # config.add_facet_field 'part_of_sim', limit: 5
 
     config.add_facet_field DateRangeIndexing::SOLR_FIELD,
-                           label: 'Date Range',
                            range: { assumed_boundaries: [1800, Time.zone.now.year + 2] },
                            include_in_advanced_search: false
 

@@ -128,6 +128,34 @@ RSpec.describe Hyrax::GenericWorksController do
       expect(presenter).to be_an_instance_of Hyrax::IiifManifestPresenter
     end
 
+    it "leaves file set metadata off its pages by default" do
+      expect(presenter.iiif_file_set_metadata).to be false
+    end
+
+    context "when the configured presenter class has no file set metadata option" do
+      let(:presenter_class) do
+        Class.new do
+          attr_accessor :hostname, :ability, :base_url
+
+          def initialize(_document); end
+        end
+      end
+
+      before { allow(described_class).to receive(:iiif_manifest_presenter_class).and_return(presenter_class) }
+
+      it "still builds it" do
+        expect(presenter).to be_an_instance_of presenter_class
+      end
+    end
+
+    context "when the controller opts in to file set metadata" do
+      before { allow(described_class).to receive(:iiif_file_set_metadata).and_return(true) }
+
+      it "tells the presenter" do
+        expect(presenter.iiif_file_set_metadata).to be true
+      end
+    end
+
     context "when the controller configures its own presenter class" do
       let(:presenter_class) { Class.new(Hyrax::IiifManifestPresenter) }
 

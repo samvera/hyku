@@ -16,6 +16,11 @@ RSpec.describe 'controlled label rendering' do
     expect(html).not_to include '>oer<'
   end
 
+  def link_query(html)
+    href = Nokogiri::HTML.fragment(html).at('a')['href']
+    Rack::Utils.parse_nested_query(URI.parse(href).query)
+  end
+
   describe 'a property rendered as a search link' do
     subject(:html) { rendered(Hyrax::Renderers::LinkedAttributeRenderer, :resource_type, ['oer']) }
 
@@ -23,8 +28,8 @@ RSpec.describe 'controlled label rendering' do
       expect(html).to include 'OER'
     end
 
-    it 'searches on the stored id, which is what the index holds' do
-      expect(html).to include 'q=oer'
+    it 'searches for the label it shows' do
+      expect(link_query(html)['q']).to eq 'OER'
     end
   end
 
@@ -35,8 +40,18 @@ RSpec.describe 'controlled label rendering' do
       expect(html).to include 'OER'
     end
 
-    it 'filters on the id facet, which is what the index holds' do
-      expect(html).to include 'resource_type_sim'
+    it 'filters the label facet the catalog sidebar offers' do
+      expect(link_query(html)['f']).to eq('resource_type_label_sim' => ['OER'])
+    end
+
+    context 'when the catalog has no label facet for it' do
+      subject(:html) do
+        rendered(Hyrax::Renderers::FacetedAttributeRenderer, :resource_type, ['oer'], label_facet_registered: false)
+      end
+
+      it 'filters the id facet on the stored id' do
+        expect(link_query(html)['f']).to eq('resource_type_sim' => ['oer'])
+      end
     end
   end
 

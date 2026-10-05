@@ -33,6 +33,8 @@ attributes:
       - "creator_tesim"
     predicate: http://purl.org/dc/elements/1.1/creator
     view:
+      display_label:
+        default: hyrax.etd.labels.creator
       render_as: "faceted"
       html_dl: true
     mappings:
@@ -63,6 +65,8 @@ attributes:
       - "rights_statement_tesim"
     predicate: http://www.europeana.eu/schemas/edm/rights
     view:
+      display_label:
+        default: hyrax.etd.labels.rights_statement
       html_dl: true
       render_as: "rights_statement"
     predicate: http://www.europeana.eu/schemas/edm/rights
@@ -94,7 +98,8 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/degree_name
     view:
-      render_as: "faceted"
+      display_label:
+        default: hyrax.etd.labels.degree_name
       html_dl: true
     mappings:
       simple_dc_pmh: dc:type
@@ -109,7 +114,8 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/degree_level
     view:
-      render_as: "faceted"
+      display_label:
+        default: hyrax.etd.labels.degree_level
       html_dl: true
     mappings:
       simple_dc_pmh: dc:type
@@ -124,7 +130,8 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/degree_discipline
     view:
-      render_as: "faceted"
+      display_label:
+        default: hyrax.etd.labels.degree_discipline
       html_dl: true
     mappings:
       simple_dc_pmh: dc:subject
@@ -139,7 +146,8 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/degree_grantor
     view:
-      render_as: "faceted"
+      display_label:
+        default: hyrax.etd.labels.degree_grantor
       html_dl: true
     mappings:
       simple_dc_pmh: dc:publisher
@@ -155,6 +163,8 @@ attributes:
       - "resource_type_tesim"
     predicate: http://purl.org/dc/terms/type
     view:
+      display_label:
+        default: hyrax.etd.labels.resource_type
       render_as: "faceted"
       html_dl: true
     mappings:
@@ -237,7 +247,8 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/advisor
     view:
-      render_as: "faceted"
+      display_label:
+        default: simple_form.labels.defaults.advisor
       html_dl: true
     mappings:
       simple_dc_pmh: dc:contributor
@@ -292,7 +303,8 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/committee_member
     view:
-      render_as: "faceted"
+      display_label:
+        default: hyrax.etd.labels.committee_member
       html_dl: true
     mappings:
       simple_dc_pmh: dc:contributor
@@ -321,7 +333,8 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/department
     view:
-      render_as: "faceted"
+      display_label:
+        default: simple_form.labels.defaults.department
       html_dl: true
     mappings:
       simple_dc_pmh: dc:contributor
@@ -347,6 +360,8 @@ attributes:
       multiple: true
     predicate: http://purl.org/dc/terms/format
     view:
+      display_label:
+        default: simple_form.labels.defaults.format
       html_dl: true
     mappings:
       simple_dc_pmh: dc:format
@@ -403,6 +418,8 @@ attributes:
       - "related_url_tesim"
     predicate: http://www.w3.org/2000/01/rdf-schema#seeAlso
     view:
+      display_label:
+        default: simple_form.labels.defaults.related_url
       render_as: "external_link"
       html_dl: true
     mappings:
@@ -417,6 +434,7 @@ attributes:
       - "rights_notes_tesim"
     predicate: http://purl.org/dc/elements/1.1/rights
     view:
+      render_as: "linked"
       html_dl: true
     mappings:
       simple_dc_pmh: dc:rights
@@ -463,6 +481,8 @@ attributes:
       - "date_created_tesim"
     predicate: http://purl.org/dc/terms/created
     view:
+      display_label:
+        default: hyrax.etd.labels.date_created
       render_as: "linked"
       search_field: 'date_created_tesim'
       html_dl: true

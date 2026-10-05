@@ -1,48 +1,7 @@
-<%# OVERRIDE hyrax-doi to support dynamic metadata %>
-<%# TODO: remove after hyrax-doi gem v0.2.0 and code is removed %>
-<%# hyrax-doi doesn't work post hyrax v3.0.0 %>
-<% if Hyrax.config.flexible? %>
-  <% view_options_for(presenter).each do |field, options| %>
-    <%# Card compounds (view: display: card) render in their own card via
-        render_compound_cards, so skip them in the inline metadata list. %>
-    <% next if compound_card_field?(presenter, field) %>
-    <% view_options = conform_options(field, options) %>
-    <% if field == :admin_note %>
-      <%= presenter.attribute_to_html(conform_field(field, options), view_options) if presenter.editor? %>
-    <% else %>
-      <%= presenter.attribute_to_html(conform_field(field, options), view_options) if field_visible?(view_options, presenter) %>
-    <% end %>
-  <% end %>
-<% else %>
-  <%= presenter.attribute_to_html(:admin_note, html_dl: true) if presenter.editor? %>
-  <%= presenter.attribute_to_html(:title, html_dl: true) %>
-  <%= presenter.attribute_to_html(:alternative_title, html_dl: true) %>
-  <%= presenter.attribute_to_html(:creator, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:contributor, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:related_url, render_as: :external_link, html_dl: true, label: 'Related URL') %>
-  <%= presenter.attribute_to_html(:learning_resource_type, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:abstract, html_dl: true) %>
-  <%= presenter.attribute_to_html(:education_level, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:audience, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:discipline, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:date_created, html_dl: true) %>
-  <%= presenter.attribute_to_html(:table_of_contents, html_dl: true) %>
-  <%= presenter.attribute_to_html(:subject, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:based_near_label, html_dl: true) %>
-  <%= presenter.attribute_to_html(:rights_statement, render_as: :rights_statement, html_dl: true) %>
-  <%= presenter.attribute_to_html(:license, render_as: :license, html_dl: true) %>
-  <%= presenter.attribute_to_html(:rights_holder, render_as: :linked, html_dl: true) %>
-  <%= presenter.attribute_to_html(:rights_notes, render_as: :linked, html_dl: true) %>
-  <%= presenter.attribute_to_html(:additional_information, html_dl: true) %>
-  <%= presenter.attribute_to_html(:language, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:oer_size, label: t('simple_form.labels.default.size'), html_dl: true) %>
-  <%= presenter.attribute_to_html(:publisher, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:identifier, search_field: 'identifier_tesim', html_dl: true) %>
-  <%= presenter.attribute_to_html(:resource_type, label: t("hyrax.oer.labels.resource_type"), render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:accessibility_feature, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:accessibility_hazard, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:accessibility_summary, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:keyword, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:source, html_dl: true) %>
-  <%= presenter.attribute_to_html(:bibliographic_citation, html_dl: true) %>
-<% end %>
+<%= render 'hyrax/base/attribute_rows_list', presenter: presenter,
+           field_order: %i[admin_note alternative_title creator contributor related_url learning_resource_type
+                           abstract education_level audience discipline date_created table_of_contents subject
+                           based_near rights_statement license rights_holder rights_notes additional_information
+                           language oer_size publisher identifier resource_type accessibility_feature
+                           accessibility_hazard accessibility_summary keyword source bibliographic_citation
+                           participants identifiers relationships] %>

@@ -40,6 +40,8 @@
       <% end %>
 
       <%= render 'metadata', presenter: @presenter %>
+      <%# OVERRIDE: render schema-driven compound cards (view: display: card) %>
+      <%= render_compound_cards(@presenter) %>
     </div>
 
     <aside class="hrt-show-rail">

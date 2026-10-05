@@ -120,14 +120,8 @@ attributes:
     type: date_time
     predicate: http://purl.org/dc/terms/modified
     view:
-      label:
-        de: 'Zuletzt geändert'
-        en: 'Last modified'
-        es: 'Última modificación'
-        fr: 'Dernière modification'
-        it: 'Ultima modifica'
-        pt-BR: 'Última modificação'
-        zh: '最新修改'
+      display_label:
+        default: hyrax.base.show.last_modified
       html_dl: true
     mappings:
       simple_dc_pmh: dc:date

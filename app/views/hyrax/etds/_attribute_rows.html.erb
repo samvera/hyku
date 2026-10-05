@@ -1,44 +1,6 @@
-<%# OVERRIDE hyrax-doi to support dynamic metadata %>
-<%# TODO: remove after hyrax-doi gem v0.2.0 and code is removed %>
-<%# hyrax-doi doesn't work post hyrax v3.0.0 %>
-<% if Hyrax.config.flexible? %>
-  <% view_options_for(presenter).each do |field, options| %>
-    <%# Card compounds (view: display: card) render in their own card via
-        render_compound_cards, so skip them in the inline metadata list. %>
-    <% next if compound_card_field?(presenter, field) %>
-    <% view_options = conform_options(field, options) %>
-    <% if field == :admin_note %>
-      <%= presenter.attribute_to_html(conform_field(field, options), view_options) if presenter.editor? %>
-    <% else %>
-      <%= presenter.attribute_to_html(conform_field(field, options), view_options) if field_visible?(view_options, presenter) %>
-    <% end %>
-  <% end %>
-<% else %>
-  <%= presenter.attribute_to_html(:admin_note, html_dl: true) if presenter.editor? %>
-  <%= presenter.attribute_to_html(:creator, render_as: :faceted, label: label_for(term: :creator, record_class: Etd), html_dl: true) %>
-  <%= presenter.attribute_to_html(:contributor, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:subject, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:publisher, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:abstract, html_dl: true) %>
-  <%= presenter.attribute_to_html(:language, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:identifier, render_as: :linked, search_field: 'identifier_tesim', html_dl: true) %>
-  <%= presenter.attribute_to_html(:keyword, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim', label: label_for(term: :date_created, record_class: Etd), html_dl: true) %>
-  <%= presenter.attribute_to_html(:based_near_label, html_dl: true) %>
-  <%= presenter.attribute_to_html(:related_url, render_as: :external_link, html_dl: true, label: 'Related URL') %>
-  <%= presenter.attribute_to_html(:resource_type, render_as: :faceted, label: label_for(term: :resource_type, record_class: Etd), html_dl: true) %>
-  <%= presenter.attribute_to_html(:source, html_dl: true) %>
-  <%= presenter.attribute_to_html(:bibliographic_citation, html_dl: true) %>
-  <%= presenter.attribute_to_html(:rights_statement, label: label_for(term: :rights_statement, record_class: Etd), html_dl: true) %>
-  <%= presenter.attribute_to_html(:additional_information, html_dl: true) %>
-  <%= presenter.attribute_to_html(:rights_notes, render_as: :linked, html_dl: true) %>
-  <%= presenter.attribute_to_html(:extent) %>
-  <%= presenter.attribute_to_html(:format, label: label_for(term: :format, record_class: Etd), html_dl: true) %>
-  <%= presenter.attribute_to_html(:degree_name, label: label_for(term: :degree_name, record_class: Etd), html_dl: true) %>
-  <%= presenter.attribute_to_html(:degree_level, label: label_for(term: :degree_level, record_class: Etd), html_dl: true) %>
-  <%= presenter.attribute_to_html(:degree_discipline, label: label_for(term: :degree_discipline, record_class: Etd), html_dl: true) %>
-  <%= presenter.attribute_to_html(:degree_grantor, label: label_for(term: :degree_grantor, record_class: Etd), html_dl: true) %>
-  <%= presenter.attribute_to_html(:advisor, label: label_for(term: :advisor, record_class: Etd), html_dl: true) %>
-  <%= presenter.attribute_to_html(:committee_member, label: label_for(term: :committee_member, record_class: Etd), html_dl: true) %>
-  <%= presenter.attribute_to_html(:department, label: label_for(term: :department, record_class: Etd), html_dl: true) %>
-<% end %>
+<%= render 'hyrax/base/attribute_rows_list', presenter: presenter,
+           field_order: %i[admin_note creator contributor subject publisher abstract language identifier keyword
+                           date_created based_near related_url resource_type source bibliographic_citation
+                           rights_statement additional_information rights_notes format degree_name degree_level
+                           degree_discipline degree_grantor advisor committee_member department
+                           participants identifiers relationships] %>

@@ -7,6 +7,7 @@ es:
         facet:
           based_near_label_sim: Ubicación
           creator_sim: Creador
+          date_range_isim: Rango de fechas
           depositor_ssim: Depositor
           file_format_sim: Formato
           generic_type_sim: Tipo

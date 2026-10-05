@@ -7,6 +7,7 @@ zh:
         facet:
           based_near_label_sim: 位置
           creator_sim: 创造者
+          date_range_isim: 日期范围
           depositor_ssim: 储户
           file_format_sim: 文件格式
           generic_type_sim: 类型

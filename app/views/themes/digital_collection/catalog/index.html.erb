@@ -1,0 +1,14 @@
+<%# OVERRIDE Hyrax 5.3.0: page heading above a filters-then-results layout, so reading and focus order match the screen %>
+<div class="dc-results">
+  <%= render 'search_results_header' %>
+
+  <div class="dc-results-body">
+    <div id="sidebar" class="dc-results-filters">
+      <%= render 'search_sidebar' %>
+    </div>
+
+    <div id="content" class="dc-results-main">
+      <%= render 'search_results' %>
+    </div>
+  </div>
+</div>

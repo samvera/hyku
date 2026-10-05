@@ -1,0 +1,16 @@
+<%# OVERRIDE Hyrax 5.3.0: translated "More" link without the » mark (the theme's arrow link style adds the arrow); values already chosen on the advanced search page are left out of the list %>
+<ul class="facet-values list-unstyled">
+  <% paginator = facet_paginator(facet_field, display_facet) %>
+  <% chosen = respond_to?(:advanced_query) && advanced_query ? Array(advanced_query.filters[facet_field.key]) : [] %>
+  <% if chosen.any? %>
+    <% paginator = paginator.class.new(display_facet.items.reject { |item| chosen.include?(item.value) }, offset: paginator.offset, limit: paginator.limit, sort: paginator.sort) %>
+  <% end %>
+  <%= render_facet_limit_list paginator, facet_field.key %>
+
+  <% unless paginator.last_page? || params[:action] == "facet" %>
+    <li class="more_facets_link">
+      <%= link_to t('digital_collection.search.results.more_html', field_name: facet_field_label(facet_field.field)),
+                  search_facet_path(id: facet_field.key), class: "more_facets_link", data: { blacklight_modal: 'trigger' } %>
+    </li>
+  <% end %>
+</ul>

@@ -334,7 +334,7 @@ $dc-heading-roles: (
   // shell instead, so the append stays a real box for the scope menu's Popper
   .input-group {
     flex-wrap: nowrap;
-    margin-bottom: 26px;
+    margin-bottom: 0;
   }
 
   .input-group-append {
@@ -347,14 +347,14 @@ $dc-heading-roles: (
   }
 
   .q.form-control {
-    border: 1px solid $dc-input-edge;
+    border: $dc-border solid $dc-input-edge;
     border-radius: var(--dc-radius, #{$dc-radius}) 0 0 var(--dc-radius, #{$dc-radius});
     border-right: 0;
     box-shadow: none;
     color: $dc-ink-heading;
     flex: 1 1 0%;
-    font-size: 15px;
-    height: var(--dc-search-height, 44px);
+    font-size: $dc-text-base;
+    height: var(--dc-search-height, #{$dc-control-height});
     order: 0;
 
     &::placeholder {
@@ -374,8 +374,8 @@ $dc-heading-roles: (
     border-right-width: 0;
     color: $dc-ink !important;
     flex: none;
-    font-size: 14px;
-    height: var(--dc-search-height, 44px);
+    font-size: $dc-text-sm;
+    height: var(--dc-search-height, #{$dc-control-height});
     order: 0;
   }
 
@@ -387,40 +387,28 @@ $dc-heading-roles: (
     align-items: center;
     border-radius: 0 var(--dc-radius, #{$dc-radius}) var(--dc-radius, #{$dc-radius}) 0;
     display: inline-flex;
-    font-size: 15px;
-    font-weight: 700;
-    height: var(--dc-search-height, 44px);
+    font-size: $dc-text-base;
+    font-weight: $dc-weight-regular;
+    height: var(--dc-search-height, #{$dc-control-height});
     justify-content: center;
     order: 1;
-    padding: 0 18px;
+    padding: 0 $dc-space-4;
 
     .fa {
       display: none;
     }
   }
 
-  // btn-secondary and its :hover are pinned by _appearance_styles with !important
+  .dc-search-advanced {
+    flex-basis: 100%;
+    margin: $dc-space-2 0 0;
+    text-align: right;
+  }
+
   #advanced-top-button {
-    @include dc-underline;
-    background: none !important;
-    border: 0 !important;
-    color: var(--dc-link, #{$dc-link}) !important;
-    font-size: 13px;
-    line-height: 1.4;
-    margin-top: 2px;
-    padding: 4px 6px;
-    position: absolute;
-    right: -6px;
-    top: 100%;
-
-    &:hover,
-    &:focus {
-      color: var(--dc-link-hover, #{$dc-link-hover}) !important;
-    }
-
-    &:focus-visible {
-      @include dc-focus-ring;
-    }
+    @include dc-link;
+    border-radius: var(--dc-radius, #{$dc-radius});
+    font-size: $dc-text-sm;
   }
 
   .btn:focus-visible,

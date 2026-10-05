@@ -46,10 +46,6 @@ body.digital_collection_show.hyrax-file_sets-show {
 
     @include dc-search-form;
 
-    .input-group {
-      margin-bottom: 22px;
-    }
-
     @media (max-width: $dc-mobile-max) {
       .dc-searchbar-crumbs {
         flex-basis: 100%;

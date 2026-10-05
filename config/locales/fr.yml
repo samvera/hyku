@@ -1174,6 +1174,9 @@ fr:
         works:
           one: "Document"
           other: "Documents"
+    search:
+      advanced: "Recherche avancée"
+      submit: "Rechercher"
     show:
       part_of:
         heading: Fait partie de

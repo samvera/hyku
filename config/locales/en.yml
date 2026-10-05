@@ -1036,6 +1036,9 @@ en:
         works:
           one: "Work"
           other: "Works"
+    search:
+      advanced: "Advanced search"
+      submit: "Search"
     show:
       part_of:
         heading: "Part of"

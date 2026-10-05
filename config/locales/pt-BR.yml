@@ -1052,6 +1052,9 @@ pt-BR:
         works:
           one: "Obra"
           other: "Obras"
+    search:
+      advanced: "Pesquisa avançada"
+      submit: "Pesquisar"
     show:
       part_of:
         heading: Parte de

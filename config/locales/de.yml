@@ -1172,6 +1172,9 @@ de:
         works:
           one: "Werk"
           other: "Werke"
+    search:
+      advanced: "Erweiterte Suche"
+      submit: "Suchen"
     show:
       part_of:
         heading: Teil von

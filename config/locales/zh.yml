@@ -1186,6 +1186,9 @@ zh:
         works:
           one: "作品"
           other: "作品"
+    search:
+      advanced: "高级搜索"
+      submit: "搜索"
     show:
       part_of:
         heading: 所属

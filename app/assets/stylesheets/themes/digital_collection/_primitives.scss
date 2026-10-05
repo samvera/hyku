@@ -141,7 +141,7 @@ $dc-heading-roles: (
   cursor: pointer;
   display: inline-flex;
   font-size: if($size == small, $dc-text-sm, $dc-text-base);
-  font-weight: $dc-weight-strong;
+  font-weight: $dc-weight-medium;
   gap: $dc-space-2;
   justify-content: center;
   line-height: $dc-leading-snug;
@@ -172,7 +172,7 @@ $dc-heading-roles: (
     background-color: var(--dc-action, #{$dc-action});
     border-color: if($on == dark, $dc-button-selected-edge-on-dark, $dc-button-selected-edge);
     color: var(--dc-action-ink, #{$dc-action-ink});
-    font-weight: $dc-weight-heading;
+    font-weight: $dc-weight-regular;
   }
 }
 
@@ -209,6 +209,7 @@ $dc-heading-roles: (
   background-color: var(--dc-action, #{$dc-action});
   border-color: var(--dc-action-edge, #{$dc-action-edge});
   color: var(--dc-action-ink, #{$dc-action-ink});
+  font-weight: $dc-weight-regular;
 
   &:hover:not(:disabled):not(.disabled) {
     background-color: var(--dc-action-hover, #{$dc-action-hover});
@@ -252,28 +253,32 @@ $dc-heading-roles: (
 @mixin dc-link-cta($arrow: right, $size: default, $on: light) {
   $gap: if($size == small, $dc-space-1, $dc-space-2);
   $gap-hover: if($size == small, $dc-space-2, $dc-space-3);
-  align-items: center;
+  $side: if($arrow == left, before, after);
   color: if($on == dark, var(--dc-link-on-dark, #{$dc-link-on-dark}), var(--dc-link, #{$dc-link}));
-  display: inline-flex;
-  flex-direction: if($arrow == left, row-reverse, row);
+  display: inline-block;
   font-size: if($size == small, $dc-text-sm, inherit);
-  font-weight: $dc-weight-strong;
-  gap: $gap;
+  font-weight: $dc-weight-medium;
   text-decoration: none;
-  transition: color $dc-transition, gap $dc-transition;
+  transition: color $dc-transition;
 
-  &::after {
+  &::#{$side} {
     content: if($arrow == left, '\f060', '\f061');
+    display: inline-block;
     font-family: FontAwesome;
     font-size: 1em;
     font-weight: normal;
+    margin-inline: if($arrow == left, 0 $gap, $gap 0);
+    transition: margin $dc-transition;
   }
 
   &:hover,
   &:focus {
     @include dc-underline;
     color: if($on == dark, $dc-link-hover-on-dark, var(--dc-link-hover, #{$dc-link-hover}));
-    gap: $gap-hover;
+
+    &::#{$side} {
+      margin-inline: if($arrow == left, 0 $gap-hover, $gap-hover 0);
+    }
   }
 
   &:focus-visible {

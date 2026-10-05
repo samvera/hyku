@@ -2,7 +2,7 @@
 
 Hyku supports both local and remote controlled vocabularies for form fields. A property cites a vocabulary through a `controlled_values.sources` array — in the metadata profile with `HYRAX_FLEXIBLE` enabled, and in the schema under `config/metadata/` without it. Vocabularies, their terms, and the dashboard that manages them work the same in both modes.
 
-Wherever a property cites a **local** vocabulary — one backed by a yaml file or by rows the dashboard manages — a term's label is what appears on work pages and in search results, while the id the term stores stays in the index for links and OAI harvesting. A property backed by a remote authority keeps displaying its stored value: resolving one would mean a network call per value, which has no place in an indexing run.
+Wherever a property cites a **local** vocabulary — one backed by a yaml file or by rows the dashboard manages — a term's label is what appears on work pages and in search results, and what a link from the term searches for. The id the term stores stays in the index for OAI harvesting, and a facet link filters on it where the catalog has no label facet for the property. A property backed by a remote authority keeps displaying its stored value: resolving one would mean a network call per value, which has no place in an indexing run.
 
 ## How It Works
 

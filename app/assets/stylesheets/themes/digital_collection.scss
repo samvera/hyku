@@ -1340,6 +1340,10 @@ body.digital_collection.advanced-index {
     padding: $dc-space-4;
     width: $dc-width-rail;
 
+    @media (max-width: $dc-laptop-max) {
+      width: $dc-width-rail-laptop;
+    }
+
     @media (max-width: $dc-tablet-max) {
       order: 0;
       width: 100%;

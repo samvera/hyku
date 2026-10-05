@@ -1044,9 +1044,11 @@ en:
       results:
         heading: "Search results"
         summary:
+          zero: "No results"
           one: "%{formatted} result"
           other: "%{formatted} results"
         summary_query:
+          zero: "No results for “%{query}”"
           one: "%{formatted} result for “%{query}”"
           other: "%{formatted} results for “%{query}”"
         filter_heading: "Filter results"
@@ -1067,6 +1069,13 @@ en:
         facet_sort_count: "Most results"
         facet_pages_label: "Value pages"
         query_label: "Search"
+        collection: "Collection"
+        no_results:
+          heading: "Try a different search"
+          tips:
+            - "Check the spelling of your search words."
+            - "Use fewer or broader words."
+            - "Remove a filter to widen the search."
         clear_all: "Clear search and filters"
         any_of: "Any of these"
         remove_value: "Remove %{value}"

@@ -52,6 +52,15 @@ module DigitalCollectionSearchHelper
     safe_join([core, dc_advanced_range_chips(search_state)].compact, "\n")
   end
 
+  def dc_card_meta(document, collection_label: false)
+    parts = if document.collection?
+              [(t('digital_collection.search.results.collection') if collection_label), dc_works_count_label(document)]
+            else
+              [Array(document['creator_tesim']).first, dc_result_date(document)]
+            end
+    parts.compact_blank.join(' · ')
+  end
+
   def dc_result_fields(document)
     fields = document.collection? ? dc_collection_result_values(document) : dc_work_result_values(document)
     fields.filter_map { |key, value| [key, t("digital_collection.search.results.fields.#{key}"), value] if value.present? }
@@ -75,16 +84,23 @@ module DigitalCollectionSearchHelper
 
   def dc_work_result_values(document)
     { creator: Array(document['creator_tesim']).join('; '),
-      date: Array(document['date_created_tesim']).first.presence || Array(document['date_issued_tesim']).first,
+      date: dc_result_date(document),
       part_of: dc_part_of_links(document),
       resource_type: Array(document['resource_type_tesim']).join(', '),
       description: theme_blurb(Array(document['description_tesim']).first, length: 300) }
   end
 
   def dc_collection_result_values(document)
-    works = Hyrax::CollectionPresenter.new(document, current_ability).total_viewable_works
     { description: theme_blurb(Array(document['description_tesim']).first, length: 300),
-      works: t('digital_collection.homepage.browse.works_count', count: works) }
+      works: dc_works_count_label(document) }
+  end
+
+  def dc_works_count_label(document)
+    t('digital_collection.homepage.browse.works_count', count: Hyrax::CollectionPresenter.new(document, current_ability).total_viewable_works)
+  end
+
+  def dc_result_date(document)
+    Array(document['date_created_tesim']).first.presence || Array(document['date_issued_tesim']).first
   end
 
   def dc_part_of_links(document)

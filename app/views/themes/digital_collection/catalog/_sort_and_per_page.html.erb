@@ -1,4 +1,5 @@
-<%# OVERRIDE Blacklight 7.43.0: result range, labeled Sort by and Per page menus and the view toggle in one toolbar %>
+<%# OVERRIDE Blacklight 7.43.0: result range, labeled Sort by and Per page menus and the view toggle in one toolbar, left out when nothing matches %>
+<% unless @response.empty? %>
 <div id="sortAndPerPage" class="dc-toolbar" role="navigation" aria-label="<%= t('blacklight.search.per_page.aria_label') %>">
   <p class="dc-toolbar-range"><%= dc_results_range(@response) %></p>
 
@@ -40,3 +41,4 @@
     </div>
   <% end %>
 </div>
+<% end %>

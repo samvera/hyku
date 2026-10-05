@@ -1177,9 +1177,11 @@ es:
       results:
         heading: "Resultados de búsqueda"
         summary:
+          zero: "Sin resultados"
           one: "%{formatted} resultado"
           other: "%{formatted} resultados"
         summary_query:
+          zero: "Sin resultados para «%{query}»"
           one: "%{formatted} resultado para «%{query}»"
           other: "%{formatted} resultados para «%{query}»"
         filter_heading: "Filtrar resultados"
@@ -1200,6 +1202,13 @@ es:
         facet_sort_count: "Más resultados"
         facet_pages_label: "Páginas de valores"
         query_label: "Búsqueda"
+        collection: "Colección"
+        no_results:
+          heading: "Pruebe otra búsqueda"
+          tips:
+            - "Revise la ortografía de las palabras de búsqueda."
+            - "Use menos palabras o palabras más generales."
+            - "Quite un filtro para ampliar la búsqueda."
         clear_all: "Borrar búsqueda y filtros"
         any_of: "Cualquiera de estos"
         remove_value: "Quitar %{value}"

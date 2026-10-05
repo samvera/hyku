@@ -1194,9 +1194,11 @@ zh:
       results:
         heading: "搜索结果"
         summary:
+          zero: "没有结果"
           one: "%{formatted} 条结果"
           other: "%{formatted} 条结果"
         summary_query:
+          zero: "没有“%{query}”的结果"
           one: "“%{query}”的 %{formatted} 条结果"
           other: "“%{query}”的 %{formatted} 条结果"
         filter_heading: "筛选结果"
@@ -1217,6 +1219,13 @@ zh:
         facet_sort_count: "结果最多"
         facet_pages_label: "选项分页"
         query_label: "搜索"
+        collection: "馆藏"
+        no_results:
+          heading: "请尝试其他搜索"
+          tips:
+            - "检查搜索词的拼写。"
+            - "使用更少或更宽泛的词语。"
+            - "移除一个筛选条件以扩大搜索范围。"
         clear_all: "清除搜索和筛选"
         any_of: "以下任一"
         remove_value: "移除 %{value}"

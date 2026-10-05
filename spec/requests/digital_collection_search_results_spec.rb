@@ -162,6 +162,75 @@ RSpec.describe 'the digital collection search results page', type: :request, sin
     expect(doc.at_css('.dc-constraints-match').text.squish).to eq('Matching any of these fields:')
   end
 
+  describe 'the gallery view' do
+    before { get search_catalog_path(q: 'hudson', view: 'gallery') }
+
+    it 'shows each result as a card with one link and no badge' do
+      card = doc.css('.dc-cards-gallery li.dc-card').find { |li| li.text.include?('Hudson River map') }
+
+      expect(card.css('a').size).to eq(1)
+      expect(card.at_css('.dc-card-meta').text).to eq('Colton, J. H. · 1864')
+      expect(card.at_css('.badge, .dc-badge')).to be_nil
+    end
+
+    it 'adds the description and works count to collection cards' do
+      card = doc.css('.dc-cards-gallery li.dc-card').find { |li| li.text.include?('Maps of the Hudson Valley') }
+
+      expect(card.at_css('.dc-card-description').text).to eq('Survey maps of river towns.')
+      expect(card.at_css('.dc-card-meta').text).to eq('1 work')
+    end
+  end
+
+  describe 'the masonry view' do
+    before { get search_catalog_path(q: 'hudson', view: 'masonry') }
+
+    it "lays out cards without the gem's masonry script" do
+      expect(doc.at_css('#documents.dc-cards-masonry')).to be_present
+      expect(doc.at_css('.documents-masonry')).to be_nil
+    end
+
+    it 'labels collection cards in the caption' do
+      card = doc.css('li.dc-card').find { |li| li.text.include?('Maps of the Hudson Valley') }
+
+      expect(card.at_css('.dc-card-meta').text).to start_with('Collection · ')
+    end
+  end
+
+  describe 'a search with no results' do
+    before { get search_catalog_path(q: 'hudsn') }
+
+    it 'says so in the summary and drops the filters and toolbar' do
+      expect(doc.at_css('.dc-results-summary').text).to eq('No results for “hudsn”')
+      expect(doc.at_css('#sidebar')).to be_nil
+      expect(doc.at_css('.dc-toolbar')).to be_nil
+    end
+
+    it 'offers search tips and a link to browse collections' do
+      panel = doc.at_css('.dc-noresults')
+
+      expect(panel.at_css('h2').text).to eq('Try a different search')
+      expect(panel.css('.dc-noresults-tips li').size).to eq(3)
+      expect(panel.at_css('a.dc-noresults-browse')['href']).to include('generic_type_sim')
+    end
+  end
+
+  it 'names each slideshow thumbnail link with the plain title' do
+    get search_catalog_path(q: 'hudson', view: 'slideshow')
+    alts = doc.css('.slideshow-preview-thumbnail a.thumbnail img').map { |img| img['alt'] }
+
+    expect(alts).to include('Maps of the Hudson Valley')
+    expect(alts.join).not_to include('<')
+  end
+
+  it 'opens the slideshow at the slide for each thumbnail' do
+    get search_catalog_path(q: 'hudson', view: 'slideshow')
+    links = doc.css('.documents-slideshow .slideshow-preview-thumbnail a.dc-slide-thumb')
+
+    expect(links.map { |a| a['data-slide-to'] }).to eq((0...links.size).map(&:to_s))
+    expect(links.map { |a| a['data-target'] }.uniq).to eq(['#slideshow-modal'])
+    expect(doc.css('#slideshow-modal #slideshow .item').size).to eq(links.size)
+  end
+
   %w[de es fr it pt-BR zh].each do |locale|
     it "translates the Sort by choices in #{locale}" do
       get search_catalog_path(q: 'hudson', locale:)
@@ -177,6 +246,15 @@ RSpec.describe 'the digital collection search results page', type: :request, sin
 
       expect(response.body).not_to include('translation_missing')
       expect(doc.at_css('h1').text).to eq(I18n.t('digital_collection.search.results.heading', locale:))
+    end
+
+    it "has the gallery and no results labels translated in #{locale}" do
+      get search_catalog_path(q: 'hudson', view: 'gallery', locale:)
+      expect(response.body).not_to include('translation_missing')
+
+      get search_catalog_path(q: 'hudsn', locale:)
+      expect(response.body).not_to include('translation_missing')
+      expect(doc.at_css('.dc-noresults h2').text).to eq(I18n.t('digital_collection.search.results.no_results.heading', locale:))
     end
   end
 end

@@ -1160,7 +1160,7 @@ fr:
         save_order: "Enregistrer l'ordre"
       recent:
         heading: "Ajouts récents"
-        view_all: "Voir tout"
+        view_all: "Voir toutes les œuvres récentes"
       about:
         heading: "À propos des collections"
       cta:

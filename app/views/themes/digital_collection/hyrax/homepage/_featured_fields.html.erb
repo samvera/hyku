@@ -1,9 +1,10 @@
+<%# OVERRIDE Hyku 7.1.0: shared featured row with creator, date, description and resource type %>
 <% document = featured.solr_document %>
 <% url = generate_work_url(featured, request) %>
 <% link_data = { turbolinks: block_valkyrie_redirect? } %>
 
 <%= render layout: 'hyrax/homepage/dc_featured_row',
-           locals: { url:, link_data:, title: document.title_or_label,
+           locals: { url:, link_data:, title: document.title_or_label, thumb_class: dc_thumb_placeholder_class(document),
                      meta: [featured.creator&.first, (document['date_created_tesim']&.first.presence || document['date_issued_tesim']&.first)].compact_blank,
                      description: document['description_tesim']&.first,
                      badge: document['resource_type_tesim']&.first } do %>

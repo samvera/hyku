@@ -83,6 +83,21 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
     section&.at_css(".dc-section-head > h2.dc-section-title##{heading_id}")
   end
 
+  describe 'browse controls' do
+    before do
+      indexed_collection('Harbor Photographs', 'open')
+      get root_path
+    end
+
+    it 'joins the view buttons with decorative icons beside their words' do
+      buttons = Nokogiri::HTML(response.body).css('.dc-view-toggle button.dc-control')
+
+      expect(buttons.map { |b| b.text.strip }).to eq(%w[Grid List])
+      expect(buttons.map { |b| b.at_css(".fa[aria-hidden='true']")['class'] }).to eq(['fa fa-th-large', 'fa fa-list'])
+      expect(buttons.map { |b| b['aria-pressed'] }).to eq(%w[true false])
+    end
+  end
+
   describe 'section heads' do
     let!(:work) { indexed_work('Harbor at dusk') }
 
@@ -169,6 +184,12 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
         expect(collections.at_css("input[type='submit'].dc-control")['value']).to eq(I18n.t('digital_collection.homepage.featured_collections.save_order'))
         expect(collections.at_css('.dc-featured-row > a.dc-featured-thumb.dc-featured-thumb-wide img')).to be_present
         expect(collections.at_css('.dc-featured-row h3.dc-featured-title a').text).to eq('Harbor Photographs')
+      end
+
+      it 'marks a work without its own thumbnail as a placeholder' do
+        get root_path
+
+        expect(Nokogiri::HTML(response.body).at_css('.dc-featured-row a.dc-featured-thumb.dc-thumb-placeholder')).to be_present
       end
     end
   end

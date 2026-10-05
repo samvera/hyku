@@ -297,35 +297,30 @@
   .dc-home-text {
     @include dc-column;
     @include dc-gutter;
-    padding-bottom: 20px;
-    padding-top: 28px;
+    padding-bottom: $dc-space-5;
+    padding-top: $dc-space-7;
 
     &::before {
       background: var(--dc-accent, #{$dc-accent});
       content: '';
       display: block;
-      height: 3px;
-      margin-bottom: 16px;
-      width: 80px;
+      height: $dc-rule-strong;
+      margin-bottom: $dc-space-4;
+      width: $dc-space-7;
+    }
+
+    > div {
+      max-width: 68ch;
     }
 
     p {
-      font-size: 19px;
-      line-height: 1.65;
-      margin: 0 0 8px;
-      max-width: 860px;
-
-      @media (max-width: $dc-tablet-max) {
-        font-size: 18px;
-      }
-
-      @media (max-width: $dc-mobile-max) {
-        font-size: 17px;
-      }
+      font-size: $dc-text-base;
+      line-height: $dc-leading-body;
+      margin: 0 0 $dc-space-2;
     }
 
     a {
-      @include dc-link;
+      @include dc-link($visited: true);
     }
   }
 
@@ -353,59 +348,69 @@
   .dc-home {
     @include dc-column;
     @include dc-gutter;
-    padding-bottom: 60px;
-    padding-top: 52px;
+    padding-bottom: $dc-space-8;
+    padding-top: $dc-space-8;
+
+    @media (max-width: $dc-mobile-max) {
+      padding-bottom: $dc-space-7;
+      padding-top: $dc-space-7;
+    }
+
+    > section + section {
+      margin-top: $dc-space-8;
+
+      @media (max-width: $dc-mobile-max) {
+        margin-top: $dc-space-7;
+      }
+    }
   }
 
   .dc-section-head {
     align-items: flex-end;
-    border-bottom: 2px solid $dc-ink;
+    border-bottom: $dc-rule-strong solid $dc-ink;
     display: flex;
     flex-wrap: wrap;
-    gap: 16px 24px;
+    gap: $dc-space-4 $dc-space-5;
     justify-content: space-between;
-    margin-bottom: 28px;
-    padding-bottom: 12px;
+    margin-bottom: $dc-space-5;
+    padding-bottom: $dc-space-3;
+  }
+
+  .dc-section-eyebrow {
+    @include dc-eyebrow;
+    flex-basis: 100%;
   }
 
   .dc-section-title {
-    color: $dc-ink-heading;
-    font-size: 32px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    margin: 0;
-
-    @media (max-width: $dc-laptop-max) {
-      font-size: 30px;
-    }
-
-    @media (max-width: $dc-tablet-max) {
-      font-size: 27px;
-    }
-
-    @media (max-width: $dc-mobile-max) {
-      font-size: 24px;
-    }
+    @include dc-heading(section-title);
   }
 
   .dc-section-foot {
-    align-items: flex-end;
+    align-items: center;
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 28px;
+    flex-wrap: wrap;
+    gap: $dc-space-4;
+    justify-content: space-between;
+    margin-top: $dc-space-5;
+
+    > .dc-section-action {
+      order: -1;
+    }
+
+    @media (max-width: $dc-mobile-max) {
+      flex-direction: column;
+    }
   }
 
   .dc-section-action {
-    @include dc-link;
-    font-size: 15px;
+    @include dc-link-cta;
+    border-radius: var(--dc-radius, #{$dc-radius});
   }
 
   .dc-empty {
     color: $dc-ink;
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: $dc-text-base;
+    line-height: $dc-leading-body;
     margin: 0;
   }
 
@@ -414,108 +419,65 @@
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: $dc-space-2;
     margin-left: auto;
   }
 
   .dc-control {
-    align-items: center;
-    background: var(--dc-button, #{$dc-button});
-    border: 1px solid var(--dc-button-edge, #{$dc-button-edge});
-    border-radius: var(--dc-radius, #{$dc-radius});
-    color: var(--dc-button-ink, #{$dc-button-ink});
-    cursor: pointer;
-    display: inline-flex;
-    font-size: 14px;
-    gap: 8px;
-    height: 36px;
-    justify-content: center;
-    line-height: 1;
-    min-width: 36px;
-    padding: 0 12px;
-    transition: background-color $dc-transition, border-color $dc-transition;
-
-    // hover only, not focus: a mouse click leaves the button focused, and a
-    // focus background would stick until the reader clicked elsewhere
-    &:hover {
-      background: var(--dc-button-hover, #{$dc-surface-alt});
-      border-color: var(--dc-button-hover-edge, #{$dc-button-ink});
-    }
-
-    &:focus-visible {
-      @include dc-focus-ring;
-    }
+    @include dc-button(small);
 
     &[disabled] {
-      background: var(--dc-button, #{$dc-button});
+      background-color: var(--dc-button, #{$dc-button});
       border-color: var(--dc-button-edge, #{$dc-button-edge});
-      color: $dc-ink-secondary;
-      cursor: default;
     }
 
-    // active toggle and current page: bold plus a 3px inset rule, not a
-    // border, so the label does not shift by a pixel when it toggles
-    &[aria-pressed='true'],
-    &[aria-current='page'] {
-      box-shadow: inset 0 -3px 0 var(--dc-accent, #{$dc-accent});
-      font-weight: 700;
-    }
-
-    @media (max-width: $dc-tablet-max) {
-      height: 44px;
+    @media (forced-colors: active) {
+      &[aria-pressed='true'],
+      &[aria-current='page'] {
+        border-width: $dc-rule-strong;
+        outline: $dc-border solid CanvasText;
+      }
     }
   }
 
   .dc-view-toggle {
+    @include dc-joined('.dc-control');
     display: inline-flex;
+
+    .fa {
+      font-size: 1em;
+    }
 
     @media (max-width: $dc-mobile-max) {
       display: none;
-    }
-
-    // the two segments share an edge; joined groups round only their outer corners
-    .dc-control + .dc-control {
-      border-bottom-left-radius: 0;
-      border-top-left-radius: 0;
-      margin-left: -1px;
-    }
-
-    .dc-control:first-child {
-      border-bottom-right-radius: 0;
-      border-top-right-radius: 0;
-    }
-
-    .dc-control[aria-pressed='true'] {
-      position: relative;
-      z-index: 1;
     }
   }
 
   .dc-sort-label {
     color: $dc-ink-secondary;
-    font-size: 13px;
-    margin-left: 8px;
+    font-size: $dc-text-sm;
+    margin-left: $dc-space-2;
   }
 
-  // the arrow follows the direction: down for A to Z, up for Z to A
   .dc-sort::after {
-    content: '\25BC';
-    font-size: 10px;
+    content: '\f063';
+    font-family: FontAwesome;
+    font-size: 1em;
+    font-weight: normal;
   }
 
   .dc-sort[data-direction='desc']::after {
-    content: '\25B2';
+    content: '\f062';
   }
 
   // ---- collection cards ----
   .dc-collections {
     display: grid;
-    gap: 28px;
+    gap: $dc-space-5;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     margin: 0;
 
     @media (max-width: $dc-tablet-max) {
-      gap: 20px;
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -533,7 +495,6 @@
     height: 100%;
     overflow: hidden;
   }
-
 
   .dc-collection-plate {
     aspect-ratio: 16 / 10;
@@ -569,48 +530,32 @@
     img {
       display: block;
       height: 100%;
-      width: 100%;
       object-fit: cover;
+      width: 100%;
     }
   }
 
   .dc-collection-body {
-    border: 1px solid $dc-hairline;
-    border-top: 0;
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: 8px;
+    gap: $dc-space-2;
     min-width: 0;
-    padding: 16px 20px 20px;
+    padding: $dc-space-4;
   }
 
-  // reserved in the title's own type, so two lines fit whatever the card's size
   .dc-collection-title {
-    font-size: 19px;
-    font-weight: 700;
-    line-height: 1.25;
-    margin: 0;
-    min-height: 2.5em;
+    @include dc-heading(item-title, $level: secondary);
+    min-height: 2.8em;
 
     a {
+      @include dc-link-title;
       -webkit-box-orient: vertical;
-      color: $dc-ink-heading;
+      border-radius: var(--dc-radius, #{$dc-radius});
       display: -webkit-box;
       -webkit-line-clamp: 2;
       overflow: hidden;
       overflow-wrap: anywhere;
-      text-decoration: none;
-
-      &:hover,
-      &:focus {
-        @include dc-underline;
-        color: var(--dc-link-hover, #{$dc-link-hover});
-      }
-
-      &:focus-visible {
-        @include dc-focus-ring;
-      }
     }
 
     @media (max-width: $dc-mobile-max) {
@@ -622,9 +567,9 @@
     -webkit-box-orient: vertical;
     color: $dc-ink;
     display: -webkit-box;
-    font-size: 16px;
+    font-size: $dc-text-base;
     -webkit-line-clamp: 5;
-    line-height: 1.6;
+    line-height: $dc-leading-body;
     margin: 0;
     overflow: hidden;
     overflow-wrap: anywhere;
@@ -632,44 +577,37 @@
 
   .dc-collection-count {
     color: $dc-ink-secondary;
-    font-size: 13px;
-    letter-spacing: 0.1em;
+    font-size: $dc-text-sm;
     margin: auto 0 0;
-    padding-top: 12px;
+    padding-top: $dc-space-2;
   }
 
   // ---- list view ----
-  // the thumbnail sits on a blurred copy of itself, so mixed aspect ratios
-  // letterbox in the item's own color rather than in gray bars
   .dc-collections-list {
-    gap: 20px;
+    gap: $dc-space-5;
     grid-template-columns: minmax(0, 1fr);
 
     .dc-collection {
-      border: 1px solid $dc-hairline;
       flex-direction: row;
-      height: 270px;
+      height: auto;
     }
 
     .dc-collection-plate {
+      align-self: stretch;
       aspect-ratio: auto;
       flex: none;
-      width: 360px;
+      width: $dc-width-list-image;
     }
 
     .dc-collection-plate-figure {
-      padding: 28px 32px;
-
-      img {
-        width: auto;
-      }
+      inset: 0;
+      position: absolute;
     }
 
     .dc-collection-body {
       align-items: flex-start;
-      border: 0;
-      gap: 12px;
-      padding: 28px 32px;
+      gap: $dc-space-3;
+      padding: $dc-space-6;
     }
 
     .dc-collection-title {
@@ -677,9 +615,7 @@
     }
 
     .dc-collection-description {
-      font-size: 15px;
-      line-height: 1.7;
-      max-width: 760px;
+      max-width: 68ch;
     }
 
     .dc-collection-count {
@@ -688,13 +624,12 @@
 
     @media (max-width: $dc-tablet-max) {
       .dc-collection-plate {
-        width: 280px;
+        width: $dc-width-list-image-tablet;
       }
     }
 
     @media (max-width: $dc-mobile-max) {
       .dc-collection {
-        border: 0;
         flex-direction: column;
         height: 100%;
       }
@@ -704,23 +639,13 @@
         width: 100%;
       }
 
-      .dc-collection-plate-figure {
-        padding: 0;
-
-        img {
-          width: 100%;
-        }
-      }
-
       .dc-collection-body {
-        border: 1px solid $dc-hairline;
-        border-top: 0;
-        gap: 8px;
-        padding: 16px 20px 20px;
+        gap: $dc-space-2;
+        padding: $dc-space-4;
       }
 
       .dc-collection-count {
-        padding-top: 12px;
+        padding-top: $dc-space-2;
       }
     }
   }
@@ -729,7 +654,7 @@
   .dc-pager {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: $dc-space-1;
     justify-content: flex-end;
 
     @media (max-width: $dc-mobile-max) {
@@ -738,67 +663,53 @@
   }
 
   // ---- featured works ----
-  .dc-featured {
-    padding-bottom: 48px;
-    padding-top: 48px;
-  }
-
   .dc-badge {
-    align-items: center;
+    @include dc-badge;
     align-self: flex-start;
-    background: $dc-badge;
-    border: 1px solid $dc-badge-edge;
-    border-radius: var(--dc-radius, #{$dc-radius});
-    color: $dc-ink;
-    display: inline-flex;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    padding: 4px 9px;
-    text-transform: uppercase;
     white-space: nowrap;
   }
 
   .dc-featured-list {
+    display: flex;
+    flex-direction: column;
+    gap: $dc-space-6;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
   .dc-featured-row {
-    align-items: stretch;
-    border-bottom: 1px solid $dc-row-rule;
+    align-items: flex-start;
     display: flex;
-    gap: 24px;
-    padding: 20px 0;
+    gap: $dc-space-5;
   }
 
   .dc-featured-thumb {
+    @include dc-thumb;
     align-items: center;
     background: $dc-surface-alt;
-    border-radius: $dc-radius;
     display: flex;
     flex: none;
     height: 134px;
     justify-content: center;
     overflow: hidden;
-    width: 200px;
+    width: $dc-width-thumb-featured;
 
     img {
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       padding: 0;
       width: 100%;
+    }
+
+    &.dc-thumb-placeholder img {
+      height: 50%;
+      width: auto;
     }
 
     @media (max-width: $dc-tablet-max) {
       height: 107px;
       width: 160px;
-    }
-
-    @media (max-width: $dc-mobile-max) {
-      height: 64px;
-      width: 96px;
     }
   }
 
@@ -806,42 +717,23 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: 8px;
-    justify-content: center;
+    gap: $dc-space-2;
     min-width: 0;
   }
 
   .dc-featured-title {
-    font-size: 23px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    line-height: 1.25;
-    margin: 0;
+    @include dc-heading(item-title, $level: secondary);
 
     a {
-      color: $dc-ink-heading;
-      text-decoration: none;
-
-      &:hover,
-      &:focus {
-        @include dc-underline;
-        color: var(--dc-link-hover, #{$dc-link-hover});
-      }
-    }
-
-    @media (max-width: $dc-tablet-max) {
-      font-size: 21px;
-    }
-
-    @media (max-width: $dc-mobile-max) {
-      font-size: 19px;
+      @include dc-link-title;
+      border-radius: var(--dc-radius, #{$dc-radius});
     }
   }
 
   .dc-featured-meta {
     color: $dc-ink-secondary;
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: $dc-text-sm;
+    line-height: $dc-leading-snug;
     margin: 0;
   }
 
@@ -849,44 +741,41 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     display: -webkit-box;
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: $dc-text-base;
+    line-height: $dc-leading-body;
     margin: 0;
+    max-width: 68ch;
     overflow: hidden;
     overflow-wrap: anywhere;
-
-    @media (max-width: $dc-mobile-max) {
-      -webkit-line-clamp: 3;
-    }
   }
 
   @media (max-width: $dc-mobile-max) {
     .dc-featured-row {
       flex-direction: column;
-      gap: 12px;
+      gap: $dc-space-3;
     }
 
     .dc-featured-thumb {
-      aspect-ratio: 16 / 10;
+      aspect-ratio: 3 / 2;
       height: auto;
       width: 100%;
     }
 
-    .dc-featured-title a {
-      color: var(--dc-link, #{$dc-link});
+    .dc-featured-desc {
+      -webkit-line-clamp: 3;
     }
   }
 
   .dc-featured-actions {
     align-items: center;
     display: flex;
-    gap: 16px;
-    padding-top: 20px;
+    gap: $dc-space-4;
+    padding-top: $dc-space-5;
   }
 
   .dc-featured-hint {
     color: $dc-ink-secondary;
-    font-size: 14px;
+    font-size: $dc-text-sm;
     margin: 0;
   }
 
@@ -991,12 +880,8 @@
   }
 
   // ---- recently added ----
-  .dc-recent {
-    padding-bottom: 56px;
-  }
-
   .dc-recent-grid {
-    column-gap: 48px;
+    column-gap: $dc-space-7;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
@@ -1007,32 +892,43 @@
 
   .dc-recent-row {
     align-items: center;
-    border-bottom: 1px solid $dc-row-rule;
+    border-bottom: $dc-border solid $dc-hairline;
     display: flex;
-    gap: 12px;
-    padding: 8px 0;
+    gap: $dc-space-3;
+    padding: $dc-space-2 0;
   }
 
   .dc-recent-thumb {
+    @include dc-thumb;
     background: $dc-surface-alt;
-    border-radius: $dc-radius;
     flex: none;
-    height: 34px;
+    height: $dc-height-thumb-recent;
     overflow: hidden;
-    width: 46px;
+    width: $dc-width-thumb-recent;
 
     img {
       height: 100%;
       object-fit: contain;
       width: 100%;
     }
+
+    &.dc-thumb-placeholder {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+
+      img {
+        height: 70%;
+        width: auto;
+      }
+    }
   }
 
   .dc-recent-title {
     flex: 1;
-    font-size: 15px;
-    font-weight: 700;
-    line-height: 1.35;
+    font-size: $dc-text-base;
+    font-weight: $dc-weight-strong;
+    line-height: $dc-leading-snug;
     margin: 0;
     min-width: 0;
     overflow: hidden;
@@ -1040,21 +936,15 @@
     white-space: nowrap;
 
     a {
-      @include dc-underline;
-      color: $dc-ink-heading;
-
-      &:hover,
-      &:focus {
-        color: var(--dc-link-hover, #{$dc-link-hover});
-        text-decoration-thickness: 2px;
-      }
+      @include dc-link-title;
+      border-radius: var(--dc-radius, #{$dc-radius});
     }
   }
 
   .dc-recent-collection {
     color: $dc-ink-tertiary;
     flex: none;
-    font-size: 12px;
+    font-size: $dc-text-sm;
     max-width: 30%;
     overflow: hidden;
     text-align: right;
@@ -1069,68 +959,67 @@
   // ---- about band ----
   .dc-about {
     background: $dc-surface-alt;
-    border-top: 1px solid $dc-hairline;
   }
 
   .dc-about-inner {
     @include dc-column;
     @include dc-gutter;
     display: grid;
-    gap: 48px;
-    grid-template-columns: 300px minmax(0, 1fr);
-    padding-bottom: 60px;
-    padding-top: 56px;
+    gap: $dc-space-7;
+    grid-template-columns: $dc-width-about-head minmax(0, 1fr);
+    padding-bottom: $dc-space-8;
+    padding-top: $dc-space-8;
 
     @media (max-width: $dc-tablet-max) {
+      gap: $dc-space-5;
       grid-template-columns: 1fr;
+    }
+
+    @media (max-width: $dc-mobile-max) {
+      padding-bottom: $dc-space-7;
+      padding-top: $dc-space-7;
     }
   }
 
   .dc-about-head {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: $dc-space-4;
   }
 
   .dc-about-rule {
     background: var(--dc-accent, #{$dc-accent});
     display: block;
-    height: 3px;
-    width: 140px;
+    height: $dc-rule-strong;
+    width: $dc-space-7;
   }
 
   .dc-about-title {
-    color: $dc-ink-heading;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    margin: 0;
+    @include dc-heading(block-title);
   }
 
   .dc-about-prose {
-    column-count: 2;
-    column-gap: 48px;
+    max-width: 68ch;
     overflow-wrap: anywhere;
 
     p {
-      font-size: 16px;
-      line-height: 1.75;
+      font-size: $dc-text-base;
+      line-height: $dc-leading-body;
       margin: 0;
     }
 
     p + p {
-      margin-top: 1em;
+      margin-top: $dc-space-4;
     }
 
-    @media (max-width: $dc-tablet-max) {
-      column-count: 1;
+    a {
+      @include dc-link($visited: true);
     }
   }
 
   // ---- deposit CTA ----
   .dc-cta {
-    background: color-mix(in srgb, var(--dc-chrome, #{$dc-hero-ground}) 85%, #fff);
+    background: var(--dc-chrome, #{$dc-chrome});
   }
 
   .dc-cta-inner {
@@ -1138,45 +1027,37 @@
     @include dc-gutter;
     align-items: center;
     display: flex;
-    gap: 48px;
+    gap: $dc-space-7;
     justify-content: space-between;
-    padding-bottom: 36px;
-    padding-top: 36px;
+    padding-bottom: $dc-space-6;
+    padding-top: $dc-space-6;
 
     @media (max-width: $dc-tablet-max) {
+      align-items: flex-start;
       flex-direction: column;
-      gap: 24px;
-      text-align: center;
+      gap: $dc-space-5;
     }
   }
 
   .dc-cta-copy {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: $dc-space-1;
   }
 
   .dc-cta-eyebrow {
+    @include dc-eyebrow($on: dark);
     color: var(--dc-chrome-ink, #{$dc-chrome-ink});
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    margin: 0;
-    text-transform: uppercase;
   }
 
   .dc-cta-heading {
+    @include dc-heading(block-title, $on: dark);
     color: var(--dc-chrome-ink, #{$dc-chrome-ink});
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-    margin: 0;
   }
 
   .dc-cta-sub {
     color: var(--dc-chrome-ink, #{$dc-chrome-ink});
-    font-size: 15px;
+    font-size: $dc-text-sm;
     margin: 0;
   }
 
@@ -1184,47 +1065,23 @@
     align-items: center;
     display: flex;
     flex: none;
-    gap: 24px;
+    flex-wrap: wrap;
+    gap: $dc-space-5;
   }
 
   .dc-cta-terms {
-    color: var(--dc-chrome-ink, #{$dc-chrome-ink});
-    font-size: 14px;
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 2px;
-    transition: text-decoration-color 0.15s;
-
-    &:hover {
-      color: var(--dc-chrome-ink, #{$dc-chrome-ink});
-      text-decoration-color: transparent;
-    }
-
-    &:focus-visible {
-      @include dc-focus-ring(var(--dc-chrome-ink, #{$dc-chrome-ink}));
-    }
+    @include dc-link(var(--dc-footer-link, #{$dc-footer-link}), $on: dark);
+    border-radius: var(--dc-radius, #{$dc-radius});
+    font-size: $dc-text-sm;
   }
 
   .dc-cta-button {
-    background: var(--dc-action, #{$dc-accent});
-    border: 1px solid var(--dc-action-edge, #{$dc-accent});
-    border-radius: var(--dc-radius, #{$dc-radius});
-    color: var(--dc-action-ink, #fff);
-    font-size: 15px;
-    font-weight: 600;
-    padding: 10px 28px;
-    text-decoration: none;
-    transition: background 0.15s, border-color 0.15s;
+    @include dc-button-primary($on: dark);
     white-space: nowrap;
 
     &:hover {
-      background: var(--dc-action-hover, #{$dc-link-hover});
-      color: var(--dc-action-ink, #fff);
+      color: var(--dc-action-ink, #{$dc-action-ink});
       text-decoration: none;
-    }
-
-    &:focus-visible {
-      @include dc-focus-ring(var(--dc-action-ink, #fff));
     }
   }
 }

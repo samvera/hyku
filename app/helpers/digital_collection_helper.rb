@@ -34,6 +34,11 @@ module DigitalCollectionHelper
     "/#{branding.local_path.split('/')[-4..].join('/')}"
   end
 
+  def dc_thumb_placeholder_class(document)
+    path = document.try(:[], 'thumbnail_path_ss').to_s
+    'dc-thumb-placeholder' if path.blank? || path.include?('/assets/')
+  end
+
   def dc_logout_link
     return unless admin_host? || Flipflop.show_login_link? || current_ability.user_groups.include?('admin')
 

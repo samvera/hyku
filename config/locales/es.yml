@@ -1155,7 +1155,7 @@ es:
         save_order: "Guardar orden"
       recent:
         heading: "Añadidos recientemente"
-        view_all: "Ver todo"
+        view_all: "Ver todas las obras recientes"
       about:
         heading: "Acerca de las colecciones"
       cta:

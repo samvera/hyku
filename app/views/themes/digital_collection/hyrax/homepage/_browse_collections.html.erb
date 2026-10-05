@@ -16,8 +16,8 @@
     <% if collections.any? %>
       <div class="dc-browse-controls" role="group" aria-label="<%= t('digital_collection.homepage.browse.view_label') %>" hidden data-dc-browse-controls>
         <div class="dc-view-toggle">
-          <button type="button" class="dc-control" data-dc-browse-view="grid" aria-pressed="true"><%= t('digital_collection.homepage.browse.grid') %></button>
-          <button type="button" class="dc-control" data-dc-browse-view="list" aria-pressed="false"><%= t('digital_collection.homepage.browse.list') %></button>
+          <button type="button" class="dc-control" data-dc-browse-view="grid" aria-pressed="true"><span class="fa fa-th-large" aria-hidden="true"></span><%= t('digital_collection.homepage.browse.grid') %></button>
+          <button type="button" class="dc-control" data-dc-browse-view="list" aria-pressed="false"><span class="fa fa-list" aria-hidden="true"></span><%= t('digital_collection.homepage.browse.list') %></button>
         </div>
         <span class="dc-sort-label" id="dc-sort-label"><%= t('digital_collection.homepage.browse.sort') %></span>
         <button type="button" class="dc-control dc-sort" data-dc-browse-sort data-direction="asc" aria-describedby="dc-sort-label">

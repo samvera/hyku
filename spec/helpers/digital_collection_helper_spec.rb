@@ -117,6 +117,17 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
     end
   end
 
+  describe '#dc_thumb_placeholder_class' do
+    it 'marks a missing or stock thumbnail as a placeholder' do
+      expect(helper.dc_thumb_placeholder_class({})).to eq('dc-thumb-placeholder')
+      expect(helper.dc_thumb_placeholder_class('thumbnail_path_ss' => '/assets/default-abc.png')).to eq('dc-thumb-placeholder')
+    end
+
+    it 'leaves a real thumbnail alone' do
+      expect(helper.dc_thumb_placeholder_class('thumbnail_path_ss' => '/downloads/abc?file=thumbnail')).to be_nil
+    end
+  end
+
   describe '#dc_banner_src' do
     let(:collection_id) { 'abc123' }
     let(:local_path) { Rails.root.join('tmp', 'branding', collection_id, 'banner', 'harbor.jpg').to_s }

@@ -1,8 +1,9 @@
+<%# OVERRIDE Hyku 7.1.0: thumbnail, title and collection name row instead of depositor and keywords %>
 <% url = generate_work_url(recent_document, request) %>
 <% collection_name = recent_document['member_of_collections_ssim']&.first %>
 
 <div class="dc-recent-row">
-  <%= link_to url, class: 'dc-recent-thumb', tabindex: -1, aria: { hidden: true },
+  <%= link_to url, class: token_list('dc-recent-thumb', dc_thumb_placeholder_class(recent_document)), tabindex: -1, aria: { hidden: true },
               data: { turbolinks: block_valkyrie_redirect? } do %>
     <%= render_thumbnail_tag(recent_document, { alt: '' }, { suppress_link: true }) %>
   <% end %>

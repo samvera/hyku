@@ -16,9 +16,9 @@
     <% if local_assigns[:description].present? %>
       <p class="dc-featured-desc"><%= description %></p>
     <% end %>
-  </div>
 
-  <% if local_assigns[:badge].present? %>
-    <%= dc_badge(badge) %>
-  <% end %>
+    <% if local_assigns[:badge].present? %>
+      <%= dc_badge(badge) %>
+    <% end %>
+  </div>
 </article>

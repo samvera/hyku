@@ -1,3 +1,4 @@
+<%# OVERRIDE Hyku 7.1.0: "Search" button, with Advanced search as a link below the field instead of in the button group %>
 <%= form_tag search_form_action, method: :get, class: "search-form", id: "search-form-header", role: "search" do %>
   <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)) %>
   <%= hidden_field_tag :search_field, 'all_fields' %>

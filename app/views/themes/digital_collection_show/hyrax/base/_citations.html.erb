@@ -1,3 +1,4 @@
+<%# OVERRIDE Hyrax 5.3.0: citation panel with a style picker, copy button and EndNote link %>
 <% citations = all_authors(presenter).any? ? theme_citations(presenter) : {} %>
 <%= render layout: 'hyrax/base/dc_panel',
            locals: { modifier: 'dc-cite', label_id: 'dc-cite-label', label: t('hyrax.base.citations.header') } do %>

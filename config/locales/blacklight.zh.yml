@@ -5,6 +5,8 @@ zh:
     search:
       fields:
         facet:
+          date_range_isim: "日期范围"
+          resource_type_label_sim: "资源类型"
           based_near_label_sim: 位置
           creator_sim: 创造者
           depositor_ssim: 储户
@@ -16,6 +18,43 @@ zh:
           member_of_collections_ssim: 收藏
           publisher_sim: 出版者
           subject_sim: 学科
+        search:
+          contributor: "贡献者"
+          creator: "创造者"
+          title: "标题"
+          description: "摘要或概述"
+          publisher: "出版者"
+          date_created: "创建日期"
+          subject: "学科"
+          language: "语言"
+          resource_type: "资源类型"
+          based_near_label: "位置"
+          keyword: "关键词"
+          depositor: "提交者"
+          rights_statement: "权利声明"
+          license: "执照"
+          extent: "范围"
+          source: "来源"
+          advisor: "导师"
+          accessibility_feature: "辅助功能"
+          accessibility_hazard: "可及性危险"
+          accessibility_summary: "可访问性摘要"
+          additional_information: "附加信息"
+          alternative_title: "替代标题"
+          audience: "观众"
+          bibliographic_citation: "书目引文"
+          committee_member: "委员会成员"
+          department: "院系"
+          degree_discipline: "学位学科"
+          education_level: "教育程度"
+          degree_grantor: "学位授予机构"
+          learning_resource_type: "学习资源类型"
+          degree_level: "学位级别"
+          related_url: "相关网址"
+          rights_holder: "权利人"
+          rights_notes: "权利说明"
+          size: "尺寸"
+          table_of_contents: "目录"
         index:
           accessibility_feature_tesim: 辅助功能
           accessibility_hazard_tesim: 可及性危险

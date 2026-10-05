@@ -174,6 +174,40 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
   end
 
   describe 'hero' do
+    context 'with two featured collections' do
+      before do
+        ['Harbor Photographs', 'Maps of the Hudson'].each_with_index do |title, order|
+          FeaturedCollection.create!(collection_id: indexed_collection(title, 'open').id.to_s, order:)
+        end
+        get root_path
+      end
+
+      let(:doc) { Nokogiri::HTML(response.body) }
+
+      it 'labels each slide n of m' do
+        slides = doc.css("#dc-hero .carousel-item[role='group'][aria-roledescription='slide']")
+
+        expect(slides.map { |slide| slide['aria-label'] }).to eq(['Slide 1 of 2', 'Slide 2 of 2'])
+      end
+
+      it 'names each segment by its slide and marks the current one' do
+        segments = doc.css('.dc-hero-segment')
+
+        expect(segments.map { |segment| segment['aria-label'] }).to eq(['Slide 1: Harbor Photographs', 'Slide 2: Maps of the Hudson'])
+        expect(segments.first['aria-current']).to eq('true')
+      end
+
+      it 'gives the pause button a pressed state' do
+        expect(doc.at_css('.dc-hero-hold')['aria-pressed']).to eq('false')
+      end
+
+      it 'puts the caption label and link on the plate' do
+        expect(doc.at_css('.carousel-item.active .dc-hero-caption .dc-hero-caption-label').text).to eq('Featured collection')
+        expect(doc.at_css('.carousel-item.active .dc-hero-caption a.dc-hero-caption-link').text).to eq('Harbor Photographs')
+        expect(doc.at_css('.carousel-item.active .dc-hero-caption a.dc-hero-caption-link')['title']).to eq('Harbor Photographs')
+      end
+    end
+
     it 'opts the carousel in to the reduced-motion hold' do
       get root_path
       expect(Nokogiri::HTML(response.body).at_css('#dc-hero[data-theme-spotlight][data-spotlight-reduced-motion]')).to be_present

@@ -1005,7 +1005,8 @@ pt-BR:
         featured_collection: "Acervo em destaque"
         hold: "Pausar"
         resume: "Reproduzir"
-        segment: "Mostrar %{title}"
+        segment: "Slide %{number}: %{title}"
+        slide: "Slide %{number} de %{total}"
       featured_collections:
         heading: "Coleções em destaque"
         unfeature_confirm: "Remover esta coleção da lista de destaques?"

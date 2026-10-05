@@ -147,12 +147,17 @@ $dc-content-max: 1440px;
 $dc-control-height: 44px;
 $dc-control-height-small: 36px;
 $dc-control-height-small-touch: 44px;
-$dc-hero-controls-reserve: 420px;
+$dc-size-dot: 4px;
+$dc-hero-controls-reserve: 324px;
 
 $dc-width-header-max: 1600px;
 $dc-height-masthead: 64px;
 $dc-width-hero-plate: 792px;
 $dc-width-hero-plate-laptop: 692px;
+$dc-width-hero-caption: 560px;
+$dc-width-hero-segment: 32px;
+$dc-size-hero-control: 28px;
+$dc-height-hero-controls: $dc-size-hero-control + $dc-space-2 * 2;
 $dc-height-hero: 680px;
 $dc-height-hero-laptop: 560px;
 $dc-height-hero-tablet: 460px;

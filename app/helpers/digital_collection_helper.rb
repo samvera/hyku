@@ -27,6 +27,13 @@ module DigitalCollectionHelper
     admin_host? ? dc_admin_host_links : dc_tenant_account_links(unread)
   end
 
+  def dc_banner_src(collection_id)
+    branding = CollectionBrandingInfo.find_by(collection_id: collection_id.to_s, role: 'banner')
+    return banner_image unless branding&.local_path.present? && File.exist?(branding.local_path)
+
+    "/#{branding.local_path.split('/')[-4..].join('/')}"
+  end
+
   def dc_logout_link
     return unless admin_host? || Flipflop.show_login_link? || current_ability.user_groups.include?('admin')
 

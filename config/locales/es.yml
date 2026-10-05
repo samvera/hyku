@@ -1122,7 +1122,8 @@ es:
         featured_collection: "Colección destacada"
         hold: "Pausar"
         resume: "Reproducir"
-        segment: "Mostrar %{title}"
+        segment: "Diapositiva %{number}: %{title}"
+        slide: "Diapositiva %{number} de %{total}"
       featured_collections:
         heading: "Colecciones destacadas"
         unfeature_confirm: "¿Quitar esta colección de la lista de destacadas?"

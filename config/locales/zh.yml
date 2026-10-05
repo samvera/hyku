@@ -1139,7 +1139,8 @@ zh:
         featured_collection: "精选馆藏"
         hold: "暂停"
         resume: "播放"
-        segment: "显示 %{title}"
+        segment: "第 %{number} 张：%{title}"
+        slide: "第 %{number} 张，共 %{total} 张"
       featured_collections:
         heading: "精选合集"
         unfeature_confirm: "要将此合集从精选列表中移除吗？"

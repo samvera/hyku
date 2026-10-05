@@ -1127,7 +1127,8 @@ fr:
         featured_collection: "Collection à la une"
         hold: "Pause"
         resume: "Lecture"
-        segment: "Afficher %{title}"
+        segment: "Diapositive %{number} : %{title}"
+        slide: "Diapositive %{number} sur %{total}"
       featured_collections:
         heading: "Collections à la une"
         unfeature_confirm: "Retirer cette collection de la liste mise en avant ?"

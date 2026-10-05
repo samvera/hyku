@@ -1122,7 +1122,8 @@ it:
         featured_collection: "Collezione in evidenza"
         hold: "Pausa"
         resume: "Riproduci"
-        segment: "Mostra %{title}"
+        segment: "Diapositiva %{number}: %{title}"
+        slide: "Diapositiva %{number} di %{total}"
       featured_collections:
         heading: "Collezioni in evidenza"
         unfeature_confirm: "Rimuovere questa collezione dagli elementi in evidenza?"

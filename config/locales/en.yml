@@ -989,7 +989,8 @@ en:
         featured_collection: "Featured collection"
         hold: "Pause"
         resume: "Play"
-        segment: "Show %{title}"
+        segment: "Slide %{number}: %{title}"
+        slide: "Slide %{number} of %{total}"
       featured_collections:
         heading: "Featured collections"
         unfeature_confirm: "Remove this collection from the featured list?"

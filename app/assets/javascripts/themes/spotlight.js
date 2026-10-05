@@ -13,6 +13,7 @@
     region.carousel(held ? 'pause' : 'cycle');
     button.attr('data-held', held ? 'true' : 'false')
           .find('[data-spotlight-hold-label]').text(button.data(held ? 'resumeLabel' : 'holdLabel'));
+    if (button.is('[aria-pressed]')) button.attr('aria-pressed', held ? 'true' : 'false');
   }
 
   function respectReducedMotion() {
@@ -25,6 +26,7 @@
       region.removeAttr('data-ride');
       button.attr('data-held', 'true')
             .find('[data-spotlight-hold-label]').text(button.data('resumeLabel'));
+      if (button.is('[aria-pressed]')) button.attr('aria-pressed', 'true');
     });
   }
 

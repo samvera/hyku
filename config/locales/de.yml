@@ -1125,7 +1125,8 @@ de:
         featured_collection: "Ausgewählte Sammlung"
         hold: "Pause"
         resume: "Abspielen"
-        segment: "%{title} anzeigen"
+        segment: "Folie %{number}: %{title}"
+        slide: "Folie %{number} von %{total}"
       featured_collections:
         heading: "Ausgewählte Sammlungen"
         unfeature_confirm: "Diese Sammlung aus der Auswahl entfernen?"

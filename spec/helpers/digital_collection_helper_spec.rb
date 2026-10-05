@@ -117,6 +117,35 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
     end
   end
 
+  describe '#dc_banner_src' do
+    let(:collection_id) { 'abc123' }
+    let(:local_path) { Rails.root.join('tmp', 'branding', collection_id, 'banner', 'harbor.jpg').to_s }
+
+    before do
+      without_partial_double_verification { allow(helper).to receive(:banner_image).and_return('/site-banner.jpg') }
+    end
+
+    after { FileUtils.rm_rf(Rails.root.join('tmp', 'branding')) }
+
+    it 'uses the site banner when the collection has no banner' do
+      expect(helper.dc_banner_src(collection_id)).to eq('/site-banner.jpg')
+    end
+
+    it 'uses the site banner when the banner file is missing' do
+      CollectionBrandingInfo.create!(collection_id:, role: 'banner', local_path:, filename: 'harbor.jpg')
+
+      expect(helper.dc_banner_src(collection_id)).to eq('/site-banner.jpg')
+    end
+
+    it 'uses the collection banner when its file exists' do
+      FileUtils.mkdir_p(File.dirname(local_path))
+      FileUtils.touch(local_path)
+      CollectionBrandingInfo.create!(collection_id:, role: 'banner', local_path:, filename: 'harbor.jpg')
+
+      expect(helper.dc_banner_src(collection_id)).to eq("/branding/#{collection_id}/banner/harbor.jpg")
+    end
+  end
+
   describe '#dc_badge' do
     it 'renders a dc-badge by default' do
       expect(helper.dc_badge('Image')).to eq('<span class="dc-badge">Image</span>')

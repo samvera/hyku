@@ -1174,6 +1174,22 @@ es:
     search:
       advanced: "Búsqueda avanzada"
       submit: "Buscar"
+    advanced:
+      match_html: "Buscar elementos que coincidan con %{select_menu} de estos campos"
+      match_label: "Coincidir con todos o con cualquier campo"
+      limits: "Y que tengan estos atributos"
+      tips:
+        heading: "Consejos de búsqueda"
+        items:
+          - "Seleccione «todos» para exigir todos los campos."
+          - "Seleccione «cualquiera» para encontrar al menos un campo."
+          - "Combine palabras clave y atributos para encontrar elementos concretos."
+          - "Busque por fecha con el formato AAAAMMDD, AAAAMM o AAAA. No use «-», «/» ni otros caracteres especiales."
+          - "Use comillas para buscar una frase exacta."
+          - "Use «+» delante de un término para que sea obligatorio. (Si no, pueden aparecer resultados que solo contienen algunos de sus términos)."
+          - "Use «-» delante de una palabra o frase para excluirla."
+          - "Use «OR», «AND» y «NOT» para crear búsquedas booleanas complejas. Puede usar paréntesis en sus expresiones."
+          - "No se admiten comodines ni truncamiento; las variantes de las palabras se buscan automáticamente."
     show:
       part_of:
         heading: Parte de

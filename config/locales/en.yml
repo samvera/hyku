@@ -1041,6 +1041,22 @@ en:
     search:
       advanced: "Advanced search"
       submit: "Search"
+    advanced:
+      match_html: "Find items that match %{select_menu} of these fields"
+      match_label: "Match all or any fields"
+      limits: "And have these attributes"
+      tips:
+        heading: "Search tips"
+        items:
+          - "Select \"match all\" to require all fields."
+          - "Select \"match any\" to find at least one field."
+          - "Combine keywords and attributes to find specific items."
+          - "Search by date with format: YYYYMMDD, YYYYMM or YYYY. Do not use \"-\", \"/\", or any other special characters."
+          - "Use quotation marks to search as a phrase."
+          - "Use \"+\" before a term to make it required. (Otherwise results matching only some of your terms may be included)."
+          - "Use \"-\" before a word or phrase to exclude."
+          - "Use \"OR\", \"AND\", and \"NOT\" to create complex boolean logic. You can use parentheses in your complex expressions."
+          - "Truncation and wildcards are not supported - word-stemming is done automatically."
     show:
       part_of:
         heading: "Part of"

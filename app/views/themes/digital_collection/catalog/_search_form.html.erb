@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyku 7.1.0: "Search" button, with Advanced search as a link below the field instead of in the button group %>
+<%# OVERRIDE Hyku 7.1.0: "Search" button, with Advanced search as a link below the field (left off the advanced search page) instead of in the button group %>
 <%= form_tag search_form_action, method: :get, class: "search-form", id: "search-form-header", role: "search" do %>
   <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)) %>
   <%= hidden_field_tag :search_field, 'all_fields' %>
@@ -33,8 +33,10 @@
       </div>
     </div>
 
-    <p class="dc-search-advanced">
-      <%= link_to t('digital_collection.search.advanced'), blacklight_advanced_search_engine.advanced_search_path, id: 'advanced-top-button' %>
-    </p>
+    <% unless controller_name == 'advanced' %>
+      <p class="dc-search-advanced">
+        <%= link_to t('digital_collection.search.advanced'), blacklight_advanced_search_engine.advanced_search_path, id: 'advanced-top-button' %>
+      </p>
+    <% end %>
   </div>
 <% end %>

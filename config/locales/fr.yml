@@ -1179,6 +1179,22 @@ fr:
     search:
       advanced: "Recherche avancée"
       submit: "Rechercher"
+    advanced:
+      match_html: "Trouver les éléments qui correspondent à %{select_menu} de ces champs"
+      match_label: "Correspondre à tous ou à au moins un champ"
+      limits: "Et qui ont ces attributs"
+      tips:
+        heading: "Conseils de recherche"
+        items:
+          - "Choisissez « tous » pour exiger tous les champs."
+          - "Choisissez « au moins un » pour trouver au moins un champ."
+          - "Combinez mots-clés et attributs pour trouver des éléments précis."
+          - "Recherchez une date au format AAAAMMJJ, AAAAMM ou AAAA. N’utilisez pas « - », « / » ni d’autres caractères spéciaux."
+          - "Utilisez des guillemets pour rechercher une expression exacte."
+          - "Placez « + » devant un terme pour le rendre obligatoire. (Sinon, des résultats ne contenant qu’une partie de vos termes peuvent apparaître.)"
+          - "Placez « - » devant un mot ou une expression pour l’exclure."
+          - "Utilisez « OR », « AND » et « NOT » pour créer des recherches booléennes complexes. Vous pouvez utiliser des parenthèses."
+          - "La troncature et les caractères génériques ne sont pas pris en charge ; les variantes des mots sont recherchées automatiquement."
     show:
       part_of:
         heading: Fait partie de

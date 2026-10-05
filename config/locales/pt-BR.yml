@@ -1057,6 +1057,22 @@ pt-BR:
     search:
       advanced: "Pesquisa avançada"
       submit: "Pesquisar"
+    advanced:
+      match_html: "Encontrar itens que correspondam a %{select_menu} destes campos"
+      match_label: "Corresponder a todos ou a qualquer campo"
+      limits: "E que tenham estes atributos"
+      tips:
+        heading: "Dicas de pesquisa"
+        items:
+          - "Selecione “todos” para exigir todos os campos."
+          - "Selecione “qualquer” para encontrar pelo menos um campo."
+          - "Combine palavras-chave e atributos para encontrar itens específicos."
+          - "Pesquise por data no formato AAAAMMDD, AAAAMM ou AAAA. Não use “-”, “/” ou outros caracteres especiais."
+          - "Use aspas para pesquisar uma frase exata."
+          - "Use “+” antes de um termo para torná-lo obrigatório. (Caso contrário, podem aparecer resultados com apenas alguns dos seus termos.)"
+          - "Use “-” antes de uma palavra ou frase para excluí-la."
+          - "Use “OR”, “AND” e “NOT” para criar pesquisas booleanas complexas. Você pode usar parênteses nas expressões."
+          - "Truncamento e curingas não são suportados; as variações das palavras são pesquisadas automaticamente."
     show:
       part_of:
         heading: Parte de

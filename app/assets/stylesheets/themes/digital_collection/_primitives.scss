@@ -137,6 +137,15 @@ $dc-heading-roles: (
   }
 }
 
+@mixin dc-select-chevron($color: $dc-ink-heading) {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23#{str-slice(inspect($color), 2)}' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right $dc-space-3 center;
+  background-repeat: no-repeat;
+  background-size: $dc-size-icon-small $dc-size-icon-small;
+  padding-right: $dc-space-3 + $dc-size-icon-small + $dc-space-2;
+}
+
 @mixin dc-button-shape($size: default) {
   align-items: center;
   border-radius: var(--dc-radius, #{$dc-radius});

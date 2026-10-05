@@ -1177,6 +1177,22 @@ de:
     search:
       advanced: "Erweiterte Suche"
       submit: "Suchen"
+    advanced:
+      match_html: "Objekte finden, die %{select_menu} dieser Felder entsprechen"
+      match_label: "Allen oder beliebigen Feldern entsprechen"
+      limits: "Und diese Merkmale haben"
+      tips:
+        heading: "Suchtipps"
+        items:
+          - "Wählen Sie „alle“, um alle Felder zu verlangen."
+          - "Wählen Sie „beliebige“, um mindestens ein Feld zu treffen."
+          - "Kombinieren Sie Stichwörter und Merkmale, um bestimmte Objekte zu finden."
+          - "Suchen Sie nach Datum im Format JJJJMMTT, JJJJMM oder JJJJ. Verwenden Sie kein „-“, „/“ oder andere Sonderzeichen."
+          - "Verwenden Sie Anführungszeichen, um nach einer Wortgruppe zu suchen."
+          - "Setzen Sie „+“ vor einen Begriff, um ihn zu verlangen. (Sonst können auch Treffer erscheinen, die nur einige Ihrer Begriffe enthalten.)"
+          - "Setzen Sie „-“ vor ein Wort oder eine Wortgruppe, um sie auszuschließen."
+          - "Verwenden Sie „OR“, „AND“ und „NOT“ für komplexe boolesche Suchen. Sie können dabei Klammern verwenden."
+          - "Platzhalter und Trunkierung werden nicht unterstützt – Wortformen werden automatisch berücksichtigt."
     show:
       part_of:
         heading: Teil von

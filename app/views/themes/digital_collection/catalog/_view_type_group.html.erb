@@ -1,4 +1,4 @@
-<%# OVERRIDE Blacklight 7.43.0: icons hidden from screen readers, so each view button reads its visible caption once %>
+<%# OVERRIDE Blacklight 7.43.0: icons hidden from screen readers, so each view button reads its visible caption once; Gallery reads "Grid", matching the homepage toggle %>
 <% views = document_index_view_controls.keys.filter_map { |key| (view = blacklight_config.view[key]) && view.if != false ? [key, view] : nil } %>
 <% if show_sort_and_per_page? && views.many? %>
   <div class="view-type dc-view-toggle">
@@ -13,10 +13,10 @@
             <% elsif view.icon.is_a?(ViewComponent::Base) %>
               <%= render view.icon %>
             <% else %>
-              <%= Deprecation.silence(Blacklight::CatalogHelperBehavior) { render_view_type_group_icon(view.icon || key) } %>
+              <%= blacklight_icon(view.icon || key, label: false) %>
             <% end %>
           </span>
-          <span class="caption"><%= Deprecation.silence(Blacklight::ConfigurationHelperBehavior) { view_label(key) } %></span>
+          <span class="caption"><%= key.to_s == 'gallery' ? t('digital_collection.homepage.browse.grid') : Deprecation.silence(Blacklight::ConfigurationHelperBehavior) { view_label(key) } %></span>
         <% end %>
       <% end %>
     </div>

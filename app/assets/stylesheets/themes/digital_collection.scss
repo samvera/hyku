@@ -427,8 +427,8 @@
     @include dc-joined('.dc-control');
     display: inline-flex;
 
-    .fa {
-      font-size: 1em;
+    .dc-view-toggle-icon {
+      @include dc-view-toggle-icon;
     }
 
     @media (max-width: $dc-mobile-max) {

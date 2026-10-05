@@ -669,24 +669,7 @@ body.catalog-index.digital_collection.public-facing {
   }
 
   .dc-view-toggle-icon {
-    align-items: center;
-    display: inline-flex;
-    height: $dc-size-icon-large;
-    justify-content: center;
-    width: $dc-size-icon-large;
-
-    .blacklight-icons {
-      display: flex;
-      height: 100%;
-      width: 100%;
-    }
-
-    svg {
-      display: block;
-      fill: currentColor;
-      height: 100%;
-      width: 100%;
-    }
+    @include dc-view-toggle-icon;
   }
 
   #search-results > .catalog {

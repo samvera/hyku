@@ -93,7 +93,7 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
       buttons = Nokogiri::HTML(response.body).css('.dc-view-toggle button.dc-control')
 
       expect(buttons.map { |b| b.text.strip }).to eq(%w[Grid List])
-      expect(buttons.map { |b| b.at_css(".fa[aria-hidden='true']")['class'] }).to eq(['fa fa-th-large', 'fa fa-list'])
+      expect(buttons.map { |b| b.at_css(".dc-view-toggle-icon[aria-hidden='true'] .blacklight-icons")['class'] }).to eq(%w[blacklight-icons blacklight-icon-gallery blacklight-icons blacklight-icon-list].each_slice(2).map { |c| c.join(' ') })
       expect(buttons.map { |b| b['aria-pressed'] }).to eq(%w[true false])
     end
   end

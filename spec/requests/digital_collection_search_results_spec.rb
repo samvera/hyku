@@ -78,7 +78,7 @@ RSpec.describe 'the digital collection search results page', type: :request, sin
     it 'hides the view icons from screen readers and marks the current view' do
       buttons = doc.css('.dc-view-toggle a.dc-control')
 
-      expect(buttons.map { |b| b.at_css('.caption').text }).to include('List', 'Gallery')
+      expect(buttons.map { |b| b.at_css('.caption').text }).to include('List', 'Grid', 'Masonry')
       buttons.each { |b| expect(b.at_css('.dc-view-toggle-icon')['aria-hidden']).to eq('true') }
       expect(buttons.select { |b| b['aria-current'] == 'true' }.map { |b| b.at_css('.caption').text }).to eq(['List'])
     end

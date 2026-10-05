@@ -326,7 +326,10 @@ Rails.application.config.to_prepare do
   require 'hydra/derivatives'
   Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
 
-  Hyrax.publisher.subscribe(HyraxListener.new)
+  Hyku::ListenerSubscription.replace(HyraxListener.new)
+  # OVERRIDE iiif_print v3.1.1 to drop the duplicate listener its engine
+  # subscribes on every code reload (notch8/iiif_print#418)
+  Hyku::ListenerSubscription.replace(IiifPrint::Listener.new)
 
   unless Hyrax::Transactions::Container.key?('collection_resource.save_collection_thumbnail')
     Hyrax::Transactions::Container.namespace('collection_resource') do |ops|

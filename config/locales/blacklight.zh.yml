@@ -97,6 +97,14 @@ zh:
           rights_tesim: 权
           subject_tesim: 学科
           table_of_contents_tesim: 目录
+        sort:
+          "score desc, system_create_dtsi desc": "相关性"
+          "title_ssi asc": "标题"
+          "creator_ssi asc": "作者"
+          "date_created_ssi asc": "出版日期（升序）"
+          "date_created_ssi desc": "出版日期（降序）"
+          "system_modified_dtsi asc": "上传日期（升序）"
+          "system_modified_dtsi desc": "上传日期（降序）"
         show:
           based_near_label_tesim: 位置
           contributor_tesim: 贡献者

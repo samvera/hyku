@@ -97,6 +97,14 @@ de:
           rights_tesim: Rechte
           subject_tesim: Fach
           table_of_contents_tesim: Inhaltsverzeichnis
+        sort:
+          "score desc, system_create_dtsi desc": "Relevanz"
+          "title_ssi asc": "Titel"
+          "creator_ssi asc": "Autor"
+          "date_created_ssi asc": "Veröffentlichungsdatum (aufsteigend)"
+          "date_created_ssi desc": "Veröffentlichungsdatum (absteigend)"
+          "system_modified_dtsi asc": "Hochladedatum (aufsteigend)"
+          "system_modified_dtsi desc": "Hochladedatum (absteigend)"
         show:
           based_near_label_tesim: Ort
           contributor_tesim: Mitwirkender

@@ -97,6 +97,14 @@ it:
           rights_tesim: Diritti
           subject_tesim: Soggetto
           table_of_contents_tesim: Sommario
+        sort:
+          "score desc, system_create_dtsi desc": "Pertinenza"
+          "title_ssi asc": "Titolo"
+          "creator_ssi asc": "Autore"
+          "date_created_ssi asc": "Data di pubblicazione (crescente)"
+          "date_created_ssi desc": "Data di pubblicazione (decrescente)"
+          "system_modified_dtsi asc": "Data di caricamento (crescente)"
+          "system_modified_dtsi desc": "Data di caricamento (decrescente)"
         show:
           based_near_label_tesim: luogo
           contributor_tesim: Collaboratore

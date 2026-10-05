@@ -163,6 +163,15 @@ RSpec.describe 'the digital collection search results page', type: :request, sin
   end
 
   %w[de es fr it pt-BR zh].each do |locale|
+    it "translates the Sort by choices in #{locale}" do
+      get search_catalog_path(q: 'hudson', locale:)
+      choices = doc.css('.dc-toolbar .dropdown-menu .dropdown-item').map { |a| a.text.strip }
+
+      expect(choices.first).to eq(I18n.t('blacklight.search.fields.sort.score desc, system_create_dtsi desc', locale:))
+      expect(choices).to include(I18n.t('blacklight.search.fields.sort.title_ssi asc', locale:))
+      expect(choices).not_to include('Relevance', 'Title')
+    end
+
     it "has every label translated in #{locale}" do
       get search_catalog_path(q: 'hudson', locale:)
 

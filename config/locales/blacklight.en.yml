@@ -58,6 +58,14 @@ en:
           rights_tesim: Rights
           subject_tesim: Subject
           table_of_contents_tesim: Table Of Contents
+        sort:
+          "score desc, system_create_dtsi desc": "Relevance"
+          "title_ssi asc": "Title"
+          "creator_ssi asc": "Author"
+          "date_created_ssi asc": "Published Date (Ascending)"
+          "date_created_ssi desc": "Published Date (Descending)"
+          "system_modified_dtsi asc": "Upload Date (Ascending)"
+          "system_modified_dtsi desc": "Upload Date (Descending)"
         show:
           based_near_label_tesim: Location
           contributor_tesim: Contributor

@@ -97,6 +97,14 @@ es:
           rights_tesim: Derechos
           subject_tesim: Tema
           table_of_contents_tesim: Tabla de contenido
+        sort:
+          "score desc, system_create_dtsi desc": "Relevancia"
+          "title_ssi asc": "Título"
+          "creator_ssi asc": "Autor"
+          "date_created_ssi asc": "Fecha de publicación (ascendente)"
+          "date_created_ssi desc": "Fecha de publicación (descendente)"
+          "system_modified_dtsi asc": "Fecha de carga (ascendente)"
+          "system_modified_dtsi desc": "Fecha de carga (descendente)"
         show:
           based_near_label_tesim: Ubicación
           contributor_tesim: Contribuidor

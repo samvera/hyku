@@ -253,6 +253,96 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
     end
   end
 
+  describe 'sparse and unusual metadata' do
+    def indexed_work_with(**attributes)
+      saved = Hyrax.persister.save(resource: GenericWorkResource.new(**attributes))
+      Hyrax::VisibilityWriter.new(resource: saved).assign_access_for(visibility: 'open')
+      saved.permission_manager.acl.save
+      Hyrax.index_adapter.save(resource: saved)
+      saved
+    end
+
+    def featured_row(title)
+      doc = Nokogiri::HTML(response.body)
+      doc.css("section[aria-labelledby='dc-featured-heading'] .dc-featured-row").find { |row| row.at_css('.dc-featured-title').text.strip == title }
+    end
+
+    it 'renders a featured work that has only a title, with no empty meta, description or badge' do
+      work = indexed_work_with(title: ['Work with only a title'])
+      FeaturedWork.create!(work_id: work.id.to_s, order: 0)
+
+      get root_path
+      row = featured_row('Work with only a title')
+
+      expect(row).to be_present
+      expect(row.at_css('.dc-featured-meta')).to be_nil
+      expect(row.at_css('.dc-featured-desc')).to be_nil
+      expect(row.at_css('.dc-badge')).to be_nil
+      expect(row.at_css('a.dc-featured-thumb.dc-thumb-placeholder')).to be_present
+    end
+
+    it 'joins every part of the meta line a featured work has' do
+      work = indexed_work_with(title: ['Dated work'], creator: ['Yamada, Tarō'], date_created: ['1923'])
+      FeaturedWork.create!(work_id: work.id.to_s, order: 0)
+
+      get root_path
+
+      expect(featured_row('Dated work').at_css('.dc-featured-meta').text).to eq('Yamada, Tarō · 1923')
+    end
+
+    it 'shows markup in titles and descriptions as text instead of running it' do
+      work = indexed_work_with(title: ['Title with <i>tags</i> & "quotes"'], description: ['<script>alert("x")</script> escaped'])
+      FeaturedWork.create!(work_id: work.id.to_s, order: 0)
+
+      get root_path
+      section = Nokogiri::HTML(response.body).at_css("section[aria-labelledby='dc-featured-heading']")
+
+      expect(section.css('script, i')).to be_empty
+      expect(section.text).to include('Title with <i>tags</i> & "quotes"')
+    end
+
+    it 'keeps titles in other scripts intact' do
+      title = '東京の街並み — صورة من القاهرة — Fotografía de Madrid'
+      indexed_work_with(title: [title])
+
+      get root_path
+
+      recent = Nokogiri::HTML(response.body).at_css("section[aria-labelledby='dc-recent-heading']")
+      expect(recent.css('.dc-recent-title').map { |t| t.text.strip }).to include(title)
+    end
+
+    it 'leaves the collection name off a recent work that belongs to no collection' do
+      indexed_work_with(title: ['Loose work'])
+
+      get root_path
+      row = Nokogiri::HTML(response.body).css('.dc-recent-row').find { |r| r.at_css('.dc-recent-title').text.strip == 'Loose work' }
+
+      expect(row.at_css('.dc-recent-collection')).to be_nil
+    end
+
+    it 'renders a browse card for a collection with no description' do
+      indexed_collection('Collection with no description', 'open')
+
+      get root_path
+      card = Nokogiri::HTML(response.body).at_css('[data-dc-browse-items] > li .dc-collection')
+
+      expect(card.at_css('.dc-collection-title').text.strip).to eq('Collection with no description')
+      expect(card.at_css('.dc-collection-description')).to be_nil
+      expect(card.at_css('.dc-collection-count')).to be_present
+    end
+
+    it 'puts a featured collection with no banner in the hero with the default image' do
+      collection = indexed_collection('Unbranded collection', 'open')
+      FeaturedCollection.create!(collection_id: collection.id.to_s, order: 0)
+
+      get root_path
+      slide = Nokogiri::HTML(response.body).at_css('#dc-hero .carousel-item.active')
+
+      expect(slide.at_css('a.dc-hero-caption-link').text).to eq('Unbranded collection')
+      expect(slide.at_css('img')['src']).to be_present
+    end
+  end
+
   describe 'content blocks' do
     it 'shows the default hero headline without marketing text, and the marketing text when set' do
       get root_path

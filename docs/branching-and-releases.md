@@ -6,10 +6,10 @@ Hyku follows a [GitLab Flow](https://docs.gitlab.com/ee/topics/gitlab_flow.html)
 flowchart LR
   F["feature branch"] -->|"PR, 1 approval"| M["main"]
   M -->|"auto-deploy"| T(["test"])
-  M -->|"promotion PR, 1 approval"| S["staging"]
+  M -->|"promotion PR"| S["staging"]
   S -->|"auto-deploy"| SE(["staging"])
   S -->|"draft vX.Y.Z prerelease"| R1["Releases"]
-  S -->|"promotion PR, 2 approvals"| P["production"]
+  S -->|"promotion PR"| P["production"]
   P -->|"auto-deploy"| D(["demo"])
   P -->|"draft vX.Y.Z"| R2["Releases"]
   R2 -->|"a maintainer publishes"| I["release images"]
@@ -34,7 +34,7 @@ Code flows in one direction: `main` -> `staging` -> `production`. Each promotion
 
 - **Merge only.** Squash and rebase are disabled on all three branches. This keeps commit SHAs identical across branches so you can always tell whether a commit has reached a given environment.
 - **Pull requests only.** No direct pushes to `main`, `staging` or `production`.
-- **Approvals.** One approval on PRs into `main` and `staging`, two on PRs into `production`.
+- **One approval** on every PR, including promotions.
 - **Required labels.** Every PR needs one of `major-ver`, `minor-ver`, `patch-ver`, `dependencies` or `ignore-for-release`, so release notes categorize correctly. Promotion PRs usually take `ignore-for-release`.
 
 ## Promoting code

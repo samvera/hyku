@@ -9,6 +9,8 @@
 #             contain the work being created
 #           - refuse a work type the tenant does not offer
 #           - let a controller choose its IIIF manifest presenter class
+#           - cache a manifest, in the browser, shared caches or Rails.cache, only when an anonymous visitor
+#             asked for a public work, and build its presenter once
 module Hyku
   # include this module after including Hyrax::WorksControllerBehavior to override
   # Hyrax::WorksControllerBehavior methods with the ones defined here
@@ -36,9 +38,15 @@ module Hyku
 
       def manifest
         return super if Rails.env.test?
-        fresh_when iiif_manifest_presenter
-        expires_in 1.hour, public: true
+        cacheable = publicly_cacheable?(iiif_manifest_presenter.model)
+        if cacheable
+          fresh_when etag: [iiif_manifest_presenter, iiif_manifest_presenter.version]
+          expires_in 1.hour, public: true
+        else
+          no_store
+        end
         super
+        vary_by_cookie if cacheable
       end
     end
 
@@ -47,6 +55,26 @@ module Hyku
     end
 
     private
+
+    # A manifest lists only the pages and child works its requester may read, so it is cached only when
+    # an anonymous visitor asked for a work anyone may read.  Any other manifest depends on who asked, so
+    # it is not stored at all, not even by the browser, which could otherwise show it to the next person
+    # using it or after their access changes.
+    def publicly_cacheable?(document)
+      current_user.nil? && ::Ability.new(nil).can?(:read, document)
+    end
+
+    # Hyrax's caching builder keys a manifest by work and version alone, so it would hand one requester's
+    # manifest to the next.  It is used only for a manifest that may be cached at all.
+    def iiif_manifest_builder
+      return super if self.class.iiif_manifest_builder || publicly_cacheable?(iiif_manifest_presenter.model)
+      Hyrax::ManifestBuilderService.new(iiif_manifest_factory: manifest_factory_for_work)
+    end
+
+    # The cached manifest is the anonymous one, so a shared cache must not hand it to a signed-in visitor.
+    def vary_by_cookie
+      response.headers['Vary'] = [response.headers['Vary'], 'Cookie'].compact_blank.join(', ')
+    end
 
     # Routes are drawn for every registered curation concern, so /concern/<type>/new is
     # reachable on a tenant that does not offer the type.
@@ -89,7 +117,7 @@ module Hyku
     end
 
     def iiif_manifest_presenter
-      iiif_manifest_presenter_class.new(search_result_document(id: params[:id])).tap do |p|
+      @iiif_manifest_presenter ||= iiif_manifest_presenter_class.new(search_result_document(id: params[:id])).tap do |p|
         p.hostname = request.hostname
         p.ability = current_ability
       end

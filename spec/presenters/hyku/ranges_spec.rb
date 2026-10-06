@@ -188,6 +188,17 @@ RSpec.describe Hyku::Ranges, :clean_repo do
       expect(child_range['items'].count).to eq 2
     end
 
+    context "when the work also has pages of its own" do
+      let(:own_file_set) { create_image_file_set }
+      let(:work) { valkyrie_create(:generic_work_resource, title: ['Parent'], members: [child_work, own_file_set]) }
+
+      it "leaves the work's own pages without its metadata, which the manifest already shows" do
+        own_page = presenter.file_set_presenters.find { |p| p.id.to_s == own_file_set.id.to_s }
+
+        expect(own_page.item_metadata).to be_nil
+      end
+    end
+
     it 'propagates well-formed metadata to child work file set presenters' do
       file_set_ids = [file_set, second_file_set].map { |fs| fs.id.to_s }
       child_fsp = presenter.file_set_presenters.select { |p| file_set_ids.include?(p.id.to_s) }

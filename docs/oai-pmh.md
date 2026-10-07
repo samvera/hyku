@@ -36,6 +36,8 @@ The `mods` prefix serves [MODS 3.7](https://www.loc.gov/standards/mods/) records
 
 Values come from the property's index fields, preferring its `_tesim` field. Title is always included, as `mods:titleInfo/mods:title`, unless a mapping for `title` says otherwise.
 
+Hyku's default metadata profile and its metadata YAML map the common properties (titles, names with their roles, dates, publisher, subjects, places, language, genre, rights, identifiers and so on) to the same MODS elements in both modes. A tenant whose profile predates these mappings gets them by saving a new profile version that includes them.
+
 ### Writing a MODS mapping
 
 A mapping is a small subset of XPath describing where a value goes. Every step needs the `mods:` prefix.
@@ -46,7 +48,7 @@ A mapping is a small subset of XPath describing where a value goes. Every step n
 | Attributes | `mods:identifier[@type="local"]` | `<identifier type="local">X</identifier>` |
 | A fixed child element | `mods:name[mods:role/mods:roleTerm="creator"]/mods:namePart` | `<name><role><roleTerm>creator</roleTerm></role><namePart>X</namePart></name>` |
 
-Predicates can be combined (`mods:relatedItem[@type="host"][@displayLabel="Collection"]/mods:titleInfo/mods:title`), and either quote style works. Anything else, such as `contains()` or a step without `mods:`, is not supported: the property is left out of MODS records and a warning naming the mapping is logged. So is a mapping the MODS 3.7 schema does not allow, such as an element placed where MODS has no such child, or an attribute or attribute value MODS does not define; what a value itself may hold is not checked, since it depends on the data.
+Predicates can be combined (`mods:relatedItem[@type="host"][@displayLabel="Collection"]/mods:titleInfo/mods:title`), and either quote style works. Anything else, such as `contains()` or a step without `mods:`, is not supported: the property is left out of MODS records and a warning naming the mapping is logged. So is a mapping the MODS 3.7 schema does not allow, such as an element placed where MODS has no such child, or an attribute or attribute value MODS does not define; what a value itself may hold is not checked, since it depends on the data. Saving a profile shows a warning for each such mapping.
 
 ### How MODS values are grouped
 
@@ -65,8 +67,10 @@ Each piece of a mapped format has one home. MODS is the worked example.
 | Piece | Where | MODS |
 | --- | --- | --- |
 | The mappings key | declared under the profile's top-level `mappings:`, then set on each property in the profile and in the `config/metadata/*.yaml` attributes | `Hyku::Mods::MAPPING_KEY` |
+| Keeping profile and YAML identical | add the key to the list in `spec/config/oai_mappings_spec.rb` | listed |
 | The record's mapped properties, in either mode | `SolrDocument#schema_data_for(key)` | called by `SolrDocument#to_mods` |
 | Reading their values: index field, controlled-value labels, shared index fields, the title fallback | `Hyku::OaiPmh::MappedValues` | used by `Hyku::Mods::RecordBuilder` |
 | Writing the format's XML | a builder under `app/services/hyku/<format>/`, called from `SolrDocument#to_<prefix>` | `app/services/hyku/mods/` |
 | Registering the prefix | a format class under `lib/oai/provider/metadata_format/`, passed to `OAI::Provider::Base.register_format` | `Oai::Provider::MetadataFormat::Mods` |
 | Switching it on per tenant | include `Hyku::OaiPmh::MappedFormat` in the format class and define `feature` and `mapping_key`; declare the feature in `config/features.rb` | `oai_mods` |
+| Warning about unusable mappings when a profile is saved | a validator under `app/services/hyku/flexible_schema_validators/`, added to `flexible_schema_validators` in `config/initializers/hyrax.rb`, with messages in `config/locales/hyrax.*.yml` | `ModsMappingValidator` |

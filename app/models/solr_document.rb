@@ -133,6 +133,16 @@ class SolrDocument
     self['media_viewer_ssi']
   end
 
+  # The OAI-PMH mods format renders a record through this method
+  def to_mods
+    Hyku::Mods::RecordBuilder.new(
+      self,
+      mappings: schema_data_for(Hyku::Mods::MAPPING_KEY).to_a,
+      item_url: link_to_item,
+      thumbnail_url: (link_to_thumbnail if real_thumbnail?)
+    ).to_xml
+  end
+
   private
 
   def link_to_item
@@ -155,6 +165,14 @@ class SolrDocument
     host = first('account_cname_tesim')
 
     "https://#{host}#{path}"
+  end
+
+  # A record without files gets a placeholder: an asset-pipeline image, or the tenant's default
+  def real_thumbnail?
+    path = self['thumbnail_path_ss']
+    return false if path.blank? || path.start_with?('/assets/')
+
+    [Site.instance.default_work_image, Site.instance.default_collection_image].none? { |image| image&.url == path }
   end
 
   # In Blacklight this is a class method, but we need access

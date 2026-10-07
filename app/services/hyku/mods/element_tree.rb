@@ -41,10 +41,19 @@ module Hyku
       end
 
       # @param steps [Array<MappingPath::Step>]
+      # @param entry [Hash, nil] the wrappers one compound entry has written so far, keyed by path,
+      #   so its sub-properties share them at every level (one +name+ per creator, holding its
+      #   role) whatever the per-value rule says
       # @return [Nokogiri::XML::Element] a new, empty leaf element for one value
-      def add(steps)
+      def add(steps, entry: nil)
         *wrappers, leaf = steps
-        parent = wrappers.reduce(root) { |node, step| shared_child(node, step) || append(node, step) }
+        parent = wrappers.each_with_index.reduce(root) do |node, (step, depth)|
+          if entry
+            entry[wrappers[0..depth].map(&:to_h)] ||= append(node, step)
+          else
+            shared_child(node, step) || append(node, step)
+          end
+        end
         append(parent, leaf)
       end
 

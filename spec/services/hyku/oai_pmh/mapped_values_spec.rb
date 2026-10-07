@@ -2,8 +2,11 @@
 
 RSpec.describe Hyku::OaiPmh::MappedValues do
   subject(:read) do
-    [].tap { |out| described_class.new(document, mappings, title_mapping: 'title-mapping').each { |*pair| out << pair } }
+    [].tap { |out| mapped_values.each { |*pair| out << pair } }
   end
+
+  let(:mapped_values) { described_class.new(document, mappings, compounds:, title_mapping: 'title-mapping') }
+  let(:compounds) { [] }
 
   let(:document) do
     SolrDocument.new(
@@ -53,6 +56,29 @@ RSpec.describe Hyku::OaiPmh::MappedValues do
       expect(value).to have_attributes(stored: 'http://creativecommons.org/licenses/by/3.0/us/',
                                        label: 'Attribution 3.0 United States')
       expect(value).to be_controlled
+    end
+  end
+
+  context 'with a compound' do
+    let(:document) do
+      SolrDocument.new('id' => 'abc123', 'title_tesim' => ['A Title'],
+                       'creators_name_tesim' => ['Smith, Jo', 'Doe, Al'],
+                       'creators_json_ss' => [{ name: 'Smith, Jo', role: 'Author' }, { name: 'Doe, Al', role: 'Editor' }].to_json)
+    end
+    let(:mappings) { [{ property: 'creator_name', mapping: 'flat-name', index_keys: ['creators_name_tesim'] }] }
+    let(:compounds) do
+      [{ compound: 'creators', subproperties: [{ key: 'name', property: 'creator_name', mapping: 'name' },
+                                               { key: 'role', property: 'creator_role', mapping: 'role' }] }]
+    end
+
+    it 'reads each entry with its sub-property values paired' do
+      entries = [].tap { |out| mapped_values.each_compound_entry { |pairs| out << pairs.map { |mapping, value| [mapping, value.stored] } } }
+
+      expect(entries).to eq [[['name', 'Smith, Jo'], %w[role Author]], [['name', 'Doe, Al'], %w[role Editor]]]
+    end
+
+    it 'does not also read the sub-properties flat' do
+      expect(stored_by_mapping).not_to have_key('flat-name')
     end
   end
 

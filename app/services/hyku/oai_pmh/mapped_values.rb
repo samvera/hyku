@@ -7,8 +7,11 @@ module Hyku
     # read values alike and differ only in how they write each mapping and value.
     #
     # @example From a format's SolrDocument#to_<prefix>
-    #   MappedValues.new(self, schema_data_for('mods_oai_pmh').to_a, title_mapping: 'mods:titleInfo/mods:title')
-    #               .each { |mapping, values| ... }
+    #   values = MappedValues.new(self, schema_data_for('mods_oai_pmh').to_a,
+    #                             compounds: compound_schema_data_for('mods_oai_pmh').to_a,
+    #                             title_mapping: 'mods:titleInfo/mods:title')
+    #   values.each { |mapping, mapped| ... }
+    #   values.each_compound_entry { |pairs| ... }
     class MappedValues
       Value = Struct.new(:stored, :label, keyword_init: true) do
         # A controlled vocabulary term, stored as a URI with a label in the index
@@ -20,10 +23,15 @@ module Hyku
       ##
       # @param mappings [Array<Hash>] from SolrDocument#schema_data_for, which is nil for a model
       #   with neither a profile nor a schema, so pass it through +to_a+
+      # @param compounds [Array<Hash>] from SolrDocument#compound_schema_data_for, likewise +to_a+
       # @param title_mapping [String] where the format writes title when no mapping covers it
-      def initialize(document, mappings, title_mapping:)
+      def initialize(document, mappings, title_mapping:, compounds: [])
         @document = document
-        @mappings = mappings
+        @compounds = compounds
+        # A compound's sub-properties are also indexed flat, which would lose which values belong
+        # to the same entry
+        subproperties = compounds.flat_map { |compound| compound[:subproperties].filter_map { |sub| sub[:property] } }
+        @mappings = mappings.reject { |item| subproperties.include?(item[:property].to_s) }
         @title_mapping = title_mapping
       end
 
@@ -43,7 +51,26 @@ module Hyku
         end
       end
 
+      ##
+      # One compound entry at a time, such as one creator with their role.
+      #
+      # @yieldparam pairs [Array<Array(String, Value)>] each mapped sub-property's mapping and value
+      def each_compound_entry
+        @compounds.each do |compound|
+          entries_for(compound[:compound]).each do |entry|
+            pairs = compound[:subproperties].flat_map do |sub|
+              Array.wrap(entry[sub[:key]]).map(&:to_s).compact_blank.map { |value| [sub[:mapping], Value.new(stored: value)] }
+            end
+            yield pairs if pairs.any?
+          end
+        end
+      end
+
       private
+
+      def entries_for(compound)
+        Hyrax::SolrDocument::Metadata::Solr::CompoundEntries.coerce(@document["#{compound}_json_ss"])
+      end
 
       # Title is core metadata, with no mapping in Hyrax's core_metadata.yaml, as it is for oai_dc
       def mappings_with_title

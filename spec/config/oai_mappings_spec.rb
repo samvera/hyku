@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Default OAI-PMH mappings' do
-  let(:metadata_files) { %w[basic_metadata etd_resource oer_resource image_resource] }
+  let(:metadata_files) { %w[basic_metadata compound_metadata etd_resource oer_resource image_resource] }
   let(:profile_properties) { YAML.load_file(Rails.root.join('config', 'metadata_profiles', 'm3_profile.yaml'))['properties'] }
 
   def attributes_in(file)

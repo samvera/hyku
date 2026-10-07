@@ -1240,6 +1240,7 @@ es:
           - "Use «OR», «AND» y «NOT» para crear búsquedas booleanas complejas. Puede usar paréntesis en sus expresiones."
           - "No se admiten comodines ni truncamiento; las variantes de las palabras se buscan automáticamente."
     show:
+      breadcrumbs: "Ruta de navegación"
       part_of:
         heading: Parte de
   screening_room:

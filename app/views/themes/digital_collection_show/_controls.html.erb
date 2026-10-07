@@ -1,9 +1,19 @@
-<%# OVERRIDE Hyrax 5.3.0: breadcrumbs plus the Digital Collection search form %>
-<div class="dc-searchbar-show">
-  <div class="dc-searchbar-show-inner">
-    <div class="dc-searchbar-crumbs">
-      <%= render_breadcrumbs builder: Hyrax.config.breadcrumb_builder %>
+<%# OVERRIDE Hyrax 5.3.0: a secondary header band with the Digital Collection search form, then the theme's breadcrumb trail; the stock breadcrumbs are cleared so the layout doesn't render them again %>
+<% trail = @presenter ? dc_breadcrumb_trail(@presenter) : [] %>
+<div class="dc-secondary-header">
+  <div class="dc-secondary-header-inner">
+    <div class="dc-secondary-header-search">
+      <%= render partial: 'themes/digital_collection/catalog/search_form' %>
     </div>
-    <%= render partial: 'themes/digital_collection/catalog/search_form' %>
+    <% if trail.any? %>
+      <nav class="dc-breadcrumbs" aria-label="<%= t('digital_collection.show.breadcrumbs') %>">
+        <ol>
+          <% trail.each do |label, path| %>
+            <li><%= path ? link_to(label, path) : tag.span(label, aria: { current: 'page' }) %></li>
+          <% end %>
+        </ol>
+      </nav>
+    <% end %>
   </div>
 </div>
+<% breadcrumbs.clear if trail.any? %>

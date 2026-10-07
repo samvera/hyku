@@ -1243,6 +1243,7 @@ de:
           - "Verwenden Sie „OR“, „AND“ und „NOT“ für komplexe boolesche Suchen. Sie können dabei Klammern verwenden."
           - "Platzhalter und Trunkierung werden nicht unterstützt – Wortformen werden automatisch berücksichtigt."
     show:
+      breadcrumbs: "Brotkrümelnavigation"
       part_of:
         heading: Teil von
   screening_room:

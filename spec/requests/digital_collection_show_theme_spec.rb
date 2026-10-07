@@ -138,12 +138,19 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
       expect(Nokogiri::HTML(response.body).at_css('.dc-show-actions .show-actions')).to be_present
     end
 
-    it 'renders the digital collection masthead and searchbar' do
+    it 'renders the digital collection masthead and the secondary header' do
       get "/concern/generic_works/#{parent.id}"
 
       doc = Nokogiri::HTML(response.body)
       expect(doc.at_css('body')['class']).to include('digital_collection_show')
-      expect(doc.at_css('.dc-searchbar-show form')).to be_present
+      expect(doc.at_css('.dc-secondary-header .dc-secondary-header-search form')).to be_present
+    end
+
+    it 'puts the search before the breadcrumbs in the page code, as phones show them' do
+      get "/concern/generic_works/#{parent.id}"
+
+      parts = Nokogiri::HTML(response.body).at_css('.dc-secondary-header-inner').element_children.map { |el| el['class'] }
+      expect(parts).to eq(%w[dc-secondary-header-search dc-breadcrumbs])
     end
 
     context 'as a visitor' do
@@ -178,6 +185,59 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('Readable Child')
       expect(response.body).not_to include('Private Child')
+    end
+  end
+
+  describe 'the secondary header' do
+    let(:collection) { indexed_collection('Harbor Photographs') }
+    let(:filed) do
+      indexed_with_visibility(GenericWorkResource.new(title: ['Filed away'], member_ids: [file_set.id], member_of_collection_ids: [collection.id]), 'open')
+    end
+    let(:from_search) { { 'HTTP_REFERER' => "http://#{host}/catalog?q=harbor" } }
+
+    def trail
+      Nokogiri::HTML(response.body).css('nav.dc-breadcrumbs li').map { |li| li.text.strip }
+    end
+
+    it 'leads a collection page back to the search it came from' do
+      get "/collections/#{collection.id}", headers: from_search
+
+      expect(trail).to eq(['Home', 'Harbor Photographs', 'Back to search results'])
+      expect(Nokogiri::HTML(response.body).at_css('nav.dc-breadcrumbs [aria-current="page"]').text).to eq('Harbor Photographs')
+    end
+
+    it 'leaves out the search link when the reader did not come from a search' do
+      get "/collections/#{collection.id}"
+
+      expect(trail).to eq(['Home', 'Harbor Photographs'])
+    end
+
+    it 'puts the collection between Home and a work' do
+      get "/concern/generic_works/#{filed.id}", headers: from_search
+
+      expect(trail).to eq(['Home', 'Harbor Photographs', 'Filed away', 'Back to search results'])
+    end
+
+    it 'skips the collection for a work in no collection' do
+      get "/concern/generic_works/#{parent.id}"
+
+      expect(trail).to eq(['Home', 'The Harbor'])
+    end
+
+    it 'leads a file back through its collection and work' do
+      filed
+      get "/concern/file_sets/#{file_set.id}"
+
+      expect(trail).to eq(['Home', 'Harbor Photographs', 'Filed away'])
+      expect(Nokogiri::HTML(response.body).css('nav.dc-breadcrumbs a').last['href']).to include(filed.id.to_s)
+    end
+
+    it 'renders one breadcrumb trail per page, with a translated label' do
+      get "/concern/generic_works/#{filed.id}", params: { locale: 'de' }
+      doc = Nokogiri::HTML(response.body)
+
+      expect(doc.css('nav.dc-breadcrumbs, .breadcrumb').size).to eq(1)
+      expect(doc.at_css('nav.dc-breadcrumbs')['aria-label']).to eq('Brotkrümelnavigation')
     end
   end
 

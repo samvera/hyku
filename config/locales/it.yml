@@ -1240,6 +1240,7 @@ it:
           - "Usa «OR», «AND» e «NOT» per creare ricerche booleane complesse. Puoi usare le parentesi nelle espressioni."
           - "Troncamento e caratteri jolly non sono supportati: le varianti delle parole vengono cercate automaticamente."
     show:
+      breadcrumbs: "Percorso di navigazione"
       part_of:
         heading: Parte di
   screening_room:

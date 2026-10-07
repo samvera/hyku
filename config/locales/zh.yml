@@ -1257,6 +1257,7 @@ zh:
           - "使用“OR”、“AND”和“NOT”构建复杂的布尔逻辑，可在表达式中使用括号。"
           - "不支持截词和通配符，系统会自动匹配词形变化。"
     show:
+      breadcrumbs: "面包屑导航"
       part_of:
         heading: 所属
   screening_room:

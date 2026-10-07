@@ -1107,6 +1107,7 @@ en:
           - "Use \"OR\", \"AND\", and \"NOT\" to create complex boolean logic. You can use parentheses in your complex expressions."
           - "Truncation and wildcards are not supported - word-stemming is done automatically."
     show:
+      breadcrumbs: "Breadcrumb"
       part_of:
         heading: "Part of"
   screening_room:

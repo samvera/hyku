@@ -1123,6 +1123,7 @@ pt-BR:
           - "Use “OR”, “AND” e “NOT” para criar pesquisas booleanas complexas. Você pode usar parênteses nas expressões."
           - "Truncamento e curingas não são suportados; as variações das palavras são pesquisadas automaticamente."
     show:
+      breadcrumbs: "Trilha de navegação"
       part_of:
         heading: Parte de
   screening_room:

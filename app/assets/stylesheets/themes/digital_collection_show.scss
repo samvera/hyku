@@ -2,16 +2,13 @@
 
 @import 'themes/digital_collection/shell';
 
-// ---- breadcrumb + search bar (shared by work show and file set show) ----
+// ---- secondary header: breadcrumbs + site search (collection, work and file set pages) ----
 body.digital_collection_show.works-show,
-body.digital_collection_show.hyrax-file_sets-show {
+body.digital_collection_show.hyrax-file_sets-show,
+body.digital_collection_show.hyrax-collections-show {
   #content-wrapper {
     max-width: none;
     padding: 0;
-  }
-
-  #content-wrapper > .breadcrumb {
-    display: none;
   }
 
   #content-wrapper > .alert {
@@ -19,67 +16,96 @@ body.digital_collection_show.hyrax-file_sets-show {
     @include dc-column;
   }
 
-  .dc-searchbar-show {
-    border-bottom: 1px solid $dc-hairline;
+  .dc-secondary-header {
+    background: $dc-surface-alt;
+    border-bottom: $dc-border solid $dc-hairline;
   }
 
-  .dc-searchbar-show-inner {
+  .dc-secondary-header-inner {
     @include dc-gutter;
     @include dc-column;
     align-items: center;
-    column-gap: 24px;
     display: flex;
-    flex-wrap: wrap;
+    gap: $dc-space-2 $dc-space-5;
     justify-content: space-between;
-    padding-bottom: 12px;
-    padding-top: 12px;
-    row-gap: 8px;
-
-    .dc-searchbar-crumbs {
-      flex: 1 1 200px;
-      min-width: 0;
-    }
-
-    .search-form {
-      flex: 0 1 520px;
-    }
-
-    @include dc-search-form;
+    padding-bottom: $dc-space-3;
+    padding-top: $dc-space-3;
 
     @media (max-width: $dc-mobile-max) {
-      .dc-searchbar-crumbs {
-        flex-basis: 100%;
-      }
-
-      .search-form {
-        flex-basis: 100%;
-      }
+      align-items: stretch;
+      flex-direction: column;
     }
   }
 
-  .dc-searchbar-crumbs .breadcrumb {
-    background: none;
-    border: 0;
-    font-size: 14px;
-    margin: 0;
-    padding: 0;
+  .dc-breadcrumbs {
+    flex: 1 1 0;
+    min-width: 0;
 
-    li + ::before {
-      border-right-color: $dc-ink-secondary;
+    ol {
+      font-size: $dc-text-sm;
+      line-height: $dc-leading-body;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      color: $dc-ink;
+      display: inline;
+      overflow-wrap: anywhere;
+    }
+
+    li + li::before {
+      color: $dc-ink-secondary;
+      content: '/';
+      padding: 0 $dc-space-2;
     }
 
     a {
       @include dc-link;
-      font-size: 14px;
     }
 
-    li:last-child a {
-      color: $dc-ink;
-      text-decoration: none;
+    order: -1;
 
-      &:hover,
-      &:focus {
-        @include dc-underline;
+    @media (max-width: $dc-mobile-max) {
+      order: 0;
+    }
+  }
+
+  .dc-secondary-header-search {
+    flex: none;
+
+    @include dc-search-form;
+
+    #search-form-header .form-group {
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+
+    .input-group {
+      max-width: 100%;
+      width: $dc-width-searchbar-secondary;
+    }
+
+    .dc-search-advanced {
+      flex-basis: auto;
+      margin: 0 0 0 $dc-space-4;
+      white-space: nowrap;
+    }
+
+    @media (max-width: $dc-mobile-max) {
+      #search-form-header .form-group {
+        flex-wrap: wrap;
+      }
+
+      .input-group {
+        width: 100%;
+      }
+
+      .dc-search-advanced {
+        flex-basis: 100%;
+        margin: $dc-space-2 0 0;
+        text-align: left;
       }
     }
   }
@@ -665,7 +691,6 @@ body.digital_collection_show.works-show {
 body.digital_collection_show.hyrax-collections-show {
 
   // ---- chrome hiding ----
-  .dc-searchbar-show { display: none; }
 
   #content-wrapper {
     max-width: none;

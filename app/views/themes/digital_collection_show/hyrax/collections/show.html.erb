@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax 5.3.0 layout only: breadcrumbs and search in banner, collection grid reskin %>
+<%# OVERRIDE Hyrax 5.3.0 layout only: search in banner, collection grid reskin %>
 <% provide :page_title, construct_page_title(@presenter.title) %>
 <% content_for :canonical_url do %>
   <link rel="canonical" href="<%= canonical_url_for(@presenter) %>" />
@@ -15,9 +15,6 @@
 
       <div class="hyc-banner-body">
         <div class="hyc-banner-glass">
-          <div class="hyc-banner-crumbs">
-            <%= render_breadcrumbs builder: Hyrax.config.breadcrumb_builder %>
-          </div>
           <div class="hyc-badges">
             <%= @presenter.collection_type_badge %>
             <%= @presenter.permission_badge %>

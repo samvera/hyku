@@ -1123,6 +1123,10 @@ es:
         deposit: Depositar
       load:
         state_error: 'El flujo de trabajo: %{workflow_name} no se ha actualizado. Está eliminando un estado: %{state_name} con las entidades %{entity_count}. ¡Un estado no puede eliminarse mientras tenga entidades activas!'
+      state:
+        changes_required: Cambios requeridos
+        deposited: Depositado
+        pending_review: Pendiente de revisión
       unauthorized: El trabajo no está disponible actualmente porque aún no ha completado el proceso de aprobación
     works:
       create:

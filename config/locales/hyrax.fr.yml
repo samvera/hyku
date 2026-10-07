@@ -1121,6 +1121,10 @@ fr:
         deposit: Dépôt
       load:
         state_error: 'Le workflow: %{workflow_name} n''a pas été mis à jour. Vous supprimez un état: %{state_name} avec entité (s) %{entity_count}. Un état ne peut pas être supprimé tant qu''il a des entités actives!'
+      state:
+        changes_required: Modifications requises
+        deposited: Déposé
+        pending_review: En attente de révision
       unauthorized: Le travail n'est pas disponible actuellement car il n'a pas encore terminé le processus d'approbation
     works:
       create:

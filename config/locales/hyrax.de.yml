@@ -1122,6 +1122,10 @@ de:
         deposit: Anzahlung
       load:
         state_error: 'Der Workflow: %{workflow_name} wurde nicht aktualisiert. Sie entfernen einen Status: %{state_name} mit %{entity_count}-Entität (en). Ein Status darf nicht entfernt werden, solange er aktive Entitäten hat!'
+      state:
+        changes_required: Änderungen erforderlich
+        deposited: Eingereicht
+        pending_review: Prüfung ausstehend
       unauthorized: Die Arbeit ist derzeit nicht verfügbar, da der Genehmigungsprozess noch nicht abgeschlossen ist
     works:
       create:

@@ -1133,6 +1133,10 @@ en:
         deposit: Deposit
       load:
         state_error: 'The workflow: %{workflow_name} has not been updated.  You are removing a state: %{state_name} with %{entity_count} entity/ies.  A state may not be removed while it has active entities!'
+      state:
+        changes_required: Changes required
+        deposited: Deposited
+        pending_review: Pending review
       unauthorized: The work is not currently available because it has not yet completed the approval process
     works:
       create:

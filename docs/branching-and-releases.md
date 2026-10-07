@@ -8,17 +8,17 @@ flowchart LR
   M -->|"auto-deploy"| T(["test"])
   M -->|"promotion PR"| S["staging"]
   S -->|"auto-deploy"| SE(["staging"])
-  S -->|"draft vX.Y.Z prerelease"| R1["Releases"]
+  S -->|"drafts"| R1{{"vX.Y.Z prerelease"}}
   S -->|"promotion PR"| P["production"]
   P -->|"auto-deploy"| D(["demo"])
-  P -->|"draft vX.Y.Z"| R2["Releases"]
-  R2 -->|"a maintainer publishes"| I["release images"]
+  P -->|"drafts"| R2{{"vX.Y.Z release"}}
+  R2 -->|"a maintainer publishes"| I[/"release images"/]
   H["hotfix branch"] -.->|"PR"| S
   S -.->|"auto-merger PR"| M
   P -.->|"auto-merger PR"| S
 ```
 
-Solid arrows are the normal flow. Dashed arrows are a hotfix and the merge-down pull requests the auto-merger opens after it.
+Rectangles are branches, rounded boxes are the environments they deploy to, and hexagons are GitHub releases: tags plus notes, not branches. Solid arrows are the normal flow. Dashed arrows are a hotfix and the merge-down pull requests the auto-merger opens after it.
 
 ## Branches
 
@@ -73,6 +73,10 @@ Release notes are drafted with [release-drafter](https://github.com/release-draf
 
 If no version label is present, the default bump is `patch`.
 
+`ignore-for-release` only keeps a PR out of the release notes and the version bump. The PR merges, deploys and gets promoted like any other, so it suits spec-only, CI and docs changes. A release whose PRs are all ignored is still drafted, with nothing listed under its changes.
+
 ## Knapsack repositories
 
 Knapsack repositories (e.g. `notch8/hykuup_knapsack`, `notch8/utk_knapsack`) follow the same model with their own branch-to-environment mappings. Each knapsack maintains its own release version line independent of Hyku's version, documented in its README under **Deploying**.
+
+Some knapsacks add client steps that Hyku doesn't have. For example, pals labels tickets `needs client review`, and the client approves each one on staging before the production promotion.

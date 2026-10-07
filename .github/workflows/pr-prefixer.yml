@@ -12,9 +12,10 @@ jobs:
     # resolutions by only running it when HEAD
     # doesn't contain a mainline branch name
     if: |
-      !contains(github.head_ref, 'main') &&
-      !contains(github.head_ref, 'staging') &&
-      !contains(github.head_ref, 'production')
+      !contains(
+        fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'),
+        github.head_ref
+      )
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write

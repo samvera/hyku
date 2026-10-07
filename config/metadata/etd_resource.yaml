@@ -36,6 +36,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="creator"]/mods:namePart
       simple_dc_pmh: dc:creator
   keyword:
     type: string
@@ -51,6 +52,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:topic
       simple_dc_pmh: dc:subject
   rights_statement:
     type: string
@@ -67,6 +69,7 @@ attributes:
       render_as: "rights_statement"
     predicate: http://www.europeana.eu/schemas/edm/rights
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     controlled_values:
       sources:
@@ -85,6 +88,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateIssued
       simple_dc_pmh: dc:date
   degree_name:
     type: string
@@ -145,6 +149,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="degree granting institution"]/mods:namePart
       simple_dc_pmh: dc:publisher
   resource_type:
     type: string
@@ -161,6 +166,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:genre
       simple_dc_pmh: dc:type
     controlled_values:
       sources:
@@ -178,6 +184,7 @@ attributes:
       render_as: "license"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     controlled_values:
       sources:
@@ -194,6 +201,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:abstract
       simple_dc_pmh: dc:description
   access_right:
     type: string
@@ -207,6 +215,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="restriction on access"]
       simple_dc_pmh: dc:rights
   additional_information:
     type: string
@@ -249,6 +258,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="thesis advisor"]/mods:namePart
       simple_dc_pmh: dc:contributor
   alternative_title:
     type: string
@@ -262,6 +272,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:titleInfo[@type="alternative"]/mods:title
       simple_dc_pmh: dc:title
   based_near:
     type: string
@@ -276,6 +287,7 @@ attributes:
       render_term: 'based_near_label'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:geographic
       simple_dc_pmh: dc:coverage
   bibliographic_citation:
     type: string
@@ -289,6 +301,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:note[@type="preferred citation"]
       simple_dc_pmh: dc:relation
   committee_member:
     type: string
@@ -304,6 +317,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="degree committee member"]/mods:namePart
       simple_dc_pmh: dc:contributor
   contributor:
     type: string
@@ -318,6 +332,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="contributor"]/mods:namePart
       simple_dc_pmh: dc:contributor
   department:
     type: string
@@ -344,6 +359,7 @@ attributes:
       - "description_tesim"
     predicate: http://purl.org/dc/elements/1.1/description
     mappings:
+      mods_oai_pmh: mods:note
       simple_dc_pmh: dc:description
   format:
     type: string
@@ -358,6 +374,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:physicalDescription/mods:form
       simple_dc_pmh: dc:format
   identifier:
     type: string
@@ -373,6 +390,7 @@ attributes:
       search_field: 'identifier_tesim'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:identifier
       simple_dc_pmh: dc:identifier
   language:
     type: string
@@ -387,6 +405,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:language/mods:languageTerm
       simple_dc_pmh: dc:language
   publisher:
     type: string
@@ -401,6 +420,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:publisher
       simple_dc_pmh: dc:publisher
   related_url:
     type: string
@@ -415,6 +435,7 @@ attributes:
       render_as: "external_link"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:relatedItem/mods:location/mods:url
       simple_dc_pmh: dc:relation
   rights_notes:
     type: string
@@ -428,6 +449,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
   source:
     type: string
@@ -455,6 +477,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:topic
       simple_dc_pmh: dc:subject
   arkivo_checksum:
     type: string
@@ -476,6 +499,7 @@ attributes:
       search_field: 'date_created_tesim'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateCreated
       simple_dc_pmh: dc:date
   import_url:
     type: string

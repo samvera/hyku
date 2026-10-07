@@ -185,6 +185,7 @@ properties:
       required: true
       primary: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="creator"]/mods:namePart
       simple_dc_pmh: dc:creator
     property_uri: http://purl.org/dc/elements/1.1/creator
     range: http://www.w3.org/2001/XMLSchema#string
@@ -215,6 +216,7 @@ properties:
     form:
       display: false
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="creator"]/mods:namePart
       simple_dc_pmh: dc:creator
     property_uri: http://purl.org/dc/elements/1.1/creator
     range: http://www.w3.org/2001/XMLSchema#string
@@ -249,6 +251,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     property_uri: http://purl.org/dc/terms/license
     range: http://www.w3.org/2001/XMLSchema#string
@@ -282,6 +285,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:abstract
       simple_dc_pmh: dc:description
     property_uri: http://purl.org/dc/terms/abstract
     range: http://www.w3.org/2001/XMLSchema#string
@@ -318,6 +322,8 @@ properties:
       - Open Access
     view:
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:accessCondition[@type="restriction on access"]
   alternative_title:
     available_on:
       class:
@@ -350,6 +356,8 @@ properties:
       - Alternate Title Example
     view:
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:titleInfo[@type="alternative"]/mods:title
   alt_text:
     available_on:
       class:
@@ -431,6 +439,8 @@ properties:
     view:
       render_term: based_near_label
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:subject/mods:geographic
   bibliographic_citation:
     available_on:
       class:
@@ -460,6 +470,8 @@ properties:
       - Doe, J. (2024). Example Citation. Journal of Examples, 12(3), 45-67.
     view:
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:note[@type="preferred citation"]
   contributor:
     available_on:
       class:
@@ -486,6 +498,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="contributor"]/mods:namePart
       simple_dc_pmh: dc:contributor
     property_uri: http://purl.org/dc/elements/1.1/contributor
     range: http://www.w3.org/2001/XMLSchema#string
@@ -519,6 +532,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateCreated
       simple_dc_pmh: dc:date
     property_uri: http://purl.org/dc/terms/created
     range: http://www.w3.org/2001/XMLSchema#dateTime
@@ -553,6 +567,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:note
       simple_dc_pmh: dc:description
     property_uri: http://purl.org/dc/elements/1.1/description
     range: http://www.w3.org/2001/XMLSchema#string
@@ -590,6 +605,8 @@ properties:
       render_as: linked
       search_field: identifier_tesim
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:identifier
   import_url:
     available_on:
       class:
@@ -645,6 +662,8 @@ properties:
     view:
       render_as: linked
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:subject/mods:topic
   label:
     available_on:
       class:
@@ -700,6 +719,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:language/mods:languageTerm
       simple_dc_pmh: dc:language
     property_uri: http://purl.org/dc/elements/1.1/language
     range: http://www.w3.org/2001/XMLSchema#string
@@ -735,6 +755,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:publisher
       simple_dc_pmh: dc:publisher
     property_uri: http://purl.org/dc/elements/1.1/publisher
     range: http://www.w3.org/2001/XMLSchema#string
@@ -774,6 +795,8 @@ properties:
     view:
       render_as: external_link
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:relatedItem/mods:location/mods:url
   relative_path:
     available_on:
       class:
@@ -829,6 +852,8 @@ properties:
     view:
       render_as: faceted
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:genre
   oer_resource_type:
     name: resource_type
     available_on:
@@ -858,6 +883,8 @@ properties:
     view:
       render_as: faceted
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:genre
   rights_notes:
     available_on:
       class:
@@ -883,6 +910,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     property_uri: http://purl.org/dc/elements/1.1/rights
     range: http://www.w3.org/2001/XMLSchema#string
@@ -915,6 +943,7 @@ properties:
       primary: true
       required: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     property_uri: http://www.europeana.eu/schemas/edm/rights
     range: http://www.w3.org/2001/XMLSchema#string
@@ -947,6 +976,7 @@ properties:
       primary: false
       required: false
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     property_uri: http://www.europeana.eu/schemas/edm/rights
     range: http://www.w3.org/2001/XMLSchema#string
@@ -1012,6 +1042,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:subject/mods:topic
       simple_dc_pmh: dc:subject
     property_uri: http://purl.org/dc/elements/1.1/subject
     range: http://www.w3.org/2001/XMLSchema#string
@@ -1091,6 +1122,8 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - PDF
+    mappings:
+      mods_oai_pmh: mods:physicalDescription/mods:form
   extent:
     available_on:
       class:
@@ -1116,6 +1149,8 @@ properties:
     sample_values:
       - 300 dpi
       - 1024x768 pixels
+    mappings:
+      mods_oai_pmh: mods:physicalDescription/mods:extent
   accessibility_feature:
     available_on:
       class:
@@ -1296,6 +1331,8 @@ properties:
     view:
       render_as: faceted
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:targetAudience
   date:
     available_on:
       class:
@@ -1319,6 +1356,8 @@ properties:
     sample_values:
       - "2024-06-07"
       - "2023-05-12"
+    mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateIssued
   discipline:
     available_on:
       class:
@@ -1548,6 +1587,8 @@ properties:
       - "Chapter 1: Introduction"
       - "Chapter 2: Literature Review"
       - "Chapter 3: Methodology"
+    mappings:
+      mods_oai_pmh: mods:tableOfContents
   advisor:
     available_on:
       class:
@@ -1573,6 +1614,8 @@ properties:
     sample_values:
       - Dr. John Doe
       - Dr. Jane Smith
+    mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="thesis advisor"]/mods:namePart
   committee_member:
     available_on:
       class:
@@ -1598,6 +1641,8 @@ properties:
     sample_values:
       - Dr. John Doe
       - Dr. Jane Smith
+    mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="degree committee member"]/mods:namePart
   degree_name:
     available_on:
       class:
@@ -1706,6 +1751,8 @@ properties:
       - Example State University
     view:
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="degree granting institution"]/mods:namePart
   bulkrax_identifier:
     available_on:
       class:

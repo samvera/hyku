@@ -36,6 +36,8 @@ The `mods` prefix serves [MODS 3.7](https://www.loc.gov/standards/mods/) records
 
 Values come from the property's index fields, preferring its `_tesim` field. Title is always included, as `mods:titleInfo/mods:title`, unless a mapping for `title` says otherwise.
 
+Hyku's default metadata profile and its metadata YAML map the common properties (titles, names with their roles, dates, publisher, subjects, places, language, genre, rights, identifiers and so on) to the same MODS elements in both modes. A tenant whose profile predates these mappings gets them by saving a new profile version that includes them.
+
 ### Writing a MODS mapping
 
 A mapping is a small subset of XPath describing where a value goes. Every step needs the `mods:` prefix.
@@ -65,6 +67,7 @@ Each piece of a mapped format has one home. MODS is the worked example.
 | Piece | Where | MODS |
 | --- | --- | --- |
 | The mappings key | declared under the profile's top-level `mappings:`, then set on each property in the profile and in the `config/metadata/*.yaml` attributes | `Hyku::Mods::MAPPING_KEY` |
+| Keeping profile and YAML identical | add the key to the list in `spec/config/oai_mappings_spec.rb` | listed |
 | The record's mapped properties, in either mode | `SolrDocument#schema_data_for(key)` | called by `SolrDocument#to_mods` |
 | Reading their values: index field, controlled-value labels, shared index fields, the title fallback | `Hyku::OaiPmh::MappedValues` | used by `Hyku::Mods::RecordBuilder` |
 | Writing the format's XML | a builder under `app/services/hyku/<format>/`, called from `SolrDocument#to_<prefix>` | `app/services/hyku/mods/` |

@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyku 7.1.0: full-width viewer with a side rail for citations, part of and items %>
+<%# OVERRIDE Hyku 7.1.0: full-width viewer with a side rail for citations, part of and items; links to other sites in the description and compound cards open in a new tab %>
 <% content_for(:extra_body_classes, 'works-show ') %>
 <% provide :page_title, @presenter.page_title %>
 
@@ -38,15 +38,15 @@
 
   <div class="dc-show-body">
     <div class="dc-show-main">
-      <% if @presenter.description.present? %>
+      <% if @presenter.description.present? && dc_profile_shows?(@presenter, :description) %>
         <div class="dc-show-lede">
-          <%= render 'work_description', presenter: @presenter %>
+          <%= dc_external_links_in_new_tab(render('work_description', presenter: @presenter)) %>
         </div>
       <% end %>
 
       <%= render 'featured_attributes', presenter: @presenter %>
       <%= render 'metadata', presenter: @presenter %>
-      <%= render_compound_cards(@presenter) %>
+      <%= dc_external_links_in_new_tab(render_compound_cards(@presenter)) %>
     </div>
 
     <aside class="dc-show-rail">

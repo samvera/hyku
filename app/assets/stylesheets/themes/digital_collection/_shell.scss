@@ -10,6 +10,17 @@ html body.digital_collection {
 
 body.digital_collection.public-facing,
 body.digital_collection_show.public-facing {
+  .dc-external-end {
+    white-space: nowrap;
+  }
+
+  .dc-external-icon {
+    display: inline-block;
+    font-size: 0.75em;
+    margin-left: $dc-space-1;
+    text-decoration: none;
+  }
+
   color: $dc-ink;
 
   .btn,

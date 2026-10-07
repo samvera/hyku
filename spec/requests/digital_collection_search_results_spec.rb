@@ -220,6 +220,7 @@ RSpec.describe 'the digital collection search results page', type: :request, sin
 
     expect(links.size).to be > 5
     expect(links).to all(start_with('/catalog'))
+    expect(links.join).not_to include('#')
   end
 
   it 'names each slideshow thumbnail link with the plain title' do

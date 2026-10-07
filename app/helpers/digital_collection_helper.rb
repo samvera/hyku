@@ -34,10 +34,16 @@ module DigitalCollectionHelper
   end
 
   def dc_banner_src(collection_id)
-    branding = CollectionBrandingInfo.find_by(collection_id: collection_id.to_s, role: 'banner')
-    return banner_image unless branding&.local_path.present? && File.exist?(branding.local_path)
+    branding = dc_collection_branding(collection_id, 'banner').first
+    branding ? dc_branding_path(branding) : banner_image
+  end
 
-    "/#{branding.local_path.split('/')[-4..].join('/')}"
+  def dc_collection_branding(collection_id, role)
+    CollectionBrandingInfo.where(collection_id: collection_id.to_s, role:).select { |branding| branding.local_path.present? && File.exist?(branding.local_path) }
+  end
+
+  def dc_branding_path(branding)
+    "/#{branding.local_path.split('/')[-4..].map { |segment| ERB::Util.url_encode(segment) }.join('/')}"
   end
 
   def dc_thumb_placeholder_class(document)
@@ -225,22 +231,8 @@ module DigitalCollectionHelper
     url_for(search_state.to_h.symbolize_keys.except(*DC_URL_OPTION_KEYS).merge(format:))
   end
 
-  def dc_toolbar_path(**changes)
-    url_for(search_state.params_for_search(changes).except(:controller, :action).merge(only_path: true))
-  end
-
-  def dc_card_meta(document, collection_label: false)
-    parts = if document.collection?
-              [(t('digital_collection.search.results.collection') if collection_label), dc_works_count_label(document)]
-            else
-              [Array(document['creator_tesim']).first, dc_result_date(document)]
-            end
-    parts.compact_blank.join(' · ')
-  end
-
-  def dc_result_fields(document)
-    fields = document.collection? ? dc_collection_result_values(document) : dc_work_result_values(document)
-    fields.filter_map { |key, value| [key, t("digital_collection.search.results.fields.#{key}"), value] if value.present? }
+  def dc_toolbar_path(anchor: nil, **changes)
+    url_for(search_state.params_for_search(changes).except(:controller, :action).merge(only_path: true, anchor:).compact)
   end
 
   private
@@ -281,34 +273,5 @@ module DigitalCollectionHelper
       end
     end
     safe_join(chips, "\n") if chips.any?
-  end
-
-  def dc_work_result_values(document)
-    { creator: Array(document['creator_tesim']).join('; '),
-      date: dc_result_date(document),
-      part_of: dc_part_of_links(document),
-      resource_type: Array(document['resource_type_tesim']).join(', '),
-      description: theme_blurb(Array(document['description_tesim']).first, length: 300) }
-  end
-
-  def dc_collection_result_values(document)
-    { description: theme_blurb(Array(document['description_tesim']).first, length: 300),
-      works: dc_works_count_label(document) }
-  end
-
-  def dc_works_count_label(document)
-    t('digital_collection.homepage.browse.works_count', count: Hyrax::CollectionPresenter.new(document, current_ability).total_viewable_works)
-  end
-
-  def dc_result_date(document)
-    Array(document['date_created_tesim']).first.presence || Array(document['date_issued_tesim']).first
-  end
-
-  def dc_part_of_links(document)
-    ids = Array(document['member_of_collection_ids_ssim'])
-    links = Array(document['member_of_collections_ssim']).each_with_index.map do |name, index|
-      ids[index] ? link_to(name, hyrax.collection_path(ids[index])) : name
-    end
-    safe_join(links, ', ')
   end
 end

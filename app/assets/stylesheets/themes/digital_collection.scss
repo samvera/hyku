@@ -349,14 +349,7 @@
   }
 
   .dc-section-head {
-    align-items: flex-end;
-    border-bottom: $dc-rule-strong solid $dc-ink;
-    display: flex;
-    flex-wrap: wrap;
-    gap: $dc-space-4 $dc-space-5;
-    justify-content: space-between;
-    margin-bottom: $dc-space-5;
-    padding-bottom: $dc-space-3;
+    @include dc-section-head;
   }
 
   .dc-section-eyebrow {

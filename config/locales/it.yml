@@ -1239,8 +1239,28 @@ it:
           - "Usa «-» prima di una parola o frase per escluderla."
           - "Usa «OR», «AND» e «NOT» per creare ricerche booleane complesse. Puoi usare le parentesi nelle espressioni."
           - "Troncamento e caratteri jolly non sono supportati: le varianti delle parole vengono cercate automaticamente."
+    collection:
+      actions:
+        add_to_collection: "Aggiungi a una collezione"
+        add_works: "Aggiungi opere"
+        feature: "Metti in evidenza nella home"
+        unfeature: "Rimuovi dalla home"
+      created_by: "Creato da %{creator}"
+      date_format: "%-d %B %Y"
+      details: "Dettagli della collezione"
+      items:
+        one: "%{count} elemento"
+        other: "%{count} elementi"
+      search_placeholder: "Cerca in questa collezione"
+      updated: "Ultimo aggiornamento: %{date}"
+      no_results: "Nessun elemento di questa collezione corrisponde a «%{query}»."
+      search_results: "Risultati della ricerca (%{number})"
+      subcollections: "Sottocollezioni (%{number})"
+      works: "Opere in questa collezione (%{number})"
+      logo: "Logo di %{title}"
     show:
       breadcrumbs: "Percorso di navigazione"
+      new_tab: "(si apre in una nuova scheda)"
       part_of:
         heading: Parte di
   screening_room:

@@ -1256,8 +1256,28 @@ zh:
           - "在词语或短语前加“-”以排除。"
           - "使用“OR”、“AND”和“NOT”构建复杂的布尔逻辑，可在表达式中使用括号。"
           - "不支持截词和通配符，系统会自动匹配词形变化。"
+    collection:
+      actions:
+        add_to_collection: "添加到收藏"
+        add_works: "添加作品"
+        feature: "在首页推荐"
+        unfeature: "从首页移除"
+      created_by: "创建者：%{creator}"
+      date_format: "%Y年%-m月%-d日"
+      details: "收藏详情"
+      items:
+        one: "%{count} 个项目"
+        other: "%{count} 个项目"
+      search_placeholder: "在此收藏中搜索"
+      updated: "最后更新：%{date}"
+      no_results: "此收藏中没有与“%{query}”匹配的内容。"
+      search_results: "搜索结果（%{number}）"
+      subcollections: "子收藏（%{number}）"
+      works: "此收藏中的作品（%{number}）"
+      logo: "%{title} 标志"
     show:
       breadcrumbs: "面包屑导航"
+      new_tab: "（在新标签页中打开）"
       part_of:
         heading: 所属
   screening_room:

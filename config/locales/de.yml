@@ -1242,8 +1242,28 @@ de:
           - "Setzen Sie „-“ vor ein Wort oder eine Wortgruppe, um sie auszuschließen."
           - "Verwenden Sie „OR“, „AND“ und „NOT“ für komplexe boolesche Suchen. Sie können dabei Klammern verwenden."
           - "Platzhalter und Trunkierung werden nicht unterstützt – Wortformen werden automatisch berücksichtigt."
+    collection:
+      actions:
+        add_to_collection: "Zu einer Sammlung hinzufügen"
+        add_works: "Werke hinzufügen"
+        feature: "Auf der Startseite zeigen"
+        unfeature: "Von der Startseite entfernen"
+      created_by: "Erstellt von %{creator}"
+      date_format: "%-d. %B %Y"
+      details: "Sammlungsdetails"
+      items:
+        one: "%{count} Objekt"
+        other: "%{count} Objekte"
+      search_placeholder: "In dieser Sammlung suchen"
+      updated: "Zuletzt aktualisiert am %{date}"
+      no_results: "Nichts in dieser Sammlung passt zu „%{query}“."
+      search_results: "Suchergebnisse (%{number})"
+      subcollections: "Untersammlungen (%{number})"
+      works: "Werke in dieser Sammlung (%{number})"
+      logo: "Logo von %{title}"
     show:
       breadcrumbs: "Brotkrümelnavigation"
+      new_tab: "(öffnet in einem neuen Tab)"
       part_of:
         heading: Teil von
   screening_room:

@@ -1,0 +1,25 @@
+<%# OVERRIDE Hyrax 5.3.0: ruled term and value rows that follow the flexible metadata profile's view settings (render_as, labels, visibility), leaving out what the banner and description already show, plus a Part of row linking the parent collections; links to other sites open in a new tab %>
+<% rows = dc_collection_metadata_rows(@presenter) %>
+<% parents = @presenter.collection_type_is_nestable? && @presenter.total_parent_collections.positive? ? @presenter.parent_collections.documents : [] %>
+<% if rows.any? || parents.any? %>
+  <% html = capture do %>
+    <dl class="dc-meta-rows">
+      <% rows.each do |row| %>
+        <div><%= row %></div>
+      <% end %>
+      <% if parents.any? %>
+        <div id="dc-collection-metadata-part_of">
+          <dt><%= t('digital_collection.search.results.fields.part_of') %></dt>
+          <dd>
+            <ul>
+              <% parents.each do |parent| %>
+                <li><%= link_to parent, [hyrax, parent] %></li>
+              <% end %>
+            </ul>
+          </dd>
+        </div>
+      <% end %>
+    </dl>
+  <% end %>
+  <%= dc_external_links_in_new_tab(html) %>
+<% end %>

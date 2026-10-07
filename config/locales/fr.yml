@@ -1244,8 +1244,28 @@ fr:
           - "Placez « - » devant un mot ou une expression pour l’exclure."
           - "Utilisez « OR », « AND » et « NOT » pour créer des recherches booléennes complexes. Vous pouvez utiliser des parenthèses."
           - "La troncature et les caractères génériques ne sont pas pris en charge ; les variantes des mots sont recherchées automatiquement."
+    collection:
+      actions:
+        add_to_collection: "Ajouter à une collection"
+        add_works: "Ajouter des œuvres"
+        feature: "Mettre en avant sur l'accueil"
+        unfeature: "Retirer de l'accueil"
+      created_by: "Créé par %{creator}"
+      date_format: "%-d %B %Y"
+      details: "Détails de la collection"
+      items:
+        one: "%{count} élément"
+        other: "%{count} éléments"
+      search_placeholder: "Rechercher dans cette collection"
+      updated: "Dernière mise à jour : %{date}"
+      no_results: "Rien dans cette collection ne correspond à « %{query} »."
+      search_results: "Résultats de recherche (%{number})"
+      subcollections: "Sous-collections (%{number})"
+      works: "Œuvres de cette collection (%{number})"
+      logo: "Logo de %{title}"
     show:
       breadcrumbs: "Fil d'Ariane"
+      new_tab: "(s’ouvre dans un nouvel onglet)"
       part_of:
         heading: Fait partie de
   screening_room:

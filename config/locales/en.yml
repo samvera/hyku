@@ -1106,8 +1106,28 @@ en:
           - "Use \"-\" before a word or phrase to exclude."
           - "Use \"OR\", \"AND\", and \"NOT\" to create complex boolean logic. You can use parentheses in your complex expressions."
           - "Truncation and wildcards are not supported - word-stemming is done automatically."
+    collection:
+      actions:
+        add_to_collection: "Add to a collection"
+        add_works: "Add works"
+        feature: "Feature on homepage"
+        unfeature: "Remove from homepage"
+      created_by: "Created by %{creator}"
+      date_format: "%B %-d, %Y"
+      details: "Collection details"
+      items:
+        one: "%{count} item"
+        other: "%{count} items"
+      search_placeholder: "Search this collection"
+      updated: "Last updated %{date}"
+      no_results: "Nothing in this collection matches “%{query}”."
+      search_results: "Search results (%{number})"
+      subcollections: "Subcollections (%{number})"
+      works: "Works in this collection (%{number})"
+      logo: "%{title} logo"
     show:
       breadcrumbs: "Breadcrumb"
+      new_tab: "(opens in a new tab)"
       part_of:
         heading: "Part of"
   screening_room:

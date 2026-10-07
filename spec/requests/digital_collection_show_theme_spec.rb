@@ -25,13 +25,15 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
   end
 
   def indexed_collection(title, visibility = 'open')
-    indexed_with_visibility(
+    collection = indexed_with_visibility(
       Hyrax::PcdmCollection.new(
         title: [title],
         collection_type_gid: Hyrax::CollectionType.find_or_create_default_collection_type.to_global_id.to_s
       ),
       visibility
     )
+    Hyrax::PermissionTemplate.find_or_create_by!(source_id: collection.id.to_s)
+    collection
   end
 
   before do
@@ -242,23 +244,256 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
   end
 
   describe 'the collection page' do
-    it 'renders the banner plate with the title and item count' do
-      collection = indexed_collection('Harbor Photographs')
+    let(:collection) { indexed_collection('Harbor Photographs') }
+    let(:doc) { Nokogiri::HTML(response.body) }
 
-      get "/collections/#{collection.id}"
+    after { FileUtils.rm_rf(Rails.root.join('tmp', 'branding')) }
 
-      expect(response).to have_http_status(:ok)
-      doc = Nokogiri::HTML(response.body)
-      expect(doc.at_css('.hyc-banner-glass h1.hyc-title').text).to include('Harbor Photographs')
-      expect(doc.at_css('.hyc-item-count')).to be_present
+    def branding_file(role, name)
+      path = Rails.root.join('tmp', 'branding', collection.id.to_s, role, name).to_s
+      FileUtils.mkdir_p(File.dirname(path))
+      FileUtils.touch(path)
+      path
     end
 
-    it 'falls back to the no-image banner when no banner is uploaded' do
-      collection = indexed_collection('Harbor Photographs')
+    it 'puts the badges, title, collection search and meta line on one plate' do
+      get "/collections/#{collection.id}"
+      plate = doc.at_css('section.dc-collection-banner .dc-collection-plate')
+
+      expect(doc.css('h1').map { |h| h.text.strip }).to eq(['Harbor Photographs'])
+      expect(plate.at_css('h1#dc-collection-title').text).to eq('Harbor Photographs')
+      expect(plate.css('.dc-collection-badges .dc-badge, .dc-collection-badges .badge').size).to eq(2)
+      expect(plate.at_css('.dc-collection-meta').text).to include('0 items')
+      expect(plate.at_css('.dc-collection-meta').text).to include('Last updated')
+      expect(doc.at_css('.dc-collection-banner')['aria-labelledby']).to eq('dc-collection-title')
+    end
+
+    it 'searches within the collection from the plate' do
+      get "/collections/#{collection.id}"
+      form = doc.at_css('.dc-collection-search form[role="search"]')
+
+      expect(form['action']).to include(collection.id.to_s)
+      expect(form.at_css('input#collection_search')['placeholder']).to eq('Search this collection')
+      expect(form.at_css('button#collection_submit').text.strip).to eq('Search')
+      expect(form.at_css("label[for='collection_search']")).to be_present
+    end
+
+    it 'shows a plain band when no banner is uploaded' do
+      get "/collections/#{collection.id}"
+
+      expect(doc.at_css('section.dc-collection-banner.dc-collection-banner-plain')['style']).to be_nil
+    end
+
+    it 'shows the banner image when its file exists, and a plain band when it is missing' do
+      CollectionBrandingInfo.create!(collection_id: collection.id.to_s, role: 'banner', local_path: branding_file('banner', 'harbor.jpg'), filename: 'harbor.jpg')
+
+      get "/collections/#{collection.id}"
+      expect(doc.at_css('section.dc-collection-banner')['style']).to include("/branding/#{collection.id}/banner/harbor.jpg")
+
+      FileUtils.rm_rf(Rails.root.join('tmp', 'branding'))
+      get "/collections/#{collection.id}"
+      expect(Nokogiri::HTML(response.body).at_css('section.dc-collection-banner-plain')).to be_present
+    end
+
+    it 'lists the logos whose files exist, linked when they have a URL' do
+      CollectionBrandingInfo.create!(collection_id: collection.id.to_s, role: 'logo', local_path: branding_file('logo', 'museum.png'),
+                                     filename: 'museum.png', alt_text: 'Harbor Museum', target_url: 'https://example.org')
+      CollectionBrandingInfo.create!(collection_id: collection.id.to_s, role: 'logo', local_path: '/nowhere/branding/x/logo/gone.png', filename: 'gone.png')
+
+      get "/collections/#{collection.id}"
+      logos = doc.css('.dc-collection-plate .dc-collection-logos li')
+
+      expect(logos.size).to eq(1)
+      expect(logos.first.at_css('a[href="https://example.org"] img')['alt']).to eq('Harbor Museum')
+    end
+
+    it 'encodes the banner file name so it cannot break out of the style attribute' do
+      CollectionBrandingInfo.create!(collection_id: collection.id.to_s, role: 'banner', local_path: branding_file('banner', "harbor's (1).jpg"), filename: 'x.jpg')
 
       get "/collections/#{collection.id}"
 
-      expect(Nokogiri::HTML(response.body).at_css('.hyc-banner.hyc-banner--no-image')).to be_present
+      expect(doc.at_css('section.dc-collection-banner')['style']).to include('harbor%27s%20%281%29.jpg')
+    end
+
+    it 'names a linked logo after the collection when it has no alt text' do
+      CollectionBrandingInfo.create!(collection_id: collection.id.to_s, role: 'logo', local_path: branding_file('logo', 'museum.png'),
+                                     filename: 'museum.png', target_url: 'https://example.org')
+
+      get "/collections/#{collection.id}"
+
+      expect(doc.at_css('.dc-collection-logos a img')['alt']).to eq('Harbor Photographs logo')
+    end
+
+    it 'offers the translated homepage toggle that fits whether the collection is featured' do
+      get "/collections/#{collection.id}"
+      expect(doc.at_css('.dc-collection-actions a[data-behavior="feature"]').text.strip).to eq('Feature on homepage')
+      expect(doc.at_css('.dc-collection-actions a[data-behavior="feature"]')['class']).not_to include('collapse')
+      expect(doc.at_css('.dc-collection-actions a[data-behavior="unfeature"]')['class']).to include('collapse')
+
+      FeaturedCollection.create!(collection_id: collection.id.to_s)
+      get "/collections/#{collection.id}"
+      featured = Nokogiri::HTML(response.body)
+      expect(featured.at_css('.dc-collection-actions a[data-behavior="unfeature"]').text.strip).to eq('Remove from homepage')
+      expect(featured.at_css('.dc-collection-actions a[data-behavior="unfeature"]')['class']).not_to include('collapse')
+    end
+
+    it 'offers Copy link beside the badges when the feature is on' do
+      allow(Flipflop).to receive(:enabled?).and_call_original
+      allow(Flipflop).to receive(:enabled?).with(:copy_permalink_button).and_return(true)
+
+      get "/collections/#{collection.id}"
+
+      expect(doc.at_css('.dc-collection-badges button.copy-permalink-button')).to be_present
+    end
+
+    it 'gives an editor one row of short, translated actions' do
+      get "/collections/#{collection.id}"
+      row = doc.at_css('section.dc-collection-actions')
+      labels = row.css('.dc-collection-actions-inner > .btn:not(.collapse)').map { |b| b.text.strip }
+
+      expect(labels).to start_with('Edit collection', 'Add works')
+      expect(labels.last).to eq('Delete collection')
+      expect(row.css('h2.sr-only').size).to eq(1)
+      expect(row.at_css('a.dc-action-danger')['data-confirm']).to be_present
+    end
+
+    it 'shows a visitor no actions' do
+      sign_out admin
+      get "/collections/#{collection.id}"
+
+      expect(doc.css('.dc-collection-actions-inner .btn')).to be_empty
+    end
+
+    it 'shows the details under a section head with ruled rows and no Total items row' do
+      described = indexed_with_visibility(
+        CollectionResource.new(title: ['Harbor Maps'], description: ['Survey maps of the harbor.'], creator: ['Harbor Museum'],
+                               collection_type_gid: Hyrax::CollectionType.find_or_create_default_collection_type.to_global_id.to_s), 'open'
+      )
+      Hyrax::PermissionTemplate.find_or_create_by!(source_id: described.id.to_s)
+
+      get "/collections/#{described.id}"
+      details = doc.at_css('section.dc-collection-details')
+
+      expect(details['aria-labelledby']).to eq('dc-collection-details-heading')
+      expect(details.at_css('.dc-section-head h2#dc-collection-details-heading').text).to eq('Collection details')
+      expect(details.at_css('.dc-collection-description').text).to include('Survey maps of the harbor.')
+      expect(details.css('dl.dc-meta-rows dt').map { |dt| dt.text.strip }).to include('Creator')
+      expect(details.css('dl.dc-meta-rows dt').map { |dt| dt.text.strip }).not_to include('Total items')
+    end
+
+    describe 'the subcollections and works' do
+      let!(:work) do
+        indexed_with_visibility(GenericWorkResource.new(title: ['Harbor at dawn'], creator: ['Rau'], member_of_collection_ids: [collection.id]), 'open')
+      end
+
+      it 'lists the works with the search page toolbar, rows and pager' do
+        get "/collections/#{collection.id}"
+        works = doc.at_css('section.dc-collection-works')
+
+        expect(works.at_css('.dc-section-head h2#dc-works-heading').text).to eq('Works in this collection (1)')
+        expect(works.at_css('.dc-section-head .dc-toolbar .dc-toolbar-range').text.squish).to eq('1–1 of 1')
+        expect(works.at_css('#search-results li.document').text).to include('Harbor at dawn')
+        expect(works.css('.dc-view-toggle a .caption').map(&:text)).to include('List', 'Grid')
+      end
+
+      it 'keeps the toolbar links on the collection page' do
+        get "/collections/#{collection.id}"
+
+        links = doc.css('.dc-collection-works .dc-toolbar .dropdown-item, .dc-collection-works .dc-view-toggle a').map { |a| a['href'] }
+        expect(links).not_to be_empty
+        expect(links).to all(start_with("/collections/#{collection.id}"))
+      end
+
+      it 'brings the reader back to the works after a sort, view, page or search change' do
+        get "/collections/#{collection.id}"
+        links = doc.css('.dc-collection-works .dc-toolbar .dropdown-item, .dc-collection-works .dc-view-toggle a').map { |a| a['href'] }
+
+        expect(doc.at_css('section#dc-collection-works')).to be_present
+        expect(links).to all(end_with('#dc-collection-works'))
+        expect(doc.at_css('form.dc-collection-search-form')['action']).to end_with('#dc-collection-works')
+      end
+
+      it 'keeps the toolbar links on this site whatever the query string holds' do
+        get "/collections/#{collection.id}", params: { host: 'evil.example' }
+
+        links = doc.css('.dc-collection-works .dc-toolbar a, .dc-collection-works .dc-view-toggle a').map { |a| a['href'] }
+        expect(links).to all(start_with("/collections/#{collection.id}"))
+      end
+
+      it 'shows the works in the Masonry and Slideshow views' do
+        get "/collections/#{collection.id}", params: { view: 'masonry' }
+        expect(doc.at_css('.dc-collection-works ul.dc-cards-masonry li.dc-card').text).to include('Harbor at dawn')
+
+        get "/collections/#{collection.id}", params: { view: 'slideshow' }
+        expect(Nokogiri::HTML(response.body).at_css('.dc-collection-works .documents-slideshow .slideshow-preview-thumbnail')).to be_present
+      end
+
+      it 'shows the works as cards in the Grid view' do
+        get "/collections/#{collection.id}", params: { view: 'gallery' }
+
+        expect(doc.at_css('.dc-collection-works ul.dc-cards-gallery li.dc-card').text).to include('Harbor at dawn')
+      end
+
+      it 'shows subcollections as collection cards' do
+        child = indexed_with_visibility(
+          Hyrax::PcdmCollection.new(title: ['Harbor surveys'], member_of_collection_ids: [collection.id],
+                                    collection_type_gid: Hyrax::CollectionType.find_or_create_default_collection_type.to_global_id.to_s), 'open'
+        )
+        Hyrax::PermissionTemplate.find_or_create_by!(source_id: child.id.to_s)
+
+        get "/collections/#{collection.id}"
+        section = doc.at_css('section.dc-collection-subcollections')
+
+        expect(section.at_css('h2#dc-subcollections-heading').text).to eq('Subcollections (1)')
+        expect(section.at_css('li.dc-card .dc-card-link').text).to eq('Harbor surveys')
+      end
+
+      it 'keeps the subcollections on any page of works' do
+        child = indexed_with_visibility(
+          Hyrax::PcdmCollection.new(title: ['Harbor surveys'], member_of_collection_ids: [collection.id],
+                                    collection_type_gid: Hyrax::CollectionType.find_or_create_default_collection_type.to_global_id.to_s), 'open'
+        )
+        Hyrax::PermissionTemplate.find_or_create_by!(source_id: child.id.to_s)
+
+        get "/collections/#{collection.id}", params: { page: 2 }
+
+        expect(doc.at_css('section.dc-collection-subcollections li.dc-card .dc-card-link').text).to eq('Harbor surveys')
+      end
+
+      it 'says so when a search within the collection finds nothing' do
+        get "/collections/#{collection.id}", params: { cq: 'zeppelin' }
+        works = doc.at_css('section.dc-collection-works')
+
+        expect(works.at_css('h2').text).to eq('Search results (0)')
+        expect(works.at_css('.dc-collection-no-results').text).to include('zeppelin')
+      end
+    end
+
+    it 'links each detail the way the flexible metadata profile says' do
+      skip 'needs flexible metadata' unless Hyrax.config.flexible?
+      profiled = indexed_with_visibility(
+        CollectionResource.new(title: ['Harbor Records'], creator: ['Harbor Museum'], resource_type: ['Map'],
+                               license: ['https://creativecommons.org/licenses/by/4.0/'],
+                               collection_type_gid: Hyrax::CollectionType.find_or_create_default_collection_type.to_global_id.to_s), 'open'
+      )
+      Hyrax::PermissionTemplate.find_or_create_by!(source_id: profiled.id.to_s)
+
+      get "/collections/#{profiled.id}", params: { sort: 'title_ssi asc' }
+      rows = doc.css('dl.dc-meta-rows > div').to_h { |row| [row.at_css('dt').text.strip, row.at_css('dd')] }
+      license = rows['License'].css('a').find { |a| a['href'].start_with?('https://creativecommons.org') }
+
+      expect(rows['Creator'].at_css('a')['href']).to include('search_field=creator')
+      expect(CGI.unescape(rows.find { |term, _| term.casecmp?('Resource type') }.last.at_css('a')['href'])).to include('f[resource_type_sim][]=Map')
+      expect([license['target'], license['rel']]).to eq(['_blank', 'noopener noreferrer'])
+      expect(doc.css('dl.dc-meta-rows a').map { |a| a['href'] }).to all(satisfy { |href| !href.include?('sort=') })
+    end
+
+    it 'translates the plate in another language' do
+      get "/collections/#{collection.id}", params: { locale: 'de' }
+
+      expect(response.body).not_to include('translation_missing')
+      expect(doc.at_css('input#collection_search')['placeholder']).to eq('In dieser Sammlung suchen')
+      expect(doc.at_css('.dc-collection-meta').text).to include('0 Objekte')
     end
   end
 end

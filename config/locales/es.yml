@@ -1239,8 +1239,28 @@ es:
           - "Use «-» delante de una palabra o frase para excluirla."
           - "Use «OR», «AND» y «NOT» para crear búsquedas booleanas complejas. Puede usar paréntesis en sus expresiones."
           - "No se admiten comodines ni truncamiento; las variantes de las palabras se buscan automáticamente."
+    collection:
+      actions:
+        add_to_collection: "Agregar a una colección"
+        add_works: "Agregar obras"
+        feature: "Destacar en la página de inicio"
+        unfeature: "Quitar de la página de inicio"
+      created_by: "Creado por %{creator}"
+      date_format: "%-d de %B de %Y"
+      details: "Detalles de la colección"
+      items:
+        one: "%{count} elemento"
+        other: "%{count} elementos"
+      search_placeholder: "Buscar en esta colección"
+      updated: "Última actualización: %{date}"
+      no_results: "Nada en esta colección coincide con «%{query}»."
+      search_results: "Resultados de búsqueda (%{number})"
+      subcollections: "Subcolecciones (%{number})"
+      works: "Obras en esta colección (%{number})"
+      logo: "Logotipo de %{title}"
     show:
       breadcrumbs: "Ruta de navegación"
+      new_tab: "(se abre en una pestaña nueva)"
       part_of:
         heading: Parte de
   screening_room:

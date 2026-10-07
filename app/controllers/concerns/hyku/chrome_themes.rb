@@ -14,8 +14,14 @@ module Hyku
       HOME.include?(theme.to_s)
     end
 
+    COMPANIONS = { 'digital_collection_show' => 'digital_collection' }.freeze
+
     def self.show?(theme)
       SHOW.include?(theme.to_s)
+    end
+
+    def self.companion(show_theme)
+      COMPANIONS[show_theme.to_s]
     end
   end
 end

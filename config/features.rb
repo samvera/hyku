@@ -68,6 +68,12 @@ Flipflop.configure do
     feature :include_guided_import,
             default: false,
             description: "Enable the guided import workflow."
+
+    feature :oai_mods,
+            title: "OAI-PMH MODS",
+            default: false,
+            description: "Offer MODS records over OAI-PMH, built from the mods_oai_pmh mappings in the " \
+                         "metadata profile, or in the metadata YAML files when flexible metadata is off."
   end
 
   group :deposit_features do

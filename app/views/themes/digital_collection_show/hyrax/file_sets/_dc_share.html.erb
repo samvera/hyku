@@ -1,0 +1,22 @@
+<% unless Flipflop.hide_social_buttons? %>
+  <% url = request.original_url %>
+  <% title = content_for?(:page_title) ? content_for(:page_title) : presenter.to_s %>
+  <% shares = [
+       ['facebook', 'fa fa-facebook', "https://facebook.com/sharer/sharer.php?#{{ u: url }.to_param}"],
+       ['x', 'dc-share-icon-x', "https://x.com/intent/tweet/?#{{ text: title, url: }.to_param}"]
+     ] %>
+  <nav class="dc-file-share" aria-labelledby="dc-file-share-label">
+    <span class="sr-only" id="dc-file-share-label"><%= t('digital_collection.file_set.share.label') %></span>
+    <% shares.each do |name, icon, href| %>
+      <% label = t("digital_collection.file_set.share.#{name}") %>
+      <%= link_to href, class: 'dc-share-link', title: label, target: '_blank', rel: 'noopener noreferrer' do %>
+        <span class="dc-share-icon <%= icon %>" aria-hidden="true"></span>
+        <span class="sr-only"><%= label %> <%= t('digital_collection.show.new_tab') %></span>
+      <% end %>
+    <% end %>
+    <%= mail_to '', subject: title, body: url, class: 'dc-share-link', title: t('digital_collection.file_set.share.email') do %>
+      <span class="dc-share-icon fa fa-envelope-o" aria-hidden="true"></span>
+      <span class="sr-only"><%= t('digital_collection.file_set.share.email') %></span>
+    <% end %>
+  </nav>
+<% end %>

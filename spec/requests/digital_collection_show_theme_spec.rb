@@ -288,6 +288,73 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
     end
   end
 
+  describe 'the file set page' do
+    let(:doc) { Nokogiri::HTML(response.body) }
+
+    before { parent }
+
+    it 'puts the preview, share icons, file actions and single-use links in the aside' do
+      get "/concern/file_sets/#{file_set.id}"
+      aside = doc.at_css('aside.dc-file-aside')
+
+      expect(aside.at_css('.dc-file-media')).to be_present
+      expect(aside.css('.dc-file-share a.dc-share-link').map { |a| a.at_css('.sr-only').text.squish })
+        .to eq(['Facebook (opens in a new tab)', 'X (opens in a new tab)', 'Email'])
+      expect(aside.css('.dc-file-share a.dc-share-link').map { |a| a.xpath('text()').text.strip }).to all(be_empty)
+      expect(aside.css('.dc-file-actions a').map { |a| a.text.squish }).to eq(['Edit this file set', 'Delete this file set'])
+      expect(aside.at_css('.dc-file-actions .dc-action-danger')['data-confirm']).to be_present
+      expect(aside.at_css('section.dc-file-links h2').text.strip).to eq('Single-Use Links')
+      expect(aside.at_css('.generate-single-use-link').text.strip).to eq('Generate download link')
+    end
+
+    it 'leaves out the share icons when the admin hides social buttons' do
+      allow(Flipflop).to receive(:hide_social_buttons?).and_return(true)
+      get "/concern/file_sets/#{file_set.id}"
+
+      expect(doc.at_css('.dc-file-share')).to be_nil
+    end
+
+    it 'shows the title with its badge, then Description, File details and Activity' do
+      get "/concern/file_sets/#{file_set.id}"
+
+      expect(doc.css('h1').map { |h| h.text.strip }).to eq(['harbor-0001.jpg'])
+      expect(doc.at_css('.dc-file-title .badge')).to be_present
+      expect(doc.css('.dc-file-main .dc-section-title').map(&:text)).to eq(['File details', 'Activity'])
+      expect(doc.css('.dc-file-main dt').map { |dt| dt.text.strip }).not_to include('Title')
+    end
+
+    it 'lists file details in plain words and says when the file is not characterized' do
+      get "/concern/file_sets/#{file_set.id}"
+      terms = doc.css("section[aria-labelledby='dc-file-details-label'] > dl dt").map { |dt| dt.text.strip }
+
+      expect(terms).to eq(['Date uploaded', 'Date modified', 'Fixity check', 'Technical details'])
+      expect(doc.at_css('details.dc-file-technical')).to be_nil
+    end
+
+    it 'keeps the full characterization list in a closed Technical details section' do
+      allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:characterized?).and_return(true)
+      allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:characterization_metadata).and_return(byte_order: ['big endian'])
+      allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:primary_characterization_values).and_return(['big endian'])
+      allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:secondary_characterization_values).and_return([])
+      get "/concern/file_sets/#{file_set.id}", params: { locale: 'es' }
+      details = doc.at_css('details.dc-file-technical')
+
+      expect(details['open']).to be_nil
+      expect(details.at_css('summary').text.strip).to eq('Detalles técnicos')
+      expect(details.css('dt').map { |dt| dt.text.strip }).to eq(['Orden de bytes'])
+    end
+
+    it 'shows activity dates in full and in the reader\'s language' do
+      allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:events)
+        .and_return([{ action: 'User admin uploaded harbor-0001.jpg', timestamp: Time.zone.local(2026, 9, 3).to_i.to_s }])
+      get "/concern/file_sets/#{file_set.id}", params: { locale: 'de' }
+
+      expect(doc.at_css('.dc-activity .activity-date time').text).to eq('3. September 2026')
+      expect(doc.at_css('.dc-activity th').text).to eq('Benutzeraktivität')
+      expect(doc.at_css('relative-time')).to be_nil
+    end
+  end
+
   describe 'the collection page' do
     let(:collection) { indexed_collection('Harbor Photographs') }
     let(:doc) { Nokogiri::HTML(response.body) }

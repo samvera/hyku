@@ -17,11 +17,11 @@ module DigitalCollectionShowHelper
   end
 
   def dc_collection_meta(presenter)
-    updated = dc_date(presenter.modified_date)
+    updated = dc_long_date(presenter.modified_date)
     parts = [
       (t('digital_collection.collection.created_by', creator: presenter.creator.first) if presenter.creator.present? && dc_profile_shows?(presenter, :creator)),
       tag.strong(t('digital_collection.collection.items', count: presenter.total_viewable_items)),
-      (t('digital_collection.collection.updated', date: l(updated, format: t('digital_collection.collection.date_format'))) if updated)
+      (t('digital_collection.collection.updated', date: updated) if updated)
     ]
     safe_join(parts.compact, ' · ')
   end
@@ -73,12 +73,6 @@ module DigitalCollectionShowHelper
     (presenter.terms_with_values - DC_COLLECTION_SHOWN_ELSEWHERE).map do |field|
       safe_join([tag.dt(collection_metadata_label(presenter, field)), tag.dd(collection_metadata_value(presenter, field))])
     end
-  end
-
-  def dc_date(value)
-    Date.parse(value.to_s) if value.present?
-  rescue Date::Error
-    nil
   end
 
   def dc_collection_crumb(work)

@@ -6,6 +6,7 @@ module DigitalCollectionHelper
 
   DC_STATUS_BASE = { danger: '#b4433c', success: '#3c763d' }.freeze
   DC_MAX_STEPS = 100
+  DC_URL_OPTION_KEYS = %i[host protocol port domain subdomain tld_length script_name user password anchor trailing_slash only_path params].freeze
 
   def dc_home
     theme_home(DigitalCollection::HomepagePresenter)
@@ -218,6 +219,14 @@ module DigitalCollectionHelper
       Blacklight::RenderConstraintsHelperBehavior.instance_method(:render_constraints_filters).bind_call(self, search_state)
     end
     safe_join([core, dc_advanced_range_chips(search_state)].compact, "\n")
+  end
+
+  def dc_feed_url(format)
+    url_for(search_state.to_h.symbolize_keys.except(*DC_URL_OPTION_KEYS).merge(format:))
+  end
+
+  def dc_toolbar_path(**changes)
+    url_for(search_state.params_for_search(changes).except(:controller, :action).merge(only_path: true))
   end
 
   def dc_card_meta(document, collection_label: false)

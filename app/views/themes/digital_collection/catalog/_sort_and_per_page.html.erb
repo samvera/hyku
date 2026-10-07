@@ -1,4 +1,4 @@
-<%# OVERRIDE Blacklight 7.43.0: result range, labeled Sort by and Per page menus and the view toggle in one toolbar, left out when nothing matches %>
+<%# OVERRIDE Blacklight 7.43.0: result range, labeled Sort by and Per page menus and the view toggle in one toolbar, left out when nothing matches; links stay on this site whatever the query string holds %>
 <% unless @response.empty? %>
 <div id="sortAndPerPage" class="dc-toolbar" role="navigation" aria-label="<%= t('blacklight.search.per_page.aria_label') %>">
   <p class="dc-toolbar-range"><%= dc_results_range(@response) %></p>
@@ -14,7 +14,7 @@
           <div class="dropdown-menu dropdown-menu-right">
             <% active_sort_fields.each_value do |field| %>
               <% current = field.key == current_sort_field.key %>
-              <%= link_to search_action_path(search_state.params_for_search(sort: field.key)), class: "dropdown-item#{' active' if current}", 'aria-current': (current ? 'true' : nil) do %>
+              <%= link_to dc_toolbar_path(sort: field.key), class: "dropdown-item#{' active' if current}", 'aria-current': (current ? 'true' : nil) do %>
                 <%= sort_field_label(field.key) %>
               <% end %>
             <% end %>
@@ -31,7 +31,7 @@
           <div class="dropdown-menu dropdown-menu-right">
             <% blacklight_config.per_page.each do |count| %>
               <% current = count == current_per_page %>
-              <%= link_to count, search_action_path(search_state.params_for_search(per_page: count)), class: "dropdown-item#{' active' if current}", 'aria-current': (current ? 'true' : nil) %>
+              <%= link_to count, dc_toolbar_path(per_page: count), class: "dropdown-item#{' active' if current}", 'aria-current': (current ? 'true' : nil) %>
             <% end %>
           </div>
         </div>

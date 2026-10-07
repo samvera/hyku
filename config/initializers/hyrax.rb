@@ -265,6 +265,8 @@ Hyrax.config do |config|
   original_translator = config.translate_id_to_uri
   config.translate_id_to_uri = ->(id) { original_translator.call(id.to_s) }
 
+  config.flexible_schema_validators += ['Hyku::FlexibleSchemaValidators::ModsMappingValidator']
+
   # Extend the redirects reserved-prefix list with Hyku-specific routes that
   # the upstream Hyrax default doesn't know about. Excludes admin-host-only
   # routes (/account, /proprietor) since those are host-scoped via

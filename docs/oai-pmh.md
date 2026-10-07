@@ -48,7 +48,7 @@ A mapping is a small subset of XPath describing where a value goes. Every step n
 | Attributes | `mods:identifier[@type="local"]` | `<identifier type="local">X</identifier>` |
 | A fixed child element | `mods:name[mods:role/mods:roleTerm="creator"]/mods:namePart` | `<name><role><roleTerm>creator</roleTerm></role><namePart>X</namePart></name>` |
 
-Predicates can be combined (`mods:relatedItem[@type="host"][@displayLabel="Collection"]/mods:titleInfo/mods:title`), and either quote style works. Anything else, such as `contains()` or a step without `mods:`, is not supported: the property is left out of MODS records and a warning naming the mapping is logged. So is a mapping the MODS 3.7 schema does not allow, such as an element placed where MODS has no such child, or an attribute or attribute value MODS does not define; what a value itself may hold is not checked, since it depends on the data.
+Predicates can be combined (`mods:relatedItem[@type="host"][@displayLabel="Collection"]/mods:titleInfo/mods:title`), and either quote style works. Anything else, such as `contains()` or a step without `mods:`, is not supported: the property is left out of MODS records and a warning naming the mapping is logged. So is a mapping the MODS 3.7 schema does not allow, such as an element placed where MODS has no such child, or an attribute or attribute value MODS does not define; what a value itself may hold is not checked, since it depends on the data. Saving a profile shows a warning for each such mapping.
 
 ### How MODS values are grouped
 
@@ -73,3 +73,4 @@ Each piece of a mapped format has one home. MODS is the worked example.
 | Writing the format's XML | a builder under `app/services/hyku/<format>/`, called from `SolrDocument#to_<prefix>` | `app/services/hyku/mods/` |
 | Registering the prefix | a format class under `lib/oai/provider/metadata_format/`, passed to `OAI::Provider::Base.register_format` | `Oai::Provider::MetadataFormat::Mods` |
 | Switching it on per tenant | include `Hyku::OaiPmh::MappedFormat` in the format class and define `feature` and `mapping_key`; declare the feature in `config/features.rb` | `oai_mods` |
+| Warning about unusable mappings when a profile is saved | a validator under `app/services/hyku/flexible_schema_validators/`, added to `flexible_schema_validators` in `config/initializers/hyrax.rb`, with messages in `config/locales/hyrax.*.yml` | `ModsMappingValidator` |

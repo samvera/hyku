@@ -852,6 +852,12 @@ en:
         versions_title: Display previous versions
       groups_description:
         description_html: The list of groups in the drop-down marked "Select a group" is a list of User Managed Groups that you are a member of.  You may select a specific group and assign an access level for a file within %{application_name}, similarly to adding user access levels.
+    flexible_schema_validators:
+      mods_mapping_validator:
+        warnings:
+          schema_mismatch: "m3 profile property `%{property}` maps to `%{mapping}` under `mods_oai_pmh`, which does not fit the MODS 3.7 schema (%{error}), so MODS records leave the property out."
+          unknown_element: "m3 profile property `%{property}` maps to `%{mapping}` under `mods_oai_pmh`, but `%{element}` is not a top-level MODS element, so MODS records leave the property out."
+          unsupported_syntax: "m3 profile property `%{property}` maps to `%{mapping}` under `mods_oai_pmh`, which MODS records cannot use, so they leave the property out. Write each step as `mods:element`, with only `[@attribute=\"value\"]` or `[mods:child=\"value\"]` conditions."
     footer:
       copyright_html: "<strong>Copyright &copy; 2019 - %{current_year} Samvera</strong> Licensed under the Apache License, Version 2.0"
       service_html: A service of <a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a>.

@@ -133,6 +133,16 @@ class SolrDocument
     self['media_viewer_ssi']
   end
 
+  # The OAI-PMH mods format renders a record through this method
+  def to_mods
+    Hyku::Mods::RecordBuilder.new(
+      self,
+      mappings: schema_data_for(Hyku::Mods::MAPPING_KEY).to_a,
+      item_url: link_to_item,
+      thumbnail_url: (link_to_thumbnail if real_thumbnail?)
+    ).to_xml
+  end
+
   private
 
   def link_to_item
@@ -157,24 +167,35 @@ class SolrDocument
     "https://#{host}#{path}"
   end
 
+  # A record without files gets a placeholder: an asset-pipeline image, or the tenant's default
+  def real_thumbnail?
+    path = self['thumbnail_path_ss']
+    return false if path.blank? || path.start_with?('/assets/')
+
+    [Site.instance.default_work_image, Site.instance.default_collection_image].none? { |image| image&.url == path }
+  end
+
   # In Blacklight this is a class method, but we need access
   # to the instance's hydra_model to do the reverse lookup
   def field_semantics
+    schema_data = schema_data_for('simple_dc_pmh')
+    schema_data ? build_field_semantics(schema_data) : basic_mappings
+  end
+
+  # @return [Array<Hash>, nil] each property mapped under mapping_key, with its mapping and index
+  #   keys: from the flexible metadata profile (across all its classes) or the model's schema;
+  #   nil when the model has neither
+  def schema_data_for(mapping_key)
     if Hyrax.config.flexible_classes.include?(hydra_model.to_s)
-      build_field_semantics(flexible_schema_data)
+      flexible_schema_data(mapping_key)
     elsif hydra_model.respond_to?(:schema)
-      build_field_semantics(standard_schema_data)
-    else
-      basic_mappings
+      standard_schema_data(mapping_key)
     end
   end
 
   def build_field_semantics(schema_data)
     schema_data.each_with_object(dc_mappings) do |item, mappings|
-      qualified_name = item[:qualified_name]
-      next unless qualified_name
-
-      property = qualified_name.split(':').last.to_sym
+      property = item[:mapping].split(':').last.to_sym
       index_keys = Array(item[:index_keys]).select { |k| k.to_s.end_with?('_tesim') }
       next unless mappings.key?(property) && index_keys.present?
 
@@ -182,20 +203,21 @@ class SolrDocument
     end
   end
 
-  def standard_schema_data
-    hydra_model.schema.keys.map do |schema_key|
-      {
-        qualified_name: schema_key.meta.dig('mappings', 'simple_dc_pmh'),
-        index_keys: schema_key.meta['index_keys']
-      }
+  def standard_schema_data(mapping_key)
+    hydra_model.schema.keys.filter_map do |schema_key|
+      mapping = schema_key.meta.dig('mappings', mapping_key)
+      next unless mapping
+
+      { property: schema_key.name.to_s, mapping:, index_keys: schema_key.meta['index_keys'] }
     end
   end
 
-  def flexible_schema_data
-    m3_data = Hyrax::FlexibleSchema.mappings_data_for('simple_dc_pmh')
-    m3_data.map do |_, property_hash|
+  def flexible_schema_data(mapping_key)
+    m3_data = Hyrax::FlexibleSchema.mappings_data_for(mapping_key)
+    m3_data.map do |property, property_hash|
       {
-        qualified_name: property_hash.dig('mappings', 'simple_dc_pmh'),
+        property: property.to_s,
+        mapping: property_hash.dig('mappings', mapping_key),
         index_keys: property_hash['indexing']
       }
     end

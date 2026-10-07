@@ -126,4 +126,95 @@ RSpec.describe SolrDocument, type: :model do
       it_behaves_like 'keeps controlled vocabulary labels out of dc terms'
     end
   end
+
+  describe '#to_mods' do
+    subject(:mods) { Nokogiri::XML(solr_document.to_mods) }
+    let(:solr_document) { SolrDocument.new(attributes) }
+    let(:attributes) do
+      { id: '123',
+        has_model_ssim: ['GenericWork'],
+        account_cname_tesim: ['test.hyku'],
+        title_tesim: ['A Title'],
+        creator_tesim: ['Smith, Jo'] }
+    end
+    let(:creator_mapping) { %(mods:name[mods:role/mods:roleTerm="creator"]/mods:namePart) }
+
+    def mods_values(path)
+      mods.xpath(path, 'm' => Hyku::Mods::ElementTree::NAMESPACE).map(&:text)
+    end
+
+    it 'links to the show page' do
+      expect(mods_values('//m:location/m:url[@usage="primary"]'))
+        .to eq ['https://test.hyku/concern/generic_works/123']
+    end
+
+    context 'with a thumbnail' do
+      let(:attributes) { super().merge(thumbnail_path_ss: '/downloads/456?file=thumbnail') }
+
+      it 'links to it as a preview' do
+        expect(mods_values('//m:location/m:url[@access="preview"]'))
+          .to eq ['https://test.hyku/downloads/456?file=thumbnail']
+      end
+    end
+
+    context 'with only the placeholder thumbnail of a work without files' do
+      let(:attributes) { super().merge(thumbnail_path_ss: '/assets/default-f936e9c3.png') }
+
+      it 'offers no preview' do
+        expect(mods_values('//m:location/m:url[@access="preview"]')).to be_empty
+      end
+    end
+
+    context "with only the tenant's default work image" do
+      let(:attributes) { super().merge(thumbnail_path_ss: '/uploads/site/default_work_image/1/default.png') }
+
+      before do
+        allow(Site.instance).to receive(:default_work_image)
+          .and_return(instance_double(Hyku::AvatarUploader, url: '/uploads/site/default_work_image/1/default.png'))
+      end
+
+      it 'offers no preview' do
+        expect(mods_values('//m:location/m:url[@access="preview"]')).to be_empty
+      end
+    end
+
+    context 'when not using flexible metadata' do
+      let(:model) do
+        mapping = creator_mapping
+        Class.new(Hyrax::Work) do
+          attribute :creator, Valkyrie::Types::Array.of(Valkyrie::Types::String)
+                                                    .meta('mappings' => { 'mods_oai_pmh' => mapping },
+                                                          'index_keys' => ['creator_sim', 'creator_tesim'])
+        end
+      end
+
+      before { allow(solr_document).to receive(:hydra_model).and_return(model) }
+
+      it 'maps properties from the metadata YAML' do
+        expect(mods_values('//m:name/m:namePart')).to eq ['Smith, Jo']
+        expect(mods_values('//m:titleInfo/m:title')).to eq ['A Title']
+      end
+    end
+
+    context 'when using flexible metadata' do
+      let(:profile_data) do
+        YAML.load_file(Rails.root.join('spec', 'fixtures', 'files', 'm3_profile.yaml')).tap do |profile|
+          profile['properties']['creator']['mappings'] = { 'mods_oai_pmh' => creator_mapping }
+        end
+      end
+
+      around do |example|
+        schema = Hyrax::FlexibleSchema.create(profile: profile_data)
+        example.run
+        schema.destroy
+      end
+
+      before { allow(Hyrax.config).to receive(:flexible_classes).and_return(['GenericWorkResource']) }
+
+      it 'maps properties from the metadata profile' do
+        expect(mods_values('//m:name/m:namePart')).to eq ['Smith, Jo']
+        expect(mods_values('//m:titleInfo/m:title')).to eq ['A Title']
+      end
+    end
+  end
 end

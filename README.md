@@ -18,6 +18,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
 - [Configuration](./docs/configuration.md)
 - [Using Hyku](./docs/using-hyku.md)
 - [Branching and Releases](./docs/branching-and-releases.md)
+- [OAI-PMH](./docs/oai-pmh.md)
 - [Product Owner](#product-owner)
 - [Help](#help)
 - [Acknowledgments](#acknowledgments)

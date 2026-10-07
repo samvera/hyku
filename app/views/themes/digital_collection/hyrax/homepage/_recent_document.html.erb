@@ -1,0 +1,18 @@
+<% url = generate_work_url(recent_document, request) %>
+<% collection_name = recent_document['member_of_collections_ssim']&.first %>
+
+<div class="dc-recent-row">
+  <%= link_to url, class: 'dc-recent-thumb', tabindex: -1, aria: { hidden: true },
+              data: { turbolinks: block_valkyrie_redirect? } do %>
+    <%= render_thumbnail_tag(recent_document, { alt: '' }, { suppress_link: true }) %>
+  <% end %>
+
+  <h3 class="dc-recent-title">
+    <%= link_to recent_document.title_or_label, url,
+                data: { turbolinks: block_valkyrie_redirect? } %>
+  </h3>
+
+  <% if collection_name.present? %>
+    <span class="dc-recent-collection"><%= collection_name %></span>
+  <% end %>
+</div>

@@ -1,0 +1,27 @@
+<% thumbnail = theme_thumbnail_url(document, default: :collection) %>
+<% path = hyrax.collection_path(document.id) %>
+
+<article class="dc-collection">
+  <div class="dc-collection-plate">
+    <%= image_tag thumbnail, alt: '', class: 'dc-collection-plate-blur', aria: { hidden: true }, loading: 'lazy' %>
+    <span class="dc-collection-plate-scrim"></span>
+    <%= link_to path, class: 'dc-collection-plate-figure', tabindex: -1, aria: { hidden: true } do %>
+      <%= image_tag thumbnail, alt: '', loading: 'lazy' %>
+    <% end %>
+  </div>
+
+  <div class="dc-collection-body">
+    <h3 class="dc-collection-title">
+      <%= link_to Array(document.title).first.presence || document.title_or_label, path %>
+    </h3>
+
+    <% blurb = theme_blurb(Array(document.description).first, length: 320) %>
+    <% if blurb.present? %>
+      <p class="dc-collection-description"><%= blurb %></p>
+    <% end %>
+
+    <p class="dc-collection-count">
+      <%= t('digital_collection.homepage.browse.works_count', count: dc_home.browse_works_count(document)) %>
+    </p>
+  </div>
+</article>

@@ -1,0 +1,13 @@
+<section class="dc-about" aria-labelledby="dc-about-heading">
+  <div class="dc-about-inner">
+    <div class="dc-about-head">
+      <span class="dc-about-rule" aria-hidden="true"></span>
+      <h2 class="dc-about-title" id="dc-about-heading">
+        <%= theme_plain_text(@homepage_about_section_heading&.value).presence || t('digital_collection.homepage.about.heading') %>
+      </h2>
+    </div>
+    <div class="dc-about-prose">
+      <%= displayable_content_block @homepage_about_section_content %>
+    </div>
+  </div>
+</section>

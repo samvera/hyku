@@ -1,0 +1,281 @@
+// ---- shared site shell for the digital collection themes ----
+
+@import 'themes/digital_collection/tokens';
+@import 'themes/digital_collection/primitives';
+@import 'themes/digital_collection/catalog';
+
+html body.digital_collection {
+  margin-bottom: 0;
+}
+
+body.digital_collection.public-facing,
+body.digital_collection_show.public-facing {
+  color: $dc-ink;
+
+  .btn,
+  .badge,
+  .alert,
+  .card,
+  .dropdown-menu,
+  .custom-select {
+    border-radius: var(--dc-radius, #{$dc-radius});
+  }
+
+  // ---- masthead ----
+  // scoped to the theme's own masthead partial; the body class is present on
+  // pages that still render Hyku's stock dark masthead
+  .dc-masthead {
+    background: var(--dc-button, #{$dc-button});
+    border-bottom: 3px solid var(--dc-accent, #{$dc-accent});
+
+    #masthead {
+      @include dc-gutter;
+      // _appearance_styles pins .navbar.navbar-expand-lg to the header and footer
+      // background with !important; this bar is the nav, not the chrome band
+      background-color: var(--dc-button, #{$dc-button}) !important;
+      margin: 0 auto;
+      max-width: $dc-header-max;
+      min-height: $dc-masthead-height;
+      padding-bottom: 0;
+      padding-top: 0;
+    }
+
+    @media (min-width: $dc-nav-collapse-max + 1) {
+      #masthead {
+        align-items: center;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      }
+
+      // Bootstrap pins the expanded collapse to display: flex !important; with
+      // display: contents the nav and the utility links become grid children,
+      // so the nav sits in the page's center column rather than in the space
+      // left over beside the brand
+      #masthead .navbar-collapse {
+        display: contents !important;
+      }
+
+      #user_utility_links {
+        justify-self: end;
+      }
+    }
+
+    #masthead #logo {
+      align-items: center;
+      display: flex;
+      justify-self: start;
+      margin: 0 -8px;
+      padding: 12px 8px;
+      text-decoration: none;
+
+      &:focus-visible {
+        @include dc-focus-ring;
+      }
+    }
+
+    #masthead #logo .institution_name {
+      color: var(--dc-button-ink, #{$dc-button-ink});
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    #masthead .navbar-toggler {
+      border-color: var(--dc-button-edge, #{$dc-button-edge});
+      border-radius: var(--dc-radius, #{$dc-radius});
+      min-height: 44px;
+      min-width: 44px;
+
+      &:focus-visible {
+        @include dc-focus-ring;
+      }
+    }
+
+    .dc-masthead-nav {
+      align-items: center;
+      column-gap: 8px;
+      flex-direction: row;
+    }
+
+    #user_utility_links {
+      align-items: center;
+      column-gap: 8px;
+      // Bootstrap's ml-auto and px-3 utilities are !important
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    #user_utility_links .nav-link .fa-user {
+      margin-left: 6px;
+    }
+
+    // _appearance_styles colors .nav.navbar-nav > li.nav-item > a.nav-link, so
+    // the selector has to carry the same classes to win
+    .nav.navbar-nav.dc-masthead-nav > li.nav-item > a.nav-link,
+    #user_utility_links.navbar-nav > li.nav-item > a.nav-link {
+      align-items: center;
+      color: var(--dc-button-ink, #{$dc-button-ink});
+      display: flex;
+      font-size: 14px;
+      line-height: 20px;
+      padding: 12px 8px;
+      text-decoration: none;
+      transition: color $dc-transition;
+
+      &:hover,
+      &:focus {
+        color: var(--dc-button-ink, #{$dc-button-ink});
+      }
+
+      &:focus-visible {
+        @include dc-focus-ring;
+      }
+    }
+
+    .nav.navbar-nav.dc-masthead-nav > li.nav-item > a.nav-link {
+      text-decoration-color: var(--dc-accent, #{$dc-accent});
+      text-decoration-thickness: 2px;
+      text-underline-offset: 5px;
+
+      &:hover,
+      &:focus {
+        text-decoration-line: underline;
+      }
+    }
+
+    .nav.navbar-nav.dc-masthead-nav > li.nav-item > a.nav-link[aria-current='page'] {
+      color: var(--dc-link, #{$dc-link});
+      text-decoration-line: underline;
+    }
+
+    @media (max-width: $dc-nav-collapse-max) {
+      #masthead .navbar-collapse {
+        padding-bottom: 12px;
+      }
+
+      .dc-masthead-nav,
+      #user_utility_links {
+        align-items: flex-start;
+        flex-direction: column;
+        margin: 0;
+      }
+
+      .nav.navbar-nav.dc-masthead-nav > li.nav-item > a.nav-link,
+      #user_utility_links.navbar-nav > li.nav-item > a.nav-link {
+        align-items: center;
+        display: flex;
+        margin-inline: -8px;
+        min-height: 44px;
+        padding: 12px 8px;
+      }
+    }
+  }
+
+  // ---- search row ----
+  .dc-searchbar {
+    @include dc-gutter;
+    @include dc-column;
+    background: $dc-surface;
+    border-bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 12px;
+    padding-top: 12px;
+    position: relative;
+
+    &::after {
+      background: $dc-hairline;
+      bottom: 0;
+      content: '';
+      height: 1px;
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+      width: 100vw;
+    }
+
+    #search-form-header {
+      max-width: 100%;
+      width: 520px;
+    }
+
+    @include dc-search-form;
+
+    @media (max-width: $dc-mobile-max) {
+      #search-form-header {
+        width: 100%;
+      }
+    }
+  }
+
+  // ---- announcement band ----
+  #announcement_text {
+    background: var(--dc-notice, #{$dc-notice});
+    border-bottom: 1px solid var(--dc-accent, #{$dc-accent});
+    padding-bottom: 14px;
+    padding-top: 14px;
+  }
+
+  // Hyrax's _home-page.scss styles div#announcement as a red alert
+  #announcement_text > div#announcement {
+    @include dc-column;
+    @include dc-gutter;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    color: $dc-ink;
+    font-size: 14px;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+    padding-bottom: 0;
+    padding-top: 0;
+    text-align: left;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      @include dc-link;
+    }
+  }
+
+  // ---- footer ----
+  footer.navbar {
+    color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 24px 0;
+
+    .navbar-text {
+      @include dc-column;
+      @include dc-gutter;
+      color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+      width: 100%;
+
+      > [class*="col-"] {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .p-1 { padding: 0 !important; }
+      .p-lg-2 { padding: 0 !important; }
+    }
+
+    .navbar-link {
+      @include dc-underline;
+      color: var(--dc-footer-link, #{$dc-footer-link});
+
+      &:hover,
+      &:focus {
+        color: var(--dc-footer-link-hover, #{$dc-chrome-ink});
+      }
+
+      &:focus-visible {
+        @include dc-focus-ring(var(--dc-chrome-ink, #{$dc-chrome-ink}));
+      }
+    }
+  }
+}

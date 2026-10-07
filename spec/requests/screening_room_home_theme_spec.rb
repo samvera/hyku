@@ -184,7 +184,7 @@ RSpec.describe 'screening room home theme', type: :request, singletenant: true, 
 
       get root_path
 
-      button = Nokogiri::HTML(response.body).at_css('[data-scr-spotlight-hold]')
+      button = Nokogiri::HTML(response.body).at_css('[data-spotlight-hold]')
       expect(button.text.strip).to eq('Pause')
       expect(button['data-resume-label']).to eq('Play')
     end
@@ -192,7 +192,7 @@ RSpec.describe 'screening room home theme', type: :request, singletenant: true, 
     it 'leaves the control out when a single work cannot rotate' do
       get root_path
 
-      expect(Nokogiri::HTML(response.body).at_css('[data-scr-spotlight-hold]')).to be_nil
+      expect(Nokogiri::HTML(response.body).at_css('[data-spotlight-hold]')).to be_nil
     end
   end
 

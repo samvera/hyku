@@ -1,0 +1,24 @@
+<% editable = can?(:update, FeaturedCollection) && !@featured_collection_list.empty? %>
+
+<% if editable %>
+  <section class="dc-featured-collections" aria-labelledby="dc-fc-heading">
+    <div class="dc-section-head">
+      <h2 class="dc-section-title" id="dc-fc-heading"><%= t('digital_collection.homepage.featured_collections.heading') %></h2>
+    </div>
+
+    <%= form_for [main_app, @featured_collection_list] do |f| %>
+      <div class="dd dc-reorder" id="ff" data-unfeature-confirm="<%= t('digital_collection.homepage.featured_collections.unfeature_confirm') %>">
+        <ol class="dc-featured-list list-unstyled">
+          <%= f.fields_for :featured_collections do |featured_collection| %>
+            <%= render 'hyrax/homepage/sortable_featured_collections', f: featured_collection %>
+          <% end %>
+        </ol>
+      </div>
+
+      <div class="dc-featured-actions">
+        <p class="dc-featured-hint"><%= t('digital_collection.homepage.featured_collections.reorder_hint') %></p>
+        <%= f.submit t('digital_collection.homepage.featured_collections.save_order'), class: 'dc-control' %>
+      </div>
+    <% end %>
+  </section>
+<% end %>

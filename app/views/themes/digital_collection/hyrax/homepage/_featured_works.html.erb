@@ -1,0 +1,33 @@
+<% featured = dc_home.featured_works %>
+<% editable = can?(:update, FeaturedWork) && !@featured_work_list.empty? %>
+
+<% if @presenter&.display_featured_works? && (featured.any? || editable) %>
+  <section class="dc-featured" aria-labelledby="dc-featured-heading">
+    <div class="dc-section-head">
+      <h2 class="dc-section-title" id="dc-featured-heading"><%= t('digital_collection.homepage.featured.heading') %></h2>
+    </div>
+
+    <% if editable %>
+      <%= form_for [hyrax, @featured_work_list] do |f| %>
+        <div class="dd dc-reorder" id="dd" data-unfeature-confirm="<%= t('digital_collection.homepage.featured.unfeature_confirm') %>">
+          <ol class="dc-featured-list list-unstyled">
+            <%= f.fields_for :featured_works do |featured_work| %>
+              <%= render 'hyrax/homepage/sortable_featured', f: featured_work %>
+            <% end %>
+          </ol>
+        </div>
+
+        <div class="dc-featured-actions">
+          <p class="dc-featured-hint"><%= t('digital_collection.homepage.featured.reorder_hint') %></p>
+          <%= f.submit t('digital_collection.homepage.featured.save_order'), class: 'dc-control' %>
+        </div>
+      <% end %>
+    <% else %>
+      <ul class="dc-featured-list list-unstyled">
+        <% featured.each do |work| %>
+          <li><%= render 'hyrax/homepage/featured_fields', featured: work.presenter %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </section>
+<% end %>

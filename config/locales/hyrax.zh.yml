@@ -302,6 +302,11 @@ zh:
     base:
       citations:
         header: 引文
+        style: 引用格式
+        copy: 复制
+        copied: 已复制
+        endnote: 导出到 EndNote
+        note: 仅供参考。请根据您所用的格式指南进行核对。
       download_pdf: 下载 PDF
       form_child_work_relationships:
         actions:
@@ -402,6 +407,11 @@ zh:
         in_this_work: 本作品中的其他作品
       progress:
         header: 保存作品
+    citations:
+      work:
+        apa: APA
+        chicago: Chicago
+        mla: MLA
     bread_crumb:
       search_results: 返回搜索结果
     collection:
@@ -765,6 +775,10 @@ zh:
         title: 用户活动
       user_notifications: 用户通知
       view_files: 查看文件
+    digital_collection:
+      show:
+        item_details: 项目详情
+        uploaded: "上传于 %{date}"
     directory:
       suffix: "@hydrainabox.org"
     document_language: 恩

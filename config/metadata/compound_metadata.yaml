@@ -28,6 +28,8 @@ attributes:
     required: true
     form:
       cols: 4
+    mappings:
+      mods_oai_pmh: mods:name/mods:namePart
   participant_role:
     type: controlled
     name: role
@@ -39,6 +41,8 @@ attributes:
     values: [Author, Editor, Contributor, Creator, Data Collector, Funder, Publisher, Other]
     form:
       cols: 4
+    mappings:
+      mods_oai_pmh: mods:name/mods:role/mods:roleTerm[@type="text"]
 
   # A typed identifier: an open-entry value plus a controlled identifier type.
   # Named `identifiers` (plural) to avoid colliding with the scalar `identifier`.

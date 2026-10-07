@@ -30,6 +30,8 @@ A format built from a mappings key reads each property's mapping under that key,
 
 A property with no mapping under the key is left out of that format, except title, which each format includes regardless.
 
+A compound property, such as `participants`, is mapped through its sub-properties: each sub-property (`participant_name`, `participant_role`) carries its own mapping, in the profile entry that names the compound under `available_on: properties`, or in the sub-property's entry in `config/metadata/compound_metadata.yaml`. A format reads the compound one entry at a time, so a name stays paired with its role.
+
 ## MODS
 
 The `mods` prefix serves [MODS 3.7](https://www.loc.gov/standards/mods/) records. A tenant whose metadata profile maps no property under `mods_oai_pmh` does not offer it, even with the feature on.
@@ -54,6 +56,7 @@ Predicates can be combined (`mods:relatedItem[@type="host"][@displayLabel="Colle
 
 - Properties mapped beneath the same wrapper element, with the same attributes, share one instance of it. `date_created` and `publisher`, mapped to `mods:originInfo/mods:dateCreated` and `mods:originInfo/mods:publisher`, produce a single `originInfo`.
 - `name`, `titleInfo`, `relatedItem`, `subject`, `language` and `place` are the exception: each value gets its own, because each describes a different person, title, related resource, subject heading, language or place. Two keywords produce two `subject` elements rather than one compound heading.
+- Each entry of a compound property gets a wrapper of its own, holding all of that entry's sub-properties. With `participant_name` mapped to `mods:name/mods:namePart` and `participant_role` to `mods:name/mods:role/mods:roleTerm[@type="text"]`, each participant becomes one `name` with its `namePart` and `role`. Sub-property values are written as stored, without a label lookup.
 - A value that is a URI with a label in the index (a controlled vocabulary term) is written as its label, and keeps the URI as `valueURI`, or `xlink:href` on `accessCondition`, where MODS allows one.
 
 Every record also carries a `location` with the work's page (`url usage="primary"`) and, when it has a thumbnail of its own rather than a placeholder or the tenant's default image, that thumbnail (`url access="preview"`), and a `recordInfo` with its identifier and creation and change dates.
@@ -69,7 +72,8 @@ Each piece of a mapped format has one home. MODS is the worked example.
 | The mappings key | declared under the profile's top-level `mappings:`, then set on each property in the profile and in the `config/metadata/*.yaml` attributes | `Hyku::Mods::MAPPING_KEY` |
 | Keeping profile and YAML identical | add the key to the list in `spec/config/oai_mappings_spec.rb` | listed |
 | The record's mapped properties, in either mode | `SolrDocument#schema_data_for(key)` | called by `SolrDocument#to_mods` |
-| Reading their values: index field, controlled-value labels, shared index fields, the title fallback | `Hyku::OaiPmh::MappedValues` | used by `Hyku::Mods::RecordBuilder` |
+| The record's compounds with mapped sub-properties, in either mode | `SolrDocument#compound_schema_data_for(key)` | called by `SolrDocument#to_mods` |
+| Reading their values: index field, controlled-value labels, shared index fields, the title fallback, compound entries | `Hyku::OaiPmh::MappedValues` (`#each`, `#each_compound_entry`) | used by `Hyku::Mods::RecordBuilder` |
 | Writing the format's XML | a builder under `app/services/hyku/<format>/`, called from `SolrDocument#to_<prefix>` | `app/services/hyku/mods/` |
 | Registering the prefix | a format class under `lib/oai/provider/metadata_format/`, passed to `OAI::Provider::Base.register_format` | `Oai::Provider::MetadataFormat::Mods` |
 | Switching it on per tenant | include `Hyku::OaiPmh::MappedFormat` in the format class and define `feature` and `mapping_key`; declare the feature in `config/features.rb` | `oai_mods` |

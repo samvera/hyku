@@ -99,6 +99,48 @@ RSpec.describe Hyku::Mods::RecordBuilder do
     end
   end
 
+  context 'with a compound' do
+    let(:builder) { described_class.new(document, mappings: [], compounds:) }
+    let(:document) do
+      SolrDocument.new('id' => 'abc123', 'title_tesim' => ['A Title'],
+                       'creators_json_ss' => [{ name: 'Smith, Jo', role: 'Author' }, { name: 'Doe, Al', role: 'Editor' }].to_json)
+    end
+    let(:compounds) do
+      [{ compound: 'creators', subproperties: [
+        { key: 'name', property: 'creator_name', mapping: 'mods:name/mods:namePart' },
+        { key: 'role', property: 'creator_role', mapping: 'mods:name/mods:role/mods:roleTerm[@type="text"]' }
+      ] }]
+    end
+
+    it 'writes each entry as one wrapper holding all its sub-properties' do
+      names = xml.xpath('/m:mods/m:name', 'm' => ns).map do |name|
+        [name.at_xpath('m:namePart', 'm' => ns).text, name.at_xpath('m:role/m:roleTerm[@type="text"]', 'm' => ns).text]
+      end
+
+      expect(names).to eq [['Smith, Jo', 'Author'], ['Doe, Al', 'Editor']]
+      expect(mods_schema.validate(xml).map(&:message)).to be_empty
+    end
+  end
+
+  context 'with a compound whose shared wrapper is nested' do
+    let(:builder) { described_class.new(document, mappings: [], compounds:) }
+    let(:document) do
+      SolrDocument.new('id' => 'abc123', 'title_tesim' => ['A Title'],
+                       'hosts_json_ss' => [{ name: 'Smith, Jo', role: 'Editor' }].to_json)
+    end
+    let(:compounds) do
+      [{ compound: 'hosts', subproperties: [
+        { key: 'name', property: 'host_name', mapping: 'mods:relatedItem/mods:name/mods:namePart' },
+        { key: 'role', property: 'host_role', mapping: 'mods:relatedItem/mods:name/mods:role/mods:roleTerm' }
+      ] }]
+    end
+
+    it 'keeps the entry together at every level' do
+      expect(xml.xpath('/m:mods/m:relatedItem/m:name', 'm' => ns).map { |name| name.element_children.map(&:name) })
+        .to eq [%w[namePart role]]
+    end
+  end
+
   context 'with places of publication' do
     let(:document) { SolrDocument.new('id' => 'abc123', 'publication_place_tesim' => ['Knoxville', 'Nashville']) }
     let(:mappings) do

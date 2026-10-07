@@ -2079,6 +2079,8 @@ properties:
     required: true
     form:
       cols: 4
+    mappings:
+      mods_oai_pmh: mods:name/mods:namePart
   participant_role:
     type: controlled
     name: role
@@ -2090,6 +2092,8 @@ properties:
     values: [Author, Editor, Contributor, Creator, Data Collector, Funder, Publisher, Other]
     form:
       cols: 4
+    mappings:
+      mods_oai_pmh: mods:name/mods:role/mods:roleTerm[@type="text"]
   identifiers:
     available_on:
       class:

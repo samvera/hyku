@@ -216,5 +216,45 @@ RSpec.describe SolrDocument, type: :model do
         expect(mods_values('//m:titleInfo/m:title')).to eq ['A Title']
       end
     end
+
+    shared_examples_for 'writes each participant with their role' do
+      let(:attributes) do
+        { id: '123', has_model_ssim: ['GenericWork'], title_tesim: ['A Title'],
+          participants_json_ss: [{ name: 'Smith, Jo', role: 'Author' }, { name: 'Doe, Al', role: 'Editor' }].to_json }
+      end
+
+      it 'writes one name per entry, holding its role' do
+        names = mods.xpath('//m:name', 'm' => Hyku::Mods::ElementTree::NAMESPACE).map do |name|
+          [name.at_xpath('m:namePart', 'm' => Hyku::Mods::ElementTree::NAMESPACE)&.text,
+           name.at_xpath('m:role/m:roleTerm', 'm' => Hyku::Mods::ElementTree::NAMESPACE)&.text]
+        end
+
+        expect(names).to eq [['Smith, Jo', 'Author'], ['Doe, Al', 'Editor']]
+      end
+    end
+
+    context 'with a compound when not using flexible metadata' do
+      it_behaves_like 'writes each participant with their role'
+    end
+
+    context 'with a compound when using flexible metadata' do
+      let(:profile_data) do
+        defaults = YAML.load_file(Rails.root.join('config', 'metadata_profiles', 'm3_profile.yaml'))['properties']
+        YAML.load_file(Rails.root.join('spec', 'fixtures', 'files', 'm3_profile.yaml')).tap do |profile|
+          profile['properties'].merge!(defaults.slice('participants', 'participant_name', 'participant_role'))
+        end
+      end
+
+      around do |example|
+        schema = Hyrax::FlexibleSchema.new(profile: profile_data)
+        schema.save(validate: false)
+        example.run
+        schema.destroy
+      end
+
+      before { allow(Hyrax.config).to receive(:flexible_classes).and_return(['GenericWorkResource']) }
+
+      it_behaves_like 'writes each participant with their role'
+    end
   end
 end

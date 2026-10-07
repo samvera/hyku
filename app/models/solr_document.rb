@@ -138,6 +138,7 @@ class SolrDocument
     Hyku::Mods::RecordBuilder.new(
       self,
       mappings: schema_data_for(Hyku::Mods::MAPPING_KEY).to_a,
+      compounds: compound_schema_data_for(Hyku::Mods::MAPPING_KEY).to_a,
       item_url: link_to_item,
       thumbnail_url: (link_to_thumbnail if real_thumbnail?)
     ).to_xml
@@ -193,6 +194,18 @@ class SolrDocument
     end
   end
 
+  # @return [Array<Hash>, nil] each compound with a sub-property mapped under mapping_key, as
+  #   +{ compound:, subproperties: [{ key:, property:, mapping: }] }+, where +key+ names the
+  #   sub-property in the compound's indexed entries and +property+ is its profile property
+  #   (flexible metadata only); nil when the model has neither source
+  def compound_schema_data_for(mapping_key)
+    if Hyrax.config.flexible_classes.include?(hydra_model.to_s)
+      flexible_compound_data(mapping_key)
+    elsif hydra_model.respond_to?(:schema)
+      standard_compound_data(mapping_key)
+    end
+  end
+
   def build_field_semantics(schema_data)
     schema_data.each_with_object(dc_mappings) do |item, mappings|
       property = item[:mapping].split(':').last.to_sym
@@ -221,6 +234,36 @@ class SolrDocument
         index_keys: property_hash['indexing']
       }
     end
+  end
+
+  # Hyrax's schema loaders fold a compound's sub-properties into the parent's meta, keyed as
+  # they appear in its indexed entries
+  def standard_compound_data(mapping_key)
+    hydra_model.schema.keys.filter_map do |schema_key|
+      subproperties = schema_key.meta['subproperties'].to_h.map { |key, config| [key, nil, config] }
+      compound_data(schema_key.name, subproperties, mapping_key)
+    end
+  end
+
+  # The profile lists each sub-property as its own property, naming its parent compound
+  def flexible_compound_data(mapping_key)
+    properties = Hyrax::FlexibleSchema.current_version&.dig('properties').to_h
+    by_parent = properties.each_with_object({}) do |(property, config), parents|
+      next unless config.is_a?(Hash)
+
+      Array(config.dig('available_on', 'properties')).each do |parent|
+        (parents[parent.to_s] ||= []) << [config['name'] || property, property, config]
+      end
+    end
+    by_parent.filter_map { |parent, subproperties| compound_data(parent, subproperties, mapping_key) }
+  end
+
+  def compound_data(compound, subproperties, mapping_key)
+    mapped = subproperties.filter_map do |key, property, config|
+      mapping = config.is_a?(Hash) && config.dig('mappings', mapping_key)
+      { key: key.to_s, property: property&.to_s, mapping: } if mapping
+    end
+    { compound: compound.to_s, subproperties: mapped } if mapped.any?
   end
 
   def basic_mappings

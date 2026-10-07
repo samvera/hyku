@@ -32,6 +32,22 @@ body.digital_collection_show.public-facing {
     border-radius: var(--dc-radius, #{$dc-radius});
   }
 
+  .dropdown-menu:not(.dc-masthead-dropdown) {
+    @include dc-menu;
+  }
+
+  .btn.dropdown-toggle {
+    @include dc-select-chevron;
+
+    &::after {
+      display: none;
+    }
+
+    &:focus:not(:focus-visible) {
+      box-shadow: none;
+    }
+  }
+
   // ---- masthead ----
   .dc-masthead {
     background: var(--dc-chrome, #{$dc-chrome});

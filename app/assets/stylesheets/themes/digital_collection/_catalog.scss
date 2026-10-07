@@ -7,6 +7,10 @@ body.digital_collection_show.hyrax-collections-show {
     padding: 0;
   }
 
+  #content-wrapper > .alert {
+    @include dc-inset-alert;
+  }
+
   .dc-results {
     @include dc-column;
     @include dc-gutter;
@@ -613,26 +617,11 @@ body.digital_collection_show.hyrax-collections-show {
   }
 
   .dc-toolbar-menu .dropdown-menu {
-    border: $dc-border solid $dc-control-edge;
-    border-radius: var(--dc-radius, #{$dc-radius});
-    box-shadow: $dc-shadow-menu;
-    font-size: $dc-text-base;
-    padding: $dc-space-1;
+    @include dc-menu;
 
     .dropdown-item {
-      border-radius: var(--dc-radius, #{$dc-radius});
-      color: $dc-ink-heading;
-      padding: $dc-space-2 $dc-space-3 $dc-space-2 $dc-space-6;
+      padding-left: $dc-space-6;
       position: relative;
-
-      &:hover,
-      &:focus {
-        background: $dc-surface-alt;
-      }
-
-      &:focus-visible {
-        @include dc-focus-ring($offset: -2px);
-      }
 
       &.active {
         background: none;

@@ -12,8 +12,7 @@ body.digital_collection_show.hyrax-collections-show {
   }
 
   #content-wrapper > .alert {
-    @include dc-gutter;
-    @include dc-column;
+    @include dc-inset-alert;
   }
 
   .dc-secondary-header {

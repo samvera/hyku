@@ -10,6 +10,10 @@
     padding: 0;
   }
 
+  #content-wrapper > .alert {
+    @include dc-inset-alert;
+  }
+
   // ---- hero ----
   .dc-hero {
     align-items: center;

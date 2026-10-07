@@ -1,6 +1,7 @@
 name: Draft Release Notes
 
 on:
+  workflow_dispatch:
   push:
     paths-ignore:
       - config/initializers/version.rb

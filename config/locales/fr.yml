@@ -1102,6 +1102,23 @@ fr:
   digital_collection:
     form:
       required: "(obligatoire)"
+    work:
+      actions:
+        select: "Sélectionner cette œuvre"
+        header: "Actions sur l'œuvre"
+        feature: "Mettre en avant sur l'accueil"
+        unfeature: "Retirer de l'accueil"
+      copy_citation: "Copier la citation"
+      part_of:
+        admin_set:
+          one: "Ensemble administratif"
+          other: "Ensembles administratifs"
+        collection:
+          one: "Collection"
+          other: "Collections"
+        parent_work:
+          one: "Œuvre parente"
+          other: "Œuvres parentes"
     chrome:
       account_label:
         zero: "%{name}"

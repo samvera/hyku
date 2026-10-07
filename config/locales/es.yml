@@ -1097,6 +1097,23 @@ es:
   digital_collection:
     form:
       required: "(obligatorio)"
+    work:
+      actions:
+        select: "Seleccionar esta obra"
+        header: "Acciones de la obra"
+        feature: "Destacar en la página de inicio"
+        unfeature: "Quitar de la página de inicio"
+      copy_citation: "Copiar cita"
+      part_of:
+        admin_set:
+          one: "Conjunto administrativo"
+          other: "Conjuntos administrativos"
+        collection:
+          one: "Colección"
+          other: "Colecciones"
+        parent_work:
+          one: "Obra principal"
+          other: "Obras principales"
     chrome:
       account_label:
         zero: "%{name}"

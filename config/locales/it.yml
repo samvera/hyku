@@ -1097,6 +1097,23 @@ it:
   digital_collection:
     form:
       required: "(obbligatorio)"
+    work:
+      actions:
+        select: "Seleziona questa opera"
+        header: "Azioni sull'opera"
+        feature: "Metti in evidenza nella home"
+        unfeature: "Rimuovi dalla home"
+      copy_citation: "Copia citazione"
+      part_of:
+        admin_set:
+          one: "Set amministrativo"
+          other: "Set amministrativi"
+        collection:
+          one: "Collezione"
+          other: "Collezioni"
+        parent_work:
+          one: "Opera principale"
+          other: "Opere principali"
     chrome:
       account_label:
         zero: "%{name}"

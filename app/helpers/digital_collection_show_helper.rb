@@ -19,7 +19,7 @@ module DigitalCollectionShowHelper
   def dc_collection_meta(presenter)
     updated = dc_date(presenter.modified_date)
     parts = [
-      (t('digital_collection.collection.created_by', creator: presenter.creator.first) if presenter.creator.present?),
+      (t('digital_collection.collection.created_by', creator: presenter.creator.first) if presenter.creator.present? && dc_profile_shows?(presenter, :creator)),
       tag.strong(t('digital_collection.collection.items', count: presenter.total_viewable_items)),
       (t('digital_collection.collection.updated', date: l(updated, format: t('digital_collection.collection.date_format'))) if updated)
     ]
@@ -82,7 +82,7 @@ module DigitalCollectionShowHelper
   end
 
   def dc_collection_crumb(work)
-    collection = work.try(:member_of_collection_presenters)&.find { |parent| parent.is_a?(Hyrax::CollectionPresenter) }
+    collection = (dc_work_collections(work) if work.respond_to?(:member_of_collection_presenters))&.find { |parent| parent.is_a?(Hyrax::CollectionPresenter) }
     [collection.to_s, hyrax.collection_path(collection.id)] if collection
   end
 

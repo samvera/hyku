@@ -964,6 +964,23 @@ en:
   digital_collection:
     form:
       required: "(required)"
+    work:
+      actions:
+        select: "Select this work"
+        header: "Work actions"
+        feature: "Feature on homepage"
+        unfeature: "Remove from homepage"
+      copy_citation: "Copy citation"
+      part_of:
+        admin_set:
+          one: "Administrative set"
+          other: "Administrative sets"
+        collection:
+          one: "Collection"
+          other: "Collections"
+        parent_work:
+          one: "Parent work"
+          other: "Parent works"
     chrome:
       account_label:
         zero: "%{name}"

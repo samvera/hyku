@@ -1100,6 +1100,23 @@ de:
   digital_collection:
     form:
       required: "(erforderlich)"
+    work:
+      actions:
+        select: "Dieses Werk auswählen"
+        header: "Aktionen für das Werk"
+        feature: "Auf der Startseite zeigen"
+        unfeature: "Von der Startseite entfernen"
+      copy_citation: "Zitat kopieren"
+      part_of:
+        admin_set:
+          one: "Verwaltungsset"
+          other: "Verwaltungssets"
+        collection:
+          one: "Sammlung"
+          other: "Sammlungen"
+        parent_work:
+          one: "Übergeordnetes Werk"
+          other: "Übergeordnete Werke"
     chrome:
       account_label:
         zero: "%{name}"

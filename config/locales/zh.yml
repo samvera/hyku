@@ -1114,6 +1114,23 @@ zh:
   digital_collection:
     form:
       required: "（必填）"
+    work:
+      actions:
+        select: "选择此作品"
+        header: "作品操作"
+        feature: "在首页推荐"
+        unfeature: "从首页移除"
+      copy_citation: "复制引用"
+      part_of:
+        admin_set:
+          one: "管理集"
+          other: "管理集"
+        collection:
+          one: "收藏"
+          other: "收藏"
+        parent_work:
+          one: "上级作品"
+          other: "上级作品"
     chrome:
       account_label:
         zero: "%{name}"

@@ -127,6 +127,12 @@ RSpec.describe DigitalCollectionShowHelper, type: :helper do
       expect(helper.dc_collection_meta(presenter)).to eq('Created by Hudson River Museum · <strong>24 items</strong> · Last updated September 3, 2026')
     end
 
+    it 'leaves out the creator when the metadata profile hides it' do
+      allow(helper).to receive(:dc_profile_shows?).with(presenter, :creator).and_return(false)
+
+      expect(helper.dc_collection_meta(presenter)).to eq('<strong>24 items</strong> · Last updated September 3, 2026')
+    end
+
     it 'leaves out what the collection does not have' do
       allow(presenter).to receive_messages(creator: [], modified_date: nil, total_viewable_items: 1)
 

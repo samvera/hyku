@@ -11,7 +11,7 @@
       <ul class="dc-item-list list-unstyled">
         <% members.each do |member| %>
           <li class="dc-item-row">
-            <%= link_to contextual_path(member, @presenter), class: 'dc-item-thumb',
+            <%= link_to contextual_path(member, @presenter), class: token_list('dc-item-thumb', dc_thumb_placeholder_class(member.solr_document)),
                         tabindex: -1, aria: { hidden: true } do %>
               <%= document_presenter(member).thumbnail.thumbnail_tag({ alt: '' }, { suppress_link: true }) %>
             <% end %>

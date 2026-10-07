@@ -43,13 +43,13 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
   end
 
   describe 'the work page' do
-    it 'renders the theme shell with the title, a type chip and the rail' do
+    it 'renders the theme shell with the title, a type badge and the rail' do
       get "/concern/generic_works/#{parent.id}"
 
       expect(response).to have_http_status(:ok)
       doc = Nokogiri::HTML(response.body)
       expect(doc.at_css('.dc-show h1.dc-show-title').text).to include('The Harbor')
-      expect(doc.at_css('.dc-show-badge .dc-chip')).to be_present
+      expect(doc.at_css('.dc-show-badges .dc-badge')).to be_present
       expect(doc.at_css('aside.dc-show-rail')).to be_present
       expect(doc.at_css('.dc-meta h2#dc-meta-label')).to be_present
     end
@@ -105,6 +105,7 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
       panel = Nokogiri::HTML(response.body).at_css('section.dc-part-of')
       expect(panel.at_css('h2.dc-panel-label#dc-part-of-label')).to be_present
       expect(panel.text).to include('Photograph Collections')
+      expect(panel.css('dt').map { |dt| dt.text.strip }).to eq(['Collection'])
     end
 
     it 'leaves the part-of panel out when the work belongs to nothing' do
@@ -137,7 +138,42 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
     it 'shows the editor controls above the title' do
       get "/concern/generic_works/#{parent.id}"
 
-      expect(Nokogiri::HTML(response.body).at_css('.dc-show-actions .show-actions')).to be_present
+      labels = Nokogiri::HTML(response.body).css('.dc-show-actions-inner > .btn:not(.collapse), .dc-show-actions-inner > .btn-group > .btn')
+      expect(labels.map { |btn| btn.text.strip }).to eq(['Edit', 'Add to collection', 'Attach Child', 'File Manager', 'Delete'])
+      expect(labels.first['class']).to include('dc-action-primary')
+      expect(labels.last['class']).to include('dc-action-danger')
+    end
+
+    it 'leaves the title and description out of Item details, since the page shows them above it' do
+      described = indexed(GenericWorkResource.new(title: ['The Harbor'], description: ['Piers at dawn.'], creator: ['Detroit Publishing Co.']))
+
+      get "/concern/generic_works/#{described.id}"
+
+      rows = Nokogiri::HTML(response.body).css('.dc-meta dl.dc-meta-rows > div')
+      expect(rows.map { |row| row.at_css('dt').text.strip }).to include('Creator')
+      expect(rows.map { |row| row.at_css('dt').text.strip }).not_to include('Title', 'Description')
+      expect(rows).to all(satisfy { |row| row.at_css('dt') && row.at_css('dd') })
+    end
+
+    it 'labels the citation style picker and the copy button' do
+      cited = indexed(GenericWorkResource.new(title: ['The Harbor'], creator: ['Detroit Publishing Co.']))
+
+      get "/concern/generic_works/#{cited.id}"
+
+      card = Nokogiri::HTML(response.body).at_css('section.dc-cite')
+      expect(card.at_css("label[for='dc-cite-picker']").text).to eq('Citation style')
+      expect(card.at_css('button.dc-cite-copy').text.strip).to eq('Copy citation')
+    end
+
+    it 'shows editors the administrative set under Part of' do
+      admin_set = Hyrax::AdminSetCreateService.find_or_create_default_admin_set
+      managed = indexed(GenericWorkResource.new(title: ['Managed record'], admin_set_id: admin_set.id))
+
+      get "/concern/generic_works/#{managed.id}"
+
+      panel = Nokogiri::HTML(response.body).at_css('section.dc-part-of')
+      expect(panel.css('dt').map { |dt| dt.text.strip }).to eq(['Administrative set'])
+      expect(panel.at_css('dd a').text).to eq(admin_set.title.first)
     end
 
     it 'renders the digital collection masthead and the secondary header' do
@@ -167,10 +203,19 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
 
         get "/concern/generic_works/#{public_parent.id}"
         doc = Nokogiri::HTML(response.body)
-        expect(doc.css('.show-actions a.btn:not(.collapse), .show-actions button.btn:not(.collapse)')).to be_empty
+        expect(doc.css('.dc-show-actions-inner > .btn:not(.collapse), .dc-show-actions-inner > .btn-group')).to be_empty
 
         get "/concern/generic_works/#{empty.id}"
         expect(Nokogiri::HTML(response.body).at_css('section#dc-items')).to be_nil
+      end
+
+      it 'hides the administrative set from visitors' do
+        admin_set = Hyrax::AdminSetCreateService.find_or_create_default_admin_set
+        managed = indexed_with_visibility(GenericWorkResource.new(title: ['Managed record'], admin_set_id: admin_set.id), 'open')
+
+        get "/concern/generic_works/#{managed.id}"
+
+        expect(Nokogiri::HTML(response.body).at_css('section.dc-part-of')).to be_nil
       end
     end
 

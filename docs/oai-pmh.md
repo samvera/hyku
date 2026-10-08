@@ -36,8 +36,9 @@ A compound property, such as `participants`, is mapped through its sub-propertie
 
 The `oai_dc` prefix writes each property mapped under `simple_dc_pmh` to its Dublin Core element, one of the fifteen such as `dc:title` or `dc:subject`, writing the elements in alphabetical order; when no mapping supplies an identifier, the work's page URL adds `dc:identifier` after the rest. A mapping to anything else is ignored. Hyku's default metadata profile and its metadata YAML map each property to the same element.
 
-- Values come only from each property's `_tesim` field.
+- Values come only from each property's `_tesim` field, or, for a compound's sub-properties, from the compound's indexed entries.
 - A controlled value is written as its stored id, such as a license URI, rather than its label: the id is what a harvester can key on.
+- Each entry of a compound property contributes its mapped sub-properties' values, such as `participant_name` to `dc:contributor`.
 - Title is always included, and `dc:identifier` also carries the work's page and thumbnail URLs.
 
 ## MODS

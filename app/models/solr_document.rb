@@ -185,8 +185,11 @@ class SolrDocument
 
   def mapped_dublin_core_values(schema_data)
     values = Hash.new { |hash, key| hash[key] = [] }
-    Hyku::OaiPmh::MappedValues.new(self, schema_data, title_mapping: 'dc:title', text_fields_only: true)
-                              .each { |mapping, mapped| values[mapping.split(':').last.to_sym].concat(mapped.map(&:stored)) }
+    add = ->(mapping, mapped) { values[mapping.split(':').last.to_sym].concat(Array.wrap(mapped).map(&:stored)) }
+    mapped_values = Hyku::OaiPmh::MappedValues.new(self, schema_data, title_mapping: 'dc:title', text_fields_only: true,
+                                                                      compounds: compound_schema_data_for('simple_dc_pmh').to_a)
+    mapped_values.each { |mapping, mapped| add.call(mapping, mapped) }
+    mapped_values.each_compound_entry { |pairs| pairs.each { |mapping, value| add.call(mapping, value) } }
     values
   end
 

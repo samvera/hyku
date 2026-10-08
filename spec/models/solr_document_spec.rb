@@ -139,6 +139,18 @@ RSpec.describe SolrDocument, type: :model do
       it "reads only each property's text field, leaving out a value indexed only for facets" do
         expect(values).not_to have_key(:publisher)
       end
+
+      context 'with a compound' do
+        let(:attributes) do
+          super().merge(participants_json_ss: [{ name: 'Doe, Al', role: 'Editor' }].to_json,
+                        identifiers_json_ss: [{ value: '10.1234/abc', type: 'DOI' }].to_json)
+        end
+
+        it 'writes each sub-property value under its element' do
+          expect(values[:contributor]).to eq ['Doe, Al']
+          expect(values[:identifier]).to include('10.1234/abc')
+        end
+      end
     end
 
     context 'when not using flexible metadata' do

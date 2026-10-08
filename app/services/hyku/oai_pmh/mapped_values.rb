@@ -25,8 +25,10 @@ module Hyku
       #   with neither a profile nor a schema, so pass it through +to_a+
       # @param compounds [Array<Hash>] from SolrDocument#compound_schema_data_for, likewise +to_a+
       # @param title_mapping [String] where the format writes title when no mapping covers it
-      def initialize(document, mappings, title_mapping:, compounds: [])
+      # @param text_fields_only [Boolean] read only each property's +_tesim+ field, as oai_dc does
+      def initialize(document, mappings, title_mapping:, compounds: [], text_fields_only: false)
         @document = document
+        @text_fields_only = text_fields_only
         @compounds = compounds
         # A compound's sub-properties are also indexed flat, which would lose which values belong
         # to the same entry
@@ -74,13 +76,14 @@ module Hyku
 
       # Title is core metadata, with no mapping in Hyrax's core_metadata.yaml, as it is for oai_dc
       def mappings_with_title
-        return @mappings if @mappings.any? { |item| item[:property].to_s == 'title' }
+        return @mappings if @mappings.any? { |item| item[:property].to_s == 'title' && item[:mapping] == @title_mapping }
         [{ property: 'title', mapping: @title_mapping, index_keys: ['title_tesim'] }] + @mappings
       end
 
       def value_field(index_keys)
         keys = Array(index_keys).map(&:to_s)
-        (keys.select { |key| key.end_with?('_tesim') } + keys).find { |key| @document[key].present? }
+        text_fields = keys.select { |key| key.end_with?('_tesim') }
+        (@text_fields_only ? text_fields : text_fields + keys).find { |key| @document[key].present? }
       end
 
       # The indexer writes a controlled value's labels, in the same order, to the field this names

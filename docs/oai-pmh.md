@@ -34,7 +34,7 @@ A compound property, such as `participants`, is mapped through its sub-propertie
 
 ## Dublin Core
 
-The `oai_dc` prefix writes each property mapped under `simple_dc_pmh` to its Dublin Core element, one of the fifteen such as `dc:title` or `dc:subject`, writing the elements in alphabetical order; when no mapping supplies an identifier, the work's page URL adds `dc:identifier` after the rest. A mapping to anything else is ignored. Hyku's default metadata profile and its metadata YAML map each property to the same element.
+The `oai_dc` prefix writes each property mapped under `simple_dc_pmh` to its Dublin Core element, one of the fifteen such as `dc:title` or `dc:subject`, writing the elements in alphabetical order; when no mapping supplies an identifier, the work's page URL adds `dc:identifier` after the rest. A mapping to anything else is ignored, and saving a profile shows a warning for it. Hyku's default metadata profile and its metadata YAML map each property to the same element.
 
 - Values come only from each property's `_tesim` field, or, for a compound's sub-properties, from the compound's indexed entries.
 - A controlled value is written as its stored id, such as a license URI, rather than its label: the id is what a harvester can key on.
@@ -86,4 +86,4 @@ Each piece of a mapped format has one home. MODS is the worked example.
 | Writing the format's XML | a builder under `app/services/hyku/<format>/`, called from `SolrDocument#to_<prefix>` | `app/services/hyku/mods/` |
 | Registering the prefix | a format class under `lib/oai/provider/metadata_format/`, passed to `OAI::Provider::Base.register_format` | `Oai::Provider::MetadataFormat::Mods` |
 | Switching it on per tenant | include `Hyku::OaiPmh::MappedFormat` in the format class and define `feature` and `mapping_key`; declare the feature in `config/features.rb` | `oai_mods` |
-| Warning about unusable mappings when a profile is saved | a validator under `app/services/hyku/flexible_schema_validators/`, added to `flexible_schema_validators` in `config/initializers/hyrax.rb`, with messages in `config/locales/hyrax.*.yml` | `ModsMappingValidator` |
+| Warning about unusable mappings when a profile is saved | a validator under `app/services/hyku/flexible_schema_validators/`, added to `flexible_schema_validators` in `config/initializers/hyrax.rb`, with messages in `config/locales/hyrax.*.yml` | `ModsMappingValidator`; `DublinCoreMappingValidator` for `oai_dc` |

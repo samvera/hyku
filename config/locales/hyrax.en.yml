@@ -853,6 +853,9 @@ en:
       groups_description:
         description_html: The list of groups in the drop-down marked "Select a group" is a list of User Managed Groups that you are a member of.  You may select a specific group and assign an access level for a file within %{application_name}, similarly to adding user access levels.
     flexible_schema_validators:
+      dublin_core_mapping_validator:
+        warnings:
+          unknown_element: "m3 profile property `%{property}` maps to `%{mapping}` under `simple_dc_pmh`, which is not one of the fifteen Dublin Core elements (such as `dc:title` or `dc:subject`), so oai_dc leaves the property out."
       mods_mapping_validator:
         warnings:
           schema_mismatch: "m3 profile property `%{property}` maps to `%{mapping}` under `mods_oai_pmh`, which does not fit the MODS 3.7 schema (%{error}), so MODS records leave the property out."

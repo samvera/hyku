@@ -26,19 +26,17 @@ RSpec.describe SharedSearchHelper do
         expect(helper.generate_work_url(work_hash, request)).to eq(url)
       end
 
-      it 'returns #generate_work_url with a query' do
-        allow(params).to receive(:[]).with(:q).and_return('foo')
-        allow(work_hash).to receive(:any_highlighting_in_all_text_fields?).and_return(false)
+      it 'carries the query to the viewers whether or not the full text matched' do
+        allow(params).to receive(:[]).with(:q).and_return('cat')
 
-        url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}"
+        url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}?highlight=true&q=cat"
         expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
       end
 
-      it 'returns #generate_work_url with a query and highlight true for UV' do
-        allow(params).to receive(:[]).with(:q).and_return('cat')
-        allow(work_hash).to receive(:any_highlighting_in_all_text_fields?).and_return(true)
+      it 'encodes the query so reserved characters survive the link' do
+        allow(params).to receive(:[]).with(:q).and_return('salt & cod #3')
 
-        url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}?parent_query=cat&highlight=true"
+        url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}?highlight=true&q=salt+%26+cod+%233"
         expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
       end
     end
@@ -51,19 +49,10 @@ RSpec.describe SharedSearchHelper do
         expect(helper.generate_work_url(work_hash, request)).to eq(url)
       end
 
-      it 'returns #generate_work_url if given a query but no highlighting' do
-        allow(params).to receive(:[]).with(:q).and_return('foo')
-        allow(work_hash).to receive(:any_highlighting_in_all_text_fields?).and_return(false)
-
-        url = "#{request.protocol}#{account.cname}:#{request.port}/concern/generic_works/#{uuid}"
-        expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
-      end
-
-      it 'returns #generate_work_url with a query and highlight true for UV' do
+      it 'carries the query to the viewers' do
         allow(params).to receive(:[]).with(:q).and_return('cat')
-        allow(work_hash).to receive(:any_highlighting_in_all_text_fields?).and_return(true)
 
-        url = "#{request.protocol}#{account.cname}:#{request.port}/concern/generic_works/#{uuid}?parent_query=cat&highlight=true"
+        url = "#{request.protocol}#{account.cname}:#{request.port}/concern/generic_works/#{uuid}?highlight=true&q=cat"
         expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
       end
     end

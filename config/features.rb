@@ -50,6 +50,12 @@ Flipflop.configure do
           default: false,
           description: "Run OCR and text extraction on uploaded images, even when PDF.js is the viewer."
 
+  feature :full_text_snippets,
+          default: true,
+          description: "Show highlighted full-text snippets under catalog search results. Turning this off " \
+                       "speeds up searches over large OCR'd documents; full-text search and viewer highlighting " \
+                       "keep working."
+
   group :site_configuration do
     feature :iiif_ranges,
             title: "IIIF Ranges",

@@ -196,6 +196,13 @@ module Hyku # rubocop:disable Metrics/ModuleLength
       :omniauthable, { omniauth_providers: %i[saml openid_connect cas] }
     ]
 
+    # @!attribute full_text_fields
+    #   The stored Solr fields that hold a work's full text. Each one is searched by keyword and
+    #   rendered as highlighted snippets in search results. List an older field name alongside the
+    #   default to keep works indexed under it searchable without reindexing them.
+    #   @return [Array<String>]
+    class_attribute :full_text_fields, instance_accessor: false, default: %w[all_text_tsimv]
+
     # @!endgroup Class Attributes
 
     ##

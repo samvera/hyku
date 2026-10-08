@@ -1,6 +1,6 @@
 <div class="work-title-wrapper dc-show-head">
   <p class="dc-show-badge">
-    <span class="dc-chip"><%= theme_type_label(presenter) %></span>
+    <%= dc_badge(theme_type_label(presenter), class_name: 'dc-chip') %>
     <% if presenter.visibility != 'open' %><%= presenter.permission_badge %><% end %>
     <%= presenter.workflow.badge %>
   </p>
@@ -11,7 +11,7 @@
     <% end %>
   </div>
 
-  <% date = Array(presenter.date_created).first.presence || Array(presenter.date_issued).first %>
+  <% date = Array(presenter.date_created).first.presence || Array(presenter.try(:date_issued)).first %>
   <% byline = [all_authors(presenter).first, date].compact_blank %>
   <% if byline.any? %>
     <p class="dc-show-byline"><%= safe_join(byline, ' · ') %></p>

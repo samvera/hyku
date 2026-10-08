@@ -1096,7 +1096,24 @@ es:
         heading: "Forma parte de"
   digital_collection:
     chrome:
-      toggle_navigation: "Alternar la navegación"
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 notificación no leída"
+        other: "%{name}, %{count} notificaciones no leídas"
+      announcement_label: "Anuncio"
+      language: "Idioma"
+      masthead_label: "Navegación del sitio"
+      menu:
+        zero: "Menú"
+        one: "Menú, 1 notificación no leída"
+        other: "Menú, %{count} notificaciones no leídas"
+      notice: "Aviso:"
+      notifications:
+        zero: "Notificaciones"
+        one: "Notificaciones (1)"
+        other: "Notificaciones (%{count})"
+      signed_in_as: "Sesión iniciada como"
+      signed_in_as_name: "Sesión iniciada como %{name}"
     homepage:
       intro_label: "Introducción"
       hero:
@@ -1105,12 +1122,14 @@ es:
         featured_collection: "Colección destacada"
         hold: "Pausar"
         resume: "Reproducir"
-        segment: "Mostrar %{title}"
+        segment: "Diapositiva %{number}: %{title}"
+        slide: "Diapositiva %{number} de %{total}"
       featured_collections:
         heading: "Colecciones destacadas"
         unfeature_confirm: "¿Quitar esta colección de la lista de destacadas?"
         reorder_hint: "Arrastre para reordenar las colecciones destacadas."
         save_order: "Guardar orden"
+        remove: "Quitar %{title} de las colecciones destacadas"
       browse:
         heading: "Explorar colecciones"
         grid: "Cuadrícula"
@@ -1135,9 +1154,10 @@ es:
         unfeature_confirm: "¿Quitar esta obra de la lista de destacadas?"
         reorder_hint: "Arrastre para reordenar las obras destacadas."
         save_order: "Guardar orden"
+        remove: "Quitar %{title} de las obras destacadas"
       recent:
         heading: "Añadidos recientemente"
-        view_all: "Ver todo"
+        view_all: "Ver todas las obras recientes"
       about:
         heading: "Acerca de las colecciones"
       cta:
@@ -1152,6 +1172,9 @@ es:
         works:
           one: "Obra"
           other: "Obras"
+    search:
+      advanced: "Búsqueda avanzada"
+      submit: "Buscar"
     show:
       part_of:
         heading: Parte de

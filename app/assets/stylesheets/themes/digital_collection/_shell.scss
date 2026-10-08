@@ -22,20 +22,16 @@ body.digital_collection_show.public-facing {
   }
 
   // ---- masthead ----
-  // scoped to the theme's own masthead partial; the body class is present on
-  // pages that still render Hyku's stock dark masthead
   .dc-masthead {
-    background: var(--dc-button, #{$dc-button});
-    border-bottom: 3px solid var(--dc-accent, #{$dc-accent});
+    background: var(--dc-chrome, #{$dc-chrome});
 
     #masthead {
       @include dc-gutter;
-      // _appearance_styles pins .navbar.navbar-expand-lg to the header and footer
-      // background with !important; this bar is the nav, not the chrome band
-      background-color: var(--dc-button, #{$dc-button}) !important;
+      // _appearance_styles pins .navbar.navbar-expand-lg to the chrome color with !important
+      background-color: var(--dc-chrome, #{$dc-chrome}) !important;
       margin: 0 auto;
-      max-width: $dc-header-max;
-      min-height: $dc-masthead-height;
+      max-width: $dc-width-header-max;
+      min-height: $dc-height-masthead;
       padding-bottom: 0;
       padding-top: 0;
     }
@@ -48,127 +44,326 @@ body.digital_collection_show.public-facing {
       }
 
       // Bootstrap pins the expanded collapse to display: flex !important; with
-      // display: contents the nav and the utility links become grid children,
-      // so the nav sits in the page's center column rather than in the space
-      // left over beside the brand
+      // display: contents the nav and the utilities become grid children, so the
+      // nav sits in the page's center column
       #masthead .navbar-collapse {
         display: contents !important;
       }
 
-      #user_utility_links {
+      .dc-masthead-utilities {
+        align-self: stretch;
         justify-self: end;
+      }
+
+      .dc-masthead-menu {
+        align-items: center;
+        align-self: stretch;
+        display: flex;
       }
     }
 
     #masthead #logo {
       align-items: center;
+      border-radius: var(--dc-radius, #{$dc-radius});
       display: flex;
       justify-self: start;
-      margin: 0 -8px;
-      padding: 12px 8px;
+      margin: 0 (-$dc-space-2);
+      padding: $dc-space-3 $dc-space-2;
       text-decoration: none;
 
       &:focus-visible {
-        @include dc-focus-ring;
+        @include dc-focus-ring($on: dark);
       }
     }
 
     #masthead #logo .institution_name {
-      color: var(--dc-button-ink, #{$dc-button-ink});
-      font-size: 19px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
+      color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+      font-size: $dc-text-xl;
+      font-weight: $dc-weight-heading;
+      line-height: $dc-leading-tight;
     }
 
-    #masthead .navbar-toggler {
-      border-color: var(--dc-button-edge, #{$dc-button-edge});
+    .dc-menu-button {
+      align-items: center;
+      background: $dc-button-on-dark;
+      border: $dc-border solid $dc-button-edge-on-dark;
       border-radius: var(--dc-radius, #{$dc-radius});
-      min-height: 44px;
-      min-width: 44px;
+      color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+      display: inline-flex;
+      font-size: $dc-text-lg;
+      height: $dc-control-height;
+      justify-content: center;
+      padding: 0;
+      position: relative;
+      width: $dc-control-height;
+
+      &:hover {
+        background: $dc-button-hover-on-dark;
+      }
 
       &:focus-visible {
-        @include dc-focus-ring;
+        @include dc-focus-ring($on: dark);
       }
+
+      .dc-menu-icon-close,
+      &[aria-expanded='true'] .dc-menu-icon-open {
+        display: none;
+      }
+
+      &[aria-expanded='true'] .dc-menu-icon-close {
+        display: inline-block;
+      }
+
+      .dc-unread-count {
+        position: absolute;
+        right: -$dc-space-2;
+        top: -$dc-space-2;
+      }
+
+      @media (min-width: $dc-nav-collapse-max + 1) {
+        display: none;
+      }
+    }
+
+    .dc-unread-count {
+      background: var(--dc-footer-link, #{$dc-footer-link});
+      border-radius: $dc-radius-pill;
+      box-shadow: 0 0 0 2px var(--dc-chrome, #{$dc-chrome});
+      color: var(--dc-chrome, #{$dc-chrome});
+      display: inline-block;
+      font-size: $dc-text-xs;
+      font-weight: $dc-weight-heading;
+      line-height: $dc-space-4;
+      min-width: $dc-space-4;
+      padding: 0 $dc-space-1;
+      text-align: center;
     }
 
     .dc-masthead-nav {
       align-items: center;
-      column-gap: 8px;
+      column-gap: $dc-space-2;
       flex-direction: row;
     }
 
-    #user_utility_links {
-      align-items: center;
-      column-gap: 8px;
-      // Bootstrap's ml-auto and px-3 utilities are !important
-      margin-left: 0 !important;
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-    }
-
-    #user_utility_links .nav-link .fa-user {
-      margin-left: 6px;
-    }
-
-    // _appearance_styles colors .nav.navbar-nav > li.nav-item > a.nav-link, so
-    // the selector has to carry the same classes to win
+    // _appearance_styles colors .nav.navbar-nav > li.nav-item > a.nav-link, so the
+    // selector carries the same classes
     .nav.navbar-nav.dc-masthead-nav > li.nav-item > a.nav-link,
-    #user_utility_links.navbar-nav > li.nav-item > a.nav-link {
+    .dc-masthead-section .nav.navbar-nav > li.nav-item > a.nav-link {
       align-items: center;
-      color: var(--dc-button-ink, #{$dc-button-ink});
+      border-radius: var(--dc-radius, #{$dc-radius});
+      color: var(--dc-chrome-ink, #{$dc-chrome-ink});
       display: flex;
-      font-size: 14px;
-      line-height: 20px;
-      padding: 12px 8px;
+      font-size: $dc-text-sm;
+      min-height: $dc-control-height;
+      padding: 0 $dc-space-2;
       text-decoration: none;
+      text-decoration-color: currentColor;
+      text-decoration-thickness: $dc-underline-strong;
+      text-underline-offset: $dc-underline-offset-nav;
       transition: color $dc-transition;
-
-      &:hover,
-      &:focus {
-        color: var(--dc-button-ink, #{$dc-button-ink});
-      }
-
-      &:focus-visible {
-        @include dc-focus-ring;
-      }
-    }
-
-    .nav.navbar-nav.dc-masthead-nav > li.nav-item > a.nav-link {
-      text-decoration-color: var(--dc-accent, #{$dc-accent});
-      text-decoration-thickness: 2px;
-      text-underline-offset: 5px;
 
       &:hover,
       &:focus {
         text-decoration-line: underline;
       }
+
+      &:focus-visible {
+        @include dc-focus-ring($on: dark);
+      }
+
+      &[aria-current='page'] {
+        text-decoration-line: underline;
+        text-decoration-thickness: $dc-underline-current;
+      }
     }
 
-    .nav.navbar-nav.dc-masthead-nav > li.nav-item > a.nav-link[aria-current='page'] {
-      color: var(--dc-link, #{$dc-link});
-      text-decoration-line: underline;
+    .dc-masthead-utilities {
+      align-items: center;
+      gap: $dc-space-1;
+    }
+
+    .dc-masthead-trigger,
+    .dc-masthead-login {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      border-radius: var(--dc-radius, #{$dc-radius});
+      color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+      display: inline-flex;
+      font-size: $dc-text-sm;
+      gap: $dc-space-2;
+      min-height: $dc-control-height;
+      padding: 0 $dc-space-2;
+      text-decoration: none;
+
+      &:hover {
+        background: $dc-button-hover-on-dark;
+        color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+      }
+
+      &:focus-visible {
+        @include dc-focus-ring($on: dark);
+      }
+    }
+
+    .dc-masthead-trigger {
+      &::after {
+        display: none;
+      }
+
+      &[aria-expanded='true'] {
+        background: $dc-button-hover-on-dark;
+
+        .dc-masthead-chevron {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .dc-masthead-chevron {
+      font-size: $dc-text-xs;
+      transition: transform $dc-transition-slow;
+    }
+
+    .dc-masthead-bell {
+      display: inline-flex;
+      position: relative;
+
+      .notify-number {
+        position: absolute;
+        right: -$dc-space-3;
+        top: -$dc-space-2;
+      }
+    }
+
+    .dc-masthead-dropdown {
+      background: $dc-surface;
+      border: $dc-border solid $dc-control-edge;
+      border-radius: 0 0 var(--dc-radius, #{$dc-radius}) var(--dc-radius, #{$dc-radius});
+      box-shadow: $dc-shadow-menu;
+      margin-top: 0;
+      min-width: 240px;
+      top: 100%;
+      padding: $dc-space-1;
+    }
+
+    .dc-masthead-dropdown .dc-menu-item {
+      align-items: center;
+      color: $dc-ink;
+      display: flex;
+      font-size: $dc-text-base;
+      gap: $dc-space-2;
+      min-height: 36px;
+      padding: 0 $dc-space-3;
+
+      &:hover,
+      &:focus {
+        background: $dc-surface-alt;
+        color: $dc-ink-heading;
+      }
+
+      &:focus-visible {
+        @include dc-focus-ring($offset: -2px);
+      }
+
+      &[aria-current='true'] {
+        font-weight: $dc-weight-strong;
+
+        .dc-menu-check {
+          visibility: visible;
+        }
+      }
+    }
+
+    .dc-menu-check {
+      flex: none;
+      visibility: hidden;
+      width: 1em;
+    }
+
+    .dc-menu-header {
+      display: flex;
+      flex-direction: column;
+      font-size: $dc-text-sm;
+      line-height: $dc-leading-snug;
+      margin: 0;
+      padding: $dc-space-2 $dc-space-3 $dc-space-2 calc(#{$dc-space-3} + 1em + #{$dc-space-2});
+    }
+
+    .dc-menu-header-label {
+      color: $dc-ink-secondary;
+    }
+
+    .dc-menu-header-name {
+      color: $dc-ink-heading;
+      font-weight: $dc-weight-strong;
+    }
+
+    .dc-masthead-dropdown .dropdown-divider {
+      border-top-color: $dc-hairline;
+      margin: $dc-space-1 0;
     }
 
     @media (max-width: $dc-nav-collapse-max) {
       #masthead .navbar-collapse {
-        padding-bottom: 12px;
+        padding-bottom: $dc-space-3;
       }
 
       .dc-masthead-nav,
-      #user_utility_links {
-        align-items: flex-start;
+      .dc-masthead-section .nav.navbar-nav {
+        align-items: stretch;
         flex-direction: column;
         margin: 0;
       }
 
       .nav.navbar-nav.dc-masthead-nav > li.nav-item > a.nav-link,
-      #user_utility_links.navbar-nav > li.nav-item > a.nav-link {
-        align-items: center;
+      .dc-masthead-section .nav.navbar-nav > li.nav-item > a.nav-link {
+        margin-inline: -$dc-space-2;
+      }
+
+      .dc-masthead-section {
+        border-top: $dc-border solid $dc-button-edge-on-dark;
+        margin-top: $dc-space-2;
+        padding-top: $dc-space-2;
+      }
+
+      .dc-masthead-section-label {
+        color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+        font-size: $dc-text-sm;
+        margin: $dc-space-2 0 0;
+      }
+
+      .dc-language-row {
+        column-gap: $dc-space-5;
         display: flex;
-        margin-inline: -8px;
-        min-height: 44px;
-        padding: 12px 8px;
+        flex-wrap: wrap;
+        margin: 0;
+
+        a.nav-link {
+          align-items: center;
+          border-radius: var(--dc-radius, #{$dc-radius});
+          color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+          display: flex;
+          font-size: $dc-text-sm;
+          min-height: $dc-control-height;
+          padding: 0;
+          text-decoration-thickness: $dc-underline-strong;
+          text-underline-offset: $dc-underline-offset-nav;
+
+          &:hover,
+          &:focus {
+            text-decoration-line: underline;
+          }
+
+          &:focus-visible {
+            @include dc-focus-ring($on: dark);
+          }
+
+          &[aria-current='true'] {
+            text-decoration-line: underline;
+            text-decoration-thickness: $dc-underline-current;
+          }
+        }
       }
     }
   }
@@ -211,26 +406,43 @@ body.digital_collection_show.public-facing {
   }
 
   // ---- announcement band ----
-  #announcement_text {
-    background: var(--dc-notice, #{$dc-notice});
-    border-bottom: 1px solid var(--dc-accent, #{$dc-accent});
-    padding-bottom: 14px;
-    padding-top: 14px;
+  .dc-announcement {
+    background: var(--dc-info-tint, #{$dc-info-tint});
+    border: 0;
+    padding-bottom: $dc-space-3;
+    padding-top: $dc-space-3;
   }
 
-  // Hyrax's _home-page.scss styles div#announcement as a red alert
-  #announcement_text > div#announcement {
+  .dc-announcement-inner {
     @include dc-column;
     @include dc-gutter;
+    align-items: baseline;
+    color: $dc-ink;
+    display: flex;
+    font-size: $dc-text-sm;
+    gap: $dc-space-2;
+    line-height: $dc-leading-snug;
+  }
+
+  .dc-announcement-icon {
+    color: var(--dc-info, #{$dc-info});
+    flex: none;
+  }
+
+  .dc-announcement-label {
+    flex: none;
+    font-weight: $dc-weight-heading;
+  }
+
+  // Hyrax's _home-page.scss styles div#announcement as a red alert by ID
+  .dc-announcement div#announcement {
     background-color: transparent;
     border: 0;
     border-radius: 0;
     color: $dc-ink;
-    font-size: 14px;
-    line-height: 1.55;
+    margin: 0;
     overflow-wrap: anywhere;
-    padding-bottom: 0;
-    padding-top: 0;
+    padding: 0;
     text-align: left;
 
     p:last-child {
@@ -244,18 +456,23 @@ body.digital_collection_show.public-facing {
 
   // ---- footer ----
   footer.navbar {
+    border-top: $dc-border solid $dc-button-edge-on-dark;
     color: var(--dc-chrome-ink, #{$dc-chrome-ink});
-    font-size: 14px;
-    line-height: 1.6;
-    padding: 24px 0;
+    font-size: $dc-text-sm;
+    line-height: $dc-leading-snug;
+    padding: $dc-space-6 0;
 
     .navbar-text {
       @include dc-column;
       @include dc-gutter;
       color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+      row-gap: $dc-space-4;
       width: 100%;
 
       > [class*="col-"] {
+        display: flex;
+        flex-direction: column;
+        gap: $dc-space-1;
         padding-left: 0;
         padding-right: 0;
       }
@@ -264,18 +481,38 @@ body.digital_collection_show.public-facing {
       .p-lg-2 { padding: 0 !important; }
     }
 
-    .navbar-link {
+    a.navbar-link,
+    .navbar-link a {
       @include dc-underline;
+      border-radius: var(--dc-radius, #{$dc-radius});
       color: var(--dc-footer-link, #{$dc-footer-link});
+      margin: 0 -3px;
+      padding: 2px 3px;
 
       &:hover,
       &:focus {
-        color: var(--dc-footer-link-hover, #{$dc-chrome-ink});
+        color: var(--dc-footer-link-hover, #{$dc-footer-link-hover});
       }
 
       &:focus-visible {
-        @include dc-focus-ring(var(--dc-chrome-ink, #{$dc-chrome-ink}));
+        @include dc-focus-ring($offset: 0, $on: dark);
       }
+    }
+
+    @media (max-width: $dc-nav-collapse-max) {
+      .navbar-text > [class*="col-"] {
+        align-items: center;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0ms !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0ms !important;
     }
   }
 }

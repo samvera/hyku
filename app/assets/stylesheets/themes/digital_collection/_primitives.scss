@@ -16,30 +16,309 @@
   max-width: $dc-content-max;
 }
 
-@mixin dc-focus-ring($color: var(--dc-link-hover, #{$dc-link-hover}), $offset: 2px) {
+@mixin dc-focus-ring($color: null, $offset: $dc-focus-ring-offset, $on: light) {
+  @if $color == null {
+    $color: if($on == dark, $dc-ink-heading-on-dark, var(--dc-link-hover, #{$dc-link-hover}));
+  }
   box-shadow: none;
-  outline: 2px solid $color;
+  outline: $dc-focus-ring-width solid $color;
   outline-offset: $offset;
 }
 
-@mixin dc-underline($thickness: 1px) {
+@mixin dc-underline($thickness: $dc-underline) {
   text-decoration: underline;
   text-decoration-thickness: $thickness;
-  text-underline-offset: 3px;
+  text-underline-offset: $dc-underline-offset;
 }
 
-@mixin dc-link($color: var(--dc-link, #{$dc-link})) {
+@mixin dc-link($color: null, $on: light, $visited: false) {
+  @if $color == null {
+    $color: if($on == dark, var(--dc-link-on-dark, #{$dc-link-on-dark}), var(--dc-link, #{$dc-link}));
+  }
   @include dc-underline;
   color: $color;
   transition: color $dc-transition;
 
+  @if $visited {
+    &:visited {
+      color: if($on == dark, var(--dc-link-visited-on-dark, #{$dc-link-visited-on-dark}), var(--dc-link-visited, #{$dc-link-visited}));
+    }
+  }
+
   &:hover,
   &:focus {
-    color: var(--dc-link-hover, #{$dc-link-hover});
+    color: if($on == dark, $dc-link-hover-on-dark, var(--dc-link-hover, #{$dc-link-hover}));
+  }
+
+  &:focus-visible {
+    @include dc-focus-ring($on: $on);
+  }
+}
+
+@mixin dc-serif {
+  font-family: var(--dc-serif, #{$dc-font-serif});
+}
+
+@mixin dc-sans {
+  font-family: var(--dc-sans, #{$dc-font-sans}) !important;
+}
+
+$dc-heading-roles: (
+  display: ($dc-role-display, $dc-role-display-laptop, $dc-role-display-mobile),
+  page-title: ($dc-role-page-title, $dc-role-page-title-laptop, $dc-role-page-title-mobile),
+  section-title: ($dc-role-section-title, $dc-role-section-title-laptop, $dc-role-section-title-mobile),
+  block-title: ($dc-role-block-title, $dc-role-block-title-laptop, $dc-role-block-title-mobile),
+  item-title: ($dc-role-item-title, $dc-role-item-title-laptop, $dc-role-item-title-mobile)
+);
+
+@mixin dc-heading($role: section-title, $level: primary, $on: light) {
+  $sizes: map-get($dc-heading-roles, $role);
+  @if $level == primary {
+    @include dc-serif;
+  } @else {
+    @include dc-sans;
+  }
+  color: if($on == dark, $dc-ink-heading-on-dark, $dc-ink-heading);
+  font-size: nth($sizes, 1);
+  font-weight: $dc-weight-heading;
+  line-height: if($role == item-title, $dc-leading-snug, $dc-leading-tight);
+  margin: 0;
+
+  @if index((display, page-title, section-title), $role) {
+    letter-spacing: $dc-tracking-tight;
+  }
+
+  @if nth($sizes, 2) != nth($sizes, 1) {
+    @media (max-width: $dc-laptop-max) {
+      font-size: nth($sizes, 2);
+    }
+  }
+
+  @if nth($sizes, 3) != nth($sizes, 2) {
+    @media (max-width: $dc-mobile-max) {
+      font-size: nth($sizes, 3);
+    }
+  }
+}
+
+@mixin dc-eyebrow($on: light) {
+  @include dc-sans;
+  color: if($on == dark, $dc-ink-secondary-on-dark, $dc-ink-secondary);
+  font-size: $dc-role-eyebrow;
+  font-weight: $dc-weight-strong;
+  letter-spacing: $dc-tracking-label;
+  line-height: $dc-leading-snug;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+@mixin dc-badge($tone: null) {
+  align-items: center;
+  background: $dc-badge;
+  border: $dc-border solid $dc-badge-edge;
+  border-radius: var(--dc-radius, #{$dc-radius});
+  color: $dc-ink;
+  display: inline-flex;
+  font-size: $dc-text-xs;
+  font-weight: $dc-weight-heading;
+  gap: $dc-space-1;
+  letter-spacing: $dc-tracking-label;
+  line-height: $dc-leading-snug;
+  padding: $dc-space-1 $dc-space-2;
+  text-transform: uppercase;
+
+  @if $tone != null {
+    background: var(--dc-#{$tone}-tint, #{map-get((info: $dc-info-tint, success: $dc-success-tint, danger: $dc-danger-tint), $tone)});
+    border-color: transparent;
+  }
+}
+
+@mixin dc-button-shape($size: default) {
+  align-items: center;
+  border-radius: var(--dc-radius, #{$dc-radius});
+  border-style: solid;
+  border-width: $dc-border;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: if($size == small, $dc-text-sm, $dc-text-base);
+  font-weight: $dc-weight-medium;
+  gap: $dc-space-2;
+  justify-content: center;
+  line-height: $dc-leading-snug;
+  min-height: if($size == small, $dc-control-height-small, $dc-control-height);
+  padding: 0 if($size == small, $dc-space-3, $dc-space-4);
+  text-decoration: none;
+  transition: background-color $dc-transition, border-color $dc-transition, color $dc-transition;
+
+  @if $size == small {
+    @media (max-width: $dc-tablet-max) {
+      min-height: $dc-control-height-small-touch;
+    }
+  }
+
+  &:disabled,
+  &.disabled,
+  &[aria-disabled='true'] {
+    color: $dc-disabled-ink;
+    cursor: not-allowed;
+  }
+}
+
+@mixin dc-button-selected($on: light) {
+  &[aria-pressed='true'],
+  &[aria-current='true'],
+  &[aria-current='page'],
+  &.active {
+    background-color: var(--dc-action, #{$dc-action});
+    border-color: if($on == dark, $dc-button-selected-edge-on-dark, $dc-button-selected-edge);
+    color: var(--dc-action-ink, #{$dc-action-ink});
+    font-weight: $dc-weight-regular;
+  }
+}
+
+@mixin dc-button($size: default, $on: light) {
+  @include dc-button-shape($size);
+  @if $on == dark {
+    background-color: $dc-button-on-dark;
+    border-color: $dc-button-edge-on-dark;
+    color: $dc-button-ink-on-dark;
+  } @else {
+    background-color: var(--dc-button, #{$dc-button});
+    border-color: var(--dc-button-edge, #{$dc-button-edge});
+    color: var(--dc-button-ink, #{$dc-button-ink});
+  }
+
+  &:hover:not(:disabled):not(.disabled) {
+    @if $on == dark {
+      background-color: $dc-button-hover-on-dark;
+    } @else {
+      background-color: var(--dc-button-hover, #{$dc-button-hover});
+      border-color: var(--dc-button-hover-edge, #{$dc-button-edge});
+    }
+  }
+
+  &:focus-visible {
+    @include dc-focus-ring($on: $on);
+  }
+
+  @include dc-button-selected($on);
+}
+
+@mixin dc-button-primary($size: default, $on: light) {
+  @include dc-button-shape($size);
+  background-color: var(--dc-action, #{$dc-action});
+  border-color: var(--dc-action-edge, #{$dc-action-edge});
+  color: var(--dc-action-ink, #{$dc-action-ink});
+  font-weight: $dc-weight-regular;
+
+  &:hover:not(:disabled):not(.disabled) {
+    background-color: var(--dc-action-hover, #{$dc-action-hover});
+  }
+
+  &:focus-visible {
+    @include dc-focus-ring($on: $on);
+  }
+}
+
+@mixin dc-button-danger($size: default) {
+  @include dc-button-shape($size);
+  background-color: $dc-surface;
+  border-color: var(--dc-danger, #{$dc-danger});
+  color: var(--dc-danger, #{$dc-danger});
+
+  &:hover:not(:disabled):not(.disabled) {
+    background-color: var(--dc-danger-tint, #{$dc-danger-tint});
   }
 
   &:focus-visible {
     @include dc-focus-ring;
+  }
+}
+
+@mixin dc-link-title($on: light) {
+  color: if($on == dark, $dc-ink-heading-on-dark, $dc-ink-heading);
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    @include dc-underline;
+    color: if($on == dark, $dc-link-hover-on-dark, var(--dc-link-hover, #{$dc-link-hover}));
+  }
+
+  &:focus-visible {
+    @include dc-focus-ring($on: $on);
+  }
+}
+
+@mixin dc-link-cta($arrow: right, $size: default, $on: light) {
+  $gap: if($size == small, $dc-space-1, $dc-space-2);
+  $gap-hover: if($size == small, $dc-space-2, $dc-space-3);
+  $side: if($arrow == left, before, after);
+  color: if($on == dark, var(--dc-link-on-dark, #{$dc-link-on-dark}), var(--dc-link, #{$dc-link}));
+  display: inline-block;
+  font-size: if($size == small, $dc-text-sm, inherit);
+  font-weight: $dc-weight-medium;
+  text-decoration: none;
+  transition: color $dc-transition;
+
+  &::#{$side} {
+    content: if($arrow == left, '\f060', '\f061');
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: 1em;
+    font-weight: normal;
+    margin-inline: if($arrow == left, 0 $gap, $gap 0);
+    transition: margin $dc-transition;
+  }
+
+  &:hover,
+  &:focus {
+    @include dc-underline;
+    color: if($on == dark, $dc-link-hover-on-dark, var(--dc-link-hover, #{$dc-link-hover}));
+
+    &::#{$side} {
+      margin-inline: if($arrow == left, 0 $gap-hover, $gap-hover 0);
+    }
+  }
+
+  &:focus-visible {
+    @include dc-focus-ring($on: $on);
+  }
+}
+
+@mixin dc-thumb {
+  border-radius: var(--dc-radius, #{$dc-radius});
+  display: block;
+  object-fit: cover;
+}
+
+@mixin dc-joined($item: '*') {
+  display: flex;
+
+  > #{$item} {
+    border-radius: 0;
+    position: relative;
+  }
+
+  > #{$item} + #{$item} {
+    margin-left: -$dc-border;
+  }
+
+  > #{$item}:first-child {
+    border-bottom-left-radius: var(--dc-radius, #{$dc-radius});
+    border-top-left-radius: var(--dc-radius, #{$dc-radius});
+  }
+
+  > #{$item}:last-child {
+    border-bottom-right-radius: var(--dc-radius, #{$dc-radius});
+    border-top-right-radius: var(--dc-radius, #{$dc-radius});
+  }
+
+  > #{$item}:hover,
+  > #{$item}:focus-visible,
+  > #{$item}[aria-pressed='true'],
+  > #{$item}.active {
+    z-index: 1;
   }
 }
 
@@ -55,7 +334,7 @@
   // shell instead, so the append stays a real box for the scope menu's Popper
   .input-group {
     flex-wrap: nowrap;
-    margin-bottom: 26px;
+    margin-bottom: 0;
   }
 
   .input-group-append {
@@ -64,18 +343,18 @@
 
   // Hyrax _home-page.scss restores 4px on #search-field-header by ID
   #search-field-header {
-    border-radius: var(--dc-radius, #{$dc-radius});
+    border-radius: var(--dc-radius, #{$dc-radius}) 0 0 var(--dc-radius, #{$dc-radius});
   }
 
   .q.form-control {
-    border: 1px solid $dc-input-edge;
-    border-radius: var(--dc-radius, #{$dc-radius});
+    border: $dc-border solid $dc-input-edge;
+    border-radius: var(--dc-radius, #{$dc-radius}) 0 0 var(--dc-radius, #{$dc-radius});
     border-right: 0;
     box-shadow: none;
     color: $dc-ink-heading;
     flex: 1 1 0%;
-    font-size: 15px;
-    height: var(--dc-search-height, 44px);
+    font-size: $dc-text-base;
+    height: var(--dc-search-height, #{$dc-control-height});
     order: 0;
 
     &::placeholder {
@@ -95,8 +374,8 @@
     border-right-width: 0;
     color: $dc-ink !important;
     flex: none;
-    font-size: 14px;
-    height: var(--dc-search-height, 44px);
+    font-size: $dc-text-sm;
+    height: var(--dc-search-height, #{$dc-control-height});
     order: 0;
   }
 
@@ -106,46 +385,143 @@
 
   #search-submit-header {
     align-items: center;
-    border-radius: var(--dc-radius, #{$dc-radius});
+    border-radius: 0 var(--dc-radius, #{$dc-radius}) var(--dc-radius, #{$dc-radius}) 0;
     display: inline-flex;
-    font-size: 15px;
-    font-weight: 700;
-    height: var(--dc-search-height, 44px);
+    font-size: $dc-text-base;
+    font-weight: $dc-weight-regular;
+    height: var(--dc-search-height, #{$dc-control-height});
     justify-content: center;
     order: 1;
-    padding: 0 18px;
+    padding: 0 $dc-space-4;
 
     .fa {
       display: none;
     }
   }
 
-  // btn-secondary and its :hover are pinned by _appearance_styles with !important
+  .dc-search-advanced {
+    flex-basis: 100%;
+    margin: $dc-space-2 0 0;
+    text-align: right;
+  }
+
   #advanced-top-button {
-    @include dc-underline;
-    background: none !important;
-    border: 0 !important;
-    color: var(--dc-link, #{$dc-link}) !important;
-    font-size: 13px;
-    line-height: 1.4;
-    margin-top: 2px;
-    padding: 4px 6px;
-    position: absolute;
-    right: -6px;
-    top: 100%;
-
-    &:hover,
-    &:focus {
-      color: var(--dc-link-hover, #{$dc-link-hover}) !important;
-    }
-
-    &:focus-visible {
-      @include dc-focus-ring;
-    }
+    @include dc-link;
+    border-radius: var(--dc-radius, #{$dc-radius});
+    font-size: $dc-text-sm;
   }
 
   .btn:focus-visible,
   .dropdown-toggle:focus-visible {
     @include dc-focus-ring;
+  }
+}
+
+@mixin dc-plate {
+  background: $dc-plate;
+  border-radius: var(--dc-radius, #{$dc-radius});
+  color: $dc-overlay-text;
+  padding: $dc-space-6;
+
+  @media (max-width: $dc-mobile-max) {
+    padding: $dc-space-5;
+  }
+}
+
+@mixin dc-hero-touch-target {
+  @media (max-width: $dc-tablet-max) {
+    position: relative;
+
+    &::after {
+      content: '';
+      inset: calc((#{$dc-control-height-small-touch} - #{$dc-size-hero-control}) / -2) 0;
+      position: absolute;
+    }
+  }
+}
+
+@mixin dc-hero-controls {
+  align-items: center;
+  background: $dc-plate;
+  border-radius: $dc-radius-pill;
+  display: flex;
+  gap: $dc-space-3;
+  padding: $dc-space-2 $dc-space-3 $dc-space-2 $dc-space-4;
+
+  .dc-hero-segments {
+    align-items: center;
+    display: flex;
+    gap: $dc-space-2;
+    margin: 0;
+  }
+
+  .dc-hero-segment {
+    @include dc-hero-touch-target;
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: var(--dc-radius, #{$dc-radius});
+    cursor: pointer;
+    display: flex;
+    height: $dc-size-hero-control;
+    justify-content: center;
+    padding: 0;
+    width: $dc-width-hero-segment;
+
+    &::before {
+      background: $dc-indicator-muted-on-dark;
+      border-radius: $dc-radius-pill;
+      content: '';
+      display: block;
+      height: $dc-rule-strong;
+      transition: background-color $dc-transition, height $dc-transition;
+      width: 100%;
+    }
+
+    &:hover::before {
+      background: $dc-indicator-current-on-dark;
+    }
+
+    &.is-current::before {
+      background: $dc-indicator-current-on-dark;
+      height: $dc-space-1;
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring($on: dark);
+    }
+
+    @media (forced-colors: active) {
+      &::before {
+        background: CanvasText;
+      }
+
+      &.is-current::before {
+        background: Highlight;
+      }
+    }
+  }
+
+  .dc-hero-hold {
+    @include dc-hero-touch-target;
+    align-items: center;
+    background: $dc-button-on-dark;
+    border: $dc-border solid $dc-button-edge-on-dark;
+    border-radius: var(--dc-radius, #{$dc-radius});
+    color: $dc-button-ink-on-dark;
+    display: inline-flex;
+    font-size: $dc-text-sm;
+    height: $dc-size-hero-control;
+    justify-content: center;
+    padding: 0;
+    width: $dc-size-hero-control;
+
+    &:hover {
+      background: $dc-button-hover-on-dark;
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring($on: dark);
+    }
   }
 }

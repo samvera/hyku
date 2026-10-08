@@ -1,0 +1,96 @@
+<% languages = available_translations %>
+<% current_language = I18n.locale.to_s %>
+<% signed_in = user_signed_in? %>
+<% account_links = signed_in ? dc_account_links(unread) : [] %>
+<% logout_link = dc_logout_link if signed_in %>
+<% show_login = !signed_in && !admin_host? && Flipflop.show_login_link? %>
+
+<div class="dc-masthead-utilities d-none d-lg-flex">
+  <% if languages.size > 1 %>
+    <div class="dropdown dc-masthead-menu">
+      <button type="button" class="dc-masthead-trigger dropdown-toggle" id="dc-language-trigger" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+        <span class="fa fa-globe" aria-hidden="true"></span>
+        <span class="sr-only"><%= t('hyrax.toolbar.language_switch') %>:</span>
+        <span lang="<%= current_language %>"><%= languages[current_language] %></span>
+        <span class="fa fa-chevron-down dc-masthead-chevron" aria-hidden="true"></span>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right dc-masthead-dropdown" aria-labelledby="dc-language-trigger">
+        <% languages.each do |code, label| %>
+          <%= link_to "?locale=#{code}", class: 'dropdown-item dc-menu-item', lang: code, hreflang: code,
+                      aria: { current: ('true' if code == current_language) } do %>
+            <span class="fa fa-check dc-menu-check" aria-hidden="true"></span>
+            <%= label %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if signed_in %>
+    <div class="dropdown dc-masthead-menu">
+      <button type="button" class="dc-masthead-trigger dropdown-toggle" id="dc-account-trigger" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false"
+              aria-label="<%= t('digital_collection.chrome.account_label', name: current_user.name, count: unread) %>">
+        <% if unread.positive? %>
+          <span class="dc-masthead-bell" aria-hidden="true">
+            <span class="fa fa-bell"></span>
+            <span class="notify-number"><span class="count dc-unread-count"><%= unread %></span></span>
+          </span>
+        <% end %>
+        <span><%= current_user.name %></span>
+        <span class="fa fa-chevron-down dc-masthead-chevron" aria-hidden="true"></span>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right dc-masthead-dropdown" aria-labelledby="dc-account-trigger">
+        <p class="dc-menu-header">
+          <span class="dc-menu-header-label"><%= t('digital_collection.chrome.signed_in_as') %></span>
+          <span class="dc-menu-header-name"><%= current_user.name %></span>
+        </p>
+        <% account_links.each do |label, url| %>
+          <%= link_to url, class: 'dropdown-item dc-menu-item' do %>
+            <span class="dc-menu-check" aria-hidden="true"></span><%= label %>
+          <% end %>
+        <% end %>
+        <% if logout_link %>
+          <div class="dropdown-divider"></div>
+          <%= link_to logout_link.last, class: 'dropdown-item dc-menu-item' do %>
+            <span class="dc-menu-check" aria-hidden="true"></span><%= logout_link.first %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% elsif show_login %>
+    <%= link_to t('hyrax.toolbar.profile.login'), main_app.single_signon_index_path, class: 'dc-masthead-login' %>
+  <% end %>
+</div>
+
+<% if signed_in || show_login %>
+  <div class="dc-masthead-section d-lg-none">
+    <% if signed_in %>
+      <p class="dc-masthead-section-label"><%= t('digital_collection.chrome.signed_in_as_name', name: current_user.name) %></p>
+      <ul class="nav navbar-nav">
+        <% (account_links + [logout_link].compact).each do |label, url| %>
+          <li class="nav-item"><%= link_to label, url, class: 'nav-link' %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <ul class="nav navbar-nav">
+        <li class="nav-item"><%= link_to t('hyrax.toolbar.profile.login'), main_app.single_signon_index_path, class: 'nav-link' %></li>
+      </ul>
+    <% end %>
+  </div>
+<% end %>
+
+<% if languages.size > 1 %>
+  <div class="dc-masthead-section d-lg-none">
+    <p class="dc-masthead-section-label" id="dc-language-section-label"><%= t('digital_collection.chrome.language') %></p>
+    <ul class="dc-language-row list-unstyled" aria-labelledby="dc-language-section-label">
+      <% languages.each do |code, label| %>
+        <li>
+          <%= link_to label, "?locale=#{code}", class: 'nav-link', lang: code, hreflang: code,
+                      aria: { current: ('true' if code == current_language) } %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

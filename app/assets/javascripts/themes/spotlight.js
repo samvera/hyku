@@ -13,9 +13,25 @@
     region.carousel(held ? 'pause' : 'cycle');
     button.attr('data-held', held ? 'true' : 'false')
           .find('[data-spotlight-hold-label]').text(button.data(held ? 'resumeLabel' : 'holdLabel'));
+    if (button.is('[aria-pressed]')) button.attr('aria-pressed', held ? 'true' : 'false');
+  }
+
+  function respectReducedMotion() {
+    if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    $('[data-theme-spotlight][data-spotlight-reduced-motion][data-ride]').each(function () {
+      var region = $(this);
+      var button = region.find('[data-spotlight-hold]');
+
+      region.removeAttr('data-ride');
+      button.attr('data-held', 'true')
+            .find('[data-spotlight-hold-label]').text(button.data('resumeLabel'));
+      if (button.is('[aria-pressed]')) button.attr('aria-pressed', 'true');
+    });
   }
 
   function bind() {
+    respectReducedMotion();
     $(document)
       .off('.themeSpotlight')
       .on('slide.bs.carousel.themeSpotlight', '[data-theme-spotlight]', function (event) {

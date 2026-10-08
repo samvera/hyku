@@ -1,0 +1,10 @@
+<%# OVERRIDE Hyrax 5.3.0: notice band with an info icon and "Notice:" label; content headings capped at h2 %>
+<% if display_content_block? @announcement_text %>
+  <div id="announcement_text" class="dc-announcement">
+    <div class="dc-announcement-inner">
+      <span class="fa fa-info-circle dc-announcement-icon" aria-hidden="true"></span>
+      <strong class="dc-announcement-label"><%= t('digital_collection.chrome.notice') %></strong>
+      <%= dc_content_block @announcement_text, id: 'announcement', role: 'complementary', 'aria-label': t('digital_collection.chrome.announcement_label') %>
+    </div>
+  </div>
+<% end %>

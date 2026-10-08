@@ -1,0 +1,15 @@
+<%= tag.section class: token_list('dc-panel', local_assigns[:modifier]), id: local_assigns[:section_id],
+                aria: { labelledby: label_id } do %>
+  <div class="dc-panel-head">
+    <h2 class="dc-panel-label" id="<%= label_id %>"><%= label %></h2>
+    <% if local_assigns[:count] %>
+      <span class="dc-panel-count"><%= count %></span>
+    <% end %>
+  </div>
+
+  <%= yield %>
+
+  <% if local_assigns[:empty] %>
+    <p class="dc-panel-empty"><%= empty %></p>
+  <% end %>
+<% end %>

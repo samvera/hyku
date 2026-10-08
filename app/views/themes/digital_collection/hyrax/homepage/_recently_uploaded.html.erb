@@ -1,9 +1,8 @@
+<%# OVERRIDE Hyrax 5.3.0: headed section with a view-all link and a two-column grid of rows %>
 <section class="dc-recent" aria-labelledby="dc-recent-heading">
-  <div class="dc-section-head">
-    <h2 class="dc-section-title" id="dc-recent-heading"><%= t('digital_collection.homepage.recent.heading') %></h2>
-    <%= link_to t('digital_collection.homepage.recent.view_all'), main_app.search_catalog_path,
-                class: 'dc-section-action' %>
-  </div>
+  <%= dc_section_head t('digital_collection.homepage.recent.heading'), id: 'dc-recent-heading',
+                      action: link_to(t('digital_collection.homepage.recent.view_all'), main_app.search_catalog_path,
+                                      class: 'dc-section-action') %>
 
   <ul class="dc-recent-grid list-unstyled">
     <% @recent_documents.each do |document| %>

@@ -1113,7 +1113,24 @@ zh:
         heading: "所属"
   digital_collection:
     chrome:
-      toggle_navigation: "切换导航"
+      account_label:
+        zero: "%{name}"
+        one: "%{name}，1 条未读通知"
+        other: "%{name}，%{count} 条未读通知"
+      announcement_label: "公告"
+      language: "语言"
+      masthead_label: "网站导航"
+      menu:
+        zero: "菜单"
+        one: "菜单，1 条未读通知"
+        other: "菜单，%{count} 条未读通知"
+      notice: "注意："
+      notifications:
+        zero: "通知"
+        one: "通知（1）"
+        other: "通知（%{count}）"
+      signed_in_as: "已登录为"
+      signed_in_as_name: "已登录为 %{name}"
     homepage:
       intro_label: "简介"
       hero:
@@ -1122,12 +1139,14 @@ zh:
         featured_collection: "精选馆藏"
         hold: "暂停"
         resume: "播放"
-        segment: "显示 %{title}"
+        segment: "第 %{number} 张：%{title}"
+        slide: "第 %{number} 张，共 %{total} 张"
       featured_collections:
         heading: "精选合集"
         unfeature_confirm: "要将此合集从精选列表中移除吗？"
         reorder_hint: "拖动以重新排列精选合集。"
         save_order: "保存排序"
+        remove: "从精选馆藏中移除 %{title}"
       browse:
         heading: "浏览馆藏"
         grid: "网格"
@@ -1152,9 +1171,10 @@ zh:
         unfeature_confirm: "要将此作品从精选列表中移除吗？"
         reorder_hint: "拖动以重新排列精选作品。"
         save_order: "保存顺序"
+        remove: "从精选作品中移除 %{title}"
       recent:
         heading: "最近添加"
-        view_all: "查看全部"
+        view_all: "查看全部最新作品"
       about:
         heading: "关于馆藏"
       cta:
@@ -1169,6 +1189,9 @@ zh:
         works:
           one: "作品"
           other: "作品"
+    search:
+      advanced: "高级搜索"
+      submit: "搜索"
     show:
       part_of:
         heading: 所属

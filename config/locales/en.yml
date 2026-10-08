@@ -963,7 +963,24 @@ en:
         heading: "Part of"
   digital_collection:
     chrome:
-      toggle_navigation: "Toggle navigation"
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 unread notification"
+        other: "%{name}, %{count} unread notifications"
+      announcement_label: "Announcement"
+      language: "Language"
+      masthead_label: "Site navigation"
+      menu:
+        zero: "Menu"
+        one: "Menu, 1 unread notification"
+        other: "Menu, %{count} unread notifications"
+      notice: "Notice:"
+      notifications:
+        zero: "Notifications"
+        one: "Notifications (1)"
+        other: "Notifications (%{count})"
+      signed_in_as: "Signed in as"
+      signed_in_as_name: "Signed in as %{name}"
     homepage:
       intro_label: "Introduction"
       hero:
@@ -972,12 +989,14 @@ en:
         featured_collection: "Featured collection"
         hold: "Pause"
         resume: "Play"
-        segment: "Show %{title}"
+        segment: "Slide %{number}: %{title}"
+        slide: "Slide %{number} of %{total}"
       featured_collections:
         heading: "Featured collections"
         unfeature_confirm: "Remove this collection from the featured list?"
         reorder_hint: "Drag to reorder featured collections."
         save_order: "Save order"
+        remove: "Remove %{title} from featured collections"
       browse:
         heading: "Browse collections"
         grid: "Grid"
@@ -1002,9 +1021,10 @@ en:
         unfeature_confirm: "Remove this work from the featured list?"
         reorder_hint: "Drag to reorder featured works."
         save_order: "Save order"
+        remove: "Remove %{title} from featured works"
       recent:
         heading: "Recently added works"
-        view_all: "View all"
+        view_all: "View all recent works"
       about:
         heading: "About the collections"
       cta:
@@ -1019,6 +1039,9 @@ en:
         works:
           one: "Work"
           other: "Works"
+    search:
+      advanced: "Advanced search"
+      submit: "Search"
     show:
       part_of:
         heading: "Part of"

@@ -1101,7 +1101,24 @@ fr:
         heading: "Fait partie de"
   digital_collection:
     chrome:
-      toggle_navigation: "Afficher/masquer la navigation"
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 notification non lue"
+        other: "%{name}, %{count} notifications non lues"
+      announcement_label: "Annonce"
+      language: "Langue"
+      masthead_label: "Navigation du site"
+      menu:
+        zero: "Menu"
+        one: "Menu, 1 notification non lue"
+        other: "Menu, %{count} notifications non lues"
+      notice: "Avis :"
+      notifications:
+        zero: "Notifications"
+        one: "Notifications (1)"
+        other: "Notifications (%{count})"
+      signed_in_as: "Connecté en tant que"
+      signed_in_as_name: "Connecté en tant que %{name}"
     homepage:
       intro_label: "Introduction"
       hero:
@@ -1110,12 +1127,14 @@ fr:
         featured_collection: "Collection à la une"
         hold: "Pause"
         resume: "Lecture"
-        segment: "Afficher %{title}"
+        segment: "Diapositive %{number} : %{title}"
+        slide: "Diapositive %{number} sur %{total}"
       featured_collections:
         heading: "Collections à la une"
         unfeature_confirm: "Retirer cette collection de la liste mise en avant ?"
         reorder_hint: "Faites glisser pour réordonner les collections."
         save_order: "Enregistrer l'ordre"
+        remove: "Retirer %{title} des collections en vedette"
       browse:
         heading: "Parcourir les collections"
         grid: "Grille"
@@ -1140,9 +1159,10 @@ fr:
         unfeature_confirm: "Retirer cette œuvre de la liste mise en avant ?"
         reorder_hint: "Faites glisser pour réordonner les œuvres."
         save_order: "Enregistrer l'ordre"
+        remove: "Retirer %{title} des œuvres en vedette"
       recent:
         heading: "Ajouts récents"
-        view_all: "Voir tout"
+        view_all: "Voir toutes les œuvres récentes"
       about:
         heading: "À propos des collections"
       cta:
@@ -1157,6 +1177,9 @@ fr:
         works:
           one: "Document"
           other: "Documents"
+    search:
+      advanced: "Recherche avancée"
+      submit: "Rechercher"
     show:
       part_of:
         heading: Fait partie de

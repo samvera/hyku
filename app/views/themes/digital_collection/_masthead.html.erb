@@ -1,9 +1,17 @@
-<header aria-label="header" class="top-header dc-masthead">
-  <nav id="masthead" class="navbar navbar-expand-lg navbar-light justify-content-between <%= placement_class %>" role="navigation" aria-label="masthead">
-    <h1 class="sr-only"><%= application_name %></h1>
+<%# OVERRIDE Hyku 7.1.0: notice band, page links, account and language menus; the site name is not a heading %>
+<%= render 'hyrax/homepage/announcement' if controller_name == 'homepage' %>
+<% unread = dc_unread_count %>
+<header class="top-header dc-masthead">
+  <nav id="masthead" class="navbar navbar-expand-lg navbar-dark <%= placement_class %>" aria-label="<%= t('digital_collection.chrome.masthead_label') %>">
     <%= render '/logo' %>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#top-navbar-collapse" aria-controls="top-navbar-collapse" aria-expanded="false" aria-label="<%= t('digital_collection.chrome.toggle_navigation') %>">
-      <span class="navbar-toggler-icon"></span>
+    <button class="navbar-toggler dc-menu-button" type="button" data-toggle="collapse" data-target="#top-navbar-collapse"
+            aria-controls="top-navbar-collapse" aria-expanded="false"
+            aria-label="<%= t('digital_collection.chrome.menu', count: unread) %>">
+      <span class="fa fa-bars dc-menu-icon-open" aria-hidden="true"></span>
+      <span class="fa fa-times dc-menu-icon-close" aria-hidden="true"></span>
+      <% if unread.positive? %>
+        <span class="dc-unread-count" aria-hidden="true"><%= unread %></span>
+      <% end %>
     </button>
     <div class="collapse navbar-collapse" id="top-navbar-collapse">
       <ul class="nav navbar-nav dc-masthead-nav">
@@ -16,11 +24,7 @@
         <li class="nav-item">
           <%= link_to t(:'hyrax.controls.contact'), hyrax.contact_path, class: 'nav-link', aria: { current: ('page' if current_page?(hyrax.contact_path(locale: nil))) } %></li>
       </ul>
-      <% if admin_host? %>
-        <%= render '/admin_util_links' %>
-      <% else %>
-        <%= render '/user_util_links' %>
-      <% end %>
+      <%= render 'themes/digital_collection/dc_masthead_utilities', unread: %>
     </div>
   </nav>
 </header>

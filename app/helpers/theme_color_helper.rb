@@ -3,6 +3,8 @@
 # Color math shared by the themes: luminance, contrast, and the lifts that
 # keep tenant-set brand colors legible on the surfaces they land on.
 module ThemeColorHelper
+  include ThemeColorSpace
+
   def theme_luminance(hex)
     channels = hex.to_s.delete('#').scan(/../).map { |pair| pair.to_i(16) / 255.0 }
     return 0 unless channels.size == 3
@@ -58,5 +60,62 @@ module ThemeColorHelper
     # black clears 4.5:1 from 0.175 up and white to 0.183, so the crossover
     # leaves no accent without a readable ink
     theme_luminance(hex) > 0.175 ? '#000000' : '#ffffff'
+  end
+
+  THEME_STATUS_BASE = { danger: '#b4433c', success: '#3c763d' }.freeze
+  THEME_MAX_STEPS = 100
+
+  def theme_mix(one, two, share_of_two)
+    pairs = theme_channels(one).zip(theme_channels(two))
+    theme_hex(pairs.map { |a, b| (a * (1 - share_of_two)) + (b * share_of_two) })
+  end
+
+  def theme_darken(hex, factor)
+    theme_hex(theme_channels(hex).map { |channel| channel * factor })
+  end
+
+  def theme_darken_until(hex, surface, floor)
+    color = hex
+    THEME_MAX_STEPS.times do
+      break if theme_contrast(color, surface) >= floor
+      color = theme_darken(color, 0.95)
+    end
+    color
+  end
+
+  def theme_lighten_until(hex, surface, floor)
+    hue, saturation, lightness = theme_hsl(hex)
+    0.upto(THEME_MAX_STEPS) do |step|
+      color = theme_from_hsl(hue, saturation, lightness + ((1 - lightness) * step / THEME_MAX_STEPS.to_f))
+      return color if theme_contrast(color, surface) >= floor
+    end
+    '#ffffff'
+  end
+
+  def theme_on_dark(hex, surface)
+    theme_mix(hex, '#ffffff', (100 - theme_brand_mix_on(hex, surface)) / 100.0)
+  end
+
+  def theme_status_color(name, link, surface = '#ffffff')
+    base = THEME_STATUS_BASE.fetch(name)
+    clash = name == :danger ? theme_reddish?(link) : theme_greenish?(link)
+    share = clash ? 0 : [20, 15, 10, 5, 0].find { |percent| theme_hue_shift(theme_mix(base, link, percent / 100.0), base) <= 20 }
+    theme_darken_until(theme_mix(base, link, share / 100.0), surface, 4.5)
+  end
+
+  def theme_visited_color(link, surface)
+    color = theme_turn_hue(link, 56)
+    color = theme_turn_hue(link, -56) if theme_reddish?(color) || theme_greenish?(color)
+    theme_darken_until(color, surface, 4.5)
+  end
+
+  def theme_reddish?(hex)
+    hue, saturation, = theme_hsl(hex)
+    saturation > 0.1 && (hue >= 330 || hue <= 20)
+  end
+
+  def theme_greenish?(hex)
+    hue, saturation, = theme_hsl(hex)
+    saturation > 0.1 && (80..170).cover?(hue)
   end
 end

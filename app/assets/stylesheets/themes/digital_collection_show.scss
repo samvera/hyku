@@ -46,10 +46,6 @@ body.digital_collection_show.hyrax-file_sets-show {
 
     @include dc-search-form;
 
-    .input-group {
-      margin-bottom: 22px;
-    }
-
     @media (max-width: $dc-mobile-max) {
       .dc-searchbar-crumbs {
         flex-basis: 100%;
@@ -145,20 +141,20 @@ body.digital_collection_show.works-show {
     @include dc-column;
 
     .viewer-wrapper {
-      height: $dc-mat-height;
+      height: $dc-height-mat;
       overflow: hidden;
       position: relative;
 
       @media (max-width: $dc-laptop-max) {
-        height: $dc-mat-height-laptop;
+        height: $dc-height-mat-laptop;
       }
 
       @media (max-width: $dc-mobile-max) {
-        height: $dc-mat-height-tablet;
+        height: $dc-height-mat-tablet;
       }
 
       @media (max-width: 389px) {
-        height: $dc-mat-height-mobile;
+        height: $dc-height-mat-mobile;
       }
     }
   }
@@ -167,7 +163,7 @@ body.digital_collection_show.works-show {
     align-items: center;
     background: $dc-mat;
     display: flex;
-    height: $dc-mat-height;
+    height: $dc-height-mat;
     justify-content: center;
     padding: 20px;
 
@@ -178,15 +174,15 @@ body.digital_collection_show.works-show {
     }
 
     @media (max-width: $dc-laptop-max) {
-      height: $dc-mat-height-laptop;
+      height: $dc-height-mat-laptop;
     }
 
     @media (max-width: $dc-mobile-max) {
-      height: $dc-mat-height-tablet;
+      height: $dc-height-mat-tablet;
     }
 
     @media (max-width: 389px) {
-      height: $dc-mat-height-mobile;
+      height: $dc-height-mat-mobile;
     }
   }
 
@@ -194,19 +190,19 @@ body.digital_collection_show.works-show {
     align-items: center;
     background: $dc-mat;
     display: flex;
-    height: $dc-mat-height;
+    height: $dc-height-mat;
     justify-content: center;
 
     @media (max-width: $dc-laptop-max) {
-      height: $dc-mat-height-laptop;
+      height: $dc-height-mat-laptop;
     }
 
     @media (max-width: $dc-mobile-max) {
-      height: $dc-mat-height-tablet;
+      height: $dc-height-mat-tablet;
     }
 
     @media (max-width: 389px) {
-      height: $dc-mat-height-mobile;
+      height: $dc-height-mat-mobile;
     }
   }
 
@@ -414,6 +410,7 @@ body.digital_collection_show.works-show {
   .dc-panel {
     background: $dc-surface;
     border: 1px solid $dc-badge-edge;
+    border-radius: var(--dc-radius, #{$dc-radius});
     box-shadow: $dc-shadow-card;
   }
 
@@ -421,6 +418,7 @@ body.digital_collection_show.works-show {
     align-items: center;
     background: $dc-surface-alt;
     border-bottom: 2px solid var(--dc-accent, #{$dc-accent});
+    border-radius: var(--dc-radius, #{$dc-radius}) var(--dc-radius, #{$dc-radius}) 0 0;
     display: flex;
     gap: 12px;
     justify-content: space-between;
@@ -730,7 +728,7 @@ body.digital_collection_show.hyrax-collections-show {
     align-self: flex-start;
     backdrop-filter: blur(4px);
     background: $dc-plate;
-    border-radius: var(--dc-radius-plate, #{$dc-radius-plate});
+    border-radius: var(--dc-radius, #{$dc-radius});
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -795,11 +793,12 @@ body.digital_collection_show.hyrax-collections-show {
     form {
       background: #ffffff;
       border: 0;
-      border-radius: 0;
+      border-radius: var(--dc-radius, #{$dc-radius});
       box-shadow: none;
       display: flex;
       height: 44px;
       margin: 0;
+      overflow: hidden;
       padding: 0;
     }
 
@@ -842,7 +841,7 @@ body.digital_collection_show.hyrax-collections-show {
   .hyc-last-updated {
     backdrop-filter: blur(4px);
     background: $dc-plate;
-    border-radius: var(--dc-radius-plate, #{$dc-radius-plate});
+    border-radius: var(--dc-radius, #{$dc-radius});
     color: #ffffff;
     font-weight: 700;
     padding: 8px 16px;
@@ -1025,7 +1024,7 @@ body.digital_collection_show.hyrax-collections-show {
 
     select {
       border: 1px solid $dc-input-edge;
-      border-radius: $dc-radius;
+      border-radius: var(--dc-radius, #{$dc-radius});
       color: $dc-ink;
       min-height: 38px;
       padding: 8px 12px;
@@ -1059,6 +1058,10 @@ body.digital_collection_show.hyrax-collections-show {
         position: relative;
 
         + .btn { margin-left: -1px; }
+
+        &:first-child { border-radius: var(--dc-radius, #{$dc-radius}) 0 0 var(--dc-radius, #{$dc-radius}); }
+
+        &:last-child { border-radius: 0 var(--dc-radius, #{$dc-radius}) var(--dc-radius, #{$dc-radius}) 0; }
 
         &:hover { z-index: 1; }
 
@@ -1198,7 +1201,7 @@ body.digital_collection_show.hyrax-collections-show {
 
     .page-item .page-link {
       border: 1px solid $dc-input-edge;
-      border-radius: $dc-radius;
+      border-radius: var(--dc-radius, #{$dc-radius});
       color: $dc-ink;
       min-width: 40px;
       padding: 8px 12px;

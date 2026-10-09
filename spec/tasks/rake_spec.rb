@@ -78,6 +78,37 @@ RSpec.describe "Rake tasks" do
       run_task('tenantize:task', 'hyrax:count')
     end
 
+    context 'with tenant schemas' do
+      let(:accounts) do
+        [Account.new(name: 'first', tenant: 'first-tenant'), Account.new(name: 'second', tenant: 'second-tenant')]
+      end
+
+      it "runs the task inside each tenant's database schema" do
+        schemas = []
+        allow(Apartment::Tenant).to receive(:switch) do |tenant, &block|
+          schemas << tenant
+          block.call
+        end
+        allow(Rake::Task).to receive(:[]).with('hyrax:count').and_return(task)
+        allow(task).to receive(:reenable)
+        allow(task).to receive(:invoke)
+
+        run_task('tenantize:task', 'hyrax:count')
+
+        expect(schemas).to eq %w[first-tenant second-tenant]
+      end
+    end
+
+    it 'skips search-only accounts' do
+      search_only = Account.new(name: 'cross', tenant: 'cross-tenant', search_only: true)
+      allow(Account).to receive(:tenants).and_return(accounts + [search_only])
+      expect(search_only).not_to receive(:switch)
+      allow(Rake::Task).to receive(:[]).with('hyrax:count').and_return(task)
+      expect(task).to receive(:invoke).exactly(accounts.count).times
+      allow(task).to receive(:reenable)
+      run_task('tenantize:task', 'hyrax:count')
+    end
+
     context 'when run against specified tenants' do
       let(:account) { accounts[0] }
 

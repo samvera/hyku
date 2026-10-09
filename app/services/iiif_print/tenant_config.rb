@@ -147,14 +147,11 @@ module IiifPrint
     end
 
     ##
-    # OVERRIDE IiifPrint::WorkShowPresenterDecorator
     # OVERRIDE Hyrax::WorkShowPresenter
     #
-    # In IiifPrint we overrided #members_include_viewable_image? to query for both file sets and
-    # child works.  (Child works being the pages split off of a PDF)
-    #
-    # In Hyrax::WorkShowPresenter we're only looking at the underlying file_sets.  But IiifPrint
-    # needs to look at multiple places.
+    # When the tenant uses IIIF Print, #iiif_viewer? also counts PDFs and looks through the work's
+    # member_ids, which hold both its file sets and the child works split from a PDF. Otherwise
+    # Hyrax's own #iiif_viewer? applies.
     module WorkShowPresenterDecorator
       ##
       # @return [Boolean] Identifies whether IiifPrint PDF splitting is active for this work's tenant

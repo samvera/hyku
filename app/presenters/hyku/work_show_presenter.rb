@@ -6,9 +6,7 @@
 module Hyku
   # rubocop:disable Metrics/ClassLength
   class WorkShowPresenter < Hyrax::WorkShowPresenter
-    ##
-    # NOTE: IIIF Print prepends a IiifPrint::WorkShowPresenterDecorator to Hyrax::WorkShowPresenter,
-    # and we re-prepend it here so the knapsack-side WorkShowPresenter participates in that chain.
+    # Decides #iiif_viewer? by whether the tenant uses IIIF Print (app/services/iiif_print/tenant_config.rb).
     prepend IiifPrint::TenantConfig::WorkShowPresenterDecorator
     # Must stay after the prepend above; see Hyku::MediaViewerBehavior.
     prepend Hyku::MediaViewerBehavior

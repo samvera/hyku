@@ -7,14 +7,18 @@ namespace :tenantize do
     raise ArgumentError, 'A rake task name is required: `rake tenantize:task[do:the:thing,arg1,...]`' if args.task_name.blank?
     raise ArgumentError, "Rake task not found: #{args.task_name}. Are you sure this task is defined?" unless Rake::Task.task_defined?(args.task_name)
     tenant_list = ENV.fetch('tenants', '').split
-    Account.tenants(tenant_list).each do |account|
+    # Search-only accounts have no repository of their own; their index aggregates other tenants.
+    Account.tenants(tenant_list).reject(&:search_only?).each do |account|
       puts "Running '#{args.task_name}' task within '#{account.cname}' tenant"
+      # account.switch only moves the endpoints; Apartment moves the database schema.
       account.switch do
-        Rake::Task[args.task_name].invoke(*args.extras)
-        # Re-enable the task or it won't be run the next iteration
-        Rake::Task[args.task_name].reenable
+        Apartment::Tenant.switch(account.tenant) do
+          Rake::Task[args.task_name].invoke(*args.extras)
+          # Re-enable the task or it won't be run the next iteration
+          Rake::Task[args.task_name].reenable
+        end
       end
     end
   end
 end
-# rubocop:enable Metrics/MethodLength
+# rubocop:enable Layout/LineLength

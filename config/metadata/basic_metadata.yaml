@@ -137,8 +137,6 @@ attributes:
         pt-BR: 'Última modificação'
         zh: '最新修改'
       html_dl: true
-    mappings:
-      simple_dc_pmh: dc:date
   description:
     type: string
     multiple: true

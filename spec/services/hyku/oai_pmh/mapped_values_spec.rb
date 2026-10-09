@@ -28,11 +28,19 @@ RSpec.describe Hyku::OaiPmh::MappedValues do
     expect(stored_by_mapping).to eq('title-mapping' => ['A Title'])
   end
 
-  context 'when a mapping covers title' do
-    let(:mappings) { [{ property: 'title', mapping: 'profile-title', index_keys: ['title_tesim'] }] }
+  context 'when title is mapped to the title mapping' do
+    let(:mappings) { [{ property: 'title', mapping: 'title-mapping', index_keys: ['title_tesim'] }] }
 
-    it 'reads title only under that mapping' do
-      expect(stored_by_mapping).to eq('profile-title' => ['A Title'])
+    it 'reads title once' do
+      expect(read).to eq [['title-mapping', [Hyku::OaiPmh::MappedValues::Value.new(stored: 'A Title', label: nil)]]]
+    end
+  end
+
+  context 'when title is mapped somewhere other than the title mapping' do
+    let(:mappings) { [{ property: 'title', mapping: 'elsewhere', index_keys: ['title_tesim'] }] }
+
+    it 'still reads title under the title mapping' do
+      expect(stored_by_mapping).to eq('elsewhere' => ['A Title'], 'title-mapping' => ['A Title'])
     end
   end
 

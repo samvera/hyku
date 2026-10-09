@@ -30,6 +30,7 @@ attributes:
       cols: 4
     mappings:
       mods_oai_pmh: mods:name/mods:namePart
+      simple_dc_pmh: dc:contributor
   participant_role:
     type: controlled
     name: role
@@ -64,6 +65,8 @@ attributes:
     required: true
     form:
       cols: 6
+    mappings:
+      simple_dc_pmh: dc:identifier
   identifier_type:
     type: controlled
     name: type

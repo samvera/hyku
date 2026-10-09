@@ -88,9 +88,6 @@ RSpec.describe SolrDocument, type: :model do
           rights_statement_label_tesim: ['Opaque Term'] }
       end
 
-      # field_semantics reads declared index keys, and the indexer derives
-      # <property>_label_* by convention instead of declaring it — which is what
-      # keeps the editable label out of a harvested feed.
       it 'harvests no label field under any dc term' do
         labels = ['A Label Nobody Should Harvest', 'Attribution 3.0 United States', 'Opaque Term']
 
@@ -124,6 +121,53 @@ RSpec.describe SolrDocument, type: :model do
 
       it_behaves_like 'maps properties to dc terms'
       it_behaves_like 'keeps controlled vocabulary labels out of dc terms'
+    end
+  end
+
+  describe 'Dublin Core values' do
+    subject(:values) { SolrDocument.new(attributes).to_semantic_values }
+    let(:attributes) do
+      { id: '123', has_model_ssim: ['GenericWork'], title_tesim: ['A Title'], subject_tesim: ['Cats'],
+        creator_tesim: ['Smith, Jo'], language_tesim: ['English'], publisher_sim: ['Facet Only Press'] }
+    end
+
+    shared_examples_for 'Dublin Core values' do
+      it 'lists the mapped elements in Dublin Core order' do
+        expect(values.keys - [:identifier]).to eq %i[creator language subject title]
+      end
+
+      it "reads only each property's text field, leaving out a value indexed only for facets" do
+        expect(values).not_to have_key(:publisher)
+      end
+
+      context 'with a compound' do
+        let(:attributes) do
+          super().merge(participants_json_ss: [{ name: 'Doe, Al', role: 'Editor' }].to_json,
+                        identifiers_json_ss: [{ value: '10.1234/abc', type: 'DOI' }].to_json)
+        end
+
+        it 'writes each sub-property value under its element' do
+          expect(values[:contributor]).to eq ['Doe, Al']
+          expect(values[:identifier]).to include('10.1234/abc')
+        end
+      end
+    end
+
+    context 'when not using flexible metadata' do
+      it_behaves_like 'Dublin Core values'
+    end
+
+    context 'when using flexible metadata' do
+      around do |example|
+        schema = Hyrax::FlexibleSchema.new(profile: YAML.load_file(Rails.root.join('config', 'metadata_profiles', 'm3_profile.yaml')))
+        schema.save(validate: false)
+        example.run
+        schema.destroy
+      end
+
+      before { allow(Hyrax.config).to receive(:flexible_classes).and_return(['GenericWorkResource']) }
+
+      it_behaves_like 'Dublin Core values'
     end
   end
 

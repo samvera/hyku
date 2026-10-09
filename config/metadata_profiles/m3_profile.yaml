@@ -324,6 +324,7 @@ properties:
       html_dl: true
     mappings:
       mods_oai_pmh: mods:accessCondition[@type="restriction on access"]
+      simple_dc_pmh: dc:rights
   alternative_title:
     available_on:
       class:
@@ -358,6 +359,7 @@ properties:
       html_dl: true
     mappings:
       mods_oai_pmh: mods:titleInfo[@type="alternative"]/mods:title
+      simple_dc_pmh: dc:title
   alt_text:
     available_on:
       class:
@@ -441,6 +443,7 @@ properties:
       html_dl: true
     mappings:
       mods_oai_pmh: mods:subject/mods:geographic
+      simple_dc_pmh: dc:coverage
   bibliographic_citation:
     available_on:
       class:
@@ -472,6 +475,7 @@ properties:
       html_dl: true
     mappings:
       mods_oai_pmh: mods:note[@type="preferred citation"]
+      simple_dc_pmh: dc:relation
   contributor:
     available_on:
       class:
@@ -607,6 +611,7 @@ properties:
       html_dl: true
     mappings:
       mods_oai_pmh: mods:identifier
+      simple_dc_pmh: dc:identifier
   import_url:
     available_on:
       class:
@@ -664,6 +669,7 @@ properties:
       html_dl: true
     mappings:
       mods_oai_pmh: mods:subject/mods:topic
+      simple_dc_pmh: dc:subject
   label:
     available_on:
       class:
@@ -797,6 +803,7 @@ properties:
       html_dl: true
     mappings:
       mods_oai_pmh: mods:relatedItem/mods:location/mods:url
+      simple_dc_pmh: dc:relation
   relative_path:
     available_on:
       class:
@@ -854,6 +861,7 @@ properties:
       html_dl: true
     mappings:
       mods_oai_pmh: mods:genre
+      simple_dc_pmh: dc:type
   oer_resource_type:
     name: resource_type
     available_on:
@@ -885,6 +893,7 @@ properties:
       html_dl: true
     mappings:
       mods_oai_pmh: mods:genre
+      simple_dc_pmh: dc:type
   rights_notes:
     available_on:
       class:
@@ -1016,6 +1025,8 @@ properties:
       - Digital Archive
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:source
   subject:
     available_on:
       class:
@@ -1076,6 +1087,11 @@ properties:
       - History
     view:
       html_dl: true
+    indexing:
+      - department_sim
+      - department_tesim
+    mappings:
+      simple_dc_pmh: dc:contributor
   course:
     available_on:
       class:
@@ -1124,6 +1140,7 @@ properties:
       - PDF
     mappings:
       mods_oai_pmh: mods:physicalDescription/mods:form
+      simple_dc_pmh: dc:format
   extent:
     available_on:
       class:
@@ -1151,6 +1168,7 @@ properties:
       - 1024x768 pixels
     mappings:
       mods_oai_pmh: mods:physicalDescription/mods:extent
+      simple_dc_pmh: dc:format
   accessibility_feature:
     available_on:
       class:
@@ -1177,6 +1195,8 @@ properties:
       - Subtitles
       - Audio Description
       - Transcripts
+    mappings:
+      simple_dc_pmh: dc:description
   accessibility_hazard:
     available_on:
       class:
@@ -1201,6 +1221,8 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - Motion Simulation
+    mappings:
+      simple_dc_pmh: dc:description
   accessibility_summary:
     available_on:
       class:
@@ -1227,6 +1249,8 @@ properties:
     sample_values:
       - This resource includes subtitles for all video content.
       - The resource provides text descriptions for all images.
+    mappings:
+      simple_dc_pmh: dc:description
   admin_note:
     available_on:
       class:
@@ -1280,6 +1304,8 @@ properties:
     sample_values:
       - This is some additional information.
       - More details and context.
+    mappings:
+      simple_dc_pmh: dc:description
   alternate_version_id:
     available_on:
       class:
@@ -1302,6 +1328,8 @@ properties:
     sample_values:
       - alt_version_1
       - alt_version_2
+    mappings:
+      simple_dc_pmh: dc:relation
   audience:
     available_on:
       class:
@@ -1333,6 +1361,7 @@ properties:
       html_dl: true
     mappings:
       mods_oai_pmh: mods:targetAudience
+      simple_dc_pmh: dc:description
   date:
     available_on:
       class:
@@ -1358,6 +1387,7 @@ properties:
       - "2023-05-12"
     mappings:
       mods_oai_pmh: mods:originInfo/mods:dateIssued
+      simple_dc_pmh: dc:date
   discipline:
     available_on:
       class:
@@ -1387,6 +1417,8 @@ properties:
     view:
       render_as: faceted
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:subject
   education_level:
     available_on:
       class:
@@ -1416,6 +1448,8 @@ properties:
     view:
       render_as: faceted
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
   learning_resource_type:
     available_on:
       class:
@@ -1445,6 +1479,8 @@ properties:
     view:
       render_as: faceted
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:type
   newer_version_id:
     available_on:
       class:
@@ -1467,6 +1503,8 @@ properties:
     sample_values:
       - new_version_1
       - new_version_2
+    mappings:
+      simple_dc_pmh: dc:relation
   oer_size:
     available_on:
       class:
@@ -1491,6 +1529,8 @@ properties:
     sample_values:
       - 15MB
       - 200 pages
+    mappings:
+      simple_dc_pmh: dc:format
   previous_version_id:
     available_on:
       class:
@@ -1513,6 +1553,8 @@ properties:
     sample_values:
       - prev_version_1
       - prev_version_2
+    mappings:
+      simple_dc_pmh: dc:relation
   related_item_id:
     available_on:
       class:
@@ -1562,6 +1604,8 @@ properties:
     sample_values:
       - John Doe
       - Jane Smith
+    mappings:
+      simple_dc_pmh: dc:rights
   table_of_contents:
     available_on:
       class:
@@ -1589,6 +1633,7 @@ properties:
       - "Chapter 3: Methodology"
     mappings:
       mods_oai_pmh: mods:tableOfContents
+      simple_dc_pmh: dc:description
   advisor:
     available_on:
       class:
@@ -1616,6 +1661,7 @@ properties:
       - Dr. Jane Smith
     mappings:
       mods_oai_pmh: mods:name[mods:role/mods:roleTerm="thesis advisor"]/mods:namePart
+      simple_dc_pmh: dc:contributor
   committee_member:
     available_on:
       class:
@@ -1643,6 +1689,7 @@ properties:
       - Dr. Jane Smith
     mappings:
       mods_oai_pmh: mods:name[mods:role/mods:roleTerm="degree committee member"]/mods:namePart
+      simple_dc_pmh: dc:contributor
   degree_name:
     available_on:
       class:
@@ -1670,6 +1717,8 @@ properties:
       - Master of Arts
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:type
   degree_level:
     available_on:
       class:
@@ -1697,6 +1746,8 @@ properties:
       - Graduate
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:type
   degree_discipline:
     available_on:
       class:
@@ -1724,6 +1775,8 @@ properties:
       - Biology
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:subject
   degree_grantor:
     available_on:
       class:
@@ -1753,6 +1806,7 @@ properties:
       html_dl: true
     mappings:
       mods_oai_pmh: mods:name[mods:role/mods:roleTerm="degree granting institution"]/mods:namePart
+      simple_dc_pmh: dc:publisher
   bulkrax_identifier:
     available_on:
       class:
@@ -2081,6 +2135,7 @@ properties:
       cols: 4
     mappings:
       mods_oai_pmh: mods:name/mods:namePart
+      simple_dc_pmh: dc:contributor
   participant_role:
     type: controlled
     name: role
@@ -2121,6 +2176,8 @@ properties:
     required: true
     form:
       cols: 6
+    mappings:
+      simple_dc_pmh: dc:identifier
   identifier_type:
     type: controlled
     name: type

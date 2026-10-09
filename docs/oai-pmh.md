@@ -32,6 +32,15 @@ A property with no mapping under the key is left out of that format, except titl
 
 A compound property, such as `participants`, is mapped through its sub-properties: each sub-property (`participant_name`, `participant_role`) carries its own mapping, in the profile entry that names the compound under `available_on: properties`, or in the sub-property's entry in `config/metadata/compound_metadata.yaml`. A format reads the compound one entry at a time, so a name stays paired with its role.
 
+## Dublin Core
+
+The `oai_dc` prefix writes each property mapped under `simple_dc_pmh` to its Dublin Core element, one of the fifteen such as `dc:title` or `dc:subject`, writing the elements in alphabetical order; when no mapping supplies an identifier, the work's page URL adds `dc:identifier` after the rest. A mapping to anything else is ignored, and saving a profile shows a warning for it. Hyku's default metadata profile and its metadata YAML map each property to the same element.
+
+- Values come only from each property's `_tesim` field, or, for a compound's sub-properties, from the compound's indexed entries.
+- A controlled value is written as its stored id, such as a license URI, rather than its label: the id is what a harvester can key on.
+- Each entry of a compound property contributes its mapped sub-properties' values, such as `participant_name` to `dc:contributor`.
+- Title is always included, and `dc:identifier` also carries the work's page and thumbnail URLs.
+
 ## MODS
 
 The `mods` prefix serves [MODS 3.7](https://www.loc.gov/standards/mods/) records. A tenant whose metadata profile maps no property under `mods_oai_pmh` does not offer it, even with the feature on.
@@ -73,8 +82,8 @@ Each piece of a mapped format has one home. MODS is the worked example.
 | Keeping profile and YAML identical | add the key to the list in `spec/config/oai_mappings_spec.rb` | listed |
 | The record's mapped properties, in either mode | `SolrDocument#schema_data_for(key)` | called by `SolrDocument#to_mods` |
 | The record's compounds with mapped sub-properties, in either mode | `SolrDocument#compound_schema_data_for(key)` | called by `SolrDocument#to_mods` |
-| Reading their values: index field, controlled-value labels, shared index fields, the title fallback, compound entries | `Hyku::OaiPmh::MappedValues` (`#each`, `#each_compound_entry`) | used by `Hyku::Mods::RecordBuilder` |
+| Reading their values: index field, controlled-value labels, shared index fields, the title fallback, compound entries | `Hyku::OaiPmh::MappedValues` (`#each`, `#each_compound_entry`) | used by `Hyku::Mods::RecordBuilder`, and by `SolrDocument#to_semantic_values` for `oai_dc` |
 | Writing the format's XML | a builder under `app/services/hyku/<format>/`, called from `SolrDocument#to_<prefix>` | `app/services/hyku/mods/` |
 | Registering the prefix | a format class under `lib/oai/provider/metadata_format/`, passed to `OAI::Provider::Base.register_format` | `Oai::Provider::MetadataFormat::Mods` |
 | Switching it on per tenant | include `Hyku::OaiPmh::MappedFormat` in the format class and define `feature` and `mapping_key`; declare the feature in `config/features.rb` | `oai_mods` |
-| Warning about unusable mappings when a profile is saved | a validator under `app/services/hyku/flexible_schema_validators/`, added to `flexible_schema_validators` in `config/initializers/hyrax.rb`, with messages in `config/locales/hyrax.*.yml` | `ModsMappingValidator` |
+| Warning about unusable mappings when a profile is saved | a validator under `app/services/hyku/flexible_schema_validators/`, added to `flexible_schema_validators` in `config/initializers/hyrax.rb`, with messages in `config/locales/hyrax.*.yml` | `ModsMappingValidator`; `DublinCoreMappingValidator` for `oai_dc` |

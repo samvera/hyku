@@ -8,7 +8,7 @@ RSpec.describe 'Default OAI-PMH mappings' do
     YAML.load_file(Rails.root.join('config', 'metadata', "#{file}.yaml"))['attributes']
   end
 
-  [Hyku::Mods::MAPPING_KEY].each do |key|
+  [Hyku::Mods::MAPPING_KEY, 'simple_dc_pmh'].each do |key|
     describe key do
       it 'maps each property a metadata YAML file defines the same way the metadata profile does' do
         metadata_files.each do |file|

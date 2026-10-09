@@ -28,6 +28,13 @@ class SolrDocument
   # Do content negotiation for AF models.
   use_extension(Hydra::ContentNegotiation)
 
+  # The fifteen Dublin Core elements, in the order oai_dc writes mapped values; the page and
+  # thumbnail URLs can add dc:identifier after them
+  DC_ELEMENTS = %i[
+    contributor coverage creator date description format identifier language publisher relation rights
+    source subject title type
+  ].freeze
+
   attribute :account_cname, Solr::Array, 'account_cname_tesim'
   attribute :account_institution_name, Solr::Array, 'account_institution_name_ssim'
   attribute :extent, Solr::Array, 'extent_tesim'
@@ -67,20 +74,10 @@ class SolrDocument
   # OVERRIDE Blacklight v7.35.0 to find properties from schema metadata
   #   and to add show page and thumbnail links to identifier
   def to_semantic_values
-    @semantic_value_hash ||= field_semantics.each_with_object(Hash.new { |h, k| h[k] = [] }) do |(key, field_names), hash|
-      ##
-      # Handles single string field_name or an array of field_names
-      value = Array.wrap(field_names).map { |field_name| self[field_name] }.flatten.compact
-
-      # Make single and multi-values all arrays, so clients
-      # don't have to know.
-      hash[key] = value unless value.empty?
+    @semantic_value_hash ||= dublin_core_values.tap do |values|
+      values[:identifier] << link_to_item
+      values[:identifier] << link_to_thumbnail if self['thumbnail_path_ss']
     end
-
-    @semantic_value_hash[:identifier] << link_to_item
-    @semantic_value_hash[:identifier] << link_to_thumbnail if self['thumbnail_path_ss']
-
-    @semantic_value_hash
   end
 
   def show_pdf_viewer
@@ -176,11 +173,28 @@ class SolrDocument
     [Site.instance.default_work_image, Site.instance.default_collection_image].none? { |image| image&.url == path }
   end
 
-  # In Blacklight this is a class method, but we need access
-  # to the instance's hydra_model to do the reverse lookup
-  def field_semantics
+  # @return [Hash{Symbol => Array}] each Dublin Core element's values, in element order, as the
+  #   stored values rather than labels: a controlled term's id is what a harvester can key on
+  def dublin_core_values
     schema_data = schema_data_for('simple_dc_pmh')
-    schema_data ? build_field_semantics(schema_data) : basic_mappings
+    values = schema_data ? mapped_dublin_core_values(schema_data) : basic_dublin_core_values
+    DC_ELEMENTS.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |element, ordered|
+      ordered[element] = values[element] if values[element].present?
+    end
+  end
+
+  def mapped_dublin_core_values(schema_data)
+    values = Hash.new { |hash, key| hash[key] = [] }
+    add = ->(mapping, mapped) { values[mapping.split(':').last.to_sym].concat(Array.wrap(mapped).map(&:stored)) }
+    mapped_values = Hyku::OaiPmh::MappedValues.new(self, schema_data, title_mapping: 'dc:title', text_fields_only: true,
+                                                                      compounds: compound_schema_data_for('simple_dc_pmh').to_a)
+    mapped_values.each { |mapping, mapped| add.call(mapping, mapped) }
+    mapped_values.each_compound_entry { |pairs| pairs.each { |mapping, value| add.call(mapping, value) } }
+    values
+  end
+
+  def basic_dublin_core_values
+    basic_mappings.transform_values { |fields| fields.flat_map { |field| Array.wrap(self[field]) }.compact }
   end
 
   # @return [Array<Hash>, nil] each property mapped under mapping_key, with its mapping and index
@@ -203,16 +217,6 @@ class SolrDocument
       flexible_compound_data(mapping_key)
     elsif hydra_model.respond_to?(:schema)
       standard_compound_data(mapping_key)
-    end
-  end
-
-  def build_field_semantics(schema_data)
-    schema_data.each_with_object(dc_mappings) do |item, mappings|
-      property = item[:mapping].split(':').last.to_sym
-      index_keys = Array(item[:index_keys]).select { |k| k.to_s.end_with?('_tesim') }
-      next unless mappings.key?(property) && index_keys.present?
-
-      mappings[property] |= index_keys
     end
   end
 
@@ -283,26 +287,6 @@ class SolrDocument
       subject: ['subject_tesim'],
       title: ['title_tesim'],
       type: ['human_readable_type_tesim']
-    }
-  end
-
-  def dc_mappings
-    @dc_mappings ||= {
-      contributor: [],
-      coverage: [],
-      creator: [],
-      date: [],
-      description: [],
-      format: [],
-      identifier: [],
-      language: [],
-      publisher: [],
-      relation: [],
-      rights: [],
-      source: [],
-      subject: [],
-      title: ['title_tesim'], # adding title_tesim since this is a core metadata property which will always be available
-      type: []
     }
   end
 end

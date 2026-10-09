@@ -9,6 +9,7 @@ class Ability
   include Hyrax::Ability::WorkAbility
   include Hyrax::Ability::TenantControlAbility
   include Hyrax::Ability::ControlledVocabularyAbility
+  include Hyrax::Ability::BulkraxAbility
 
   self.ability_logic += %i[
     group_permissions
@@ -19,6 +20,7 @@ class Ability
     featured_collection_abilities
     tenant_control_abilities
     controlled_vocabulary_abilities
+    bulkrax_default_abilities
   ]
   # If the Groups with Roles feature is disabled, allow registered users to create curation concerns
   # (Works, Collections, and FileSets). Otherwise, omit this ability logic as to not
@@ -110,14 +112,6 @@ class Ability
 
   def featured_collection_abilities
     can %i[create destroy update], FeaturedCollection if admin?
-  end
-
-  def can_import_works?
-    can_create_any_work?
-  end
-
-  def can_export_works?
-    can_create_any_work?
   end
 
   ##

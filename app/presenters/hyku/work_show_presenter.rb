@@ -6,7 +6,7 @@
 module Hyku
   # rubocop:disable Metrics/ClassLength
   class WorkShowPresenter < Hyrax::WorkShowPresenter
-    # Decides #iiif_viewer? by whether the tenant uses IIIF Print (app/services/iiif_print/tenant_config.rb).
+    # Provides the tenant-level default for #iiif_viewer? (app/services/iiif_print/tenant_config.rb).
     prepend IiifPrint::TenantConfig::WorkShowPresenterDecorator
     # Must stay after the prepend above; see Hyku::MediaViewerBehavior.
     prepend Hyku::MediaViewerBehavior

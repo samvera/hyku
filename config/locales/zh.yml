@@ -1124,7 +1124,6 @@ zh:
         zero: "菜单"
         one: "菜单，1 条未读通知"
         other: "菜单，%{count} 条未读通知"
-      notice: "注意："
       notifications:
         zero: "通知"
         one: "通知（1）"

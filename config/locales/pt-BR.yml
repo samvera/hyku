@@ -990,7 +990,6 @@ pt-BR:
         zero: "Menu"
         one: "Menu, 1 notificação não lida"
         other: "Menu, %{count} notificações não lidas"
-      notice: "Aviso:"
       notifications:
         zero: "Notificações"
         one: "Notificações (1)"

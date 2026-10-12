@@ -407,8 +407,9 @@ body.digital_collection_show.public-facing {
 
   // ---- announcement band ----
   .dc-announcement {
-    background: var(--dc-info-tint, #{$dc-info-tint});
+    background: color-mix(in srgb, var(--dc-link, #{$dc-link}) $dc-announcement-tint, #{$dc-surface});
     border: 0;
+    border-top: $dc-rule-strong solid var(--dc-link, #{$dc-link});
     padding-bottom: $dc-space-3;
     padding-top: $dc-space-3;
   }
@@ -422,16 +423,6 @@ body.digital_collection_show.public-facing {
     font-size: $dc-text-sm;
     gap: $dc-space-2;
     line-height: $dc-leading-snug;
-  }
-
-  .dc-announcement-icon {
-    color: var(--dc-info, #{$dc-info});
-    flex: none;
-  }
-
-  .dc-announcement-label {
-    flex: none;
-    font-weight: $dc-weight-heading;
   }
 
   // Hyrax's _home-page.scss styles div#announcement as a red alert by ID

@@ -1107,7 +1107,6 @@ es:
         zero: "Menú"
         one: "Menú, 1 notificación no leída"
         other: "Menú, %{count} notificaciones no leídas"
-      notice: "Aviso:"
       notifications:
         zero: "Notificaciones"
         one: "Notificaciones (1)"

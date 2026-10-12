@@ -86,12 +86,13 @@ RSpec.describe 'the digital collection header and footer', type: :request, singl
   describe 'the announcement' do
     before { ContentBlock.find_or_create_by(name: 'announcement_text').update!(value: '<p>Closed Monday</p>') }
 
-    it 'sits above the header as an info band on the homepage' do
+    it 'sits between the header and the hero on the homepage, with no icon or label' do
       get root_path
 
-      expect(response.body.index('dc-announcement')).to be < response.body.index('class="top-header dc-masthead"')
-      expect(doc.at_css('.dc-announcement .dc-announcement-label').text).to eq('Notice:')
-      expect(doc.at_css(".dc-announcement .fa-info-circle[aria-hidden='true']")).to be_present
+      expect(response.body.index('class="top-header dc-masthead"')).to be < response.body.index('dc-announcement')
+      expect(response.body.index('dc-announcement')).to be < response.body.index('dc-hero')
+      expect(doc.at_css('.dc-announcement').text.squish).to eq('Closed Monday')
+      expect(doc.at_css('.dc-announcement .fa')).to be_nil
     end
 
     it 'stays off other pages' do

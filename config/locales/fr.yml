@@ -1112,7 +1112,6 @@ fr:
         zero: "Menu"
         one: "Menu, 1 notification non lue"
         other: "Menu, %{count} notifications non lues"
-      notice: "Avis :"
       notifications:
         zero: "Notifications"
         one: "Notifications (1)"

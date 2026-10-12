@@ -320,14 +320,14 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
       expect(row.at_css('.dc-recent-collection')).to be_nil
     end
 
-    it 'renders a browse card for a collection with no description' do
+    it 'renders a browse card for a collection with no description, keeping the description space' do
       indexed_collection('Collection with no description', 'open')
 
       get root_path
       card = Nokogiri::HTML(response.body).at_css('[data-dc-browse-items] > li .dc-collection')
 
       expect(card.at_css('.dc-collection-title').text.strip).to eq('Collection with no description')
-      expect(card.at_css('.dc-collection-description')).to be_nil
+      expect(card.at_css('.dc-collection-description').text.strip).to be_empty
       expect(card.at_css('.dc-collection-count')).to be_present
     end
 

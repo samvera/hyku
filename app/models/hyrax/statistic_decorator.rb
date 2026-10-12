@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.2.0 to use a different GA key, by default FileDownloadStat uses :totalEvents
+# OVERRIDE Hyrax v5.3.0 to use a different GA key, by default FileDownloadStat uses :totalEvents
 #   however this isn't working for because what we get back from Hyrax::Analytics::Results object
 #   is a hash with :pageviews instead which doesn't work for our needs.
 
@@ -15,12 +15,6 @@ module Hyrax
         ga_key = :pageviews if self == FileDownloadStat
 
         super
-      end
-
-      # OVERRIDE Hyrax 5.3.0: edtf's Date#<=> returns nil for the marker's TimeWithZone, so the
-      # comparison raises. Remove once samvera/hyrax#7674 is in Hyku's Hyrax.
-      def advance_zero_marker(object, object_method, date, user_id)
-        super(object, object_method, date.in_time_zone, user_id)
       end
     end
   end

@@ -170,4 +170,99 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
       expect(helper.dc_badge('Public', kind: :success)).to eq('<span class="dc-badge dc-badge-success">Public</span>')
     end
   end
+
+  describe 'theme colors' do
+    let(:white) { '#ffffff' }
+    let(:hero_ground) { '#2c2b29' }
+    let(:light_plate_worst) { helper.dc_mix('#000000', '#ffffff', 0.92) }
+    let(:dark_plate_worst) { helper.dc_mix('#ffffff', '#141312', 0.78) }
+
+    links = {
+      'default' => '#2a6aa3',
+      'red' => '#b3261e',
+      'green' => '#2e7d32',
+      'near-limit' => '#4274a8',
+      'too light' => '#4f7cac',
+      'dark' => '#1a1a1a'
+    }
+
+    describe '#dc_darken_until' do
+      it 'darkens a color until it clears 4.5:1 on white, keeping its hue' do
+        checked = helper.dc_darken_until('#4f7cac', white, 4.5)
+
+        expect(helper.theme_contrast('#4f7cac', white)).to be < 4.5
+        expect(helper.theme_contrast(checked, white)).to be >= 4.5
+        expect(helper.dc_hue_shift(checked, '#4f7cac')).to be < 1
+      end
+
+      it 'keeps a color that already passes' do
+        expect(helper.dc_darken_until('#2a6aa3', white, 4.5)).to eq('#2a6aa3')
+      end
+    end
+
+    describe '#dc_lighten_until' do
+      it 'gives the default on-dark link from the default admin link' do
+        expect(helper.dc_lighten_until('#2a6aa3', dark_plate_worst, 5)).to eq('#9cc3e5')
+      end
+
+      it 'keeps the hue while lightening' do
+        lifted = helper.dc_lighten_until('#b3261e', dark_plate_worst, 5)
+
+        expect(helper.dc_hue_shift(lifted, '#b3261e')).to be < 2
+        expect(helper.theme_contrast(lifted, dark_plate_worst)).to be >= 5
+      end
+    end
+
+    describe '#dc_status_color' do
+      links.each do |name, link|
+        context "with a #{name} link color" do
+          let(:checked) { helper.dc_darken_until(link, white, 4.5) }
+
+          %i[danger success].each do |status|
+            it "keeps #{status} within 20 degrees of its base hue and at 4.5:1 on white" do
+              color = helper.dc_status_color(status, checked)
+              base = DigitalCollectionHelper::DC_STATUS_BASE.fetch(status)
+
+              expect(helper.dc_hue_shift(color, base)).to be <= 20
+              expect(helper.theme_contrast(color, white)).to be >= 4.5
+            end
+
+            it "keeps the on-dark #{status} at 4.5:1 on the hero ground" do
+              color = helper.dc_on_dark(helper.dc_status_color(status, checked), hero_ground)
+
+              expect(helper.theme_contrast(color, hero_ground)).to be >= 4.5
+            end
+          end
+        end
+      end
+
+      it 'drops the blend for danger when the link is itself red' do
+        expect(helper.dc_status_color(:danger, '#b3261e')).to eq(helper.dc_darken_until('#b4433c', white, 4.5))
+      end
+
+      it 'drops the blend for success when the link is itself green' do
+        expect(helper.dc_status_color(:success, '#2e7d32')).to eq(helper.dc_darken_until('#3c763d', white, 4.5))
+      end
+    end
+
+    describe '#dc_visited_color' do
+      it 'gives the spec values for the default link' do
+        visited = helper.dc_visited_color('#2a6aa3', light_plate_worst)
+
+        expect(visited).to eq('#5b2aa3')
+        expect(helper.dc_on_dark(visited, dark_plate_worst)).to eq('#c6b4df')
+      end
+
+      links.each do |name, link|
+        it "never reads as red or green and clears both plates for a #{name} link" do
+          visited = helper.dc_visited_color(helper.dc_darken_until(link, white, 4.5), light_plate_worst)
+          on_dark = helper.dc_on_dark(visited, dark_plate_worst)
+
+          expect(helper.dc_reddish?(visited) || helper.dc_greenish?(visited)).to be(false)
+          expect(helper.theme_contrast(visited, light_plate_worst)).to be >= 4.5
+          expect(helper.theme_contrast(on_dark, dark_plate_worst)).to be >= 4.5
+        end
+      end
+    end
+  end
 end

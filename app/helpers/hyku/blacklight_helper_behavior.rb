@@ -56,7 +56,7 @@ module Hyku
     # method `session_tracking_params`so that instead of a path we have a URL
     # @private
     def document_link_params(_doc, opts)
-      opts.except(:label, :counter, :q, :highlight)
+      opts.except(:label, :counter)
     end
     private :document_link_params
   end

@@ -59,6 +59,7 @@ RSpec.describe AdvSearchBuilder do
         show_parents_only
         include_allinson_flex_fields
         filter_hidden_collections
+        highlight_rendered_fields_only
       ]
     end
 
@@ -86,6 +87,61 @@ RSpec.describe AdvSearchBuilder do
     it 'initializes fq array if not present' do
       expect(solr_params[:fq]).to be_an(Array)
       expect(solr_params[:fq]).to include('-(hide_from_catalog_search_bsi:true)')
+    end
+  end
+
+  describe '#highlight_rendered_fields_only' do
+    let(:config) { CatalogController.blacklight_config.deep_copy }
+    let(:scope) { double(blacklight_config: config, current_ability: ability) }
+    let(:solr_params) { { hl: true, 'hl.fl': '*' } }
+
+    before { allow(Flipflop).to receive(:full_text_snippets?).and_return(snippets_on) }
+
+    context 'with full-text snippets on' do
+      let(:snippets_on) { true }
+
+      it 'highlights only the full text instead of every stored field' do
+        builder.highlight_rendered_fields_only(solr_params)
+
+        expect(solr_params).to include(hl: true, 'hl.fl': 'all_text_tsimv')
+      end
+
+      it 'uses the term-vector highlighter' do
+        builder.highlight_rendered_fields_only(solr_params)
+
+        expect(solr_params).to include('hl.method': 'fastVector')
+      end
+
+      it 'leaves highlighting off when the search did not ask for it' do
+        solr_params.delete(:hl)
+        builder.highlight_rendered_fields_only(solr_params)
+
+        expect(solr_params[:hl]).to be(false)
+      end
+    end
+
+    context 'with full-text snippets off' do
+      let(:snippets_on) { false }
+
+      it 'turns highlighting off' do
+        builder.highlight_rendered_fields_only(solr_params)
+
+        expect(solr_params[:hl]).to be(false)
+      end
+
+      it 'also leaves out snippets from a legacy full-text field' do
+        config.add_index_field 'file_set_text_tsimv', highlight: true, helper_method: :render_ocr_snippets
+        builder.highlight_rendered_fields_only(solr_params)
+
+        expect(solr_params[:hl]).to be(false)
+      end
+
+      it 'still highlights other index fields configured to highlight' do
+        config.add_index_field 'abstract_tesim', highlight: true
+        builder.highlight_rendered_fields_only(solr_params)
+
+        expect(solr_params).to include(hl: true, 'hl.fl': 'abstract_tesim')
+      end
     end
   end
 end

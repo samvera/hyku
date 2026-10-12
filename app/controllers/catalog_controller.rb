@@ -34,6 +34,30 @@ class CatalogController < ApplicationController
     'system_create_dtsi'
   end
 
+  # Search results never read the stored full text (snippets come from the highlighting block), and
+  # returning it for every hit is the bulk of the payload. Solr's fl cannot exclude a field, so these
+  # globs match every field name by its last character except "v", then restore the stored *v
+  # suffixes that no full-text field uses. A full-text field is therefore left out by its suffix,
+  # and one whose name does not end in "v" cannot be left out.
+  def self.search_result_fields(full_text_fields = Hyku::Application.full_text_fields)
+    full_text_suffixes = full_text_fields.map { |field| field[/[^_]+\z/] }
+    (
+      (('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a + ['_'] - %w[v V]).map { |last| "*#{last}" } +
+      (%w[tesimv tesiv tsimv tsiv] - full_text_suffixes).map { |suffix| "*_#{suffix}" } +
+      ['score']
+    ).join(',')
+  end
+
+  def self.add_full_text_index_fields(config, full_text_fields = Hyku::Application.full_text_fields)
+    full_text_fields.each do |field|
+      config.add_index_field field,
+        label: "Item contents",
+        highlight: true,
+        helper_method: :render_ocr_snippets,
+        values: ->(field_config, document, _context) { document.highlight_field(field_config.field).map(&:html_safe) if document.has_highlight_field? field_config.field }
+    end
+  end
+
   # CatalogController-scope behavior and configuration for BlacklightIiifSearch
   include BlacklightIiifSearch::Controller
 
@@ -43,12 +67,7 @@ class CatalogController < ApplicationController
     config.view.slideshow(document_component: Blacklight::Gallery::SlideshowComponent)
 
     # IiifPrint index fields
-    config.add_index_field 'all_text_timv'
-    config.add_index_field 'all_text_tsimv',
-      label: "Item contents",
-      highlight: true,
-      helper_method: :render_ocr_snippets,
-      values: ->(field_config, document, _context) { document.highlight_field(field_config.field).map(&:html_safe) if document.has_highlight_field? field_config.field }
+    add_full_text_index_fields(config)
 
     # configuration for Blacklight IIIF Content Search
     config.iiif_search = {
@@ -85,18 +104,24 @@ class CatalogController < ApplicationController
     config.http_method = :post
 
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
+    #  The hl.* settings only take effect when a search builder turns hl on.
     #  Max fragsize is needed to not cut off full text search at default 51,000 characters
+    #  The fastVector highlighter reads hl.tag.*; the original highlighter, and fields without term
+    #  vectors under fastVector, read hl.simple.*.
+    highlight_pre = "<span class='highlight'>"
+    highlight_post = "</span>"
     config.default_solr_params = {
       qt: "search",
       rows: 10,
+      fl: search_result_fields,
       qf: (
         IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" } +
-        ["title_tesim", "description_tesim", "all_text_timv", "all_text_tsimv"]
+        ["title_tesim", "description_tesim", "all_text_timv"] + Hyku::Application.full_text_fields
       ).uniq.join(' '),
-      "hl": true,
-      "hl.simple.pre": "<span class='highlight'>",
-      "hl.simple.post": "</span>",
-      "hl.snippets": 30,
+      "hl.tag.pre": highlight_pre,
+      "hl.tag.post": highlight_post,
+      "hl.simple.pre": highlight_pre,
+      "hl.simple.post": highlight_post,
       "hl.fragsize": 100,
       "hl.maxAnalyzedChars": 5_100_000
     }
@@ -245,7 +270,7 @@ class CatalogController < ApplicationController
       all_names = config.show_fields.values.map(&:field).join(" ")
       title_name = 'title_tesim'
       field.solr_parameters = {
-        qf: "#{all_names} #{title_name} file_format_tesim all_text_tsimv all_text_tsimv",
+        qf: "#{all_names} #{title_name} file_format_tesim #{Hyku::Application.full_text_fields.join(' ')}",
         pf: title_name.to_s
       }
     end

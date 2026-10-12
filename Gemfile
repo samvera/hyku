@@ -56,6 +56,7 @@ gem 'hyrax', github: 'samvera/hyrax', branch: 'main'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
+gem 'iiif_manifest', '>= 1.7.0'
 gem 'iiif_print', '~> 3.1'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
@@ -155,5 +156,9 @@ gem 'willow_sword', github: 'notch8/willow_sword', tag: 'v0.8.5'
 gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
 
 gem 'bullet', '~> 8.1', group: %i[development test]
+
+gem 'benchmark-ips', '~> 2.14', group: %i[development]
+gem 'rack-mini-profiler', '~> 3.3', group: %i[development]
+gem 'stackprof', '~> 0.2', group: %i[development]
 
 # rubocop:enable Metrics/MethodLength

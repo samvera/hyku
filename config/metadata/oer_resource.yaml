@@ -36,6 +36,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="creator"]/mods:namePart
       simple_dc_pmh: dc:creator
   resource_type:
     type: string
@@ -51,7 +52,11 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:genre
       simple_dc_pmh: dc:type
+    controlled_values:
+      sources:
+        - oer_types
   date_created:
     type: string
     multiple: true
@@ -66,6 +71,7 @@ attributes:
       search_field: 'date_created_tesim'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateCreated
       simple_dc_pmh: dc:date
   audience:
     type: string
@@ -81,7 +87,11 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:targetAudience
       simple_dc_pmh: dc:description
+    controlled_values:
+      sources:
+        - audience
   education_level:
     type: string
     multiple: true
@@ -97,6 +107,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
+    controlled_values:
+      sources:
+        - education_levels
   learning_resource_type:
     type: string
     multiple: true
@@ -112,6 +125,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:type
+    controlled_values:
+      sources:
+        - learning_resource_types
   discipline:
     type: string
     multiple: true
@@ -126,6 +142,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:subject
+    controlled_values:
+      sources:
+        - discipline
   rights_statement:
     type: string
     multiple: true
@@ -140,7 +159,11 @@ attributes:
       render_as: "rights_statement"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
+    controlled_values:
+      sources:
+        - rights_statements
   license:
     type: string
     multiple: true
@@ -154,7 +177,11 @@ attributes:
       render_as: "license"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
+    controlled_values:
+      sources:
+        - licenses
   abstract:
     type: string
     multiple: true
@@ -168,6 +195,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:abstract
       simple_dc_pmh: dc:description
   accessibility_feature:
     type: string
@@ -183,6 +211,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
+    controlled_values:
+      sources:
+        - accessibility_features
   accessibility_hazard:
     type: string
     multiple: true
@@ -197,6 +228,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
+    controlled_values:
+      sources:
+        - accessibility_hazards
   accessibility_summary:
     type: string
     multiple: false
@@ -248,6 +282,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:titleInfo[@type="alternative"]/mods:title
       simple_dc_pmh: dc:title
   bibliographic_citation:
     type: string
@@ -262,6 +297,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:note[@type="preferred citation"]
       simple_dc_pmh: dc:relation
   contributor:
     type: string
@@ -277,6 +313,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="contributor"]/mods:namePart
       simple_dc_pmh: dc:contributor
   description:
     type: string
@@ -291,6 +328,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:note
       simple_dc_pmh: dc:description
   identifier:
     type: string
@@ -307,6 +345,7 @@ attributes:
       search_field: 'identifier_tesim'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:identifier
       simple_dc_pmh: dc:identifier
   keyword:
     type: string
@@ -322,6 +361,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:topic
       simple_dc_pmh: dc:subject
   language:
     type: string
@@ -337,6 +377,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:language/mods:languageTerm
       simple_dc_pmh: dc:language
   oer_size:
     type: string
@@ -365,6 +406,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:publisher
       simple_dc_pmh: dc:publisher
   related_url:
     type: string
@@ -380,6 +422,7 @@ attributes:
       render_as: "external_link"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:relatedItem/mods:location/mods:url
       simple_dc_pmh: dc:relation
   rights_holder:
     type: string
@@ -407,6 +450,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
   source:
     type: string
@@ -436,6 +480,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:topic
       simple_dc_pmh: dc:subject
   table_of_contents:
     type: string
@@ -449,6 +494,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:tableOfContents
       simple_dc_pmh: dc:description
   previous_version_id:
     type: string
@@ -506,6 +552,7 @@ attributes:
       search_field: 'date_tesim'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateIssued
       simple_dc_pmh: dc:date
   access_right:
     type: string
@@ -517,6 +564,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="restriction on access"]
       simple_dc_pmh: dc:rights
   arkivo_checksum:
     type: string
@@ -535,6 +583,7 @@ attributes:
       render_term: 'based_near_label'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:geographic
       simple_dc_pmh: dc:coverage
   import_url:
     type: string

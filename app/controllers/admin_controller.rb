@@ -14,4 +14,10 @@ class AdminController < ApplicationController
   def deny_access(_exception)
     redirect_to main_app.root_url, alert: t('hyku.admin.flash.access_denied')
   end
+
+  def load_and_authorize_group
+    @group = Hyrax::Group.find_by(id: params[:group_id])
+    authorize! :edit, @group
+    ensure_admin! if @group.name == ::Ability.admin_group_name
+  end
 end

@@ -1,0 +1,65 @@
+# This workflow auto-adds a prefix to PR titles
+# depending on the base branch
+name: PR Prefixer
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  prefix-title:
+    # Skip this during mainline merges & conflict
+    # resolutions by only running it when HEAD
+    # doesn't contain a mainline branch name
+    if: |
+      !contains(github.head_ref, 'main') &&
+      !contains(github.head_ref, 'staging') &&
+      !contains(github.head_ref, 'production')
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Add branch-specific prefixes to PRs
+        uses: actions/github-script@60a0d83039c74a4ee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const baseBranch = context.payload.pull_request.base.ref;
+            const originalTitle = context.payload.pull_request.title;
+            let newTitle = context.payload.pull_request.title;
+
+            // Define branch-specific prefixes
+            const prefixes = {
+              'staging': 'WARMFIX',
+              'production': 'HOTFIX'
+            };
+
+            // Remove any preexisting prefixes
+            // from the current title, accounting
+            // for 3 different separators:
+            // - `:`
+            // - `-` (hyphen)
+            // - `—` (en dash)
+            Object.values(prefixes).forEach(prefix => {
+              const regex = new RegExp(`^${prefix}\\s*[:\\-–]\\s*`, 'i')
+              newTitle = newTitle.replace(regex, '');
+            });
+
+            // Get and try to prepend a prefix
+            // for the base branch
+            const prefix = prefixes[baseBranch];
+            if (prefix) {
+              newTitle = `${prefix}: ${newTitle}`;
+            }
+
+            // Exit if the title hasn't changed
+            if (newTitle == originalTitle) {
+              return;
+            }
+
+            // Update the PR title
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              title: newTitle
+            });

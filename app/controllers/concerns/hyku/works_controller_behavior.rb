@@ -7,17 +7,28 @@
 #           - use Hyku::WorkShowPresenter rather than Hyrax's presenter
 #           - refuse a parent_id the depositor cannot edit or whose type cannot
 #             contain the work being created
+#           - refuse a work type the tenant does not offer
+#           - let a controller choose its IIIF manifest presenter class
+#           - cache a manifest, in the browser, shared caches or Rails.cache, only when an anonymous visitor
+#             asked for a public work, and build its presenter once
+#           - let a controller put its file sets' metadata on its IIIF manifest's pages
 module Hyku
   # include this module after including Hyrax::WorksControllerBehavior to override
   # Hyrax::WorksControllerBehavior methods with the ones defined here
   module WorksControllerBehavior
     extend ActiveSupport::Concern
 
+    include Hyku::ShowThemesBehavior
+
     included do
       # add around action to load theme show page views
-      around_action :inject_show_theme_views, except: :delete
+      around_action :inject_show_theme_views, only: :show
+      before_action :ensure_work_type_offered, only: %i[new create]
       before_action :ensure_parent_accepts_child, only: :create
       self.show_presenter = Hyku::WorkShowPresenter
+      class_attribute :iiif_manifest_presenter_class
+      self.iiif_manifest_presenter_class = Hyrax::IiifManifestPresenter
+      class_attribute :iiif_file_set_metadata, default: false
 
       # These cache wrapper methods need to be in the top level so that they override other modules
       def show
@@ -29,9 +40,15 @@ module Hyku
 
       def manifest
         return super if Rails.env.test?
-        fresh_when iiif_manifest_presenter
-        expires_in 1.hour, public: true
+        cacheable = publicly_cacheable?(iiif_manifest_presenter.model)
+        if cacheable
+          fresh_when etag: [iiif_manifest_presenter, iiif_manifest_presenter.version]
+          expires_in 1.hour, public: true
+        else
+          no_store
+        end
         super
+        vary_by_cookie if cacheable
       end
     end
 
@@ -40,6 +57,38 @@ module Hyku
     end
 
     private
+
+    # A manifest lists only the pages and child works its requester may read, so it is cached only when
+    # an anonymous visitor asked for a work anyone may read.  Any other manifest depends on who asked, so
+    # it is not stored at all, not even by the browser, which could otherwise show it to the next person
+    # using it or after their access changes.
+    def publicly_cacheable?(document)
+      current_user.nil? && ::Ability.new(nil).can?(:read, document)
+    end
+
+    # Hyrax's caching builder keys a manifest by work and version alone, so it would hand one requester's
+    # manifest to the next.  It is used only for a manifest that may be cached at all.
+    def iiif_manifest_builder
+      return super if self.class.iiif_manifest_builder || publicly_cacheable?(iiif_manifest_presenter.model)
+      Hyrax::ManifestBuilderService.new(iiif_manifest_factory: manifest_factory_for_work)
+    end
+
+    # The cached manifest is the anonymous one, so a shared cache must not hand it to a signed-in visitor.
+    def vary_by_cookie
+      response.headers['Vary'] = [response.headers['Vary'], 'Cookie'].compact_blank.join(', ')
+    end
+
+    # Routes are drawn for every registered curation concern, so /concern/<type>/new is
+    # reachable on a tenant that does not offer the type.
+    def ensure_work_type_offered
+      return if Site.instance.offerable_work_types.include?(offered_work_type_name)
+
+      redirect_to main_app.root_path, alert: I18n.t('hyku.works.errors.work_type_not_offered')
+    end
+
+    def offered_work_type_name
+      Hyrax::ModelRegistry.rdf_representations_from([self.class.curation_concern_type]).first
+    end
 
     # parent_id reaches Steps::AddToParent straight from params, and that step
     # validates neither the type pairing nor the user's access to the parent.
@@ -70,9 +119,10 @@ module Hyku
     end
 
     def iiif_manifest_presenter
-      Hyrax::IiifManifestPresenter.new(search_result_document(id: params[:id])).tap do |p|
+      @iiif_manifest_presenter ||= iiif_manifest_presenter_class.new(search_result_document(id: params[:id])).tap do |p|
         p.hostname = request.hostname
         p.ability = current_ability
+        p.try(:iiif_file_set_metadata=, iiif_file_set_metadata)
       end
     end
 
@@ -107,24 +157,6 @@ module Hyku
       end
 
       Hyrax::AdminSetSelectionPresenter.new(admin_sets:)
-    end
-
-    # added to prepend the show theme views into the view_paths
-    def inject_show_theme_views
-      if show_page_theme && show_page_theme != 'default_show'
-        original_paths = view_paths
-        Hyku::Application.theme_view_path_roots.each do |root|
-          show_theme_view_path = File.join(root, 'app', 'views', "themes", show_page_theme.to_s)
-          prepend_view_path(show_theme_view_path)
-        end
-        yield
-        # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-        # Do NOT change this line. This is calling the Rails view_paths=(paths) method and not a variable assignment.
-        view_paths=(original_paths)
-        # rubocop:enable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-      else
-        yield
-      end
     end
   end
 end

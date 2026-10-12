@@ -27,7 +27,7 @@
   <div class="pr-badges">
     <%= presenter.permission_badge %>
     <%= presenter.workflow.badge %>
-    <% license_badge = pr_license_badge(presenter) %>
+    <% license_badge = theme_license_badge(presenter) %>
     <% if license_badge.present? %>
       <span class="pr-badge-license"><%= license_badge %></span>
     <% end %>

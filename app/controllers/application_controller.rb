@@ -170,15 +170,21 @@ class ApplicationController < ActionController::Base
 
   # Find themes set on Site model, or return default
   def home_page_theme
-    current_account.sites&.first&.home_theme || 'default_home'
+    current_account_site&.home_theme || 'default_home'
   end
 
   def show_page_theme
-    current_account.sites&.first&.show_theme || 'default_show'
+    current_account_site&.show_theme || 'default_show'
   end
 
   def search_results_theme
-    current_account.sites&.first&.search_theme || 'list_view'
+    current_account_site&.search_theme || 'list_view'
+  end
+
+  def current_account_site
+    return @current_account_site if defined?(@current_account_site)
+
+    @current_account_site = current_account.sites&.first
   end
 
   # Add context information to the lograge entries

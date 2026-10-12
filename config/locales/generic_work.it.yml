@@ -1,9 +1,14 @@
 ---
 it:
+  activerecord:
+    models:
+      generic_work: Opera
   hyrax:
+    models:
+      generic_work: Opera
     icons:
       generic_work: fa fa-file-text-o
     select_type:
       generic_work:
         description: Tipo di opere di tipo generale. Selezionare questa opzione se i tipi di opere più specifici di seguito non sono adatti al opere che si desidera aggiungere.
-        name: Opere Generiche
+        name: Opera

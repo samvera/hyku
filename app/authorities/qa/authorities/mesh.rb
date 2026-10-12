@@ -8,6 +8,13 @@ module Qa::Authorities
       @subauthority = subauthority
     end
 
+    # These terms are imported from a MeSH release by mesh:import_tenant, which
+    # replaces every row, and their identifiers belong to the NLM. Editing them here
+    # would be undone by the next import, so the dashboard offers them read-only.
+    def locally_owned?
+      false
+    end
+
     def search(q, _controller)
       return [] if q.blank?
 

@@ -2,14 +2,17 @@
 
 namespace :hyku do
   namespace :demo do
-    desc 'Capture the golden snapshot (site appearance, content blocks, featured works) for a public demo tenant'
+    desc <<~DESC
+      Capture the golden snapshot (site appearance, content blocks, featured works) for a public demo tenant.
+      Refuses to overwrite an existing snapshot unless FORCE=1.
+    DESC
     task :snapshot, [:tenant] => :environment do |_task, args|
       raise ArgumentError, 'tenant (cname or name) is required, e.g. hyku:demo:snapshot[demo.example.org]' if args.tenant.blank?
 
       account = Account.find_by(cname: args.tenant) || Account.find_by(name: args.tenant)
       raise ArgumentError, "No account found for #{args.tenant}" unless account
 
-      DemoTenantResetService.new(account:).snapshot!
+      DemoTenantResetService.new(account:).snapshot!(force: %w[1 true].include?(ENV['FORCE']))
       puts "Snapshot captured for #{account.cname}"
     end
 
@@ -25,7 +28,8 @@ namespace :hyku do
       snapshot first with hyku:demo:snapshot.
 
       Options (environment variables):
-        DEMO_SEED_CSV_PATH  absolute path to a Bulkrax CSV to re-import (optional)
+        DEMO_SEED_CSV_PATH  path to a Bulkrax CSV to re-import; a %{tenant}
+                            placeholder expands to the account name (optional)
         DEMO_KEEP_USERS     comma-separated emails that survive the reset in
                             addition to superadmins (optional)
         DEMO_IMPORT_USER    email of the user that owns the seed import

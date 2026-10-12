@@ -252,4 +252,17 @@ RSpec.describe ContentBlock, type: :model do
       end
     end
   end
+
+  describe 'cached reads', truncation: true do
+    let(:block_name) { 'announcement_text' }
+
+    it 'reflects a write made through a NAME_REGISTRY setter' do
+      described_class.update_block(name: block_name, value: 'first')
+      expect(described_class.block_for(name: block_name)).to eq('first')
+
+      described_class.announcement_text = 'second'
+
+      expect(described_class.block_for(name: block_name)).to eq('second')
+    end
+  end
 end

@@ -1,0 +1,12 @@
+<div class="dropdown d-inline-block">
+  <button type="button"
+          class="btn <%= local_assigns.fetch(:button_class, 'btn-outline-secondary') %> dropdown-toggle"
+          data-toggle="dropdown"
+          aria-expanded="false">
+    <%= t('hyku.admin.controlled_vocabulary.download') %>
+  </button>
+  <div class="dropdown-menu dropdown-menu-right">
+    <%= link_to 'CSV', main_app.controlled_vocabulary_path(entry.source_key, format: :csv), class: 'dropdown-item' %>
+    <%= link_to 'YAML', main_app.controlled_vocabulary_path(entry.source_key, format: :yml), class: 'dropdown-item' %>
+  </div>
+</div>

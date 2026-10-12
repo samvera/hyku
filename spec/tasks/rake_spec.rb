@@ -110,12 +110,23 @@ RSpec.describe "Rake tasks" do
         .to raise_error(ArgumentError, /No account/)
     end
 
-    it 'captures a snapshot for the named demo tenant' do
+    it 'captures a snapshot for the named demo tenant without force by default' do
       account = FactoryBot.create(:demo_account)
       service = instance_double(DemoTenantResetService, snapshot!: true)
       allow(DemoTenantResetService).to receive(:new).with(account:).and_return(service)
       run_task('hyku:demo:snapshot', account.cname)
-      expect(service).to have_received(:snapshot!)
+      expect(service).to have_received(:snapshot!).with(force: false)
+    end
+
+    it 'passes force: true when FORCE=1' do
+      account = FactoryBot.create(:demo_account)
+      service = instance_double(DemoTenantResetService, snapshot!: true)
+      allow(DemoTenantResetService).to receive(:new).with(account:).and_return(service)
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:[]).and_call_original
+      allow(ENV).to receive(:[]).with('FORCE').and_return('1')
+      run_task('hyku:demo:snapshot', account.cname)
+      expect(service).to have_received(:snapshot!).with(force: true)
     end
   end
 

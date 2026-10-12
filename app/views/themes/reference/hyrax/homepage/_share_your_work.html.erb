@@ -1,0 +1,12 @@
+<section class="ref-label-band ref-cta" aria-labelledby="ref-cta-heading">
+  <div class="ref-label-band-inner ref-cta-inner">
+    <h2 class="ref-cta-heading" id="ref-cta-heading"><%= t('reference.homepage.cta.heading') %></h2>
+    <p class="ref-cta-sub"><%= t('reference.homepage.cta.sub') %></p>
+
+    <div class="ref-cta-actions">
+      <%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path, class: 'ref-cta-terms' %>
+      <% href, data = theme_deposit_target %>
+      <%= link_to t('reference.homepage.cta.button'), href, data:, class: 'ref-cta-button' %>
+    </div>
+  </div>
+</section>

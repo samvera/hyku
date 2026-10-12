@@ -23,6 +23,8 @@ class ContentBlock < ApplicationRecord
     homepage_about_section_content: :homepage_about_section_content
   }.freeze
 
+  after_commit { RequestStore.delete(:content_blocks) }
+
   # NOTE: method defined outside the metaclass wrapper below because
   # `for` is a reserved word in Ruby.
   def self.for(key)
@@ -39,8 +41,9 @@ class ContentBlock < ApplicationRecord
     #
     # @return [Object] either the named block's value or the fallback_value.
     def block_for(name:, fallback_value: false)
-      block = ContentBlock.find_by(name:)
-      block&.value.presence || fallback_value
+      cache = RequestStore.fetch(:content_blocks) { {} }
+      cache[name.to_s] = ContentBlock.find_by(name:) unless cache.key?(name.to_s)
+      cache[name.to_s]&.value.presence || fallback_value
     end
 
     # @api public

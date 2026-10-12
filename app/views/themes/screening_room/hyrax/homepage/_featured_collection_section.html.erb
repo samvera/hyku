@@ -1,0 +1,36 @@
+<% collections = scr_home.collections %>
+<% editable = can?(:update, FeaturedCollection) && !@featured_collection_list.empty? %>
+
+<% if editable || collections.present? %>
+  <section class="scr-collections" aria-labelledby="scr-collections-heading">
+    <div class="scr-section-head">
+      <h2 class="scr-section-title" id="scr-collections-heading"><%= t('screening_room.homepage.collections.heading') %></h2>
+      <%= link_to t('screening_room.homepage.collections.view_all'),
+                  main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }),
+                  class: 'scr-section-action' %>
+    </div>
+
+    <% if editable %>
+      <%= form_for [main_app, @featured_collection_list] do |f| %>
+        <div class="dd scr-reorder-cards" id="ff" data-unfeature-confirm="<%= t('screening_room.homepage.collections.unfeature_confirm') %>">
+          <ol class="scr-collection-grid list-unstyled">
+            <%= f.fields_for :featured_collections do |featured_collection| %>
+              <%= render 'hyrax/homepage/sortable_featured_collections', f: featured_collection %>
+            <% end %>
+          </ol>
+        </div>
+
+        <div class="scr-reorder-actions">
+          <p class="scr-reorder-hint"><%= t('screening_room.homepage.spotlight.reorder_hint') %></p>
+          <%= f.submit t('screening_room.homepage.spotlight.save_order'), class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="scr-collection-grid">
+        <% collections.each do |collection| %>
+          <%= render 'hyrax/homepage/featured_collection_fields', featured: collection %>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+<% end %>

@@ -1,0 +1,31 @@
+<dt class="col-sm-3"><%= heading %></dt>
+<dd class="col-sm-9 vocabulary-field">
+  <div class="vocabulary-field-display">
+    <% if value.present? %>
+      <span><%= value %></span>
+    <% else %>
+      <span class="text-muted"><%= local_assigns[:blank_text] %></span>
+    <% end %>
+    <%= link_to main_app.edit_controlled_vocabulary_path(vocabulary.name),
+                class: 'btn btn-link btn-sm vocabulary-field-edit',
+                title: t('hyku.admin.controlled_vocabulary.edit_field', field: heading) do %>
+      <span class="fa fa-pencil" aria-hidden="true"></span>
+      <span class="sr-only"><%= t('hyku.admin.controlled_vocabulary.edit_field', field: heading) %></span>
+    <% end %>
+  </div>
+
+  <%= simple_form_for vocabulary,
+                      url: main_app.controlled_vocabulary_path(vocabulary.name),
+                      html: { id: "vocabulary-#{field}-form", class: 'vocabulary-field-form d-none', method: :patch } do |f| %>
+    <%# value, not the record's: a blank label displays the titleized source key, and a
+        field that opened empty under that name would read as a rename that did nothing. %>
+    <%= f.input_field field, **local_assigns.fetch(:input_options, {}),
+                      value: value, class: 'form-control form-control-sm', 'aria-label': heading %>
+    <div class="mt-2">
+      <%= f.submit t('hyku.admin.controlled_vocabulary.save'), class: 'btn btn-primary btn-sm' %>
+      <button type="button" class="btn btn-link btn-sm vocabulary-field-cancel">
+        <%= t('helpers.action.cancel', default: 'Cancel') %>
+      </button>
+    </div>
+  <% end %>
+</dd>

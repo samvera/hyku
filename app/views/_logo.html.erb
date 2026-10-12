@@ -1,7 +1,7 @@
 <% unless controller.controller_name == 'splash' %>
   <% if logo_image %>
     <a id="logo" href="<%= hyrax.root_path %>" data-no-turbolink="true">
-      <%= image_tag logo_image, alt_text: block_for(name: 'logo_image_text') %>
+      <%= image_tag logo_image, alt: block_for(name: 'logo_image_text') || application_name %>
     </a>
   <% else %>
     <a id="logo" class="navbar-brand" href="<%= hyrax.root_path %>" data-no-turbolink="true">

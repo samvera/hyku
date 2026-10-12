@@ -486,7 +486,7 @@ body.digital_collection_show.public-facing {
       }
 
       &:focus-visible {
-        @include dc-focus-ring($offset: 0, $on: dark);
+        @include dc-focus-ring($offset: 0, $on: dark, $radius: $dc-radius-text);
       }
     }
 

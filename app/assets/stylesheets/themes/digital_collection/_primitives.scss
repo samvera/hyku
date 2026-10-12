@@ -16,13 +16,17 @@
   max-width: $dc-content-max;
 }
 
-@mixin dc-focus-ring($color: null, $offset: $dc-focus-ring-offset, $on: light) {
+@mixin dc-focus-ring($color: null, $offset: $dc-focus-ring-offset, $on: light, $radius: null) {
   @if $color == null {
     $color: if($on == dark, $dc-ink-heading-on-dark, var(--dc-link-hover, #{$dc-link-hover}));
   }
   box-shadow: none;
   outline: $dc-focus-ring-width solid $color;
   outline-offset: $offset;
+
+  @if $radius != null {
+    border-radius: $radius;
+  }
 }
 
 @mixin dc-underline($thickness: $dc-underline) {
@@ -51,7 +55,7 @@
   }
 
   &:focus-visible {
-    @include dc-focus-ring($on: $on);
+    @include dc-focus-ring($on: $on, $radius: $dc-radius-text);
   }
 }
 
@@ -246,7 +250,7 @@ $dc-heading-roles: (
   }
 
   &:focus-visible {
-    @include dc-focus-ring($on: $on);
+    @include dc-focus-ring($on: $on, $radius: $dc-radius-text);
   }
 }
 
@@ -282,7 +286,7 @@ $dc-heading-roles: (
   }
 
   &:focus-visible {
-    @include dc-focus-ring($on: $on);
+    @include dc-focus-ring($on: $on, $radius: $dc-radius-text);
   }
 }
 

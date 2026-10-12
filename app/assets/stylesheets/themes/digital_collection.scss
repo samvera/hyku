@@ -992,9 +992,10 @@
     font-size: $dc-text-base;
     font-weight: $dc-weight-strong;
     line-height: $dc-leading-snug;
-    margin: 0;
+    margin: (-$dc-focus-ring-width - $dc-focus-ring-offset);
     min-width: 0;
     overflow: hidden;
+    padding: $dc-focus-ring-width + $dc-focus-ring-offset;
     text-overflow: ellipsis;
     white-space: nowrap;
 

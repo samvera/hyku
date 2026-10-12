@@ -271,7 +271,7 @@ $dc-heading-roles: (
     font-family: FontAwesome;
     font-size: 1em;
     font-weight: normal;
-    margin-inline: if($arrow == left, 0 $gap, $gap 0);
+    margin-inline: if($arrow == left, ($gap-hover - $gap) $gap, $gap ($gap-hover - $gap));
     transition: margin $dc-transition;
   }
 

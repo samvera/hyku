@@ -311,13 +311,13 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
       expect(recent.css('.dc-recent-title').map { |t| t.text.strip }).to include(title)
     end
 
-    it 'leaves the collection name off a recent work that belongs to no collection' do
+    it 'shows only the thumbnail and title in a recent work row' do
       indexed_work_with(title: ['Loose work'])
 
       get root_path
       row = Nokogiri::HTML(response.body).css('.dc-recent-row').find { |r| r.at_css('.dc-recent-title').text.strip == 'Loose work' }
 
-      expect(row.at_css('.dc-recent-collection')).to be_nil
+      expect(row.element_children.map { |child| child['class'].split.first }).to eq(%w[dc-recent-thumb dc-recent-title])
     end
 
     it 'renders a browse card for a collection with no description, keeping the description space' do

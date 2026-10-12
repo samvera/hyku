@@ -998,21 +998,6 @@
     }
   }
 
-  .dc-recent-collection {
-    color: $dc-ink-tertiary;
-    flex: none;
-    font-size: $dc-text-sm;
-    max-width: 30%;
-    overflow: hidden;
-    text-align: right;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    @media (max-width: $dc-mobile-max) {
-      display: none;
-    }
-  }
-
   // ---- about band ----
   .dc-about {
     background: $dc-surface-alt;

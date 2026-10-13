@@ -79,4 +79,6 @@ If no version label is present, the default bump is `patch`.
 
 Knapsack repositories (e.g. `notch8/hykuup_knapsack`, `notch8/utk_knapsack`) follow the same model with their own branch-to-environment mappings. Each knapsack maintains its own release version line independent of Hyku's version, documented in its README under **Deploying**.
 
+A knapsack takes Hyku from Hyku's `production` branch, never `main`: its Hyku submodule follows `production`, so the knapsack's update pull request only opens when Hyku releases, and it lands on the knapsack's `main` like any other change. A knapsack that needs a Hyku fix before Hyku's next release gets it as a Hyku hotfix on `production` first.
+
 Some knapsacks add client steps that Hyku doesn't have. For example, pals labels tickets `needs client review`, and the client approves each one on staging before the production promotion.

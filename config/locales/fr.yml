@@ -1100,6 +1100,8 @@ fr:
       part_of:
         heading: "Fait partie de"
   digital_collection:
+    form:
+      required: "(obligatoire)"
     chrome:
       account_label:
         zero: "%{name}"

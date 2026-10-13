@@ -1112,6 +1112,8 @@ zh:
       part_of:
         heading: "所属"
   digital_collection:
+    form:
+      required: "（必填）"
     chrome:
       account_label:
         zero: "%{name}"

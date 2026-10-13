@@ -962,6 +962,8 @@ en:
       part_of:
         heading: "Part of"
   digital_collection:
+    form:
+      required: "(required)"
     chrome:
       account_label:
         zero: "%{name}"

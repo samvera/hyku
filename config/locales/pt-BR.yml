@@ -978,6 +978,8 @@ pt-BR:
       part_of:
         heading: "Faz parte de"
   digital_collection:
+    form:
+      required: "(obrigatório)"
     chrome:
       account_label:
         zero: "%{name}"

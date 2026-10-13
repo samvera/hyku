@@ -1095,6 +1095,8 @@ es:
       part_of:
         heading: "Forma parte de"
   digital_collection:
+    form:
+      required: "(obligatorio)"
     chrome:
       account_label:
         zero: "%{name}"

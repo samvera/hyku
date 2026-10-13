@@ -1098,6 +1098,8 @@ de:
       part_of:
         heading: "Gehört zu"
   digital_collection:
+    form:
+      required: "(erforderlich)"
     chrome:
       account_label:
         zero: "%{name}"

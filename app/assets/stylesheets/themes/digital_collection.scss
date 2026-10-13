@@ -1137,6 +1137,48 @@ body.digital_collection.hyrax-contact_form-create {
   }
 }
 
+// ---- contact form ----
+
+body.digital_collection.hyrax-contact_form-new,
+body.digital_collection.hyrax-contact_form-create {
+  .dc-contact {
+    display: flex;
+    flex-direction: column;
+    gap: $dc-space-5;
+  }
+
+  .dc-contact-title {
+    @include dc-heading(page-title);
+  }
+
+  .dc-contact-intro {
+    color: $dc-ink;
+    font-size: $dc-text-base;
+    line-height: $dc-leading-body;
+    margin: 0;
+  }
+
+  .dc-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: $dc-space-5;
+  }
+
+  .dc-field {
+    @include dc-field;
+  }
+
+  .dc-field-required {
+    color: $dc-ink-secondary;
+    font-weight: $dc-weight-regular;
+  }
+
+  .dc-contact-send {
+    @include dc-button-primary;
+    align-self: flex-start;
+  }
+}
+
 // ---- advanced search ----
 
 body.digital_collection.catalog-advanced_search,

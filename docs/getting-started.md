@@ -15,7 +15,7 @@ Start off by setting up a local development environment where you can experiment
     ```bash
     git clone https://github.com/samvera/hyku.git
     cd hyku
-    git checkout tags/v6.2.0
+    git checkout production
     ```
 
 2) **Set up DNS and TLS certificates using Stack Car:**
@@ -124,6 +124,12 @@ bin/setup
 DISABLE_REDIS_CLUSTER=true ./bin/worker
 DISABLE_REDIS_CLUSTER=true ./bin/web
 ```
+
+#### Developing with Solr 9
+Hyku defaults to Solr 8; see [Using Solr 9](using-solr-9.md) to develop and test against Solr 9 instead.
+
+#### Developing with Postgres 18
+Hyku defaults to Postgres 11; see [Using Postgres 18](using-postgres-18.md) to develop and test against Postgres 18 instead.
 
 ## Kubernetes
 

@@ -4,7 +4,7 @@
 <% unless appearance.body_font.include?('Helvetica') %>
   @import url(//<%= appearance.font_import_body_url %>);
 <% end %>
-<% unless appearance.body_font.include?('Helvetica') %>
+<% unless appearance.headline_font.include?('Helvetica') %>
   @import url(//<%= appearance.font_import_headline_url %>);
 <% end %>
 
@@ -221,7 +221,11 @@ body.public-facing .hyc-banner .hyc-title h1 {
 
 /* PRACTICE RESEARCH THEME CUSTOMIZATIONS */
 <% if home_page_theme == 'practice_research' || show_page_theme == 'practice_research_show' %>
+  <% pr_default_serif = appearance.headline_font.include?('Helvetica') %>
+  <% pr_default_sans = appearance.body_font.include?('Helvetica') %>
 :root {
+  --pr-serif: <%= pr_default_serif ? 'Georgia, Times New Roman, serif' : appearance.font_headline_family %>;
+  --pr-sans: <%= pr_default_sans ? 'Helvetica Neue, Helvetica, Arial, sans-serif' : appearance.font_body_family %>;
   --pr-accent: <%= appearance.primary_button_background_color %>;
   --pr-accent-ink: <%= appearance.primary_button_text_color %>;
   --pr-band-dark: <%= appearance.header_and_footer_background_color %>;

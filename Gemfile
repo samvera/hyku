@@ -28,7 +28,7 @@ gem 'blacklight_range_limit', '~> 8.5'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', '~> 9.5'
+gem 'bulkrax', '~> 10.0'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
@@ -56,6 +56,7 @@ gem 'hyrax', github: 'samvera/hyrax', branch: 'main'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
+gem 'iiif_manifest', '>= 1.7.0'
 gem 'iiif_print', '~> 3.1'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library

@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 39141755e744858a734b8fd3ee95cc85c7836533
+  revision: cb0013338c37a34be2a5c3e0d882a87498f79ab9
   branch: main
   specs:
     hyrax (5.3.0)
@@ -294,15 +294,16 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.41.0)
+    blacklight (7.43.0)
       deprecation
       globalid
       hashdiff
       i18n (>= 1.7.0)
       jbuilder (~> 2.7)
+      json (< 3.0)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
-      rails (>= 6.1, < 8.1)
+      rails (>= 6.1, < 9)
       view_component (>= 2.74, < 4)
       zeitwerk
     blacklight-access_controls (6.1.0)
@@ -372,10 +373,11 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.3.0)
-    bulkrax (9.5.1)
+    bulkrax (10.0.0)
       bagit (~> 0.6.0)
       coderay
       denormalize_fields
+      deprecation (~> 1.0)
       iso8601 (~> 0.9.0)
       kaminari
       language_list (~> 1.2, >= 1.2.1)
@@ -384,7 +386,7 @@ GEM
       marcel
       oai (>= 0.4, < 2.x)
       rack (>= 2.0.6)
-      rails (>= 5.1.6, < 8.0.0)
+      rails (>= 5.2, < 8.2.0)
       rdf (>= 2.0.2, < 4.0)
       rubyzip
       simple_form
@@ -792,9 +794,9 @@ GEM
       faraday (~> 2.7)
       geo_coord
       json
-    iiif_manifest (1.6.0)
+    iiif_manifest (1.7.0)
       activesupport (>= 4)
-    iiif_print (3.1.0)
+    iiif_print (3.2.1)
       blacklight_iiif_search (>= 1.0, < 3.0)
       derivative-rodeo (~> 0.5)
       hyrax (>= 2.5, < 6)
@@ -1676,7 +1678,7 @@ DEPENDENCIES
   bolognese (>= 1.9.10)
   bootstrap (~> 4.6)
   bootstrap-datepicker-rails
-  bulkrax (~> 9.5)
+  bulkrax (~> 10.0)
   bullet (~> 8.1)
   byebug
   capybara
@@ -1706,6 +1708,7 @@ DEPENDENCIES
   hyrax-doi!
   i18n-debug
   i18n-tasks
+  iiif_manifest (>= 1.7.0)
   iiif_print (~> 3.1)
   jbuilder (~> 2.5)
   jquery-rails

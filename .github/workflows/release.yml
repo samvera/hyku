@@ -51,3 +51,13 @@ jobs:
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-amd64 \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-arm64
           done
+
+          # 8_/9_-prefixed tags let consumers pin a Solr version explicitly; :latest/:${ref_name} above stay Solr 8, unaffected.
+          for tag in "${{ env.RELEASE_TAG }}" "${{ github.ref_name }}"; do
+            docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:8_$tag \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:${{ env.TAG }}-amd64 \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:${{ env.TAG }}-arm64
+            docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:9_$tag \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:${{ env.TAG }}-amd64-9 \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:${{ env.TAG }}-arm64-9
+          done

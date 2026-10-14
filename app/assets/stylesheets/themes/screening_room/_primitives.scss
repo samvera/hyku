@@ -2,11 +2,24 @@
 
 @import 'themes/screening_room/tokens';
 
-@mixin scr-gutter($important: false) {
+@mixin scr-gutter($important: false, $max: null) {
   $bang: if($important, unquote('!important'), null);
 
   padding-left: $scr-gutter-xl $bang;
   padding-right: $scr-gutter-xl $bang;
+
+  @if $max {
+    // breakpoint must clear $scr-desktop-max to avoid overlap with the
+    // responsive gutter below
+    $bp: $max + $scr-gutter-xl * 2;
+    @if $bp <= $scr-desktop-max {
+      $bp: $scr-desktop-max + 1;
+    }
+    @media (min-width: #{$bp}) {
+      padding-left: calc(50% - #{$max / 2}) $bang;
+      padding-right: calc(50% - #{$max / 2}) $bang;
+    }
+  }
 
   @media (max-width: $scr-desktop-max) {
     padding-left: $scr-gutter-lg $bang;

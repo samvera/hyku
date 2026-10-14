@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 to change `&amp;`	to `&` in the Universal Viewer
+# OVERRIDE Hyrax v5.3.0 and IiifPrint v3.1.1
+#   - change `&amp;` to `&` in the Universal Viewer
+#   - never unescape scrubbed manifest strings, so escaped markup never becomes a tag
+#     (Hyrax's deep_sanitize, IiifPrint's canvas labels in sanitize_v3)
+#   - mark v3 manifests as paged
 
 module Hyrax
   module ManifestBuilderServiceDecorator
@@ -16,15 +20,27 @@ module Hyrax
     end
 
     ##
-    # @return [String] the String that gets unescaped since Loofah is too aggressive for example
-    #   it changes to `&` to `&amp;` which will be displayed in the Universal Viewer and manifest
+    # @return [String] the text scrubbed, with `&amp;` shown as `&` rather than
+    #   left for the Universal Viewer to display literally
     # @see #sanitize_value
     def loof(text)
-      CGI.unescapeHTML(Loofah.fragment(text.to_s).scrub!(:prune).to_s)
+      Loofah.fragment(text.to_s).scrub!(:prune).to_s.gsub('&amp;', '&')
+    end
+
+    # OVERRIDE the String branch, which unescaped after scrubbing
+    def deep_sanitize(obj)
+      obj.is_a?(String) ? loof(obj) : super
     end
 
     def sanitize_v3(hash:, presenter:, solr_doc_hits:)
+      # OVERRIDE IiifPrint unescapes canvas labels after sanitize_value, turning
+      # escaped text into markup, so scrub each label as it was before that
+      labels = Array(hash['items']).to_h { |canvas| [canvas['id'], Array(canvas.dig('label', 'none')).dup] }
       returning_hash = super
+      returning_hash['items']&.each do |canvas|
+        canvas['label']['none'] = labels[canvas['id']].map { |text| loof(text) } if canvas.dig('label', 'none')
+      end
+      # OVERRIDE
       returning_hash['viewingHint'] = 'paged'
       returning_hash
     end
@@ -32,3 +48,23 @@ module Hyrax
 end
 
 Hyrax::ManifestBuilderService.prepend(Hyrax::ManifestBuilderServiceDecorator)
+
+# OVERRIDE IiifPrint 3.1.0 - IiifPrint's ManifestBuilderServiceDecorator flattens
+# child works, sanitizes canvas labels, and overwrites item_metadata, all of which
+# conflict with Ranges. Bypass its entire manifest_for when the feature is active
+# and let the iiif_manifest gem (which natively supports ranges and item_metadata)
+# build the manifest directly.
+module Hyrax
+  module ManifestBuilderServiceRangesDecorator
+    def manifest_for(presenter:)
+      return super unless Flipflop.iiif_ranges?
+
+      manifest = manifest_factory.new(presenter).to_h
+      hash = deep_sanitize(JSON.parse(manifest.to_json))
+      hash['viewingHint'] = 'paged'
+      hash
+    end
+  end
+end
+
+Hyrax::ManifestBuilderService.prepend(Hyrax::ManifestBuilderServiceRangesDecorator)

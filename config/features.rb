@@ -32,7 +32,7 @@ Flipflop.configure do
   # Flipflop.default_pdf_viewer? returning `true` means we use PDF.js and `false` means we use IIIF Print.
   feature :default_pdf_viewer,
           default: true,
-          description: "Choose PDF.js or Universal Viewer to render PDFs. UV uses IIIF Print and requires PDF splitting with OCR. Switching from PDF.js to the UV may require re-ingesting of the PDF."
+          description: "Choose PDF.js or Universal Viewer to render PDFs. UV uses IIIF Print and requires PDF splitting. Switching from PDF.js to the UV may require re-ingesting of the PDF."
 
   feature :show_login_link,
           default: true,
@@ -46,6 +46,18 @@ Flipflop.configure do
           default: false,
           description: "Enable storing tenant-specific color selections to override application defaults."
 
+  feature :iiif_print_ocr,
+          default: false,
+          description: "Run OCR and text extraction on uploaded images, even when PDF.js is the viewer."
+
+  group :site_configuration do
+    feature :iiif_ranges,
+            title: "IIIF Ranges",
+            default: false,
+            description: "Render child works' file sets as canvases in the parent work's IIIF manifest, " \
+                         "with a table of contents built from IIIF ranges."
+  end
+
   feature :per_work_media_viewer,
           default: false,
           description: "Let each work choose its own viewer (Universal Viewer, Clover IIIF, Ramp, or PDF.js) " \
@@ -56,6 +68,12 @@ Flipflop.configure do
     feature :include_guided_import,
             default: false,
             description: "Enable the guided import workflow."
+
+    feature :oai_mods,
+            title: "OAI-PMH MODS",
+            default: false,
+            description: "Offer MODS records over OAI-PMH, built from the mods_oai_pmh mappings in the " \
+                         "metadata profile, or in the metadata YAML files when flexible metadata is off."
   end
 
   group :deposit_features do

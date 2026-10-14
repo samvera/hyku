@@ -2,11 +2,22 @@
 
 // $important is for chrome the theme does not own: the stock _controls nav
 // carries Bootstrap's px-2, which is itself !important
-@mixin hrt-gutter($desktop: $hrt-gutter, $laptop: $hrt-gutter-laptop, $important: false) {
+@mixin hrt-gutter($desktop: $hrt-gutter, $laptop: $hrt-gutter-laptop, $important: false, $max: null) {
   $bang: if($important, unquote('!important'), null);
 
   padding-left: $desktop $bang;
   padding-right: $desktop $bang;
+
+  @if $max {
+    $bp: $max + $desktop * 2;
+    @if $bp <= $hrt-laptop-max {
+      $bp: $hrt-laptop-max + 1;
+    }
+    @media (min-width: #{$bp}) {
+      padding-left: calc(50% - #{$max / 2}) $bang;
+      padding-right: calc(50% - #{$max / 2}) $bang;
+    }
+  }
 
   @media (max-width: $hrt-laptop-max) {
     padding-left: $laptop $bang;

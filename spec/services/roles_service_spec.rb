@@ -8,6 +8,8 @@ RSpec.describe RolesService, clean: true do
   let(:default_role_count) { described_class::DEFAULT_ROLES.count }
   let(:default_hyrax_group_count) { described_class::DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.keys.count }
 
+  before { described_class.instance_variable_set(:@seed_user_password, nil) }
+
   shared_examples 'must run inside a tenant' do |method_to_run, scope_warning|
     context 'when run outside the scope of a tenant' do
       let(:scope_warning) { scope_warning }
@@ -462,6 +464,11 @@ RSpec.describe RolesService, clean: true do
   end
 
   describe '#seed_superadmin!' do
+    before do
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_return('seeded-env-password')
+    end
+
     it 'creates a user with the :superadmin role' do
       expect_any_instance_of(User).to receive(:add_default_group_membership!).once
 
@@ -470,6 +477,29 @@ RSpec.describe RolesService, clean: true do
       expect(superadmin_user).to be_persisted
       expect(superadmin_user).to be_valid
       expect(superadmin_user.has_role?(:superadmin)).to eq(true)
+    end
+
+    context 'when HYKU_SEED_PASSWORD is set' do
+      before do
+        allow(ENV).to receive(:fetch).and_call_original
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_return('seeded-env-password')
+      end
+
+      it 'uses the configured password for the new user' do
+        expect(roles_service.seed_superadmin!.valid_password?('seeded-env-password')).to eq(true)
+      end
+    end
+
+    context 'when HYKU_SEED_PASSWORD is not set' do
+      before do
+        allow(ENV).to receive(:fetch).and_call_original
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_raise(KeyError)
+      end
+
+      it 'refuses to create the user' do
+        expect { roles_service.seed_superadmin! }.to raise_error(KeyError)
+        expect(User.find_by(email: 'admin@example.com')).to be_nil
+      end
     end
 
     context 'when in the production environment' do
@@ -489,10 +519,40 @@ RSpec.describe RolesService, clean: true do
   end
 
   describe '#seed_qa_users!' do
+    before do
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_return('seeded-env-password')
+    end
+
     it 'creates a user for each default role' do
       expect { roles_service.seed_qa_users! }
         .to change(User, :count)
         .by(default_role_count)
+    end
+
+    context 'when HYKU_SEED_PASSWORD is set' do
+      before do
+        allow(ENV).to receive(:fetch).and_call_original
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_return('seeded-env-password')
+      end
+
+      it 'uses the configured password for each new user' do
+        roles_service.seed_qa_users!
+        user = User.find_by(email: "#{described_class::DEFAULT_ROLES.last}@example.com")
+        expect(user.valid_password?('seeded-env-password')).to eq(true)
+      end
+    end
+
+    context 'when HYKU_SEED_PASSWORD is not set' do
+      before do
+        allow(ENV).to receive(:fetch).and_call_original
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_raise(KeyError)
+      end
+
+      it 'refuses to create the users' do
+        expect { roles_service.seed_qa_users! }.to raise_error(KeyError)
+        expect(User.find_by(email: "#{described_class::DEFAULT_ROLES.last}@example.com")).to be_nil
+      end
     end
 
     context 'when in the production environment' do

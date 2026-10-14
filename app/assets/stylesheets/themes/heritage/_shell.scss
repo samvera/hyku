@@ -16,7 +16,7 @@ body.heritage_show.public-facing {
 
   // ---- masthead ----
   #masthead {
-    @include hrt-gutter;
+    @include hrt-gutter($max: 1600px);
     min-height: 56px;
     padding-bottom: 0;
     padding-top: 0;
@@ -45,11 +45,15 @@ body.heritage_show.public-facing {
 
   // ---- nav row ----
   nav[aria-label='Root Menu'] {
-    @include hrt-gutter($important: true);
+    @include hrt-gutter($important: true, $max: 1600px);
     background-color: var(--hrt-sunken, #{$hrt-surface-sunken}) !important;
     border-bottom: 1px solid $hrt-rule !important;
     padding-bottom: 15px !important;
     padding-top: 15px !important;
+
+    > [class*='col-']:last-child {
+      padding-right: 0;
+    }
 
     // the search form only renders off the homepage; reserving its control
     // height keeps the nav row the same height on every page
@@ -154,7 +158,7 @@ body.heritage_show.public-facing {
   // inner div as a red alert with a 10px white border and 15px radius, so
   // every one of those has to be unset here
   #announcement_text {
-    @include hrt-gutter;
+    @include hrt-gutter($max: 1600px);
     background: $hrt-notice-bg;
     border-bottom: 1px solid $hrt-notice-edge;
     padding-bottom: 13px;
@@ -170,7 +174,7 @@ body.heritage_show.public-facing {
     line-height: 1.5;
     overflow-wrap: anywhere;
     padding: 0;
-    text-align: left;
+    text-align: center;
 
     p:last-child {
       margin-bottom: 0;
@@ -183,7 +187,7 @@ body.heritage_show.public-facing {
 
   // ---- footer ----
   footer.navbar {
-    @include hrt-gutter;
+    @include hrt-gutter($max: 1600px);
     font-size: 13px;
     padding-bottom: 24px;
     padding-top: 24px;

@@ -33,4 +33,5 @@ attributes:
       multiple: true
     predicate: http://purl.org/dc/terms/extent
     mappings:
+      mods_oai_pmh: mods:physicalDescription/mods:extent
       simple_dc_pmh: dc:format

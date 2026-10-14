@@ -14,7 +14,8 @@
   }
 
   #content-wrapper > .alert {
-    margin: 16px $ref-gutter;
+    margin: 16px auto;
+    max-width: 1280px;
   }
 
   // ---- hero ----
@@ -43,7 +44,7 @@
   }
 
   .ref-hero-content {
-    @include ref-gutter;
+    @include ref-gutter($max: 1280px);
     align-items: flex-end;
     display: flex;
     gap: 40px;
@@ -249,19 +250,23 @@
     position: relative;
     text-align: right;
 
-    // the scrim fades to half strength at this edge of the hero, so the banner
-    // can lift the surface under this block; feather a local one behind it
     &::before {
       background: radial-gradient(farthest-side at 72% 50%,
         color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 94%, transparent) 0%,
         color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 76%, transparent) 45%,
         color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 0%, transparent) 100%);
       content: '';
-      inset: -58px -48px -58px -170px;
+      inset: -58px -#{$ref-gutter} -58px -170px;
       pointer-events: none;
       position: absolute;
     }
 
+    @media (max-width: $ref-laptop-max) {
+      &::before { right: -#{$ref-gutter-laptop}; }
+    }
+    @media (max-width: $ref-tablet-max) {
+      &::before { right: -#{$ref-gutter-tablet}; }
+    }
     @media (max-width: $ref-mobile-max) {
       text-align: left;
 
@@ -313,7 +318,7 @@
   }
 
   .ref-browse-inner {
-    @include ref-gutter;
+    @include ref-gutter($max: 1280px);
     padding-bottom: 44px;
     padding-top: 44px;
   }
@@ -396,7 +401,7 @@
 
   // ---- recent deposits ----
   .ref-recent-inner {
-    @include ref-gutter(192px, 96px);
+    @include ref-gutter($max: 1280px);
     padding-bottom: 44px;
     padding-top: 44px;
   }
@@ -514,7 +519,7 @@
   }
 
   .ref-featured-inner {
-    @include ref-gutter;
+    @include ref-gutter($max: 1280px);
     display: grid;
     gap: 26px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -764,7 +769,7 @@
   }
 
   .ref-label-band-inner {
-    @include ref-gutter(192px, 96px);
+    @include ref-gutter($max: 1280px);
     display: grid;
     gap: 36px;
     grid-template-columns: 340px minmax(0, 1fr);
@@ -908,12 +913,22 @@
 
   // ---- home page text ----
   .ref-home-text {
-    @include ref-gutter(192px, 96px);
+    @include ref-gutter($max: 1280px);
     padding-bottom: 34px;
     padding-top: 38px;
 
     > div {
       max-width: 920px;
+    }
+
+    h2 {
+      @media (max-width: $ref-tablet-max) {
+        font-size: 30px;
+      }
+
+      @media (max-width: $ref-mobile-max) {
+        font-size: 24px;
+      }
     }
 
     > div::before {

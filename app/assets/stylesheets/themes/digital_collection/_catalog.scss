@@ -3,7 +3,7 @@
 // Targets stock DOM; no new partials.
 
 body.catalog-index.digital_collection.public-facing {
-  --dc-cat-thumb: 200px;
+  --dc-width-result-thumb: #{$dc-width-result-thumb};
 
   // ---- page grid ----
   .dc-searchbar {
@@ -195,7 +195,7 @@ body.catalog-index.digital_collection.public-facing {
 
   .sort-dropdown .dropdown-menu,
   .per_page-dropdown .dropdown-menu {
-    border-radius: 0;
+    border-radius: var(--dc-radius, #{$dc-radius});
 
     .dropdown-item:active,
     .dropdown-item.active {
@@ -225,6 +225,14 @@ body.catalog-index.digital_collection.public-facing {
     color: $dc-ink;
     padding: 8px 11px;
     position: relative;
+
+    &:first-child {
+      border-radius: var(--dc-radius, #{$dc-radius}) 0 0 var(--dc-radius, #{$dc-radius});
+    }
+
+    &:last-child {
+      border-radius: 0 var(--dc-radius, #{$dc-radius}) var(--dc-radius, #{$dc-radius}) 0;
+    }
 
     + .btn {
       margin-left: -1px;
@@ -263,7 +271,7 @@ body.catalog-index.digital_collection.public-facing {
 
   .search-result-wrapper {
     display: grid;
-    grid-template-columns: var(--dc-cat-thumb) minmax(0, 1fr);
+    grid-template-columns: var(--dc-width-result-thumb) minmax(0, 1fr);
     gap: 12px 24px;
     margin: 0;
 
@@ -279,7 +287,7 @@ body.catalog-index.digital_collection.public-facing {
     grid-column: 1 / -1;
     padding-bottom: 0 !important; // counters Bootstrap .pb-2 !important
 
-    .badge { border-radius: 0; margin: 0; }
+    .badge { border-radius: var(--dc-radius, #{$dc-radius}); margin: 0; }
   }
 
   h3.search-result-title {
@@ -390,7 +398,7 @@ body.catalog-index.digital_collection.public-facing {
   .record-padding .page-item {
     .page-link {
       border: 1px solid $dc-input-edge;
-      border-radius: $dc-radius;
+      border-radius: var(--dc-radius, #{$dc-radius});
       color: $dc-ink;
       min-width: 40px;
       padding: 8px 12px;
@@ -417,7 +425,7 @@ body.catalog-index.digital_collection.public-facing {
 
   // ---- tablet ----
   @media (max-width: $dc-tablet-max) {
-    --dc-cat-thumb: 140px;
+    --dc-width-result-thumb: #{$dc-width-result-thumb-tablet};
 
     #content-wrapper > .row {
       display: flex;
@@ -531,7 +539,7 @@ body.catalog-index.digital_collection.public-facing {
 
   // ---- phone ----
   @media (max-width: $dc-mobile-max) {
-    --dc-cat-thumb: 96px;
+    --dc-width-result-thumb: #{$dc-width-result-thumb-mobile};
 
     li.document {
       padding: 16px 0 !important; // counters Bootstrap .pb-3 !important
@@ -539,7 +547,7 @@ body.catalog-index.digital_collection.public-facing {
 
     .search-result-wrapper {
       grid-template-areas: "thumb head" "meta meta";
-      grid-template-columns: var(--dc-cat-thumb) minmax(0, 1fr);
+      grid-template-columns: var(--dc-width-result-thumb) minmax(0, 1fr);
       gap: 6px 12px;
     }
 

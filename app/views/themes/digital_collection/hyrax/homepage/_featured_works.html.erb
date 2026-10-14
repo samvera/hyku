@@ -1,27 +1,18 @@
+<%# OVERRIDE Hyrax 5.3.0: headed section; reorder form for editors, featured rows for visitors %>
 <% featured = dc_home.featured_works %>
 <% editable = can?(:update, FeaturedWork) && !@featured_work_list.empty? %>
 
 <% if @presenter&.display_featured_works? && (featured.any? || editable) %>
   <section class="dc-featured" aria-labelledby="dc-featured-heading">
-    <div class="dc-section-head">
-      <h2 class="dc-section-title" id="dc-featured-heading"><%= t('digital_collection.homepage.featured.heading') %></h2>
-    </div>
+    <%= dc_section_head t('digital_collection.homepage.featured.heading'), id: 'dc-featured-heading' %>
 
     <% if editable %>
-      <%= form_for [hyrax, @featured_work_list] do |f| %>
-        <div class="dd dc-reorder" id="dd" data-unfeature-confirm="<%= t('digital_collection.homepage.featured.unfeature_confirm') %>">
-          <ol class="dc-featured-list list-unstyled">
-            <%= f.fields_for :featured_works do |featured_work| %>
-              <%= render 'hyrax/homepage/sortable_featured', f: featured_work %>
-            <% end %>
-          </ol>
-        </div>
-
-        <div class="dc-featured-actions">
-          <p class="dc-featured-hint"><%= t('digital_collection.homepage.featured.reorder_hint') %></p>
-          <%= f.submit t('digital_collection.homepage.featured.save_order'), class: 'dc-control' %>
-        </div>
-      <% end %>
+      <%= render 'hyrax/homepage/dc_reorder_form',
+                 record: [hyrax, @featured_work_list], association: :featured_works,
+                 row_partial: 'hyrax/homepage/sortable_featured', nestable_id: 'dd',
+                 confirm: t('digital_collection.homepage.featured.unfeature_confirm'),
+                 hint: t('digital_collection.homepage.featured.reorder_hint'),
+                 save: t('digital_collection.homepage.featured.save_order') %>
     <% else %>
       <ul class="dc-featured-list list-unstyled">
         <% featured.each do |work| %>

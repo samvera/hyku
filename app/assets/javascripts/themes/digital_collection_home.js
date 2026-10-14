@@ -194,3 +194,28 @@
   document.addEventListener('turbolinks:load', bind);
   document.addEventListener('turbolinks:before-cache', release);
 }();
+
++function () {
+  'use strict';
+
+  function fallBack(image) {
+    var fallback = image.getAttribute('data-dc-fallback');
+    if (fallback && image.getAttribute('src') !== fallback) {
+      image.setAttribute('src', fallback);
+      return;
+    }
+    image.hidden = true;
+  }
+
+  function watch() {
+    Array.prototype.forEach.call(document.querySelectorAll('img[data-dc-fallback], img.dc-hero-image'), function (image) {
+      if (image.dataset.dcWatched) return;
+      image.dataset.dcWatched = 'true';
+      image.addEventListener('error', function () { fallBack(image); });
+      if (image.complete && image.naturalWidth === 0 && image.getAttribute('src')) fallBack(image);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', watch);
+  document.addEventListener('turbolinks:load', watch);
+}();

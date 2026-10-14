@@ -1,8 +1,9 @@
+<%# OVERRIDE Hyrax 5.3.0: breadcrumbs plus the Digital Collection search form %>
 <div class="dc-searchbar-show">
   <div class="dc-searchbar-show-inner">
     <div class="dc-searchbar-crumbs">
       <%= render_breadcrumbs builder: Hyrax.config.breadcrumb_builder %>
     </div>
-    <%= render partial: 'catalog/search_form' %>
+    <%= render partial: 'themes/digital_collection/catalog/search_form' %>
   </div>
 </div>

@@ -265,4 +265,232 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
       end
     end
   end
+
+  describe '#dc_inline_markdown' do
+    it 'keeps inline formatting without a wrapping paragraph when markdown is on' do
+      allow(Flipflop).to receive(:treat_some_user_inputs_as_markdown?).and_return(true)
+
+      expect(helper.dc_inline_markdown('Maps of *the* Hudson')).to eq('Maps of <em>the</em> Hudson')
+    end
+
+    it 'leaves the text as written, with markup stripped, when markdown is off' do
+      allow(Flipflop).to receive(:treat_some_user_inputs_as_markdown?).and_return(false)
+
+      expect(helper.dc_inline_markdown('Maps of <script>x</script>*the* Hudson')).to eq('Maps of x*the* Hudson')
+    end
+  end
+
+  describe '#dc_collection_metadata_rows' do
+    let(:document) do
+      SolrDocument.new('id' => 'c1', 'has_model_ssim' => ['Collection'], 'title_tesim' => ['Harbor Records'],
+                       'creator_tesim' => ['Harbor Museum'], 'resource_type_tesim' => ['Map'])
+    end
+    let(:presenter) { Hyrax::CollectionPresenter.new(document, Ability.new(nil), nil) }
+    let(:definitions) do
+      { title: { 'html_dl' => true }, creator: { 'render_as' => 'linked', 'html_dl' => true },
+        resource_type: { 'render_as' => 'faceted', 'html_dl' => true }, keyword: { 'render_as' => 'linked', 'html_dl' => true },
+        rights_notes: { 'html_dl' => true, 'show_page' => false } }
+    end
+
+    before do
+      allow(Hyrax.config).to receive(:flexible?).and_return(true)
+      allow(helper).to receive(:dc_collection_view_definitions).and_return(definitions)
+    end
+
+    it "renders each field with the profile's render_as, leaving out the title and empty or hidden fields" do
+      rows = Capybara.string(helper.safe_join(helper.dc_collection_metadata_rows(presenter)))
+
+      expect(rows).to have_css('dt', count: 2)
+      expect(rows).to have_no_css('dt', text: 'Title')
+      expect(rows.find('a', text: 'Harbor Museum')['href']).to include('search_field=creator')
+      expect(CGI.unescape(rows.find('a', text: 'Map')['href'])).to include('f[resource_type_sim][]=Map')
+    end
+  end
+
+  describe '#dc_profile_shows?' do
+    let(:presenter) { Hyrax::CollectionPresenter.new(SolrDocument.new('id' => 'c1', 'has_model_ssim' => ['Collection']), Ability.new(nil), nil) }
+
+    before do
+      allow(Hyrax.config).to receive(:flexible?).and_return(true)
+      without_partial_double_verification { allow(helper).to receive(:current_user).and_return(nil) }
+    end
+
+    it 'shows a field the profile gives no view settings' do
+      allow(helper).to receive(:dc_profile_view_definitions).and_return({})
+
+      expect(helper.dc_profile_shows?(presenter, :description)).to be(true)
+    end
+
+    it 'hides a field the profile keeps off the show page or limits to admins' do
+      allow(helper).to receive(:dc_profile_view_definitions).and_return(description: { 'show_page' => false }, abstract: { 'admin_only' => true })
+
+      expect(helper.dc_profile_shows?(presenter, :description)).to be(false)
+      expect(helper.dc_profile_shows?(presenter, :abstract)).to be(false)
+    end
+  end
+
+  describe '#dc_external_links_in_new_tab' do
+    it 'opens links to other sites in a new tab without access to this page' do
+      html = helper.dc_external_links_in_new_tab('<a href="https://example.org/x" rel="license">x</a>')
+
+      expect(Capybara.string(html)).to have_css('a[target="_blank"][rel="license noopener noreferrer"]')
+    end
+
+    it "moves Hyrax's leading icon to the end of the link and names the new tab for screen readers" do
+      html = helper.dc_external_links_in_new_tab(%(<li><span class="fa fa-external-link"></span>&nbsp;<a href="https://example.org">Example</a></li>))
+      link = Nokogiri::HTML::DocumentFragment.parse(html).at_css('li > a')
+
+      expect(link.parent.element_children.map(&:name)).to eq(['a'])
+      expect(link.children.to_a.last(2).map { |node| node['class'] }).to eq(['dc-external-end', 'sr-only'])
+      expect(link.at_css('.dc-external-end').text).to eq('Example')
+      expect(link.at_css('.dc-external-end > .dc-external-icon')['aria-hidden']).to eq('true')
+      expect(link.at_css('.sr-only').text).to eq('(opens in a new tab)')
+    end
+
+    it 'moves an icon Hyrax puts at the start inside a bare link to the end' do
+      html = helper.dc_external_links_in_new_tab(%(<a href="http://www.notch8.com"><span class='fa fa-external-link'></span>&nbsp;www.notch8.com</a>))
+      link = Nokogiri::HTML::DocumentFragment.parse(html).at_css('a')
+
+      expect(link.css('.fa-external-link').size).to eq(1)
+      expect(link.at_css('.dc-external-end').text).to eq('www.notch8.com')
+      expect(link.children.to_a.last(2).map { |node| node['class'] }).to eq(['dc-external-end', 'sr-only'])
+    end
+
+    it 'keeps the last word of a long link with the icon so the icon never wraps alone' do
+      html = helper.dc_external_links_in_new_tab('<a href="https://example.org">Creative Commons 4.0 International</a>')
+      link = Nokogiri::HTML::DocumentFragment.parse(html).at_css('a')
+
+      expect(link.children.first.text).to eq('Creative Commons 4.0 ')
+      expect(link.at_css('.dc-external-end').text).to eq('International')
+    end
+
+    it 'leaves links on this site, relative links and email links alone' do
+      html = helper.dc_external_links_in_new_tab(%(<a href="http://#{helper.request.host}/catalog">a</a><a href="/catalog">b</a><a href="mailto:x@example.org">c</a>))
+
+      expect(Capybara.string(html)).to have_no_css('a[target]')
+    end
+  end
+
+  describe '#dc_collection_type_label' do
+    let(:type) { Hyrax::CollectionType.find_or_create_default_collection_type }
+
+    it 'translates the default collection type' do
+      I18n.with_locale(:de) { expect(helper.dc_collection_type_label(type)).to eq('Benutzersammlung') }
+    end
+
+    it "keeps a name the admin gave the type, as written" do
+      type.title = 'Museum Collection'
+
+      I18n.with_locale(:de) { expect(helper.dc_collection_type_label(type)).to eq('Museum Collection') }
+    end
+  end
+
+  describe '#dc_collection_meta' do
+    let(:presenter) { double(creator: ['Hudson River Museum'], total_viewable_items: 24, modified_date: '2026-09-03') }
+
+    it 'joins the creator, the item count and the last update on one line' do
+      expect(helper.dc_collection_meta(presenter)).to eq('Created by Hudson River Museum · <strong>24 items</strong> · Last updated September 3, 2026')
+    end
+
+    it 'leaves out the creator when the metadata profile hides it' do
+      allow(helper).to receive(:dc_profile_shows?).with(presenter, :creator).and_return(false)
+
+      expect(helper.dc_collection_meta(presenter)).to eq('<strong>24 items</strong> · Last updated September 3, 2026')
+    end
+
+    it 'leaves out what the collection does not have' do
+      allow(presenter).to receive_messages(creator: [], modified_date: nil, total_viewable_items: 1)
+
+      expect(helper.dc_collection_meta(presenter)).to eq('<strong>1 item</strong>')
+    end
+  end
+
+  describe 'search result rows' do
+    let(:document) do
+      SolrDocument.new('id' => 'w1', 'has_model_ssim' => ['GenericWork'], 'title_tesim' => ['Ward'], 'creator_tesim' => ['Allen & Ginter'],
+                       'date_created_tesim' => ['1887'], 'resource_type_tesim' => ['Image'], 'description_tesim' => ['One print.'],
+                       'member_of_collection_ids_ssim' => ['c1'], 'member_of_collections_ssim' => ['Baseball Cards'])
+    end
+
+    def rows
+      helper.dc_result_fields(document).to_h { |key, row| [key, Capybara.string(row)] }
+    end
+
+    context 'with flexible metadata' do
+      let(:profile_fields) do
+        { 'title_tesim' => ['Title', 'Ward'], 'keyword_tesim' => ['Keyword', '<a href="/catalog?q=cards">cards</a>'.html_safe],
+          'creator_tesim' => ['Maker', 'Allen & Ginter'], 'date_created_tesim' => ['Date Created', '1887'], 'abstract_tesim' => ['Abstract', ''] }
+      end
+
+      before do
+        allow(Hyrax.config).to receive(:flexible?).and_return(true)
+        presenter = instance_double(Blacklight::DocumentPresenter)
+        allow(presenter).to receive(:fields_to_render) do
+          profile_fields.map { |name, (_label, value)| [name, Blacklight::Configuration::IndexField.new(key: name), instance_double(Blacklight::FieldPresenter, render: value)] }
+        end
+        allow(helper).to receive(:document_presenter).and_return(presenter)
+        allow(helper).to receive(:index_field_label) { |_doc, name| profile_fields[name].first }
+        allow(helper).to receive(:markdown) { |value| value }
+      end
+
+      it "shows the profile's search result fields in its order with its labels, leaving out the title and empty values" do
+        expect(rows.keys).to eq(%i[keyword creator date_created part_of])
+        expect(rows[:creator]).to have_css('dt', text: 'Maker')
+        expect(rows[:keyword].find('a')['href']).to eq('/catalog?q=cards')
+      end
+
+      it 'adds the Part of link after the profile fields' do
+        expect(rows[:part_of].find('a', text: 'Baseball Cards')['href']).to include('/collections/c1')
+      end
+
+      it 'leaves the creator off a card when the profile keeps it out of search results' do
+        profile_fields.delete('creator_tesim')
+
+        expect(helper.dc_card_meta(document)).to eq('1887')
+      end
+    end
+
+    context 'without flexible metadata' do
+      before { allow(Hyrax.config).to receive(:flexible?).and_return(false) }
+
+      it "shows the theme's fields with plain values" do
+        expect(rows.keys).to eq(%i[creator date part_of resource_type description])
+        expect(rows[:creator]).to have_css('dt', text: 'Creator')
+        expect(rows[:creator]).to have_no_css('a')
+      end
+
+      it 'puts the creator and date on a card' do
+        expect(helper.dc_card_meta(document)).to eq('Allen & Ginter · 1887')
+      end
+    end
+  end
+
+  describe 'file set details' do
+    let(:presenter) do
+      double('file set', depositor: '', date_uploaded: '2026-09-03', date_modified: nil, fixity_check_status: 'Passed',
+                         mime_type: ['image/jpeg'], file_size: ['4404019'], width: ['6000'], height: ['4500'])
+    end
+
+    describe '#dc_file_detail_rows' do
+      it 'lists the facts in plain words and skips the blank ones' do
+        allow(helper).to receive(:link_to_profile).and_return('')
+
+        expect(helper.dc_file_detail_rows(presenter)).to eq([['Date uploaded', 'September 3, 2026'], ['Fixity check', 'Passed'],
+                                                             ['File format', 'image/jpeg'], ['File size', '4.2 MB'],
+                                                             ['Dimensions', '6000 × 4500 px']])
+      end
+    end
+
+    describe '#dc_long_date' do
+      it "writes a date or a time in the reader's date format" do
+        expect(I18n.with_locale(:de) { helper.dc_long_date('2026-09-03') }).to eq('3. September 2026')
+        expect(helper.dc_long_date(Time.zone.local(2026, 9, 3, 15))).to eq('September 3, 2026')
+      end
+
+      it 'gives nothing for a blank or unreadable value' do
+        expect(helper.dc_long_date('')).to be_nil
+        expect(helper.dc_long_date('not a date')).to be_nil
+      end
+    end
+  end
 end

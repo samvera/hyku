@@ -7,6 +7,8 @@ module DigitalCollectionHelper
   DC_STATUS_BASE = { danger: '#b4433c', success: '#3c763d' }.freeze
   DC_MAX_STEPS = 100
   DC_URL_OPTION_KEYS = %i[host protocol port domain subdomain tld_length script_name user password anchor trailing_slash only_path params].freeze
+  DC_COLLECTION_SHOWN_ELSEWHERE = %i[title date_modified description total_items].freeze
+  DC_WORK_SHOWN_ELSEWHERE = '.attribute-title, .attribute-description'
 
   def dc_home
     theme_home(DigitalCollection::HomepagePresenter)
@@ -235,6 +237,156 @@ module DigitalCollectionHelper
     url_for(search_state.params_for_search(changes).except(:controller, :action).merge(only_path: true, anchor:).compact)
   end
 
+  def dc_inline_markdown(text)
+    html = markdown(text.to_s).to_s.strip
+    sanitize(html.delete_prefix('<p>').delete_suffix('</p>'))
+  end
+
+  def dc_collection_type_label(collection_type)
+    key = if collection_type.user_collection?
+            'hyrax.collection_type.default_title'
+          elsif collection_type.admin_set?
+            'hyrax.collection_type.admin_set_title'
+          end
+    key && collection_type.title == I18n.t(key, locale: :en) ? t(key) : collection_type.title
+  end
+
+  def dc_collection_meta(presenter)
+    updated = dc_long_date(presenter.modified_date)
+    parts = [
+      (t('digital_collection.collection.created_by', creator: presenter.creator.first) if presenter.creator.present? && dc_profile_shows?(presenter, :creator)),
+      tag.strong(t('digital_collection.collection.items', count: presenter.total_viewable_items)),
+      (t('digital_collection.collection.updated', date: updated) if updated)
+    ]
+    safe_join(parts.compact, ' · ')
+  end
+
+  def dc_collection_metadata_rows(presenter)
+    return dc_collection_term_rows(presenter) unless Hyrax.config.flexible?
+
+    dc_collection_view_definitions(presenter).filter_map do |field, options|
+      next if DC_COLLECTION_SHOWN_ELSEWHERE.include?(field.to_sym) || compound_card_field?(presenter, field)
+
+      view_options = conform_options(field, options.deep_dup.with_indifferent_access)
+      next unless field_visible?(view_options, presenter)
+
+      dc_collection_metadata_row(presenter, conform_field(field, options), view_options)
+    end
+  end
+
+  def dc_breadcrumb_trail(presenter)
+    home = [t('hyrax.controls.home'), hyrax.root_path]
+    case presenter
+    when Hyrax::CollectionPresenter
+      [home, [presenter.to_s, nil], dc_back_to_search_crumb].compact
+    when Hyrax::FileSetPresenter
+      work = presenter.parent
+      [home, dc_collection_crumb(work), ([work.to_s, main_app.polymorphic_path(work)] if work)].compact
+    else
+      [home, dc_collection_crumb(presenter), [presenter.to_s, nil], dc_back_to_search_crumb].compact
+    end
+  end
+
+  def dc_work_metadata_rows(presenter)
+    fragment = Nokogiri::HTML::DocumentFragment.parse(dc_external_links_in_new_tab(render('hyrax/base/attribute_rows', presenter:)))
+    fragment.css('dt').filter_map do |term|
+      values = dc_row_values(term)
+      next if values.any? { |value| value.at_css(DC_WORK_SHOWN_ELSEWHERE) }
+
+      safe_join([term, *values].map { |node| node.to_html.html_safe }) # rubocop:disable Rails/OutputSafety
+    end
+  end
+
+  def dc_work_collections(work)
+    @dc_work_collections ||= {}
+    @dc_work_collections[work.id] ||= work.member_of_collection_presenters.to_a
+  end
+
+  def dc_part_of_groups(presenter)
+    collections = dc_work_collections(presenter).map { |collection| [collection.to_s, search_state.url_for_document(collection)] }
+    parents = presenter.parent_works(current_user).map { |parent| [parent.title.first, parent_path(parent)] }
+    admin_sets = presenter.editor? ? Array(presenter.admin_set).map { |name| [name, main_app.search_catalog_path(f: { admin_set_sim: [name] })] } : []
+    { collection: collections, parent_work: parents, admin_set: admin_sets }.filter_map do |kind, links|
+      [t("digital_collection.work.part_of.#{kind}", count: links.size), links] if links.any?
+    end
+  end
+
+  def dc_file_detail_rows(presenter)
+    [
+      [:depositor, link_to_profile(presenter.depositor)],
+      [:date_uploaded, dc_long_date(presenter.date_uploaded)],
+      [:date_modified, dc_long_date(presenter.date_modified)],
+      [:fixity, presenter.fixity_check_status],
+      [:format, Array(presenter.mime_type).first],
+      [:size, dc_file_size(presenter)],
+      [:dimensions, dc_file_dimensions(presenter)]
+    ].filter_map { |key, value| [t("digital_collection.file_set.details.#{key}"), value] if value.present? }
+  end
+
+  def dc_technical_label(presenter, term)
+    t("digital_collection.file_set.technical.#{term}", default: presenter.label_for_term(term))
+  end
+
+  def dc_long_date(value)
+    return if value.blank?
+
+    date = value.is_a?(String) ? Date.parse(value) : value.to_date
+    l(date, format: t('digital_collection.collection.date_format'))
+  rescue Date::Error
+    nil
+  end
+
+  def dc_card_meta(document, collection_label: false)
+    parts = if document.collection?
+              [(t('digital_collection.search.results.collection') if collection_label), dc_works_count_label(document)]
+            else
+              [(Array(document['creator_tesim']).first if dc_result_field_shown?(document, 'creator_tesim')), dc_result_date(document)]
+            end
+    parts.compact_blank.join(' · ')
+  end
+
+  def dc_result_fields(document)
+    return dc_profile_result_fields(document) if Hyrax.config.flexible?
+
+    fields = document.collection? ? dc_collection_result_values(document) : dc_work_result_values(document)
+    fields.filter_map do |key, value|
+      [key, dc_result_row(t("digital_collection.search.results.fields.#{key}"), value)] if value.present?
+    end
+  end
+
+  def dc_external_links_in_new_tab(html)
+    fragment = Nokogiri::HTML::DocumentFragment.parse(html.to_s)
+    fragment.css('a[href]').each do |link|
+      host = URI.parse(link['href']).host
+      next if host.blank? || host == request.host
+
+      link['target'] = '_blank'
+      link['rel'] = (link['rel'].to_s.split + %w[noopener noreferrer]).uniq.join(' ')
+      dc_move_external_icon_to_end(link)
+    rescue URI::InvalidURIError
+      next
+    end
+    fragment.to_html.html_safe # rubocop:disable Rails/OutputSafety
+  end
+
+  def dc_profile_view_definitions(document)
+    model = dc_profile_model(document)
+    @dc_profile_view_definitions ||= {}
+    @dc_profile_view_definitions[[model, document.schema_version, document.contexts]] ||=
+      Hyrax::Schema.m3_schema_loader.view_definitions_for(schema: model, version: document.schema_version, contexts: document.contexts)
+  end
+
+  def dc_profile_shows?(presenter, field)
+    return true unless Hyrax.config.flexible?
+
+    options = dc_profile_view_definitions(presenter.solr_document)[field.to_sym]
+    options.nil? || field_visible?(conform_options(field, options.deep_dup.with_indifferent_access), presenter)
+  end
+
+  def dc_profile_model(document)
+    Valkyrie.config.resource_class_resolver.call(Array(document['has_model_ssim']).first || Hyrax.config.collection_model).to_s
+  end
+
   private
 
   def dc_admin_host_links
@@ -273,5 +425,169 @@ module DigitalCollectionHelper
       end
     end
     safe_join(chips, "\n") if chips.any?
+  end
+
+  def dc_collection_view_definitions(presenter)
+    dc_profile_view_definitions(presenter.solr_document)
+  end
+
+  def dc_collection_metadata_row(presenter, field, view_options)
+    if presenter.respond_to?(:compound_term?) && presenter.compound_term?(field)
+      value = collection_metadata_value(presenter, field)
+      safe_join([tag.dt(view_options[:label]), tag.dd(value)]) if value.present?
+    elsif presenter.solr_document.respond_to?(field)
+      presenter.attribute_to_html(field, view_options).presence
+    end
+  end
+
+  def dc_collection_term_rows(presenter)
+    (presenter.terms_with_values - DC_COLLECTION_SHOWN_ELSEWHERE).map do |field|
+      safe_join([tag.dt(collection_metadata_label(presenter, field)), tag.dd(collection_metadata_value(presenter, field))])
+    end
+  end
+
+  def dc_collection_crumb(work)
+    collection = (dc_work_collections(work) if work.respond_to?(:member_of_collection_presenters))&.find { |parent| parent.is_a?(Hyrax::CollectionPresenter) }
+    [collection.to_s, hyrax.collection_path(collection.id)] if collection
+  end
+
+  def dc_back_to_search_crumb
+    referer = URI.parse(request.referer.to_s)
+    return unless referer.host == request.host && referer.path.start_with?(URI.parse(main_app.search_catalog_path).path)
+
+    [t('hyrax.bread_crumb.search_results'), request.referer]
+  rescue URI::InvalidURIError
+    nil
+  end
+
+  def dc_row_values(term)
+    values = []
+    node = term.next_element
+    while node&.name == 'dd'
+      values << node
+      node = node.next_element
+    end
+    values
+  end
+
+  def dc_file_size(presenter)
+    bytes = Array(presenter.file_size).first.to_i
+    number_to_human_size(bytes) if bytes.positive?
+  end
+
+  def dc_file_dimensions(presenter)
+    width = Array(presenter.width).first
+    height = Array(presenter.height).first
+    t('digital_collection.file_set.details.dimensions_value', width:, height:) if width.present? && height.present?
+  end
+
+  def dc_profile_result_fields(document)
+    rows = document_presenter(document).fields_to_render.filter_map do |field_name, _config, presenter|
+      next if field_name.to_s.start_with?('title_')
+
+      value = presenter.render
+      [dc_result_field_key(field_name), dc_result_row(index_field_label(document, field_name), markdown(value))] if value.present?
+    end
+    extra = document.collection? ? [:works, dc_works_count_label(document)] : [:part_of, dc_part_of_links(document)]
+    extra.last.present? ? rows << [extra.first, dc_result_row(t("digital_collection.search.results.fields.#{extra.first}"), extra.last)] : rows
+  end
+
+  def dc_result_field_shown?(document, field_name)
+    return true unless Hyrax.config.flexible?
+
+    @dc_result_fields_shown ||= {}
+    shown = @dc_result_fields_shown[document.id] ||= document_presenter(document).fields_to_render.map { |name, _config, _presenter| name.to_s }
+    shown.include?(field_name)
+  end
+
+  def dc_result_field_key(field_name)
+    field_name.to_s.sub(/_(tesim|ssim|sim|ssi|tesi|dtsi|isim|itsi)\z/, '').to_sym
+  end
+
+  def dc_result_row(label, value)
+    safe_join([tag.dt(label), tag.dd(value)])
+  end
+
+  def dc_work_result_values(document)
+    { creator: Array(document['creator_tesim']).join('; '),
+      date: dc_result_date(document),
+      part_of: dc_part_of_links(document),
+      resource_type: Array(document['resource_type_tesim']).join(', '),
+      description: theme_blurb(Array(document['description_tesim']).first, length: 300) }
+  end
+
+  def dc_collection_result_values(document)
+    { description: theme_blurb(Array(document['description_tesim']).first, length: 300),
+      works: dc_works_count_label(document) }
+  end
+
+  def dc_works_count_label(document)
+    t('digital_collection.homepage.browse.works_count', count: Hyrax::CollectionPresenter.new(document, current_ability).total_viewable_works)
+  end
+
+  def dc_result_date(document)
+    %w[date_created_tesim date_issued_tesim].each do |field_name|
+      value = Array(document[field_name]).first
+      return value if value.present? && dc_result_field_shown?(document, field_name)
+    end
+    nil
+  end
+
+  def dc_part_of_links(document)
+    ids = Array(document['member_of_collection_ids_ssim'])
+    links = Array(document['member_of_collections_ssim']).each_with_index.map do |name, index|
+      ids[index] ? link_to(name, hyrax.collection_path(ids[index])) : name
+    end
+    safe_join(links, ', ')
+  end
+
+  def dc_move_external_icon_to_end(link)
+    return if link.at_css('.dc-external-icon')
+
+    dc_remove_leading_icon_before(link)
+    dc_remove_leading_icon_inside(link)
+    icon = link.document.create_element('span', class: 'fa fa-external-link dc-external-icon', 'aria-hidden': 'true')
+    dc_last_word_with(link, icon)
+    link.add_child(link.document.create_element('span', t('digital_collection.show.new_tab'), class: 'sr-only'))
+  end
+
+  def dc_last_word_with(link, icon)
+    text = link.xpath('.//text()[normalize-space()]').last
+    return link.add_child(icon) unless text
+
+    before, last_word = text.content.match(/\A(.*?)(\S+)\s*\z/m)&.captures
+    keep = link.document.create_element('span', class: 'dc-external-end')
+    keep.add_child(Nokogiri::XML::Text.new(last_word.to_s, link.document))
+    keep.add_child(icon)
+    text.content = before.to_s
+    text.add_next_sibling(keep)
+  end
+
+  def dc_remove_leading_icon_before(link)
+    node = link.previous_sibling
+    node = node.previous_sibling while dc_blank_text?(node)
+    return unless dc_external_icon?(node)
+
+    node.next_sibling.remove while node.next_sibling != link
+    node.remove
+  end
+
+  def dc_remove_leading_icon_inside(link)
+    node = link.children.first
+    node = node.next_sibling while dc_blank_text?(node)
+    return unless dc_external_icon?(node)
+
+    node.previous_sibling.remove while node.previous_sibling
+    following = node.next_sibling
+    node.remove
+    following.content = following.content.sub(/\A[\s\u00A0]+/, '') if following&.text?
+  end
+
+  def dc_blank_text?(node)
+    node&.text? && node.content.delete("\u00A0").strip.empty?
+  end
+
+  def dc_external_icon?(node)
+    node&.element? && node['class'].to_s.split.include?('fa-external-link')
   end
 end

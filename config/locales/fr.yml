@@ -889,6 +889,9 @@ fr:
         roles:
           remove:
             confirmation: Êtes-vous sûr de vouloir supprimer le rôle « %{role} » de l'utilisateur « %{user} » ?
+    users:
+      activity_log:
+        no_user_activity: "Aucune activité de l'utilisateur"
   permissions:
     collections:
       cannot:

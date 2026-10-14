@@ -1,7 +1,7 @@
 <section class="hrt-about" aria-labelledby="hrt-about-heading">
   <div class="hrt-about-inner">
     <h2 class="hrt-about-title" id="hrt-about-heading">
-      <%= hrt_plain_text(@homepage_about_section_heading&.value).presence || t('heritage.homepage.about.heading') %>
+      <%= theme_plain_text(@homepage_about_section_heading&.value).presence || t('heritage.homepage.about.heading') %>
     </h2>
     <div class="hrt-about-prose">
       <%= displayable_content_block @homepage_about_section_content %>

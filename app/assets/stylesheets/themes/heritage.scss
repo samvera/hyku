@@ -3,6 +3,7 @@
 @import 'themes/heritage/tokens';
 @import 'themes/heritage/primitives';
 @import 'themes/heritage/shell';
+@import 'themes/heritage/chrome';
 
 .heritage.hyrax-homepage {
   overflow-x: clip;
@@ -13,7 +14,8 @@
   }
 
   #content-wrapper > .alert {
-    margin: 16px $hrt-gutter;
+    margin: 16px auto;
+    max-width: 1280px;
   }
 
   // ---- hero ----
@@ -52,7 +54,7 @@
   }
 
   .hrt-hero-content {
-    @include hrt-gutter;
+    @include hrt-gutter($max: 1280px);
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -203,7 +205,7 @@
 
   // ---- home page text ----
   .hrt-home-text {
-    @include hrt-gutter;
+    @include hrt-gutter($max: 1280px);
     border-bottom: 1px solid $hrt-rule-band;
     padding-bottom: 40px;
     padding-top: 38px;
@@ -227,6 +229,7 @@
 
   // ---- body grid ----
   .hrt-home-body {
+    @include hrt-gutter($max: 1280px);
     display: grid;
     grid-template-columns: $hrt-rail-width minmax(0, 1fr);
 
@@ -236,14 +239,16 @@
 
     @media (max-width: $hrt-tablet-max) {
       grid-template-columns: minmax(0, 1fr);
+      padding-left: 0;
+      padding-right: 0;
     }
   }
 
   .hrt-rail {
-    padding: 32px 0 28px $hrt-gutter;
+    padding: 32px 0 28px 0;
 
     @media (max-width: $hrt-laptop-max) {
-      padding-left: $hrt-gutter-laptop;
+      padding-left: 0;
     }
 
     @media (max-width: $hrt-tablet-max) {
@@ -265,13 +270,14 @@
 
     @media (min-width: #{$hrt-tablet-max + 1}) {
       padding-left: 36px;
+      padding-right: 0;
     }
   }
 
   // ---- facet rail ----
   .hrt-rail-heading {
     @include hrt-section-title;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
 
   .hrt-rail-toggle {
@@ -385,13 +391,16 @@
   }
 
   .hrt-tile-title {
+    @include hrt-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.35;
     margin: 0;
 
     a {
-      @include hrt-serif;
       color: $hrt-ink;
-      font-size: 18px;
-      line-height: 1.35;
+      font-size: inherit;
+      line-height: inherit;
       text-decoration: none;
       text-wrap: pretty;
 
@@ -460,12 +469,14 @@
       background: none;
       border: 0;
       border-radius: 0;
+      margin: 0;
       padding: 0;
       position: static;
     }
 
     .main.row {
       margin: 0;
+      padding: 0;
     }
 
     .col-sm-12 {
@@ -594,13 +605,17 @@
   }
 
   .hrt-collection-title {
+    @include hrt-serif;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.2;
     margin: 0;
 
     a {
-      @include hrt-serif;
       color: $hrt-ink;
-      font-size: 19px;
-      font-weight: 600;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
       text-decoration: none;
       text-wrap: pretty;
 
@@ -628,9 +643,12 @@
 
   // ---- newly cataloged + researcher row ----
   .hrt-recent-row {
+    @include hrt-gutter($max: 1280px);
     display: grid;
     gap: 40px;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    padding-bottom: 48px;
+    padding-top: 32px;
 
     @media (max-width: $hrt-tablet-max) {
       grid-template-columns: minmax(0, 1fr);
@@ -665,13 +683,16 @@
   }
 
   .hrt-recent-title {
+    @include hrt-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.3;
     margin: 0;
 
     a {
-      @include hrt-serif;
       color: $hrt-ink;
-      font-size: 16px;
-      line-height: 1.3;
+      font-size: inherit;
+      line-height: inherit;
       text-decoration: none;
       text-wrap: pretty;
 
@@ -744,7 +765,7 @@
   }
 
   .hrt-about-inner {
-    @include hrt-gutter;
+    @include hrt-gutter($max: 1280px);
     display: grid;
     gap: 40px;
     grid-template-columns: $hrt-rail-width minmax(0, 1fr);
@@ -794,24 +815,14 @@
     display: flex;
     gap: 48px;
     justify-content: flex-end;
-    padding: 34px $hrt-gutter;
-
-    @media (max-width: $hrt-laptop-max) {
-      padding-left: $hrt-gutter-laptop;
-      padding-right: $hrt-gutter-laptop;
-    }
-
-    @media (max-width: $hrt-tablet-max) {
-      padding-left: $hrt-gutter-tablet;
-      padding-right: $hrt-gutter-tablet;
-    }
+    @include hrt-gutter($max: 1280px);
+    padding-bottom: 34px;
+    padding-top: 34px;
 
     @media (max-width: $hrt-mobile-max) {
       flex-direction: column;
       align-items: flex-start;
       gap: 20px;
-      padding-left: $hrt-gutter-mobile;
-      padding-right: $hrt-gutter-mobile;
     }
   }
 

@@ -52,12 +52,25 @@ RSpec.describe "Rake tasks" do
   end
 
   describe 'tenantize:task' do
-    let(:accounts) { [Account.new(name: 'first'), Account.new(name: 'second')] }
-    let(:task) { double('task') }
+    let(:accounts) do
+      [Account.new(name: 'first', tenant: 'first-tenant'), Account.new(name: 'second', tenant: 'second-tenant')]
+    end
+    let(:task) { double('task', reenable: nil) }
+    let(:invoked_in) { [] }
 
     before do
       # This omits a tenant that appears automatically created and is not switch-intoable
       allow(Account).to receive(:tenants).and_return(accounts)
+      current_schema = 'public'
+      allow(Apartment::Tenant).to receive(:switch) do |tenant, &block|
+        current_schema = tenant
+        block.call
+      ensure
+        current_schema = 'public'
+      end
+      allow(Rake::Task).to receive(:[]).and_call_original
+      allow(Rake::Task).to receive(:[]).with('hyrax:count').and_return(task)
+      allow(task).to receive(:invoke) { |*task_args| invoked_in << [current_schema, task_args] }
     end
 
     it 'requires at least one argument' do
@@ -68,14 +81,28 @@ RSpec.describe "Rake tasks" do
       expect { run_task('tenantize:task', 'foobar') }.to raise_error(ArgumentError, /Rake task not found\: foobar/)
     end
 
-    it 'runs against all tenants' do
-      accounts.each do |account|
-        expect(account).to receive(:switch).once.and_call_original
-      end
-      allow(Rake::Task).to receive(:[]).with('hyrax:count').and_return(task)
-      expect(task).to receive(:invoke).exactly(accounts.count).times
-      expect(task).to receive(:reenable).exactly(accounts.count).times
+    it "runs the task inside each tenant's database schema, passing along the extra arguments" do
+      run_task('tenantize:task', 'hyrax:count', 'extra-arg')
+
+      expect(invoked_in).to eq [['first-tenant', ['extra-arg']], ['second-tenant', ['extra-arg']]]
+    end
+
+    it 're-enables the task before each run so it runs for every tenant' do
+      expect(task).to receive(:reenable).ordered
+      expect(task).to receive(:invoke).ordered
+      expect(task).to receive(:reenable).ordered
+      expect(task).to receive(:invoke).ordered
+
       run_task('tenantize:task', 'hyrax:count')
+    end
+
+    it 'skips search-only accounts' do
+      search_only = Account.new(name: 'cross', tenant: 'cross-tenant', search_only: true)
+      allow(Account).to receive(:tenants).and_return(accounts + [search_only])
+
+      run_task('tenantize:task', 'hyrax:count')
+
+      expect(invoked_in.map(&:first)).to eq %w[first-tenant second-tenant]
     end
 
     context 'when run against specified tenants' do
@@ -91,11 +118,9 @@ RSpec.describe "Rake tasks" do
       end
 
       it 'runs against a single tenant and ignores bogus tenants' do
-        expect(account).to receive(:switch).once.and_call_original
-        allow(Rake::Task).to receive(:[]).with('hyrax:count').and_return(task)
-        expect(task).to receive(:invoke).once
-        expect(task).to receive(:reenable).once
         run_task('tenantize:task', 'hyrax:count')
+
+        expect(invoked_in.map(&:first)).to eq ['first-tenant']
       end
     end
   end
@@ -110,12 +135,23 @@ RSpec.describe "Rake tasks" do
         .to raise_error(ArgumentError, /No account/)
     end
 
-    it 'captures a snapshot for the named demo tenant' do
+    it 'captures a snapshot for the named demo tenant without force by default' do
       account = FactoryBot.create(:demo_account)
       service = instance_double(DemoTenantResetService, snapshot!: true)
       allow(DemoTenantResetService).to receive(:new).with(account:).and_return(service)
       run_task('hyku:demo:snapshot', account.cname)
-      expect(service).to have_received(:snapshot!)
+      expect(service).to have_received(:snapshot!).with(force: false)
+    end
+
+    it 'passes force: true when FORCE=1' do
+      account = FactoryBot.create(:demo_account)
+      service = instance_double(DemoTenantResetService, snapshot!: true)
+      allow(DemoTenantResetService).to receive(:new).with(account:).and_return(service)
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:[]).and_call_original
+      allow(ENV).to receive(:[]).with('FORCE').and_return('1')
+      run_task('hyku:demo:snapshot', account.cname)
+      expect(service).to have_received(:snapshot!).with(force: true)
     end
   end
 

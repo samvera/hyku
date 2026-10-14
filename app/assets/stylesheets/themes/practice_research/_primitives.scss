@@ -73,3 +73,72 @@
   line-height: 1;
   text-transform: uppercase;
 }
+
+// the block margin is a parameter so a caller never writes a margin shorthand,
+// which would reset the negative inline margins the full bleed depends on
+@mixin pr-breadcrumb($margin-bottom: 0) {
+  background: $pr-hairline;
+  border: 0;
+  border-radius: 0;
+  color: $pr-muted;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  padding-block: 0.7rem;
+
+  @include pr-full-bleed;
+
+  margin-block: 0 $margin-bottom;
+
+  a {
+    color: var(--pr-brand-ink, #{$pr-brand-900});
+  }
+
+  li + li::before {
+    border-right-color: #b6bdba;
+  }
+}
+
+@mixin pr-badge($font-size: 0.75rem, $padding: 0.2rem 0.5rem) {
+  border: 1px solid transparent;
+  border-radius: 0;
+  font-size: $font-size;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  padding: $padding;
+  text-transform: uppercase;
+  vertical-align: baseline;
+}
+
+@mixin pr-badge-brand {
+  background-color: var(--pr-primary, #{$pr-brand-700});
+  color: var(--pr-primary-text, #fff);
+}
+
+// Bootstrap rounds the first and last page-link with a higher-specificity
+// selector than .page-link, and pins the active pill through the appearance
+// styles, so the active state is deliberately not set here.
+@mixin pr-pager($font-size: 0.875rem, $padding: 0.375rem 0.7rem) {
+  .pagination {
+    font-size: $font-size;
+  }
+
+  .page-link,
+  .page-item:first-child .page-link,
+  .page-item:last-child .page-link,
+  .pagination li a,
+  .pagination .active span {
+    border-radius: 0;
+  }
+
+  .page-link {
+    border-color: $pr-border;
+    color: var(--pr-link, #{$pr-brand-700});
+    line-height: 1.4;
+    padding: $padding;
+  }
+
+  .page-item.disabled .page-link {
+    color: $pr-faint;
+  }
+}

@@ -380,12 +380,22 @@ module AccountSettings
         # Matomo configuration is handled via ENV variables only
         # No additional config needed here as it's handled globally
       end
+    else
+      clear_hyrax_analytics_ids
     end
 
     set_hyrax_analytics_config(Hyrax.config, analytics_enabled)
   rescue StandardError => e
     Rails.logger.error "Failed to configure analytics: #{e.message}"
     set_hyrax_analytics_config(Hyrax.config, false)
+  end
+
+  # Hyrax::Analytics.config is process-global, so ids left from the last tenant would
+  # drive reports and tracking on a tenant without analytics. Matomo has no setters.
+  def clear_hyrax_analytics_ids
+    config = Hyrax::Analytics.try(:config)
+    config.analytics_id = '' if config.respond_to?(:analytics_id=)
+    config.property_id = '' if config.respond_to?(:property_id=)
   end
 end
 # rubocop:enable Metrics/ModuleLength

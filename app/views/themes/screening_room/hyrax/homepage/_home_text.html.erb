@@ -1,0 +1,28 @@
+<section class="scr-lede" aria-labelledby="scr-lede-heading">
+  <h2 class="sr-only" id="scr-lede-heading"><%= t('screening_room.homepage.lede.label') %></h2>
+
+  <% if display_content_block? @home_text %>
+    <div class="scr-lede-body">
+      <span class="scr-lede-rule" aria-hidden="true"></span>
+      <div class="scr-lede-text"><%= displayable_content_block @home_text %></div>
+    </div>
+  <% end %>
+
+  <dl class="scr-counts">
+    <div class="scr-count">
+      <dt class="scr-count-label"><%= t('screening_room.homepage.lede.works') %></dt>
+      <dd class="scr-count-value">
+        <%= link_to number_with_delimiter(scr_home.counts[:works]),
+                    main_app.search_catalog_path(f: { generic_type_sim: ['Work'] }) %>
+      </dd>
+    </div>
+
+    <div class="scr-count">
+      <dt class="scr-count-label"><%= t('screening_room.homepage.lede.collections') %></dt>
+      <dd class="scr-count-value">
+        <%= link_to number_with_delimiter(scr_home.counts[:collections]),
+                    main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }) %>
+      </dd>
+    </div>
+  </dl>
+</section>

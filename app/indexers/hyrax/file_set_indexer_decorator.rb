@@ -5,7 +5,7 @@
 module Hyrax
   module FileSetIndexerDecorator
     def generate_solr_document
-      return super unless Flipflop.default_pdf_viewer?
+      return super unless Flipflop.default_pdf_viewer? && object.pdf?
 
       super.tap do |solr_doc|
         solr_doc['all_text_timv'] = solr_doc['all_text_tsimv'] = pdf_text

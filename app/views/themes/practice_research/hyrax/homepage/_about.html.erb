@@ -17,8 +17,8 @@
     </div>
 
     <div class="pr-about-actions">
-      <% if pr_share_work? %>
-        <% href, data = pr_share_work_target %>
+      <% if theme_share_work? %>
+        <% href, data = theme_deposit_target %>
         <%= link_to t('hyrax.share_button'), href, data: data, class: 'pr-about-cta' %>
       <% end %>
       <%= link_to t('practice_research.homepage.about.about_link'), hyrax.about_path,

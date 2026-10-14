@@ -157,6 +157,41 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :featured_collection_lists, path: 'featured_collections', only: :create
   end
 
+  # Controlled vocabularies, viewable only from the dashboard
+  scope :dashboard, module: 'hyrax/dashboard' do
+    resources :controlled_vocabularies, only: [:index, :new, :create, :edit] do
+      resources :terms, only: [:new, :create], controller: 'controlled_vocabulary_terms' do
+        # On the collection: reordering is one write covering every term, not an
+        # edit of any one of them.
+        patch :order, on: :collection, action: :update_order
+        # Retiring a term is the only edit offered, so it has its own path rather
+        # than a general update the form would have to guard.
+        patch :status, on: :member, action: :update_status
+      end
+      resource :import, only: [:new, :create], controller: 'controlled_vocabulary_imports' do
+        post :confirm
+      end
+    end
+    # Declared separately so a remote source key keeps its slash: profiles cite
+    # `loc/subjects`, and the default segment stops at one. Anchored to a single
+    # slash, and placed after the collection routes so `new` is not read as a key.
+    #
+    # The glob would otherwise swallow the download formats, so `.csv` and `.yml` are
+    # excluded from the key and declared as the format instead.
+    get 'controlled_vocabularies/*id',
+        to: 'controlled_vocabularies#show',
+        as: :controlled_vocabulary,
+        constraints: { id: %r{[^/.]+(?:/[^/.]+)?} },
+        format: /csv|yml|yaml|html/
+    # Unnamed, and outside `resources`, so the glob above keeps the
+    # `controlled_vocabulary` route name a slashed source key needs.
+    match 'controlled_vocabularies/:id',
+          to: 'controlled_vocabularies#update',
+          via: %i[patch put],
+          format: false,
+          as: nil
+  end
+
   # Guided deposit wizard
   scope :dashboard, module: 'hyrax' do
     get 'deposit_wizard', to: 'deposit_wizard#start', as: :deposit_wizard

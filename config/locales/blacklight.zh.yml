@@ -7,6 +7,7 @@ zh:
         facet:
           based_near_label_sim: 位置
           creator_sim: 创造者
+          date_range_isim: 日期范围
           depositor_ssim: 储户
           file_format_sim: 文件格式
           generic_type_sim: 类型
@@ -75,4 +76,6 @@ zh:
           rights_tesim: 权
           subject_tesim: 学科
           title_tesim: 标题
+      facets:
+        missing: 未指定
       start_over: 新搜索

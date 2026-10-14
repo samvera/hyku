@@ -1,0 +1,9 @@
+<section class="scr-about" aria-labelledby="scr-about-heading">
+  <h2 class="scr-about-title" id="scr-about-heading">
+    <%= theme_plain_text(@homepage_about_section_heading&.value).presence || t('screening_room.homepage.about.heading') %>
+  </h2>
+
+  <div class="scr-about-prose">
+    <%= displayable_content_block @homepage_about_section_content %>
+  </div>
+</section>

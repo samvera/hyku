@@ -2,14 +2,19 @@
   "name": "hyrax",
   "private": true,
   "repository": "git@github.com:samvera/hyrax.git",
+  "//dependencies": "@samvera/clover-iiif is pinned exactly to 3.6.0: 3.13.0+ needs Node >= 22, and 3.12.0 changed the web component API so <clover-viewer> no longer accepts a manifest URL via its id attribute.",
   "dependencies": {
+    "@samvera/clover-iiif": "3.6.0",
+    "@samvera/ramp": "^5.1.1",
     "universalviewer": "^4.2.1"
   },
   "scripts": {
-    "preinstall": "rm -rf ./public/uv",
-    "postinstall": "yarn run uv-install && yarn run uv-config && yarn run knapsack-uv-config",
+    "preinstall": "rm -rf ./public/uv ./public/clover ./public/ramp",
+    "postinstall": "yarn run uv-install && yarn run uv-config && yarn run knapsack-uv-config && yarn run clover-install && yarn run ramp-install",
     "uv-install": "cp -r ./node_modules/universalviewer/dist ./public/uv",
     "uv-config": "cp ./config/uv/uv.html ./public/uv/uv.html & cp ./config/uv/uv-config.json ./public/uv/",
-    "knapsack-uv-config": "if [ $(ls -A ../config/uv/ 2>/dev/null | wc -l) -gt 0 ]; then cp -r ../config/uv/* ./public/uv/; fi"
+    "knapsack-uv-config": "if [ $(ls -A ../config/uv/ 2>/dev/null | wc -l) -gt 0 ]; then cp -r ../config/uv/* ./public/uv/; fi",
+    "clover-install": "mkdir -p ./public/clover && cp ./node_modules/@samvera/clover-iiif/dist/web-components/index.umd.js ./public/clover/clover.js && cp ./config/clover/clover.html ./public/clover/",
+    "ramp-install": "mkdir -p ./public/ramp && cp ./node_modules/@samvera/ramp/dist/ramp.standalone.umd.js ./public/ramp/ && cp ./node_modules/@samvera/ramp/dist/ramp.css ./public/ramp/ && cp ./config/ramp/ramp.html ./public/ramp/"
   }
 }

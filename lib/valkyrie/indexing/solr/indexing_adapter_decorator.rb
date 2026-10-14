@@ -1,27 +1,26 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.2.0 to avoid incorrect default connection. Because of the way
-# Hyku uses SolrEndpoint, the configuration isn't always appropriate. At times,
-# it falls back into the Valkyrie IndexingAdapter instead of Hyrax's, and
-# loses the connection.
-# TODO: create and initialize a Hyku version of the indexing adapter
+# OVERRIDE Hyrax v5.3.0
+#   - build the default connection from Hyku's SolrEndpoint
+#   - keep the connection per thread, as ActiveFedora and Blacklight keep theirs
 module Valkyrie
   module Indexing
     module Solr
       module IndexingAdapterDecorator
-        ##
-        # @param connection [RSolr::Client] The RSolr connection to index to.
-        def initialize(connection: ::SolrEndpoint.new.connection)
-          @connection = connection
+        # OVERRIDE: one adapter serves every thread and tenant, so SolrEndpoint#switch! must set
+        # the connection for its own thread only, or deletes go to whichever tenant switched last.
+        thread_mattr_accessor :thread_connection
+
+        def connection
+          IndexingAdapterDecorator.thread_connection ||= default_connection
+        end
+
+        def connection=(connection)
+          IndexingAdapterDecorator.thread_connection = connection
         end
 
         def default_connection
-          @connection = ::SolrEndpoint.new.connection
-        end
-
-        def add_documents(*args)
-          self.connection = default_connection
-          super(*args)
+          ::SolrEndpoint.new.connection
         end
       end
     end

@@ -7,7 +7,7 @@
   </ol>
 
   <!-- Wrapper for slides -->
-  <div class="carousel-inner h-100" role="listbox">
+  <div class="carousel-inner h-100">
     <% @featured_work_list.featured_works.each.with_index(0) do |featured_work, order| %>
       <% work = SolrDocument.find(featured_work.work_id) %>
       <div class="carousel-item h-100 bg-light <%= order.zero? ? 'active' : '' %>">

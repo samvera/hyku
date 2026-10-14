@@ -28,6 +28,13 @@ class SolrDocument
   # Do content negotiation for AF models.
   use_extension(Hydra::ContentNegotiation)
 
+  # The fifteen Dublin Core elements, in the order oai_dc writes mapped values; the page and
+  # thumbnail URLs can add dc:identifier after them
+  DC_ELEMENTS = %i[
+    contributor coverage creator date description format identifier language publisher relation rights
+    source subject title type
+  ].freeze
+
   attribute :account_cname, Solr::Array, 'account_cname_tesim'
   attribute :account_institution_name, Solr::Array, 'account_institution_name_ssim'
   attribute :extent, Solr::Array, 'extent_tesim'
@@ -67,20 +74,10 @@ class SolrDocument
   # OVERRIDE Blacklight v7.35.0 to find properties from schema metadata
   #   and to add show page and thumbnail links to identifier
   def to_semantic_values
-    @semantic_value_hash ||= field_semantics.each_with_object(Hash.new { |h, k| h[k] = [] }) do |(key, field_names), hash|
-      ##
-      # Handles single string field_name or an array of field_names
-      value = Array.wrap(field_names).map { |field_name| self[field_name] }.flatten.compact
-
-      # Make single and multi-values all arrays, so clients
-      # don't have to know.
-      hash[key] = value unless value.empty?
+    @semantic_value_hash ||= dublin_core_values.tap do |values|
+      values[:identifier] << link_to_item
+      values[:identifier] << link_to_thumbnail if self['thumbnail_path_ss']
     end
-
-    @semantic_value_hash[:identifier] << link_to_item
-    @semantic_value_hash[:identifier] << link_to_thumbnail if self['thumbnail_path_ss']
-
-    @semantic_value_hash
   end
 
   def show_pdf_viewer
@@ -129,6 +126,21 @@ class SolrDocument
     self['video_embed_tesi'] || first('video_embed_tesim')
   end
 
+  def media_viewer
+    self['media_viewer_ssi']
+  end
+
+  # The OAI-PMH mods format renders a record through this method
+  def to_mods
+    Hyku::Mods::RecordBuilder.new(
+      self,
+      mappings: schema_data_for(Hyku::Mods::MAPPING_KEY).to_a,
+      compounds: compound_schema_data_for(Hyku::Mods::MAPPING_KEY).to_a,
+      item_url: link_to_item,
+      thumbnail_url: (link_to_thumbnail if real_thumbnail?)
+    ).to_xml
+  end
+
   private
 
   def link_to_item
@@ -153,48 +165,109 @@ class SolrDocument
     "https://#{host}#{path}"
   end
 
-  # In Blacklight this is a class method, but we need access
-  # to the instance's hydra_model to do the reverse lookup
-  def field_semantics
+  # A record without files gets a placeholder: an asset-pipeline image, or the tenant's default
+  def real_thumbnail?
+    path = self['thumbnail_path_ss']
+    return false if path.blank? || path.start_with?('/assets/')
+
+    [Site.instance.default_work_image, Site.instance.default_collection_image].none? { |image| image&.url == path }
+  end
+
+  # @return [Hash{Symbol => Array}] each Dublin Core element's values, in element order, as the
+  #   stored values rather than labels: a controlled term's id is what a harvester can key on
+  def dublin_core_values
+    schema_data = schema_data_for('simple_dc_pmh')
+    values = schema_data ? mapped_dublin_core_values(schema_data) : basic_dublin_core_values
+    DC_ELEMENTS.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |element, ordered|
+      ordered[element] = values[element] if values[element].present?
+    end
+  end
+
+  def mapped_dublin_core_values(schema_data)
+    values = Hash.new { |hash, key| hash[key] = [] }
+    add = ->(mapping, mapped) { values[mapping.split(':').last.to_sym].concat(Array.wrap(mapped).map(&:stored)) }
+    mapped_values = Hyku::OaiPmh::MappedValues.new(self, schema_data, title_mapping: 'dc:title', text_fields_only: true,
+                                                                      compounds: compound_schema_data_for('simple_dc_pmh').to_a)
+    mapped_values.each { |mapping, mapped| add.call(mapping, mapped) }
+    mapped_values.each_compound_entry { |pairs| pairs.each { |mapping, value| add.call(mapping, value) } }
+    values
+  end
+
+  def basic_dublin_core_values
+    basic_mappings.transform_values { |fields| fields.flat_map { |field| Array.wrap(self[field]) }.compact }
+  end
+
+  # @return [Array<Hash>, nil] each property mapped under mapping_key, with its mapping and index
+  #   keys: from the flexible metadata profile (across all its classes) or the model's schema;
+  #   nil when the model has neither
+  def schema_data_for(mapping_key)
     if Hyrax.config.flexible_classes.include?(hydra_model.to_s)
-      build_field_semantics(flexible_schema_data)
+      flexible_schema_data(mapping_key)
     elsif hydra_model.respond_to?(:schema)
-      build_field_semantics(standard_schema_data)
-    else
-      basic_mappings
+      standard_schema_data(mapping_key)
     end
   end
 
-  def build_field_semantics(schema_data)
-    schema_data.each_with_object(dc_mappings) do |item, mappings|
-      qualified_name = item[:qualified_name]
-      next unless qualified_name
-
-      property = qualified_name.split(':').last.to_sym
-      index_keys = Array(item[:index_keys]).select { |k| k.to_s.end_with?('_tesim') }
-      next unless mappings.key?(property) && index_keys.present?
-
-      mappings[property] |= index_keys
+  # @return [Array<Hash>, nil] each compound with a sub-property mapped under mapping_key, as
+  #   +{ compound:, subproperties: [{ key:, property:, mapping: }] }+, where +key+ names the
+  #   sub-property in the compound's indexed entries and +property+ is its profile property
+  #   (flexible metadata only); nil when the model has neither source
+  def compound_schema_data_for(mapping_key)
+    if Hyrax.config.flexible_classes.include?(hydra_model.to_s)
+      flexible_compound_data(mapping_key)
+    elsif hydra_model.respond_to?(:schema)
+      standard_compound_data(mapping_key)
     end
   end
 
-  def standard_schema_data
-    hydra_model.schema.keys.map do |schema_key|
+  def standard_schema_data(mapping_key)
+    hydra_model.schema.keys.filter_map do |schema_key|
+      mapping = schema_key.meta.dig('mappings', mapping_key)
+      next unless mapping
+
+      { property: schema_key.name.to_s, mapping:, index_keys: schema_key.meta['index_keys'] }
+    end
+  end
+
+  def flexible_schema_data(mapping_key)
+    m3_data = Hyrax::FlexibleSchema.mappings_data_for(mapping_key)
+    m3_data.map do |property, property_hash|
       {
-        qualified_name: schema_key.meta.dig('mappings', 'simple_dc_pmh'),
-        index_keys: schema_key.meta['index_keys']
-      }
-    end
-  end
-
-  def flexible_schema_data
-    m3_data = Hyrax::FlexibleSchema.mappings_data_for('simple_dc_pmh')
-    m3_data.map do |_, property_hash|
-      {
-        qualified_name: property_hash.dig('mappings', 'simple_dc_pmh'),
+        property: property.to_s,
+        mapping: property_hash.dig('mappings', mapping_key),
         index_keys: property_hash['indexing']
       }
     end
+  end
+
+  # Hyrax's schema loaders fold a compound's sub-properties into the parent's meta, keyed as
+  # they appear in its indexed entries
+  def standard_compound_data(mapping_key)
+    hydra_model.schema.keys.filter_map do |schema_key|
+      subproperties = schema_key.meta['subproperties'].to_h.map { |key, config| [key, nil, config] }
+      compound_data(schema_key.name, subproperties, mapping_key)
+    end
+  end
+
+  # The profile lists each sub-property as its own property, naming its parent compound
+  def flexible_compound_data(mapping_key)
+    properties = Hyrax::FlexibleSchema.current_version&.dig('properties').to_h
+    by_parent = properties.each_with_object({}) do |(property, config), parents|
+      next unless config.is_a?(Hash)
+
+      Array(config.dig('available_on', 'properties')).each do |parent|
+        (parents[parent.to_s] ||= []) << [config['name'] || property, property, config]
+      end
+    end
+    by_parent.filter_map { |parent, subproperties| compound_data(parent, subproperties, mapping_key) }
+  end
+
+  def compound_data(compound, subproperties, mapping_key)
+    mapped = subproperties.filter_map do |key, property, config|
+      mapping = config.is_a?(Hash) && config.dig('mappings', mapping_key)
+      { key: key.to_s, property: property&.to_s, mapping: } if mapping
+    end
+    { compound: compound.to_s, subproperties: mapped } if mapped.any?
   end
 
   def basic_mappings
@@ -214,26 +287,6 @@ class SolrDocument
       subject: ['subject_tesim'],
       title: ['title_tesim'],
       type: ['human_readable_type_tesim']
-    }
-  end
-
-  def dc_mappings
-    @dc_mappings ||= {
-      contributor: [],
-      coverage: [],
-      creator: [],
-      date: [],
-      description: [],
-      format: [],
-      identifier: [],
-      language: [],
-      publisher: [],
-      relation: [],
-      rights: [],
-      source: [],
-      subject: [],
-      title: ['title_tesim'], # adding title_tesim since this is a core metadata property which will always be available
-      type: []
     }
   end
 end

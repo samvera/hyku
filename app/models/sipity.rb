@@ -33,15 +33,15 @@ module Sipity
   # @return [Sipity::Entity]
   # rubocop:disable Naming/MethodName, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   def Entity(input, &block) # rubocop:disable Metrics/AbcSize
-    Hyrax.logger.debug("Trying to make an Entity for #{input.inspect}")
+    Hyrax.logger.debug { "Trying to make an Entity for #{input.inspect}" }
 
     result = case input
              when Sipity::Entity
                input
              when URI::GID, GlobalID
-               Hyrax.logger.debug("Entity() got a GID, searching by proxy")
+               Hyrax.logger.debug { "Entity() got a GID, searching by proxy" }
                gid_string = input.to_s
-               Hyrax.logger.debug("  Searching for GID: #{gid_string}")
+               Hyrax.logger.debug { "  Searching for GID: #{gid_string}" }
                entity_find_by_gid(input, gid_string)
              when SolrDocument
                if Hyrax.config.disable_wings
@@ -49,34 +49,34 @@ module Sipity
                  # SolrDocument#to_model, which can trigger ActiveFedora/Fedora lookups.
                  item = Hyrax.query_service.find_by(id: input.id)
                  # rubocop:disable Lint/RedundantStringCoercion
-                 Hyrax.logger.debug("Entity() got a SolrDocument in valkyrie/no-wings mode, retrying on item #{item.id.to_s}")
+                 Hyrax.logger.debug { "Entity() got a SolrDocument in valkyrie/no-wings mode, retrying on item #{item.id.to_s}" }
                  # rubocop:enable Lint/RedundantStringCoercion
                  Entity(item)
                else
                  model = input.to_model
-                 Hyrax.logger.debug("Entity() got a SolrDocument, retrying on #{model}")
+                 Hyrax.logger.debug { "Entity() got a SolrDocument, retrying on #{model}" }
                  Entity(model)
                end
              when Draper::Decorator
-               Hyrax.logger.debug("Entity() got a Decorator, retrying on #{input.model}")
+               Hyrax.logger.debug { "Entity() got a Decorator, retrying on #{input.model}" }
                Entity(input.model)
              when Sipity::Comment
-               Hyrax.logger.debug("Entity() got a Comment, retrying on #{input.entity}")
+               Hyrax.logger.debug { "Entity() got a Comment, retrying on #{input.entity}" }
                Entity(input.entity)
              when Valkyrie::Resource
-               Hyrax.logger.debug("Entity() got a Resource, retrying on #{Hyrax::GlobalID(input)}")
+               Hyrax.logger.debug { "Entity() got a Resource, retrying on #{Hyrax::GlobalID(input)}" }
                Entity(Hyrax::GlobalID(input))
              else
-               Hyrax.logger.debug("Entity() got something else (#{input.class}), testing #to_global_id")
+               Hyrax.logger.debug { "Entity() got something else (#{input.class}), testing #to_global_id" }
                if input.respond_to?(:to_global_id)
                  the_gid_obj = input.to_global_id
-                 Hyrax.logger.debug("  Generated GID object: #{the_gid_obj.inspect}")
-                 Hyrax.logger.debug("  Calling Entity recursively with GID object.")
+                 Hyrax.logger.debug { "  Generated GID object: #{the_gid_obj.inspect}" }
+                 Hyrax.logger.debug { "  Calling Entity recursively with GID object." }
                  Entity(the_gid_obj)
                end
              end
 
-    Hyrax.logger.debug("Entity(): attempting conversion on input: #{input.inspect} with result: #{result.inspect}")
+    Hyrax.logger.debug { "Entity(): attempting conversion on input: #{input.inspect} with result: #{result.inspect}" }
     handle_conversion(input, result, :to_sipity_entity, &block)
   rescue URI::GID::MissingModelIdError
     Entity(nil)
@@ -183,7 +183,7 @@ module Sipity
 
     nil
   rescue StandardError => e
-    Hyrax.logger.debug("  Entity() ValkyrieGlobalIdProxy fallback failed: #{e.message}")
+    Hyrax.logger.debug { "  Entity() ValkyrieGlobalIdProxy fallback failed: #{e.message}" }
     nil
   end
   module_function :entity_find_by_valkyrie_proxy_gid

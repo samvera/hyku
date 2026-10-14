@@ -2,6 +2,7 @@
 
 # rubocop:disable Metrics/ClassLength, Metrics/BlockLength
 class CatalogController < ApplicationController
+  include Hyku::HomePageThemesBehavior
   include BlacklightAdvancedSearch::Controller
   include BlacklightRangeLimit::ControllerOverride
   include Hydra::Catalog
@@ -108,6 +109,7 @@ class CatalogController < ApplicationController
     config.index.title_field = 'title_tesim'
     config.index.display_type_field = 'has_model_ssim'
     config.index.thumbnail_field = 'thumbnail_path_ss'
+    config.index.thumbnail_presenter = Hyku::ThumbnailPresenter
 
     # Blacklight 7 additions
     config.add_results_document_tool(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
@@ -123,23 +125,28 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
-    config.add_facet_field 'generic_type_sim', helper_method: :generic_type_facet_label, limit: 5
-    config.add_facet_field 'resource_type_sim', label: "Resource Type", limit: 5
-    config.add_facet_field 'has_model_ssim', helper_method: :work_type_facet_label, limit: 5
-    config.add_facet_field 'creator_sim', limit: 5
-    config.add_facet_field 'contributor_sim', label: "Contributor", limit: 5
-    config.add_facet_field 'keyword_sim', limit: 5
-    config.add_facet_field 'subject_sim', limit: 5
-    config.add_facet_field 'language_sim', limit: 5
-    config.add_facet_field 'based_near_label_sim', limit: 5
-    config.add_facet_field 'publisher_sim', limit: 5
-    config.add_facet_field 'file_format_sim', limit: 5
-    config.add_facet_field 'contributing_library_sim', limit: 5
-    config.add_facet_field 'member_of_collections_ssim', limit: 5
+    config.default_facet_limit = 5
+    config.add_facet_field 'generic_type_sim', helper_method: :generic_type_facet_label, limit: true
+    config.add_facet_field 'resource_type_sim', label: "Resource Type", limit: true
+    config.add_facet_field 'has_model_ssim', helper_method: :work_type_facet_label, limit: true
+    config.add_facet_field 'creator_sim', limit: true
+    config.add_facet_field 'contributor_sim', label: "Contributor", limit: true
+    config.add_facet_field 'keyword_sim', limit: true
+    config.add_facet_field 'subject_sim', limit: true
+    config.add_facet_field 'language_sim', limit: true
+    config.add_facet_field 'based_near_label_sim', limit: true
+    config.add_facet_field 'publisher_sim', limit: true
+    config.add_facet_field 'file_format_sim', limit: true
+    config.add_facet_field 'contributing_library_sim', limit: true
+    config.add_facet_field 'member_of_collections_ssim', limit: true
 
     # TODO: deal with part of facet changes
     # config.add_facet_field 'part_sim', limit: 5, label: 'Part'
     # config.add_facet_field 'part_of_sim', limit: 5
+
+    config.add_facet_field DateRangeIndexing::SOLR_FIELD,
+                           range: { assumed_boundaries: [1800, Time.zone.now.year + 2] },
+                           include_in_advanced_search: false
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -604,6 +611,17 @@ class CatalogController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+  end
+
+  # Only a theme whose chrome was built for these pages injects its views here;
+  # the rest keep hyrax's own catalog and advanced search. The home page
+  # subclasses this controller and has injected views for every theme since
+  # long before this gate, so it is not one of the pages being gated.
+  def inject_theme_views(&block)
+    return super unless %w[catalog advanced].include?(controller_name)
+    return yield unless Hyku::ChromeThemes.home?(home_page_theme)
+
+    super
   end
 
   # This is overridden just to give us a JSON response for debugging.

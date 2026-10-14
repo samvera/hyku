@@ -11,7 +11,7 @@ namespace :tenantize do
     Account.tenants(tenant_list).reject(&:search_only?).each do |account|
       puts "Running '#{args.task_name}' task within '#{account.cname}' tenant"
       Apartment::Tenant.switch(account.tenant) do
-        # Re-enable the task before executing it for this tenant.
+        # Rake runs a task only once per process unless it is re-enabled.
         Rake::Task[args.task_name].reenable
         Rake::Task[args.task_name].invoke(*args.extras)
       end

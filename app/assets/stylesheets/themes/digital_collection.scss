@@ -314,7 +314,7 @@
     }
 
     > div {
-      max-width: 68ch;
+      max-width: $dc-width-prose;
     }
 
     p {
@@ -554,7 +554,7 @@
     }
 
     .dc-collection-description {
-      max-width: 68ch;
+      max-width: $dc-width-prose;
     }
 
     .dc-collection-count {
@@ -683,7 +683,7 @@
     font-size: $dc-text-base;
     line-height: $dc-leading-body;
     margin: 0;
-    max-width: 68ch;
+    max-width: $dc-width-prose;
     overflow: hidden;
     overflow-wrap: anywhere;
   }
@@ -1004,7 +1004,7 @@
   }
 
   .dc-about-prose {
-    max-width: 68ch;
+    max-width: $dc-width-prose;
     overflow-wrap: anywhere;
 
     p {
@@ -1130,7 +1130,7 @@ body.digital_collection.hyrax-pages-show,
 body.digital_collection.hyrax-contact_form-new,
 body.digital_collection.hyrax-contact_form-create {
   #content-wrapper {
-    max-width: 78ch;
+    max-width: $dc-width-prose-page;
   }
 }
 

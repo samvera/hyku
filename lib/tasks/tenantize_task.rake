@@ -10,13 +10,10 @@ namespace :tenantize do
     # Search-only accounts have no repository of their own; their index aggregates other tenants.
     Account.tenants(tenant_list).reject(&:search_only?).each do |account|
       puts "Running '#{args.task_name}' task within '#{account.cname}' tenant"
-      # account.switch only moves the endpoints; Apartment moves the database schema.
-      account.switch do
-        Apartment::Tenant.switch(account.tenant) do
-          Rake::Task[args.task_name].invoke(*args.extras)
-          # Re-enable the task or it won't be run the next iteration
-          Rake::Task[args.task_name].reenable
-        end
+      Apartment::Tenant.switch(account.tenant) do
+        # Re-enable the task before executing it for this tenant.
+        Rake::Task[args.task_name].reenable
+        Rake::Task[args.task_name].invoke(*args.extras)
       end
     end
   end

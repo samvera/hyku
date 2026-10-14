@@ -58,6 +58,7 @@ RSpec.describe "Rake tasks" do
     before do
       # This omits a tenant that appears automatically created and is not switch-intoable
       allow(Account).to receive(:tenants).and_return(accounts)
+      allow(Apartment::Tenant).to receive(:switch) { |_tenant, &block| block.call }
     end
 
     it 'requires at least one argument' do
@@ -70,11 +71,13 @@ RSpec.describe "Rake tasks" do
 
     it 'runs against all tenants' do
       accounts.each do |account|
-        expect(account).to receive(:switch).once.and_call_original
+        expect(account).not_to receive(:switch)
       end
       allow(Rake::Task).to receive(:[]).with('hyrax:count').and_return(task)
-      expect(task).to receive(:invoke).exactly(accounts.count).times
-      expect(task).to receive(:reenable).exactly(accounts.count).times
+      expect(task).to receive(:reenable).ordered
+      expect(task).to receive(:invoke).ordered
+      expect(task).to receive(:reenable).ordered
+      expect(task).to receive(:invoke).ordered
       run_task('tenantize:task', 'hyrax:count')
     end
 
@@ -122,7 +125,7 @@ RSpec.describe "Rake tasks" do
       end
 
       it 'runs against a single tenant and ignores bogus tenants' do
-        expect(account).to receive(:switch).once.and_call_original
+        expect(account).not_to receive(:switch)
         allow(Rake::Task).to receive(:[]).with('hyrax:count').and_return(task)
         expect(task).to receive(:invoke).once
         expect(task).to receive(:reenable).once

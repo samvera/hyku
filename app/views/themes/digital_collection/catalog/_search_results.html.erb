@@ -1,0 +1,28 @@
+<%# OVERRIDE Hyku 7.1.0: the page heading renders above the layout in catalog/index, so it is left out here; the toolbar comes before the filter chips %>
+<% @page_title = t('blacklight.search.page_title.title', constraints: render_search_to_page_title(params), application_name: application_name) %>
+
+<% content_for(:head) do -%>
+  <%= render 'catalog/opensearch_response_metadata', response: @response %>
+  <%= rss_feed_link_tag %>
+  <%= atom_feed_link_tag %>
+  <%= json_api_link_tag %>
+<% end %>
+
+<% content_for(:skip_links) do -%>
+  <%= link_to t('blacklight.skip_links.first_result'), '#documents', class: 'element-invisible element-focusable rounded-bottom py-2 px-3', data: { turbolinks: 'false' } %>
+<% end %>
+
+<%= render 'search_header' %>
+<%= render 'constraints' %>
+
+<h2 class="sr-only visually-hidden"><%= t('blacklight.search.search_results') %></h2>
+
+<%- if @response.empty? %>
+  <%= render "zero_results" %>
+<%- elsif render_grouped_response? %>
+  <%= Deprecation.silence(Blacklight::RenderPartialsHelperBehavior) { render_grouped_document_index } %>
+<%- else %>
+  <%= render_document_index @response.documents %>
+<%- end %>
+
+<%= render 'results_pagination' %>

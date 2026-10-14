@@ -137,6 +137,65 @@ $dc-heading-roles: (
   }
 }
 
+@mixin dc-select-chevron($color: $dc-ink-heading) {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23#{str-slice(inspect($color), 2)}' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right $dc-space-3 center;
+  background-repeat: no-repeat;
+  background-size: $dc-size-icon-small $dc-size-icon-small;
+  padding-right: $dc-space-3 + $dc-size-icon-small + $dc-space-2;
+}
+
+@mixin dc-field {
+  display: flex;
+  flex-direction: column;
+  gap: $dc-space-2;
+  margin: 0;
+
+  label {
+    color: $dc-ink-heading;
+    font-size: $dc-text-sm;
+    font-weight: $dc-weight-strong;
+    line-height: $dc-leading-snug;
+    margin: 0;
+  }
+
+  .form-control {
+    border: $dc-border solid $dc-control-edge;
+    border-radius: var(--dc-radius, #{$dc-radius});
+    color: $dc-ink-heading;
+    font-size: $dc-text-base;
+    height: $dc-control-height;
+    padding: 0 $dc-space-3;
+
+    &::placeholder {
+      color: $dc-ink-secondary;
+    }
+
+    &:hover {
+      border-color: $dc-ink-heading;
+    }
+
+    &:focus,
+    &:focus-visible {
+      @include dc-focus-ring;
+      border-color: $dc-ink-heading;
+      box-shadow: none;
+    }
+  }
+
+  select.form-control {
+    @include dc-select-chevron;
+  }
+
+  textarea.form-control {
+    height: auto;
+    line-height: $dc-leading-body;
+    min-height: $dc-height-textarea;
+    padding: $dc-space-3;
+  }
+}
+
 @mixin dc-button-shape($size: default) {
   align-items: center;
   border-radius: var(--dc-radius, #{$dc-radius});
@@ -177,6 +236,12 @@ $dc-heading-roles: (
     border-color: if($on == dark, $dc-button-selected-edge-on-dark, $dc-button-selected-edge);
     color: var(--dc-action-ink, #{$dc-action-ink});
     font-weight: $dc-weight-regular;
+
+    @media (forced-colors: active) {
+      background-color: Highlight;
+      color: HighlightText;
+      forced-color-adjust: none;
+    }
   }
 }
 
@@ -221,6 +286,7 @@ $dc-heading-roles: (
 
   &:focus-visible {
     @include dc-focus-ring($on: $on);
+    border-radius: var(--dc-radius, #{$dc-radius});
   }
 }
 
@@ -294,6 +360,65 @@ $dc-heading-roles: (
   border-radius: var(--dc-radius, #{$dc-radius});
   display: block;
   object-fit: cover;
+}
+
+@mixin dc-image-plate($fit: cover) {
+  background: $dc-surface-alt;
+  display: block;
+  overflow: hidden;
+  position: relative;
+
+  &-blur {
+    filter: blur(26px) saturate(1.2);
+    height: 124%;
+    left: -12%;
+    object-fit: cover;
+    position: absolute;
+    top: -12%;
+    width: 124%;
+  }
+
+  &-scrim {
+    background: $dc-plate-scrim;
+    inset: 0;
+    position: absolute;
+  }
+
+  &-figure {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    position: relative;
+
+    img {
+      display: block;
+      height: 100%;
+      object-fit: $fit;
+      width: 100%;
+    }
+  }
+}
+
+@mixin dc-view-toggle-icon {
+  align-items: center;
+  display: inline-flex;
+  height: $dc-size-icon-large;
+  justify-content: center;
+  width: $dc-size-icon-large;
+
+  .blacklight-icons {
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+
+  svg {
+    display: block;
+    fill: currentColor;
+    height: 100%;
+    width: 100%;
+  }
 }
 
 @mixin dc-joined($item: '*') {

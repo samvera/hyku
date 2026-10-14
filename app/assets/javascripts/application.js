@@ -56,6 +56,7 @@
 //= require themes/spotlight
 //= require themes/screening_room_home
 //= require themes/digital_collection_home
+//= require themes/digital_collection_catalog
 
 //= require citation_picker
 

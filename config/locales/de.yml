@@ -1098,6 +1098,8 @@ de:
       part_of:
         heading: "Gehört zu"
   digital_collection:
+    form:
+      required: "(erforderlich)"
     chrome:
       account_label:
         zero: "%{name}"
@@ -1177,6 +1179,69 @@ de:
     search:
       advanced: "Erweiterte Suche"
       submit: "Suchen"
+      results:
+        heading: "Suchergebnisse"
+        summary:
+          zero: "Keine Ergebnisse"
+          one: "%{formatted} Ergebnis"
+          other: "%{formatted} Ergebnisse"
+        summary_query:
+          zero: "Keine Ergebnisse für „%{query}“"
+          one: "%{formatted} Ergebnis für „%{query}“"
+          other: "%{formatted} Ergebnisse für „%{query}“"
+        filter_heading: "Ergebnisse filtern"
+        applied:
+          one: "%{count} Filter angewendet"
+          other: "%{count} Filter angewendet"
+        range_html: "<strong>%{first}–%{last}</strong> von <strong>%{total}</strong>"
+        sort_label: "Sortieren nach"
+        per_page_label: "Pro Seite"
+        previous: "Zurück"
+        next: "Weiter"
+        more_html: "Mehr <span class=\"sr-only\">%{field_name}</span>"
+        range_from: "Von"
+        range_to: "Bis"
+        range_larger: "Zeitraum in einem größeren Fenster wählen"
+        range_missing: "Datum nicht angegeben"
+        facet_sort_label: "Werte sortieren"
+        facet_sort_count: "Meiste Treffer"
+        facet_pages_label: "Seiten der Werte"
+        query_label: "Suche"
+        collection: "Sammlung"
+        no_results:
+          heading: "Versuchen Sie eine andere Suche"
+          tips:
+            - "Prüfen Sie die Schreibweise Ihrer Suchbegriffe."
+            - "Verwenden Sie weniger oder allgemeinere Begriffe."
+            - "Entfernen Sie einen Filter, um die Suche zu erweitern."
+        clear_all: "Suche und Filter zurücksetzen"
+        any_of: "Eines davon"
+        remove_value: "%{value} entfernen"
+        match_html: "Treffer für %{op} dieser Felder:"
+        from: "Von:"
+        fields:
+          creator: "Urheber"
+          date: "Datum"
+          part_of: "Teil von"
+          resource_type: "Ressourcentyp"
+          description: "Beschreibung"
+          works: "Werke"
+    advanced:
+      match_html: "Objekte finden, die %{select_menu} dieser Felder entsprechen"
+      match_label: "Allen oder beliebigen Feldern entsprechen"
+      limits: "Und diese Merkmale haben"
+      tips:
+        heading: "Suchtipps"
+        items:
+          - "Wählen Sie „alle“, um alle Felder zu verlangen."
+          - "Wählen Sie „beliebige“, um mindestens ein Feld zu treffen."
+          - "Kombinieren Sie Stichwörter und Merkmale, um bestimmte Objekte zu finden."
+          - "Suchen Sie nach Datum im Format JJJJMMTT, JJJJMM oder JJJJ. Verwenden Sie kein „-“, „/“ oder andere Sonderzeichen."
+          - "Verwenden Sie Anführungszeichen, um nach einer Wortgruppe zu suchen."
+          - "Setzen Sie „+“ vor einen Begriff, um ihn zu verlangen. (Sonst können auch Treffer erscheinen, die nur einige Ihrer Begriffe enthalten.)"
+          - "Setzen Sie „-“ vor ein Wort oder eine Wortgruppe, um sie auszuschließen."
+          - "Verwenden Sie „OR“, „AND“ und „NOT“ für komplexe boolesche Suchen. Sie können dabei Klammern verwenden."
+          - "Platzhalter und Trunkierung werden nicht unterstützt – Wortformen werden automatisch berücksichtigt."
     show:
       part_of:
         heading: Teil von

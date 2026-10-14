@@ -375,9 +375,8 @@ body.digital_collection_show.public-facing {
     background: $dc-surface;
     border-bottom: 0;
     display: flex;
-    justify-content: flex-end;
-    padding-bottom: 12px;
-    padding-top: 12px;
+    padding-bottom: $dc-space-4;
+    padding-top: $dc-space-4;
     position: relative;
 
     &::after {
@@ -391,16 +390,37 @@ body.digital_collection_show.public-facing {
       width: 100vw;
     }
 
-    #search-form-header {
-      max-width: 100%;
-      width: 520px;
-    }
-
     @include dc-search-form;
 
+    #search-form-header {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    #search-form-header .form-group {
+      justify-content: flex-end;
+    }
+
+    .input-group {
+      max-width: 100%;
+      width: $dc-width-searchbar;
+    }
+
+    .dc-search-advanced {
+      align-self: center;
+      flex-basis: auto;
+      margin: 0 0 0 $dc-space-4;
+    }
+
     @media (max-width: $dc-mobile-max) {
-      #search-form-header {
+      .input-group {
         width: 100%;
+      }
+
+      .dc-search-advanced {
+        flex-basis: 100%;
+        margin: $dc-space-2 0 0;
+        text-align: left;
       }
     }
   }

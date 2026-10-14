@@ -21,7 +21,7 @@
         <li class="nav-item">
           <%= link_to t(:'hyrax.controls.help'), hyrax.help_path, class: 'nav-link', aria: { current: ('page' if current_page?(hyrax.help_path(locale: nil))) } %></li>
         <li class="nav-item">
-          <%= link_to t(:'hyrax.controls.contact'), hyrax.contact_path, class: 'nav-link', aria: { current: ('page' if current_page?(hyrax.contact_path(locale: nil))) } %></li>
+          <%= link_to t(:'hyrax.controls.contact'), hyrax.contact_path, class: 'nav-link', aria: { current: ('page' if controller_name == 'contact_form') } %></li>
       </ul>
       <%= render 'themes/digital_collection/dc_masthead_utilities', unread: %>
     </div>

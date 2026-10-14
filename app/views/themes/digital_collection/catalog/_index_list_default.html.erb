@@ -1,0 +1,16 @@
+<%# OVERRIDE Hyku 7.1.0: a fixed set of fields per row (Creator, Date, Part of, Resource type and Description; Description and Works for collections) instead of every index field %>
+<div class="metadata dc-result-fields">
+  <dl>
+    <% dc_result_fields(document).each do |key, label, value| %>
+      <div class="dc-result-field dc-result-field-<%= key.to_s.dasherize %>">
+        <dt><%= label %></dt>
+        <dd><%= value %></dd>
+      </div>
+    <% end %>
+  </dl>
+  <% if current_account.search_only && document.account_institution_name.first.present? %>
+    <small class="search-only-institution-link">
+      <span><%= t('digital_collection.search.results.from') %> <%= link_to document.account_institution_name&.join, "//#{document.account_cname.first}", target: :_blank %></span>
+    </small>
+  <% end %>
+</div>

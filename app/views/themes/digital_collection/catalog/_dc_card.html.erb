@@ -1,0 +1,27 @@
+<% url = document.collection? ? generate_work_url(document, request) : generate_work_url(document, request, params) %>
+<% title = markdown(document.title_or_label) %>
+<li id="document_<%= document.to_param %>" class="document dc-card dc-card-<%= variant %>">
+  <% placeholder = dc_thumb_placeholder_class(document) %>
+  <% thumbnail = document_presenter(document)&.thumbnail&.thumbnail_tag({ alt: '' }, suppress_link: true) %>
+  <% if variant == 'gallery' && !placeholder %>
+    <div class="dc-card-thumb dc-card-plate">
+      <%= image_tag document['thumbnail_path_ss'], alt: '', class: 'dc-card-plate-blur', aria: { hidden: true }, loading: 'lazy' %>
+      <span class="dc-card-plate-scrim"></span>
+      <span class="dc-card-plate-figure"><%= thumbnail %></span>
+    </div>
+  <% else %>
+    <div class="<%= token_list('dc-card-thumb', placeholder) %>"><%= thumbnail %></div>
+  <% end %>
+  <div class="dc-card-body">
+    <h3 class="dc-card-title">
+      <%= link_to title, url, class: 'dc-card-link', title: strip_tags(title).squish %>
+    </h3>
+    <% if variant == 'gallery' && document.collection? && (description = theme_blurb(Array(document['description_tesim']).first, length: 140)) %>
+      <p class="dc-card-description"><%= description %></p>
+    <% end %>
+    <% meta = dc_card_meta(document, collection_label: variant == 'masonry') %>
+    <% if meta.present? %>
+      <p class="dc-card-meta"><%= meta %></p>
+    <% end %>
+  </div>
+</li>

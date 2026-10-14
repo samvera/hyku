@@ -5,6 +5,8 @@ pt-BR:
     search:
       fields:
         facet:
+          date_range_isim: "Intervalo de datas"
+          resource_type_label_sim: "Tipo de recurso"
           based_near_label_sim: Localização
           creator_sim: O Criador
           depositor_ssim: Depositante
@@ -16,6 +18,43 @@ pt-BR:
           member_of_collections_ssim: Coleções
           publisher_sim: Editor
           subject_sim: Sujeito
+        search:
+          contributor: "Contribuinte"
+          creator: "O Criador"
+          title: "Título"
+          description: "Resumo ou sumário"
+          publisher: "Editor"
+          date_created: "Data Criada"
+          subject: "Sujeito"
+          language: "Língua"
+          resource_type: "Tipo de recurso"
+          based_near_label: "Localização"
+          keyword: "Palavra-chave"
+          depositor: "Depositante"
+          rights_statement: "Declaração de direitos"
+          license: "Licença"
+          extent: "Extensão"
+          source: "Fonte"
+          advisor: "Orientador"
+          accessibility_feature: "Recurso de acessibilidade"
+          accessibility_hazard: "Risco de acessibilidade"
+          accessibility_summary: "Resumo de acessibilidade"
+          additional_information: "Informações adicionais"
+          alternative_title: "Título Alternativo"
+          audience: "Público"
+          bibliographic_citation: "Citação bibliográfica"
+          committee_member: "Membro da banca"
+          department: "Departamento"
+          degree_discipline: "Área do título"
+          education_level: "Nível de educação"
+          degree_grantor: "Instituição concedente"
+          learning_resource_type: "Tipo de recurso de aprendizagem"
+          degree_level: "Nível do título"
+          related_url: "URL relacionada"
+          rights_holder: "Titular dos direitos"
+          rights_notes: "Notas sobre direitos"
+          size: "Tamanho"
+          table_of_contents: "Índice"
         index:
           accessibility_feature_tesim: Recurso de acessibilidade
           accessibility_hazard_tesim: Risco de acessibilidade
@@ -58,6 +97,14 @@ pt-BR:
           rights_tesim: Direitos
           subject_tesim: Sujeito
           table_of_contents_tesim: Índice
+        sort:
+          "score desc, system_create_dtsi desc": "Relevância"
+          "title_ssi asc": "Título"
+          "creator_ssi asc": "Autor"
+          "date_created_ssi asc": "Data de publicação (crescente)"
+          "date_created_ssi desc": "Data de publicação (decrescente)"
+          "system_modified_dtsi asc": "Data de envio (crescente)"
+          "system_modified_dtsi desc": "Data de envio (decrescente)"
         show:
           based_near_label_tesim: Localização
           contributor_tesim: Contribuinte

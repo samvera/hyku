@@ -1,0 +1,13 @@
+<%# OVERRIDE Blacklight Advanced Search 7.0.0: heading without the Start over button inside it; search tips first, shown in a side rail on wider screens %>
+<% @page_title = "#{t('blacklight_advanced_search.form.title')} - #{application_name}" %>
+
+<div class="dc-advanced">
+  <h1 class="dc-advanced-title"><%= t('blacklight_advanced_search.form.title') %></h1>
+
+  <div class="dc-advanced-body">
+    <%= render 'advanced_search_help' %>
+    <div class="dc-advanced-main">
+      <%= render 'advanced_search_form' %>
+    </div>
+  </div>
+</div>

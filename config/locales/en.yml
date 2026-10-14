@@ -962,6 +962,8 @@ en:
       part_of:
         heading: "Part of"
   digital_collection:
+    form:
+      required: "(required)"
     chrome:
       account_label:
         zero: "%{name}"
@@ -1041,6 +1043,69 @@ en:
     search:
       advanced: "Advanced search"
       submit: "Search"
+      results:
+        heading: "Search results"
+        summary:
+          zero: "No results"
+          one: "%{formatted} result"
+          other: "%{formatted} results"
+        summary_query:
+          zero: "No results for “%{query}”"
+          one: "%{formatted} result for “%{query}”"
+          other: "%{formatted} results for “%{query}”"
+        filter_heading: "Filter results"
+        applied:
+          one: "%{count} filter applied"
+          other: "%{count} filters applied"
+        range_html: "<strong>%{first}–%{last}</strong> of <strong>%{total}</strong>"
+        sort_label: "Sort by"
+        per_page_label: "Per page"
+        previous: "Previous"
+        next: "Next"
+        more_html: "More <span class=\"sr-only\">%{field_name}</span>"
+        range_from: "From"
+        range_to: "To"
+        range_larger: "Choose dates in a larger window"
+        range_missing: "Date not specified"
+        facet_sort_label: "Sort values"
+        facet_sort_count: "Most results"
+        facet_pages_label: "Value pages"
+        query_label: "Search"
+        collection: "Collection"
+        no_results:
+          heading: "Try a different search"
+          tips:
+            - "Check the spelling of your search words."
+            - "Use fewer or broader words."
+            - "Remove a filter to widen the search."
+        clear_all: "Clear search and filters"
+        any_of: "Any of these"
+        remove_value: "Remove %{value}"
+        match_html: "Matching %{op} of these fields:"
+        from: "From:"
+        fields:
+          creator: "Creator"
+          date: "Date"
+          part_of: "Part of"
+          resource_type: "Resource type"
+          description: "Description"
+          works: "Works"
+    advanced:
+      match_html: "Find items that match %{select_menu} of these fields"
+      match_label: "Match all or any fields"
+      limits: "And have these attributes"
+      tips:
+        heading: "Search tips"
+        items:
+          - "Select \"match all\" to require all fields."
+          - "Select \"match any\" to find at least one field."
+          - "Combine keywords and attributes to find specific items."
+          - "Search by date with format: YYYYMMDD, YYYYMM or YYYY. Do not use \"-\", \"/\", or any other special characters."
+          - "Use quotation marks to search as a phrase."
+          - "Use \"+\" before a term to make it required. (Otherwise results matching only some of your terms may be included)."
+          - "Use \"-\" before a word or phrase to exclude."
+          - "Use \"OR\", \"AND\", and \"NOT\" to create complex boolean logic. You can use parentheses in your complex expressions."
+          - "Truncation and wildcards are not supported - word-stemming is done automatically."
     show:
       part_of:
         heading: "Part of"

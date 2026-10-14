@@ -5,6 +5,8 @@ fr:
     search:
       fields:
         facet:
+          date_range_isim: "Plage de dates"
+          resource_type_label_sim: "Type de ressource"
           based_near_label_sim: Emplacement
           creator_sim: Créateur
           depositor_ssim: Déposant
@@ -16,6 +18,43 @@ fr:
           member_of_collections_ssim: Collections
           publisher_sim: Éditeur
           subject_sim: Assujettir
+        search:
+          contributor: "Donateur"
+          creator: "Créateur"
+          title: "Titre"
+          description: "Résumé ou sommaire"
+          publisher: "Éditeur"
+          date_created: "date créée"
+          subject: "Assujettir"
+          language: "La langue"
+          resource_type: "Type de ressource"
+          based_near_label: "Emplacement"
+          keyword: "Mot-clé"
+          depositor: "Déposant"
+          rights_statement: "Déclaration des droits"
+          license: "Licence"
+          extent: "Ampleur"
+          source: "Source"
+          advisor: "Directeur de recherche"
+          accessibility_feature: "Fonctionnalité d'accessibilité"
+          accessibility_hazard: "Risque d'accessibilité"
+          accessibility_summary: "Résumé sur l'accessibilité"
+          additional_information: "Informations Complémentaires"
+          alternative_title: "Titre alternatif"
+          audience: "Public"
+          bibliographic_citation: "Citation bibliographique"
+          committee_member: "Membre du jury"
+          department: "Département"
+          degree_discipline: "Discipline du diplôme"
+          education_level: "Niveau d'éducation"
+          degree_grantor: "Établissement délivrant le diplôme"
+          learning_resource_type: "Type de ressource d'apprentissage"
+          degree_level: "Niveau du diplôme"
+          related_url: "URL associée"
+          rights_holder: "Titulaire des droits"
+          rights_notes: "Notes sur les droits"
+          size: "Taille"
+          table_of_contents: "Table des matières"
         index:
           accessibility_feature_tesim: Fonctionnalité d'accessibilité
           accessibility_hazard_tesim: Risque d'accessibilité
@@ -58,6 +97,14 @@ fr:
           rights_tesim: Droits
           subject_tesim: Assujettir
           table_of_contents_tesim: Table des matières
+        sort:
+          "score desc, system_create_dtsi desc": "Pertinence"
+          "title_ssi asc": "Titre"
+          "creator_ssi asc": "Auteur"
+          "date_created_ssi asc": "Date de publication (croissante)"
+          "date_created_ssi desc": "Date de publication (décroissante)"
+          "system_modified_dtsi asc": "Date de téléversement (croissante)"
+          "system_modified_dtsi desc": "Date de téléversement (décroissante)"
         show:
           based_near_label_tesim: Emplacement
           contributor_tesim: Donateur

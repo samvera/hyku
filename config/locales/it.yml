@@ -1095,6 +1095,8 @@ it:
       part_of:
         heading: "Fa parte di"
   digital_collection:
+    form:
+      required: "(obbligatorio)"
     chrome:
       account_label:
         zero: "%{name}"
@@ -1174,6 +1176,69 @@ it:
     search:
       advanced: "Ricerca avanzata"
       submit: "Cerca"
+      results:
+        heading: "Risultati della ricerca"
+        summary:
+          zero: "Nessun risultato"
+          one: "%{formatted} risultato"
+          other: "%{formatted} risultati"
+        summary_query:
+          zero: "Nessun risultato per «%{query}»"
+          one: "%{formatted} risultato per «%{query}»"
+          other: "%{formatted} risultati per «%{query}»"
+        filter_heading: "Filtra i risultati"
+        applied:
+          one: "%{count} filtro applicato"
+          other: "%{count} filtri applicati"
+        range_html: "<strong>%{first}–%{last}</strong> di <strong>%{total}</strong>"
+        sort_label: "Ordina per"
+        per_page_label: "Per pagina"
+        previous: "Precedente"
+        next: "Successivo"
+        more_html: "Altro <span class=\"sr-only\">%{field_name}</span>"
+        range_from: "Da"
+        range_to: "A"
+        range_larger: "Scegli le date in una finestra più grande"
+        range_missing: "Data non specificata"
+        facet_sort_label: "Ordina i valori"
+        facet_sort_count: "Più risultati"
+        facet_pages_label: "Pagine dei valori"
+        query_label: "Ricerca"
+        collection: "Collezione"
+        no_results:
+          heading: "Prova una ricerca diversa"
+          tips:
+            - "Controlla l’ortografia delle parole cercate."
+            - "Usa meno parole o parole più generiche."
+            - "Rimuovi un filtro per ampliare la ricerca."
+        clear_all: "Cancella ricerca e filtri"
+        any_of: "Uno di questi"
+        remove_value: "Rimuovi %{value}"
+        match_html: "Corrispondenti a %{op} questi campi:"
+        from: "Da:"
+        fields:
+          creator: "Autore"
+          date: "Data"
+          part_of: "Parte di"
+          resource_type: "Tipo di risorsa"
+          description: "Descrizione"
+          works: "Opere"
+    advanced:
+      match_html: "Trova gli elementi che corrispondono a %{select_menu} di questi campi"
+      match_label: "Corrispondenza con tutti o con almeno un campo"
+      limits: "E che hanno questi attributi"
+      tips:
+        heading: "Suggerimenti di ricerca"
+        items:
+          - "Seleziona «tutti» per richiedere tutti i campi."
+          - "Seleziona «almeno uno» per trovare almeno un campo."
+          - "Combina parole chiave e attributi per trovare elementi specifici."
+          - "Cerca per data nel formato AAAAMMGG, AAAAMM o AAAA. Non usare «-», «/» o altri caratteri speciali."
+          - "Usa le virgolette per cercare una frase esatta."
+          - "Usa «+» prima di un termine per renderlo obbligatorio. (Altrimenti possono comparire risultati con solo alcuni dei tuoi termini.)"
+          - "Usa «-» prima di una parola o frase per escluderla."
+          - "Usa «OR», «AND» e «NOT» per creare ricerche booleane complesse. Puoi usare le parentesi nelle espressioni."
+          - "Troncamento e caratteri jolly non sono supportati: le varianti delle parole vengono cercate automaticamente."
     show:
       part_of:
         heading: Parte di

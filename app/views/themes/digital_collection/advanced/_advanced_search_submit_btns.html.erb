@@ -1,0 +1,12 @@
+<%# OVERRIDE Blacklight Advanced Search 7.0.0: sort label above a full-width select, buttons beside it instead of floated %>
+<div class="dc-advanced-sort">
+  <%= label_tag(:sort, t('blacklight_advanced_search.form.sort_label')) %>
+  <% sort_fields = active_sort_fields.values.map { |field_config| [sort_field_label(field_config.key), field_config.key] } %>
+  <%= select_tag(:sort, options_for_select(sort_fields, h(current_sort_field && current_sort_field.key)), class: 'form-control sort-select') %>
+  <%= hidden_field_tag(:search_field, blacklight_config.advanced_search[:url_key]) %>
+</div>
+
+<div class="dc-advanced-buttons">
+  <%= link_to t('blacklight_advanced_search.form.start_over'), blacklight_advanced_search_engine.advanced_search_path, class: 'btn dc-advanced-start-over' %>
+  <%= submit_tag t('blacklight_advanced_search.form.search_btn'), class: 'btn btn-primary advanced-search-submit', id: 'advanced-search-submit' %>
+</div>

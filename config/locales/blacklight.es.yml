@@ -5,6 +5,8 @@ es:
     search:
       fields:
         facet:
+          date_range_isim: "Rango de fechas"
+          resource_type_label_sim: "Tipo de recurso"
           based_near_label_sim: Ubicación
           creator_sim: Creador
           depositor_ssim: Depositor
@@ -16,6 +18,43 @@ es:
           member_of_collections_ssim: Colecciones
           publisher_sim: Editor
           subject_sim: Tema
+        search:
+          contributor: "Contribuidor"
+          creator: "Creador"
+          title: "Título"
+          description: "Resumen o sumario"
+          publisher: "Editor"
+          date_created: "Fecha de Creacion"
+          subject: "Tema"
+          language: "Idioma"
+          resource_type: "Tipo de recurso"
+          based_near_label: "Ubicación"
+          keyword: "Palabra clave"
+          depositor: "Depositante"
+          rights_statement: "Declaración de derechos"
+          license: "Licencia"
+          extent: "Grado"
+          source: "Fuente"
+          advisor: "Director"
+          accessibility_feature: "Función de accesibilidad"
+          accessibility_hazard: "Riesgo de accesibilidad"
+          accessibility_summary: "Resumen de accesibilidad"
+          additional_information: "información adicional"
+          alternative_title: "Título alternativo"
+          audience: "Audiencia"
+          bibliographic_citation: "Cita bibliográfica"
+          committee_member: "Miembro del comité"
+          department: "Departamento"
+          degree_discipline: "Disciplina del título"
+          education_level: "Nivel de educación"
+          degree_grantor: "Institución que otorga el título"
+          learning_resource_type: "Tipo de recurso de aprendizaje"
+          degree_level: "Nivel del título"
+          related_url: "URL relacionada"
+          rights_holder: "Titular de los derechos"
+          rights_notes: "Notas sobre derechos"
+          size: "Tamaño"
+          table_of_contents: "Tabla de contenido"
         index:
           accessibility_feature_tesim: Función de accesibilidad
           accessibility_hazard_tesim: Riesgo de accesibilidad
@@ -58,6 +97,14 @@ es:
           rights_tesim: Derechos
           subject_tesim: Tema
           table_of_contents_tesim: Tabla de contenido
+        sort:
+          "score desc, system_create_dtsi desc": "Relevancia"
+          "title_ssi asc": "Título"
+          "creator_ssi asc": "Autor"
+          "date_created_ssi asc": "Fecha de publicación (ascendente)"
+          "date_created_ssi desc": "Fecha de publicación (descendente)"
+          "system_modified_dtsi asc": "Fecha de carga (ascendente)"
+          "system_modified_dtsi desc": "Fecha de carga (descendente)"
         show:
           based_near_label_tesim: Ubicación
           contributor_tesim: Contribuidor

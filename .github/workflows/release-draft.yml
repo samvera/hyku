@@ -2,6 +2,8 @@ name: Draft Release Notes
 
 on:
   push:
+    paths-ignore:
+      - config/initializers/version.rb
     branches:
       - staging
       - staging-test
@@ -18,14 +20,24 @@ concurrency:
 
 jobs:
   draft:
+    # The version-bump commit is made by this workflow; never let it invoke itself.
+    if: ${{ !startsWith(github.event.head_commit.message, 'Bump version to v') }}
     runs-on: ubuntu-latest
     env:
       IS_STAGING: ${{ contains(github.ref_name, 'staging') }}
     steps:
+      - name: Generate auto-merger App token
+        id: auto_merger_token
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
+        with:
+          app-id: ${{ secrets.AUTO_MERGER_APP_ID }}
+          private-key: ${{ secrets.AUTO_MERGER_APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
-          token: ${{ secrets.CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ steps.auto_merger_token.outputs.token }}
+          persist-credentials: true
 
       - name: Resolve next version
         id: next-version
@@ -49,12 +61,8 @@ jobs:
             exit 0
           fi
 
-          VERSION="$RESOLVED_VERSION"
-          if [ "${{ env.IS_STAGING }}" = "true" ]; then
-            VERSION="${VERSION}-rc"
-          fi
-
           CURRENT=$(grep -oP "VERSION = '\K[^']+" config/initializers/version.rb)
+          VERSION=$(ruby .github/scripts/release_version.rb "$CURRENT" "$RESOLVED_VERSION" "${{ env.IS_STAGING }}")
           if [ "$CURRENT" = "$VERSION" ]; then
             echo "Version already ${VERSION}, skipping bump"
             echo "bumped=false" >> "$GITHUB_OUTPUT"
@@ -71,6 +79,7 @@ jobs:
         env:
           VERSION: ${{ steps.bump.outputs.version }}
         run: |
+          # The auto-merger App must be a bypass actor for protected release branches.
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add config/initializers/version.rb

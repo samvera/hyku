@@ -1114,6 +1114,76 @@ zh:
   digital_collection:
     form:
       required: "（必填）"
+    file_set:
+      actions:
+        delete: "删除此文件集"
+        edit: "编辑此文件集"
+      activity: "活动"
+      description: "描述"
+      details:
+        date_modified: "修改日期"
+        date_uploaded: "上传日期"
+        depositor: "提交者"
+        dimensions: "尺寸"
+        dimensions_value: "%{width} × %{height} 像素"
+        fixity: "完整性检查"
+        format: "文件格式"
+        heading: "文件详情"
+        size: "文件大小"
+      generate_link: "生成下载链接"
+      share:
+        email: "电子邮件"
+        facebook: "Facebook"
+        label: "分享"
+        x: "X"
+      technical:
+        alpha_channels: "Alpha 通道"
+        byte_order: "字节顺序"
+        capture_device: "采集设备"
+        color_map: "颜色映射"
+        color_space: "色彩空间"
+        compression: "压缩"
+        duration: "时长"
+        file_format: "文件格式"
+        file_size: "文件大小"
+        file_title: "文件标题"
+        filename: "文件名"
+        format_label: "格式标签"
+        gps_timestamp: "GPS 时间戳"
+        heading: "技术详情"
+        height: "高度"
+        image_producer: "图像制作者"
+        last_modified: "最后修改"
+        latitude: "纬度"
+        longitude: "经度"
+        mime_type: "MIME 类型"
+        orientation: "方向"
+        original_checksum: "原始校验和"
+        page_count: "页数"
+        profile_name: "配置文件名称"
+        profile_version: "配置文件版本"
+        sample_rate: "采样率"
+        scanning_software: "扫描软件"
+        well_formed: "格式正确"
+        width: "宽度"
+      user_activity: "用户活动"
+    work:
+      actions:
+        select: "选择此作品"
+        header: "作品操作"
+        feature: "在首页推荐"
+        unfeature: "从首页移除"
+      copy_citation: "复制引用"
+      part_of:
+        admin_set:
+          one: "管理集"
+          other: "管理集"
+        collection:
+          one: "收藏"
+          other: "收藏"
+        parent_work:
+          one: "上级作品"
+          other: "上级作品"
     chrome:
       account_label:
         zero: "%{name}"
@@ -1256,7 +1326,28 @@ zh:
           - "在词语或短语前加“-”以排除。"
           - "使用“OR”、“AND”和“NOT”构建复杂的布尔逻辑，可在表达式中使用括号。"
           - "不支持截词和通配符，系统会自动匹配词形变化。"
+    collection:
+      actions:
+        add_to_collection: "添加到收藏"
+        add_works: "添加作品"
+        feature: "在首页推荐"
+        unfeature: "从首页移除"
+      created_by: "创建者：%{creator}"
+      date_format: "%Y年%-m月%-d日"
+      details: "收藏详情"
+      items:
+        one: "%{count} 个项目"
+        other: "%{count} 个项目"
+      search_placeholder: "在此收藏中搜索"
+      updated: "最后更新：%{date}"
+      no_results: "此收藏中没有与“%{query}”匹配的内容。"
+      search_results: "搜索结果（%{number}）"
+      subcollections: "子收藏（%{number}）"
+      works: "此收藏中的作品（%{number}）"
+      logo: "%{title} 标志"
     show:
+      breadcrumbs: "面包屑导航"
+      new_tab: "（在新标签页中打开）"
       part_of:
         heading: 所属
   screening_room:

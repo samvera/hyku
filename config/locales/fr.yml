@@ -1102,6 +1102,76 @@ fr:
   digital_collection:
     form:
       required: "(obligatoire)"
+    file_set:
+      actions:
+        delete: "Supprimer cet ensemble de fichiers"
+        edit: "Modifier cet ensemble de fichiers"
+      activity: "Activité"
+      description: "Description"
+      details:
+        date_modified: "Date de modification"
+        date_uploaded: "Date de dépôt"
+        depositor: "Déposant"
+        dimensions: "Dimensions"
+        dimensions_value: "%{width} × %{height} px"
+        fixity: "Vérification d'intégrité"
+        format: "Format du fichier"
+        heading: "Détails du fichier"
+        size: "Taille du fichier"
+      generate_link: "Générer un lien de téléchargement"
+      share:
+        email: "E-mail"
+        facebook: "Facebook"
+        label: "Partager"
+        x: "X"
+      technical:
+        alpha_channels: "Canaux alpha"
+        byte_order: "Ordre des octets"
+        capture_device: "Appareil de capture"
+        color_map: "Table des couleurs"
+        color_space: "Espace colorimétrique"
+        compression: "Compression"
+        duration: "Durée"
+        file_format: "Format de fichier"
+        file_size: "Taille du fichier"
+        file_title: "Titre du fichier"
+        filename: "Nom du fichier"
+        format_label: "Libellé du format"
+        gps_timestamp: "Horodatage GPS"
+        heading: "Détails techniques"
+        height: "Hauteur"
+        image_producer: "Producteur de l'image"
+        last_modified: "Dernière modification"
+        latitude: "Latitude"
+        longitude: "Longitude"
+        mime_type: "Type MIME"
+        orientation: "Orientation"
+        original_checksum: "Somme de contrôle originale"
+        page_count: "Nombre de pages"
+        profile_name: "Nom du profil"
+        profile_version: "Version du profil"
+        sample_rate: "Fréquence d'échantillonnage"
+        scanning_software: "Logiciel de numérisation"
+        well_formed: "Bien formé"
+        width: "Largeur"
+      user_activity: "Activité de l'utilisateur"
+    work:
+      actions:
+        select: "Sélectionner cette œuvre"
+        header: "Actions sur l'œuvre"
+        feature: "Mettre en avant sur l'accueil"
+        unfeature: "Retirer de l'accueil"
+      copy_citation: "Copier la citation"
+      part_of:
+        admin_set:
+          one: "Ensemble administratif"
+          other: "Ensembles administratifs"
+        collection:
+          one: "Collection"
+          other: "Collections"
+        parent_work:
+          one: "Œuvre parente"
+          other: "Œuvres parentes"
     chrome:
       account_label:
         zero: "%{name}"
@@ -1244,7 +1314,28 @@ fr:
           - "Placez « - » devant un mot ou une expression pour l’exclure."
           - "Utilisez « OR », « AND » et « NOT » pour créer des recherches booléennes complexes. Vous pouvez utiliser des parenthèses."
           - "La troncature et les caractères génériques ne sont pas pris en charge ; les variantes des mots sont recherchées automatiquement."
+    collection:
+      actions:
+        add_to_collection: "Ajouter à une collection"
+        add_works: "Ajouter des œuvres"
+        feature: "Mettre en avant sur l'accueil"
+        unfeature: "Retirer de l'accueil"
+      created_by: "Créé par %{creator}"
+      date_format: "%-d %B %Y"
+      details: "Détails de la collection"
+      items:
+        one: "%{count} élément"
+        other: "%{count} éléments"
+      search_placeholder: "Rechercher dans cette collection"
+      updated: "Dernière mise à jour : %{date}"
+      no_results: "Rien dans cette collection ne correspond à « %{query} »."
+      search_results: "Résultats de recherche (%{number})"
+      subcollections: "Sous-collections (%{number})"
+      works: "Œuvres de cette collection (%{number})"
+      logo: "Logo de %{title}"
     show:
+      breadcrumbs: "Fil d'Ariane"
+      new_tab: "(s’ouvre dans un nouvel onglet)"
       part_of:
         heading: Fait partie de
   screening_room:

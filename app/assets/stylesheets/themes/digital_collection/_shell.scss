@@ -10,6 +10,17 @@ html body.digital_collection {
 
 body.digital_collection.public-facing,
 body.digital_collection_show.public-facing {
+  .dc-external-end {
+    white-space: nowrap;
+  }
+
+  .dc-external-icon {
+    display: inline-block;
+    font-size: 0.75em;
+    margin-left: $dc-space-1;
+    text-decoration: none;
+  }
+
   color: $dc-ink;
 
   .btn,
@@ -19,6 +30,22 @@ body.digital_collection_show.public-facing {
   .dropdown-menu,
   .custom-select {
     border-radius: var(--dc-radius, #{$dc-radius});
+  }
+
+  .dropdown-menu:not(.dc-masthead-dropdown) {
+    @include dc-menu;
+  }
+
+  .btn.dropdown-toggle {
+    @include dc-select-chevron;
+
+    &::after {
+      display: none;
+    }
+
+    &:focus:not(:focus-visible) {
+      box-shadow: none;
+    }
   }
 
   // ---- masthead ----

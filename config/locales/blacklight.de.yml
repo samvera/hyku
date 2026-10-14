@@ -61,25 +61,36 @@ de:
           accessibility_summary_tesim: Zusammenfassung zur Barrierefreiheit
           additional_information_tesim: Weitere Informationen
           admin_note_tesim: Administratorhinweis
+          alternate_version_id_tesim: Alternative Version
           alternative_title_tesim: Alternativer Titel
           alt_text_tesim: Alternativtext
           audience_tesim: Publikum
           based_near_label_tesim: Ort
+          bibliographic_citation_tesim: Bibliografische Angabe
           chronology_note_tesim: Chronologie-Hinweis
+          committee_member_tesim: Ausschussmitglied
+          compound_rights_tesim: Rechte
           contributing_library_tesim: Mitwirkende Bibliothek
           contributor_tesim: Mitwirkender
+          course_tesim: Kurs
           creator_tesim: Schöpfer
           date_created_tesim: Datum erstellt
           date_modified_dtsi: Datum geändert
           date_tesim: Datum
           date_uploaded_dtsi: Datum hochgeladen
+          degree_discipline_tesim: Fachrichtung des Abschlusses
+          degree_grantor_tesim: Verleihende Institution
+          degree_level_tesim: Abschlussniveau
+          degree_name_tesim: Name des Abschlusses
           description_tesim: Beschreibung
+          dimensions_tesim: Abmessungen
           discipline_tesim: Disziplin
           education_level_tesim: Bildungsniveau
           extent_tesim: Umfang
           file_format_tesim: Datei Format
           format_tesim: Format
           identifier_tesim: Identifikator
+          identifiers_tesim: Identifikatoren
           keyword_tesim: Stichwort
           language_tesim: Sprache
           learning_resource_type_tesim: Lernressourcentyp
@@ -87,10 +98,13 @@ de:
           license_tesim: Lizenz
           newer_version_id_tesim: Neuere Versions-ID
           oer_size_tesim: Oer Größe
+          participants_tesim: Beteiligte
           previous_version_id_tesim: Vorherige Versions-ID
           publisher_tesim: Herausgeber
+          redirects_tesim: Weiterleitungen
           related_item_id_tesim: Zugehörige Artikel-ID
           related_url_tesim: Verwandte URL
+          relationships_tesim: Beziehungen
           resource_type_tesim: Ressourcentyp
           rights_holder_tesim: Rechteinhaber
           rights_statement_tesim: Rechteerklärung

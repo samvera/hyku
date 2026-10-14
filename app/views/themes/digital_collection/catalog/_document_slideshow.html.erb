@@ -26,7 +26,7 @@
     <% end %>
   </div>
 
-  <%= render layout: 'slideshow_modal' do %>
+  <%= render layout: 'catalog/slideshow_modal' do %>
     <div id="slideshow" class="slideshow-presenter">
       <div class="slideshow-inner">
         <%= render view_config.document_component.with_collection(documents, counter_offset: @response&.start || 0) %>

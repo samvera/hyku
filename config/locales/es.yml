@@ -1097,6 +1097,76 @@ es:
   digital_collection:
     form:
       required: "(obligatorio)"
+    file_set:
+      actions:
+        delete: "Eliminar este conjunto de archivos"
+        edit: "Editar este conjunto de archivos"
+      activity: "Actividad"
+      description: "Descripción"
+      details:
+        date_modified: "Fecha de modificación"
+        date_uploaded: "Fecha de carga"
+        depositor: "Depositante"
+        dimensions: "Dimensiones"
+        dimensions_value: "%{width} × %{height} px"
+        fixity: "Comprobación de integridad"
+        format: "Formato de archivo"
+        heading: "Detalles del archivo"
+        size: "Tamaño del archivo"
+      generate_link: "Generar enlace de descarga"
+      share:
+        email: "Correo electrónico"
+        facebook: "Facebook"
+        label: "Compartir"
+        x: "X"
+      technical:
+        alpha_channels: "Canales alfa"
+        byte_order: "Orden de bytes"
+        capture_device: "Dispositivo de captura"
+        color_map: "Mapa de color"
+        color_space: "Espacio de color"
+        compression: "Compresión"
+        duration: "Duración"
+        file_format: "Formato de archivo"
+        file_size: "Tamaño del archivo"
+        file_title: "Título del archivo"
+        filename: "Nombre del archivo"
+        format_label: "Etiqueta de formato"
+        gps_timestamp: "Marca de tiempo GPS"
+        heading: "Detalles técnicos"
+        height: "Alto"
+        image_producer: "Productor de la imagen"
+        last_modified: "Última modificación"
+        latitude: "Latitud"
+        longitude: "Longitud"
+        mime_type: "Tipo MIME"
+        orientation: "Orientación"
+        original_checksum: "Suma de verificación original"
+        page_count: "Número de páginas"
+        profile_name: "Nombre del perfil"
+        profile_version: "Versión del perfil"
+        sample_rate: "Frecuencia de muestreo"
+        scanning_software: "Software de escaneo"
+        well_formed: "Bien formado"
+        width: "Ancho"
+      user_activity: "Actividad del usuario"
+    work:
+      actions:
+        select: "Seleccionar esta obra"
+        header: "Acciones de la obra"
+        feature: "Destacar en la página de inicio"
+        unfeature: "Quitar de la página de inicio"
+      copy_citation: "Copiar cita"
+      part_of:
+        admin_set:
+          one: "Conjunto administrativo"
+          other: "Conjuntos administrativos"
+        collection:
+          one: "Colección"
+          other: "Colecciones"
+        parent_work:
+          one: "Obra principal"
+          other: "Obras principales"
     chrome:
       account_label:
         zero: "%{name}"
@@ -1239,7 +1309,28 @@ es:
           - "Use «-» delante de una palabra o frase para excluirla."
           - "Use «OR», «AND» y «NOT» para crear búsquedas booleanas complejas. Puede usar paréntesis en sus expresiones."
           - "No se admiten comodines ni truncamiento; las variantes de las palabras se buscan automáticamente."
+    collection:
+      actions:
+        add_to_collection: "Agregar a una colección"
+        add_works: "Agregar obras"
+        feature: "Destacar en la página de inicio"
+        unfeature: "Quitar de la página de inicio"
+      created_by: "Creado por %{creator}"
+      date_format: "%-d de %B de %Y"
+      details: "Detalles de la colección"
+      items:
+        one: "%{count} elemento"
+        other: "%{count} elementos"
+      search_placeholder: "Buscar en esta colección"
+      updated: "Última actualización: %{date}"
+      no_results: "Nada en esta colección coincide con «%{query}»."
+      search_results: "Resultados de búsqueda (%{number})"
+      subcollections: "Subcolecciones (%{number})"
+      works: "Obras en esta colección (%{number})"
+      logo: "Logotipo de %{title}"
     show:
+      breadcrumbs: "Ruta de navegación"
+      new_tab: "(se abre en una pestaña nueva)"
       part_of:
         heading: Parte de
   screening_room:

@@ -1,9 +1,14 @@
-body.catalog-index.digital_collection.public-facing {
+body.catalog-index.digital_collection.public-facing,
+body.digital_collection_show.hyrax-collections-show {
   --dc-width-result-thumb: #{$dc-width-result-thumb};
 
   #content-wrapper {
     max-width: none;
     padding: 0;
+  }
+
+  #content-wrapper > .alert {
+    @include dc-inset-alert;
   }
 
   .dc-results {
@@ -612,26 +617,11 @@ body.catalog-index.digital_collection.public-facing {
   }
 
   .dc-toolbar-menu .dropdown-menu {
-    border: $dc-border solid $dc-control-edge;
-    border-radius: var(--dc-radius, #{$dc-radius});
-    box-shadow: $dc-shadow-menu;
-    font-size: $dc-text-base;
-    padding: $dc-space-1;
+    @include dc-menu;
 
     .dropdown-item {
-      border-radius: var(--dc-radius, #{$dc-radius});
-      color: $dc-ink-heading;
-      padding: $dc-space-2 $dc-space-3 $dc-space-2 $dc-space-6;
+      padding-left: $dc-space-6;
       position: relative;
-
-      &:hover,
-      &:focus {
-        background: $dc-surface-alt;
-      }
-
-      &:focus-visible {
-        @include dc-focus-ring($offset: -2px);
-      }
 
       &.active {
         background: none;
@@ -763,6 +753,12 @@ body.catalog-index.digital_collection.public-facing {
     margin: 0;
   }
 
+  // Hyrax's _catalog.scss sets word-break: break-all on every result link by ID
+  #search-results .dc-result-field dd a {
+    overflow-wrap: break-word;
+    word-break: normal;
+  }
+
   .dc-result-field {
     display: contents;
 
@@ -774,10 +770,26 @@ body.catalog-index.digital_collection.public-facing {
     dd {
       color: $dc-ink-heading;
       margin: 0;
-      overflow-wrap: anywhere;
+      min-width: 0;
+      overflow-wrap: break-word;
 
       a {
         @include dc-link;
+      }
+
+      ul.tabular {
+        display: inline;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        display: inline;
+      }
+
+      li + li::before {
+        content: '; ';
       }
     }
 

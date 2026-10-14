@@ -964,6 +964,76 @@ en:
   digital_collection:
     form:
       required: "(required)"
+    file_set:
+      actions:
+        delete: "Delete this file set"
+        edit: "Edit this file set"
+      activity: "Activity"
+      description: "Description"
+      details:
+        date_modified: "Date modified"
+        date_uploaded: "Date uploaded"
+        depositor: "Depositor"
+        dimensions: "Dimensions"
+        dimensions_value: "%{width} × %{height} px"
+        fixity: "Fixity check"
+        format: "File format"
+        heading: "File details"
+        size: "File size"
+      generate_link: "Generate download link"
+      share:
+        email: "Email"
+        facebook: "Facebook"
+        label: "Share"
+        x: "X"
+      technical:
+        alpha_channels: "Alpha channels"
+        byte_order: "Byte order"
+        capture_device: "Capture device"
+        color_map: "Color map"
+        color_space: "Color space"
+        compression: "Compression"
+        duration: "Duration"
+        file_format: "File format"
+        file_size: "File size"
+        file_title: "File title"
+        filename: "File name"
+        format_label: "Format label"
+        gps_timestamp: "GPS timestamp"
+        heading: "Technical details"
+        height: "Height"
+        image_producer: "Image producer"
+        last_modified: "Last modified"
+        latitude: "Latitude"
+        longitude: "Longitude"
+        mime_type: "MIME type"
+        orientation: "Orientation"
+        original_checksum: "Original checksum"
+        page_count: "Page count"
+        profile_name: "Profile name"
+        profile_version: "Profile version"
+        sample_rate: "Sample rate"
+        scanning_software: "Scanning software"
+        well_formed: "Well formed"
+        width: "Width"
+      user_activity: "User activity"
+    work:
+      actions:
+        select: "Select this work"
+        header: "Work actions"
+        feature: "Feature on homepage"
+        unfeature: "Remove from homepage"
+      copy_citation: "Copy citation"
+      part_of:
+        admin_set:
+          one: "Administrative set"
+          other: "Administrative sets"
+        collection:
+          one: "Collection"
+          other: "Collections"
+        parent_work:
+          one: "Parent work"
+          other: "Parent works"
     chrome:
       account_label:
         zero: "%{name}"
@@ -1106,7 +1176,28 @@ en:
           - "Use \"-\" before a word or phrase to exclude."
           - "Use \"OR\", \"AND\", and \"NOT\" to create complex boolean logic. You can use parentheses in your complex expressions."
           - "Truncation and wildcards are not supported - word-stemming is done automatically."
+    collection:
+      actions:
+        add_to_collection: "Add to a collection"
+        add_works: "Add works"
+        feature: "Feature on homepage"
+        unfeature: "Remove from homepage"
+      created_by: "Created by %{creator}"
+      date_format: "%B %-d, %Y"
+      details: "Collection details"
+      items:
+        one: "%{count} item"
+        other: "%{count} items"
+      search_placeholder: "Search this collection"
+      updated: "Last updated %{date}"
+      no_results: "Nothing in this collection matches “%{query}”."
+      search_results: "Search results (%{number})"
+      subcollections: "Subcollections (%{number})"
+      works: "Works in this collection (%{number})"
+      logo: "%{title} logo"
     show:
+      breadcrumbs: "Breadcrumb"
+      new_tab: "(opens in a new tab)"
       part_of:
         heading: "Part of"
   screening_room:

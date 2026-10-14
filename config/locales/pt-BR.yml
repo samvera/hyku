@@ -980,6 +980,76 @@ pt-BR:
   digital_collection:
     form:
       required: "(obrigatório)"
+    file_set:
+      actions:
+        delete: "Excluir este conjunto de arquivos"
+        edit: "Editar este conjunto de arquivos"
+      activity: "Atividade"
+      description: "Descrição"
+      details:
+        date_modified: "Data de modificação"
+        date_uploaded: "Data de envio"
+        depositor: "Depositante"
+        dimensions: "Dimensões"
+        dimensions_value: "%{width} × %{height} px"
+        fixity: "Verificação de integridade"
+        format: "Formato do arquivo"
+        heading: "Detalhes do arquivo"
+        size: "Tamanho do arquivo"
+      generate_link: "Gerar link de download"
+      share:
+        email: "E-mail"
+        facebook: "Facebook"
+        label: "Compartilhar"
+        x: "X"
+      technical:
+        alpha_channels: "Canais alfa"
+        byte_order: "Ordem dos bytes"
+        capture_device: "Dispositivo de captura"
+        color_map: "Mapa de cores"
+        color_space: "Espaço de cor"
+        compression: "Compressão"
+        duration: "Duração"
+        file_format: "Formato do arquivo"
+        file_size: "Tamanho do arquivo"
+        file_title: "Título do arquivo"
+        filename: "Nome do arquivo"
+        format_label: "Rótulo do formato"
+        gps_timestamp: "Data e hora GPS"
+        heading: "Detalhes técnicos"
+        height: "Altura"
+        image_producer: "Produtor da imagem"
+        last_modified: "Última modificação"
+        latitude: "Latitude"
+        longitude: "Longitude"
+        mime_type: "Tipo MIME"
+        orientation: "Orientação"
+        original_checksum: "Soma de verificação original"
+        page_count: "Número de páginas"
+        profile_name: "Nome do perfil"
+        profile_version: "Versão do perfil"
+        sample_rate: "Taxa de amostragem"
+        scanning_software: "Software de digitalização"
+        well_formed: "Bem formado"
+        width: "Largura"
+      user_activity: "Atividade do usuário"
+    work:
+      actions:
+        select: "Selecionar esta obra"
+        header: "Ações da obra"
+        feature: "Destacar na página inicial"
+        unfeature: "Remover da página inicial"
+      copy_citation: "Copiar citação"
+      part_of:
+        admin_set:
+          one: "Conjunto administrativo"
+          other: "Conjuntos administrativos"
+        collection:
+          one: "Coleção"
+          other: "Coleções"
+        parent_work:
+          one: "Obra principal"
+          other: "Obras principais"
     chrome:
       account_label:
         zero: "%{name}"
@@ -1122,7 +1192,28 @@ pt-BR:
           - "Use “-” antes de uma palavra ou frase para excluí-la."
           - "Use “OR”, “AND” e “NOT” para criar pesquisas booleanas complexas. Você pode usar parênteses nas expressões."
           - "Truncamento e curingas não são suportados; as variações das palavras são pesquisadas automaticamente."
+    collection:
+      actions:
+        add_to_collection: "Adicionar a uma coleção"
+        add_works: "Adicionar obras"
+        feature: "Destacar na página inicial"
+        unfeature: "Remover da página inicial"
+      created_by: "Criado por %{creator}"
+      date_format: "%-d de %B de %Y"
+      details: "Detalhes da coleção"
+      items:
+        one: "%{count} item"
+        other: "%{count} itens"
+      search_placeholder: "Pesquisar nesta coleção"
+      updated: "Última atualização: %{date}"
+      no_results: "Nada nesta coleção corresponde a “%{query}”."
+      search_results: "Resultados da pesquisa (%{number})"
+      subcollections: "Subcoleções (%{number})"
+      works: "Obras nesta coleção (%{number})"
+      logo: "Logotipo de %{title}"
     show:
+      breadcrumbs: "Trilha de navegação"
+      new_tab: "(abre em uma nova aba)"
       part_of:
         heading: Parte de
   screening_room:

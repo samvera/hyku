@@ -1,6 +1,6 @@
 <%# OVERRIDE Blacklight Gallery 4.6.4: tiles at each image's own shape with the title and a meta line in a light gray caption, each one link, and CSS columns in place of the gem's masonry script %>
 <ul id="documents" class="dc-cards dc-cards-masonry list-unstyled">
   <% documents.each do |document| %>
-    <%= render 'dc_card', document:, variant: 'masonry' %>
+    <%= render 'catalog/dc_card', document:, variant: 'masonry' %>
   <% end %>
 </ul>

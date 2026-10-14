@@ -61,25 +61,36 @@ zh:
           accessibility_summary_tesim: 可访问性摘要
           additional_information_tesim: 附加信息
           admin_note_tesim: 管理员备注
+          alternate_version_id_tesim: 替代版本
           alternative_title_tesim: 替代标题
           alt_text_tesim: 替代文本
           audience_tesim: 观众
           based_near_label_tesim: 位置
+          bibliographic_citation_tesim: 文献引用
           chronology_note_tesim: 年表说明
+          committee_member_tesim: 委员会成员
+          compound_rights_tesim: 权利
           contributing_library_tesim: 贡献库
           contributor_tesim: 贡献者
+          course_tesim: 课程
           creator_tesim: 创造者
           date_created_tesim: 创建日期
           date_modified_dtsi: 修改日期
           date_tesim: 日期
           date_uploaded_dtsi: 日期上传
+          degree_discipline_tesim: 学位学科
+          degree_grantor_tesim: 学位授予机构
+          degree_level_tesim: 学位级别
+          degree_name_tesim: 学位名称
           description_tesim: 描述
+          dimensions_tesim: 尺寸
           discipline_tesim: 纪律
           education_level_tesim: 教育程度
           extent_tesim: 范围
           file_format_tesim: 文件格式
           format_tesim: 格式
           identifier_tesim: 识别码
+          identifiers_tesim: 标识符
           keyword_tesim: 关键词
           language_tesim: 语言
           learning_resource_type_tesim: 学习资源类型
@@ -87,10 +98,13 @@ zh:
           license_tesim: 执照
           newer_version_id_tesim: 较新版本 ID
           oer_size_tesim: 尺寸
+          participants_tesim: 参与者
           previous_version_id_tesim: 先前版本 ID
           publisher_tesim: 出版者
+          redirects_tesim: 重定向
           related_item_id_tesim: 相关商品编号
           related_url_tesim: 相关网址
+          relationships_tesim: 关系
           resource_type_tesim: 资源类型
           rights_holder_tesim: 权利人
           rights_statement_tesim: 权利声明

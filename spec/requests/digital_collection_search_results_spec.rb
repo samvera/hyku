@@ -214,6 +214,15 @@ RSpec.describe 'the digital collection search results page', type: :request, sin
     end
   end
 
+  it 'keeps the toolbar, view toggle and feed links on this site whatever the query string holds' do
+    get search_catalog_path(q: 'hudson', host: 'evil.example', protocol: 'javascript')
+    links = doc.css('.dc-toolbar a, .dc-view-toggle a').map { |a| a['href'] } + doc.css('link[rel="alternate"]').map { |l| l['href'] }
+
+    expect(links.size).to be > 5
+    expect(links).to all(start_with('/catalog'))
+    expect(links.join).not_to include('#')
+  end
+
   it 'names each slideshow thumbnail link with the plain title' do
     get search_catalog_path(q: 'hudson', view: 'slideshow')
     alts = doc.css('.slideshow-preview-thumbnail a.thumbnail img').map { |img| img['alt'] }

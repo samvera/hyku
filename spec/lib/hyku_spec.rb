@@ -122,6 +122,25 @@ RSpec.describe Hyku do
         it 'exports the rights statement under the rights_statement column' do
           expect(csv_mappings.dig('rights_statement', 'from').first).to eq('rights_statement')
         end
+
+        let(:m3_properties) { YAML.safe_load_file(Rails.root.join('config', 'metadata_profiles', 'm3_profile.yaml'))['properties'] }
+
+        it 'exports every property the default m3 profile requires' do
+          required = m3_properties.select { |_key, config| config.dig('cardinality', 'minimum').to_i.positive? }
+                                  .map { |key, config| config['name'] || key }
+
+          required.each do |property|
+            expect(csv_mappings).to include(property), "#{property} is required by the m3 profile but has no Bulkrax mapping"
+            expect(csv_mappings[property]).not_to include('generated'), "#{property} is required by the m3 profile, so exports must keep it"
+          end
+        end
+
+        it 'maps profile properties by the name they are stored under' do
+          renamed_keys = m3_properties.select { |key, config| config['name'].present? && config['name'] != key }.keys
+          property_keys = csv_mappings.reject { |_key, config| config['object'] }.keys
+
+          expect(property_keys & renamed_keys).to be_empty
+        end
       end
     end
   end

@@ -1196,6 +1196,7 @@ en:
         keyword: Words or phrases you select to describe what the work is about. These are used to search for content.
         language: The language of the work's content.
         license: Licensing and distribution information governing access to the work. Select from the provided drop-down list.
+        media_viewer: "The player that shows this work's files on its page. Leave blank to use the default. PDF.js is the only viewer that can display PDF files."
         publisher: The person or group making the work available. Generally this is the institution.
         related_url: A link to a website or other specific content (audio, video, PDF document) related to the work. An example is the URL of a research project from which the work was derived.
         resource_type: Pre-defined categories to describe the type of content being uploaded, such as &quot;article&quot; or &quot;dataset.&quot;  More than one type may be selected.

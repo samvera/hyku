@@ -54,7 +54,6 @@ body.digital_collection_show.public-facing {
 
     #masthead {
       @include dc-gutter;
-      // _appearance_styles pins .navbar.navbar-expand-lg to the chrome color with !important
       background-color: var(--dc-chrome, #{$dc-chrome}) !important;
       margin: 0 auto;
       max-width: $dc-width-header-max;
@@ -70,9 +69,6 @@ body.digital_collection_show.public-facing {
         grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
       }
 
-      // Bootstrap pins the expanded collapse to display: flex !important; with
-      // display: contents the nav and the utilities become grid children, so the
-      // nav sits in the page's center column
       #masthead .navbar-collapse {
         display: contents !important;
       }
@@ -155,7 +151,7 @@ body.digital_collection_show.public-facing {
     .dc-unread-count {
       background: var(--dc-footer-link, #{$dc-footer-link});
       border-radius: $dc-radius-pill;
-      box-shadow: 0 0 0 2px var(--dc-chrome, #{$dc-chrome});
+      box-shadow: 0 0 0 $dc-unread-halo var(--dc-chrome, #{$dc-chrome});
       color: var(--dc-chrome, #{$dc-chrome});
       display: inline-block;
       font-size: $dc-text-xs;
@@ -269,7 +265,7 @@ body.digital_collection_show.public-facing {
       border-radius: 0 0 var(--dc-radius, #{$dc-radius}) var(--dc-radius, #{$dc-radius});
       box-shadow: $dc-shadow-menu;
       margin-top: 0;
-      min-width: 240px;
+      min-width: $dc-width-menu;
       top: 100%;
       padding: $dc-space-1;
     }
@@ -280,7 +276,7 @@ body.digital_collection_show.public-facing {
       display: flex;
       font-size: $dc-text-base;
       gap: $dc-space-2;
-      min-height: 36px;
+      min-height: $dc-control-height-small;
       padding: 0 $dc-space-3;
 
       &:hover,
@@ -410,7 +406,7 @@ body.digital_collection_show.public-facing {
       background: $dc-hairline;
       bottom: 0;
       content: '';
-      height: 1px;
+      height: $dc-border;
       left: 50%;
       position: absolute;
       transform: translateX(-50%);
@@ -524,8 +520,8 @@ body.digital_collection_show.public-facing {
       @include dc-underline;
       border-radius: var(--dc-radius, #{$dc-radius});
       color: var(--dc-footer-link, #{$dc-footer-link});
-      margin: 0 -3px;
-      padding: 2px 3px;
+      margin: 0 (-$dc-footer-link-inset-x);
+      padding: $dc-footer-link-inset-y $dc-footer-link-inset-x;
 
       &:hover,
       &:focus {

@@ -901,6 +901,9 @@ zh:
         roles:
           remove:
             confirmation: 您确定要从用户“%{user}”中删除角色“%{role}”吗？
+    users:
+      activity_log:
+        no_user_activity: "无用户活动"
   permissions:
     collections:
       cannot:

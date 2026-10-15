@@ -767,6 +767,9 @@ pt-BR:
         roles:
           remove:
             confirmation: Tem certeza de que deseja remover a função "%{role}" do usuário "%{user}"?
+    users:
+      activity_log:
+        no_user_activity: "Nenhuma atividade do usuário"
   permissions:
     collections:
       cannot:

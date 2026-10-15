@@ -887,6 +887,9 @@ de:
         roles:
           remove:
             confirmation: Sind Sie sicher, dass Sie die Rolle „%{role}“ vom Benutzer „%{user}“ entfernen möchten?
+    users:
+      activity_log:
+        no_user_activity: "Keine Benutzeraktivität"
   permissions:
     collections:
       cannot:
@@ -1392,3 +1395,8 @@ de:
     service:
       down: Down
       ok: OK
+  blacklight_gallery:
+    catalog:
+      slideshow:
+        pause: "Diashow anhalten"
+        start: "Diashow starten"

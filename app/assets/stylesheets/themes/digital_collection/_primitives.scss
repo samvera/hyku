@@ -425,7 +425,7 @@ $dc-heading-roles: (
   position: relative;
 
   &-blur {
-    filter: blur(26px) saturate(1.2);
+    filter: blur($dc-plate-blur) saturate(1.2);
     height: 124%;
     left: -12%;
     object-fit: cover;
@@ -576,7 +576,6 @@ $dc-heading-roles: (
 @mixin dc-search-form {
   .form-group.row {
     margin: 0;
-    // pt-4 and pt-sm-0 are Bootstrap utilities, !important
     padding-top: 0 !important;
   }
 
@@ -616,7 +615,6 @@ $dc-heading-roles: (
     }
   }
 
-  // btn-secondary is pinned by _appearance_styles with !important
   .input-group-append .dropdown-toggle {
     background-color: $dc-surface-alt !important;
     border-color: $dc-input-edge !important;

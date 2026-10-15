@@ -20,19 +20,19 @@
     background: $dc-hero-ground;
     display: flex;
     justify-content: center;
-    min-height: 680px;
+    min-height: $dc-height-hero;
     position: relative;
 
     @media (max-width: $dc-laptop-max) {
-      min-height: 560px;
+      min-height: $dc-height-hero-laptop;
     }
 
     @media (max-width: $dc-tablet-max) {
-      min-height: 460px;
+      min-height: $dc-height-hero-tablet;
     }
 
     @media (max-width: $dc-mobile-max) {
-      min-height: 420px;
+      min-height: $dc-height-hero-mobile;
     }
 
     &.carousel-fade .carousel-item {
@@ -71,8 +71,8 @@
     display: flex;
     justify-content: center;
     // clears the caption and the controls at the hero's bottom edge
-    padding-bottom: 120px;
-    padding-top: 40px;
+    padding-bottom: $dc-hero-content-clearance;
+    padding-top: $dc-hero-content-inset;
     pointer-events: none;
     position: relative;
     width: 100%;
@@ -82,8 +82,8 @@
     // the caption clears the controls vertically below this width, so the
     // plate has to clear both
     @media (max-width: $dc-tablet-max) {
-      padding-bottom: 150px;
-      padding-top: 32px;
+      padding-bottom: $dc-hero-content-clearance-tablet;
+      padding-top: $dc-space-6;
     }
 
     @media (max-width: $dc-mobile-max) {
@@ -168,7 +168,7 @@
       .q.form-control,
       #search-field-header {
         border-radius: var(--dc-radius, #{$dc-radius});
-        border-right: 1px solid $dc-input-edge;
+        border-right: $dc-border solid $dc-input-edge;
         flex-basis: 100%;
       }
 
@@ -314,7 +314,7 @@
     }
 
     > div {
-      max-width: 68ch;
+      max-width: $dc-width-prose;
     }
 
     p {
@@ -554,7 +554,7 @@
     }
 
     .dc-collection-description {
-      max-width: 68ch;
+      max-width: $dc-width-prose;
     }
 
     .dc-collection-count {
@@ -629,7 +629,7 @@
     background: $dc-surface-alt;
     display: flex;
     flex: none;
-    height: 134px;
+    height: $dc-height-thumb-featured;
     justify-content: center;
     overflow: hidden;
     width: $dc-width-thumb-featured;
@@ -647,8 +647,8 @@
     }
 
     @media (max-width: $dc-tablet-max) {
-      height: 107px;
-      width: 160px;
+      height: $dc-height-thumb-featured-tablet;
+      width: $dc-width-thumb-featured-tablet;
     }
   }
 
@@ -683,7 +683,7 @@
     font-size: $dc-text-base;
     line-height: $dc-leading-body;
     margin: 0;
-    max-width: 68ch;
+    max-width: $dc-width-prose;
     overflow: hidden;
     overflow-wrap: anywhere;
   }
@@ -890,7 +890,7 @@
     background: $dc-surface-alt;
     border: $dc-border dashed $dc-control-edge;
     border-radius: var(--dc-radius, #{$dc-radius});
-    min-height: 120px;
+    min-height: $dc-height-drop-target;
   }
 
   .dd-dragel {
@@ -1004,7 +1004,7 @@
   }
 
   .dc-about-prose {
-    max-width: 68ch;
+    max-width: $dc-width-prose;
     overflow-wrap: anywhere;
 
     p {
@@ -1101,8 +1101,8 @@ body.digital_collection.advanced-index {
   #content-wrapper {
     @include dc-gutter;
     @include dc-column;
-    padding-bottom: 48px;
-    padding-top: 32px;
+    padding-bottom: $dc-space-7;
+    padding-top: $dc-space-6;
   }
 
   .alert {
@@ -1112,7 +1112,7 @@ body.digital_collection.advanced-index {
 
   #content_block_page {
     color: $dc-ink;
-    font-size: 1rem;
+    font-size: $dc-text-base;
     line-height: 1.65;
 
     a {
@@ -1130,7 +1130,7 @@ body.digital_collection.hyrax-pages-show,
 body.digital_collection.hyrax-contact_form-new,
 body.digital_collection.hyrax-contact_form-create {
   #content-wrapper {
-    max-width: 78ch;
+    max-width: $dc-width-prose-page;
   }
 }
 

@@ -81,7 +81,7 @@ body.digital_collection_show.hyrax-collections-show {
   }
 
   .dc-facet-toggle,
-  .dc-facets-groups .facet-limit.card .collapse-toggle {
+  .dc-facets-groups .facet-limit.card .card-header > .btn {
     align-items: center;
     background: none;
     border: 0;
@@ -119,7 +119,7 @@ body.digital_collection_show.hyrax-collections-show {
     }
   }
 
-  .dc-facets-groups .facet-limit.card .collapse-toggle {
+  .dc-facets-groups .facet-limit.card .card-header > .btn {
     background: none !important;
     box-shadow: none;
     padding: 0 $dc-space-4 !important;
@@ -237,7 +237,7 @@ body.digital_collection_show.hyrax-collections-show {
     }
 
     .facet-count {
-      width: auto !important;
+      width: auto;
     }
 
     form.range_limit {
@@ -410,7 +410,7 @@ body.digital_collection_show.hyrax-collections-show {
       gap: $dc-space-1;
 
       li {
-        border-bottom: $dc-border solid $dc-row-rule;
+        border-bottom: $dc-border solid $dc-hairline;
         padding: $dc-space-1 0;
       }
     }

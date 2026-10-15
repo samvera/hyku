@@ -17,17 +17,18 @@ module Hyku
       return false if chosen_viewer == :pdf_js
       return super unless IIIF_VIEWERS.include?(chosen_viewer)
 
-      # An explicit choice bypasses the tenant-level checks in super (image server,
-      # media type, viewable members): the depositor has already made the call.
-      representative_id.present? && representative_presenter.present?
+      # An explicit choice bypasses the tenant-level checks in super (image server, media
+      # type) but still needs a member the viewer can draw: a work whose only file is a PDF
+      # has an empty manifest unless IIIF Print split it into pages.
+      representative_id.present? && representative_presenter.present? && members_include_iiif_viewable?
     end
 
     def show_pdf_viewer?
+      return super unless pdf_js_chosen? || unshowable_iiif_choice?
+
       # Wins over the tenant-wide default_pdf_viewer flag and the older per-work
       # show_pdf_viewer boolean, both of which super still honors for unset works.
-      return true if chosen_viewer == :pdf_js && file_set_presenters.any?(&:pdf?)
-
-      super
+      file_set_presenters.any?(&:pdf?) || super
     end
 
     private
@@ -38,6 +39,15 @@ module Hyku
       return unless Flipflop.per_work_media_viewer?
 
       solr_document['media_viewer_ssi'].presence&.to_sym
+    end
+
+    def pdf_js_chosen?
+      chosen_viewer == :pdf_js
+    end
+
+    # A IIIF viewer was chosen, but the work has nothing it can draw, so a PDF falls back to PDF.js.
+    def unshowable_iiif_choice?
+      IIIF_VIEWERS.include?(chosen_viewer) && !iiif_viewer?
     end
   end
 end

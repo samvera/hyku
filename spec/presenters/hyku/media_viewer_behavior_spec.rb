@@ -93,14 +93,46 @@ RSpec.describe Hyku::MediaViewerBehavior do
       end
     end
 
-    context 'when universal_viewer is chosen and the work has a representative' do
+    context 'when an IIIF viewer is chosen and the work has a representative' do
       let(:selected_viewer) { 'universal_viewer' }
+      let(:image) { double('file_set_presenter', id: 'image', image?: true) }
+      let(:pdf) { double('file_set_presenter', id: 'pdf', pdf?: true) }
 
-      it 'is true, forcing the IIIF branch even for a non-image representative such as a PDF' do
+      before do
         allow(presenter).to receive_messages(representative_id: '1',
                                              representative_presenter: double('file_set_presenter'))
+        allow(ability).to receive(:can?).with(:read, anything).and_return(true)
+        # The explicit choice still skips super's image server check
+        allow(Hyrax.config).to receive(:iiif_image_server?).and_return(false)
+      end
+
+      it 'is true when a member is an image, audio or video file' do
+        allow(presenter).to receive(:file_set_presenters).and_return([pdf, image])
 
         expect(presenter.iiif_viewer?).to be(true)
+      end
+
+      it 'is false when the only file is a PDF, whose manifest would be empty' do
+        allow(presenter).to receive(:file_set_presenters).and_return([pdf])
+
+        expect(presenter.iiif_viewer?).to be(false)
+      end
+
+      it 'is false when the user may not read the viewable member' do
+        allow(presenter).to receive(:file_set_presenters).and_return([image])
+        allow(ability).to receive(:can?).with(:read, 'image').and_return(false)
+
+        expect(presenter.iiif_viewer?).to be(false)
+      end
+
+      context 'when IIIF Print splits PDFs into pages' do
+        before { allow(IiifPrint::TenantConfig).to receive(:use_iiif_print?).and_return(true) }
+
+        it 'is true for a PDF, so its pages show in the chosen viewer' do
+          allow(presenter).to receive(:iiif_presentable_member_presenters).and_return([pdf])
+
+          expect(presenter.iiif_viewer?).to be(true)
+        end
       end
     end
 
@@ -151,9 +183,49 @@ RSpec.describe Hyku::MediaViewerBehavior do
       end
     end
 
-    context 'when pdf_js is not chosen' do
+    context 'when an IIIF viewer is chosen but has nothing to show' do
       let(:selected_viewer) { 'clover' }
 
+      before { allow(presenter).to receive(:iiif_viewer?).and_return(false) }
+
+      it 'falls back to PDF.js for a PDF' do
+        allow(presenter).to receive(:file_set_presenters).and_return([pdf])
+
+        expect(presenter.show_pdf_viewer?).to be(true)
+      end
+
+      context 'while the tenant-wide default_pdf_viewer flag is off' do
+        let(:default_value) { Flipflop::FeatureSet.current.feature(:default_pdf_viewer).default }
+
+        before { test_strategy.switch!(:default_pdf_viewer, false) }
+        after { test_strategy.switch!(:default_pdf_viewer, default_value) }
+
+        it 'still falls back to PDF.js, rather than leaving the PDF unshown' do
+          allow(presenter).to receive(:file_set_presenters).and_return([pdf])
+
+          expect(presenter.show_pdf_viewer?).to be(true)
+        end
+      end
+
+      it 'defers to super when there is no PDF either' do
+        allow(presenter).to receive(:file_set_presenters).and_return([image])
+
+        expect(presenter.show_pdf_viewer?).to be_falsey
+      end
+    end
+
+    context 'when an IIIF viewer is chosen and can show the work' do
+      let(:selected_viewer) { 'clover' }
+
+      it 'defers to super' do
+        allow(presenter).to receive(:iiif_viewer?).and_return(true)
+        allow(presenter).to receive(:file_set_presenters).and_return([pdf])
+
+        expect(presenter.show_pdf_viewer?).to be_falsey
+      end
+    end
+
+    context 'when no viewer is chosen' do
       it 'defers to super' do
         allow(presenter).to receive(:file_set_presenters).and_return([pdf])
 

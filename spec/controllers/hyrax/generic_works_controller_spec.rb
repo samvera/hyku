@@ -186,6 +186,18 @@ RSpec.describe Hyrax::GenericWorksController do
       end
     end
 
+    it "asks viewers for facing pages by default" do
+      expect(presenter.iiif_viewing_hint).to eq 'paged'
+    end
+
+    context "when the controller sets no viewing hint" do
+      before { allow(described_class).to receive(:iiif_viewing_hint).and_return(nil) }
+
+      it "tells the presenter" do
+        expect(presenter.iiif_viewing_hint).to be_nil
+      end
+    end
+
     context "when the controller configures its own presenter class" do
       let(:presenter_class) { Class.new(Hyrax::IiifManifestPresenter) }
 

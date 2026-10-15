@@ -36,6 +36,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="creator"]/mods:namePart
       simple_dc_pmh: dc:creator
   resource_type:
     type: string
@@ -48,9 +49,12 @@ attributes:
       - "resource_type_tesim"
     predicate: http://purl.org/dc/terms/type
     view:
+      display_label:
+        default: hyrax.oer.labels.resource_type
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:genre
       simple_dc_pmh: dc:type
     controlled_values:
       sources:
@@ -65,10 +69,9 @@ attributes:
       - "date_created_tesim"
     predicate: http://purl.org/dc/terms/date
     view:
-      render_as: "linked"
-      search_field: 'date_created_tesim'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateCreated
       simple_dc_pmh: dc:date
   audience:
     type: string
@@ -84,6 +87,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:targetAudience
       simple_dc_pmh: dc:description
     controlled_values:
       sources:
@@ -155,6 +159,7 @@ attributes:
       render_as: "rights_statement"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     controlled_values:
       sources:
@@ -172,6 +177,7 @@ attributes:
       render_as: "license"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     controlled_values:
       sources:
@@ -189,6 +195,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:abstract
       simple_dc_pmh: dc:description
   accessibility_feature:
     type: string
@@ -201,6 +208,7 @@ attributes:
       - "accessibility_feature_sim"
     predicate: http://schema.org/accessibilityFeature
     view:
+      render_as: "faceted"
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
@@ -218,6 +226,7 @@ attributes:
       - "accessibility_hazard_sim"
     predicate: http://schema.org/accessibilityHazard
     view:
+      render_as: "faceted"
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
@@ -235,6 +244,7 @@ attributes:
       - "accessibility_summary_sim"
     predicate: http://schema.org/accessibilitySummary
     view:
+      render_as: "faceted"
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
@@ -275,6 +285,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:titleInfo[@type="alternative"]/mods:title
       simple_dc_pmh: dc:title
   bibliographic_citation:
     type: string
@@ -289,6 +300,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:note[@type="preferred citation"]
       simple_dc_pmh: dc:relation
   contributor:
     type: string
@@ -304,6 +316,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="contributor"]/mods:namePart
       simple_dc_pmh: dc:contributor
   description:
     type: string
@@ -318,6 +331,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:note
       simple_dc_pmh: dc:description
   identifier:
     type: string
@@ -330,10 +344,10 @@ attributes:
       - "identifier_tesim"
     predicate: http://purl.org/dc/terms/identifier
     view:
-      render_as: "linked"
       search_field: 'identifier_tesim'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:identifier
       simple_dc_pmh: dc:identifier
   keyword:
     type: string
@@ -349,6 +363,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:topic
       simple_dc_pmh: dc:subject
   language:
     type: string
@@ -364,6 +379,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:language/mods:languageTerm
       simple_dc_pmh: dc:language
   oer_size:
     type: string
@@ -375,6 +391,8 @@ attributes:
       - "oer_size_tesim"
     predicate: http://purl.org/dc/terms/extent
     view:
+      display_label:
+        default: simple_form.labels.defaults.oer_size
       html_dl: true
     mappings:
       simple_dc_pmh: dc:format
@@ -392,6 +410,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:publisher
       simple_dc_pmh: dc:publisher
   related_url:
     type: string
@@ -404,9 +423,12 @@ attributes:
       - "related_url_tesim"
     predicate: http://www.w3.org/2000/01/rdf-schema#seeAlso
     view:
+      display_label:
+        default: simple_form.labels.defaults.related_url
       render_as: "external_link"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:relatedItem/mods:location/mods:url
       simple_dc_pmh: dc:relation
   rights_holder:
     type: string
@@ -419,6 +441,7 @@ attributes:
       - "rights_holder_sim"
     predicate: http://purl.org/dc/terms/rightsHolder
     view:
+      render_as: "linked"
       html_dl: true
     mappings:
       simple_dc_pmh: dc:rights
@@ -432,8 +455,10 @@ attributes:
       - "rights_notes_tesim"
     predicate: https://hykucommons.org/terms/rights_notes
     view:
+      render_as: "linked"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
   source:
     type: string
@@ -463,6 +488,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:topic
       simple_dc_pmh: dc:subject
   table_of_contents:
     type: string
@@ -476,6 +502,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:tableOfContents
       simple_dc_pmh: dc:description
   previous_version_id:
     type: string
@@ -533,6 +560,7 @@ attributes:
       search_field: 'date_tesim'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateIssued
       simple_dc_pmh: dc:date
   access_right:
     type: string
@@ -544,6 +572,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="restriction on access"]
       simple_dc_pmh: dc:rights
   arkivo_checksum:
     type: string
@@ -562,6 +591,7 @@ attributes:
       render_term: 'based_near_label'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:geographic
       simple_dc_pmh: dc:coverage
   import_url:
     type: string

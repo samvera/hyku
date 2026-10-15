@@ -46,6 +46,63 @@ RSpec.describe "OAI PMH Support", type: :feature do
     end
   end
 
+  context 'with the mods prefix' do
+    let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
+    let(:mods_namespace) { 'http://www.loc.gov/mods/v3' }
+
+    after { test_strategy.switch!(:oai_mods, false) }
+
+    context 'when the oai_mods feature is on' do
+      before { test_strategy.switch!(:oai_mods, true) }
+
+      it 'lists the format' do
+        visit oai_catalog_path(verb: 'ListMetadataFormats')
+        expect(page.body).to include(mods_namespace)
+      end
+
+      it 'retrieves a single record as MODS' do
+        visit oai_catalog_path(verb: 'GetRecord', metadataPrefix: 'mods', identifier:)
+        record = Nokogiri::XML(page.body).at_xpath('//m:mods', 'm' => mods_namespace)
+        expect(record.at_xpath('m:titleInfo/m:title', 'm' => mods_namespace).text).to eq work.title.first
+      end
+
+      it 'retrieves a list of records as MODS' do
+        visit oai_catalog_path(verb: 'ListRecords', metadataPrefix: 'mods')
+        expect(page.body).to include("#{Site.account.oai_prefix}:#{identifier}", mods_namespace)
+      end
+
+      context 'when a flexible metadata profile maps nothing to MODS' do
+        around do |example|
+          profile = YAML.load_file(Rails.root.join('spec', 'fixtures', 'files', 'm3_profile.yaml'))
+          profile['properties'].each_value { |property| property['mappings']&.delete('mods_oai_pmh') }
+          original_value = Hyrax.config.flexible
+          Hyrax.config.flexible = true
+          schema = Hyrax::FlexibleSchema.create(profile:)
+          example.run
+          schema.destroy
+          Hyrax.config.flexible = original_value
+        end
+
+        it 'does not offer the format' do
+          visit oai_catalog_path(verb: 'ListMetadataFormats')
+          expect(page.body).not_to include(mods_namespace)
+        end
+      end
+    end
+
+    context 'when the oai_mods feature is off' do
+      it 'does not list the format' do
+        visit oai_catalog_path(verb: 'ListMetadataFormats')
+        expect(page.body).not_to include(mods_namespace)
+      end
+
+      it 'refuses to disseminate records in it' do
+        visit oai_catalog_path(verb: 'GetRecord', metadataPrefix: 'mods', identifier:)
+        expect(page.body).to include('cannotDisseminateFormat')
+      end
+    end
+  end
+
   # `uri` is immutable once saved and `label` is not, so the id is the stable
   # half of a term for a harvester to key on.
   context 'for a work with a controlled vocabulary value' do

@@ -4,13 +4,17 @@ module Hyku
   module Ranges
     def file_set_presenters(seen: Set.new)
       return super() unless Flipflop.iiif_ranges?
+
+      # The manifest's own metadata already describes this work, so only a child work's pages carry
+      # their work's metadata.
+      child_work = seen.any?
       return [] unless seen.add?(id.to_s)
 
       member_presenters.flat_map do |member|
         if member.work?
           member.file_set_presenters(seen: seen)
         elsif displayable_file_set?(member)
-          member.item_metadata = item_metadata
+          member.item_metadata = item_metadata if child_work
           [member]
         else
           []

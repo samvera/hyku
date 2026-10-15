@@ -11,14 +11,14 @@
   #content-wrapper {
     max-width: none;
     padding: 0 !important;
+    width: 100%;
   }
 
   // ---- breadcrumb ----
   .breadcrumb {
-    @include ref-gutter;
+    @include ref-gutter($max: 1280px - $ref-gutter * 2);
     background: $ref-surface;
     border: 0;
-    border-bottom: 1px solid $ref-rule;
     border-radius: 0;
     font-size: 14px;
     margin: 0;
@@ -46,7 +46,7 @@
   }
 
   .ref-show-actions {
-    @include ref-gutter;
+    @include ref-gutter($max: 1280px - $ref-gutter * 2);
     padding-bottom: 14px;
     padding-top: 14px;
 
@@ -54,7 +54,7 @@
     // margins and column padding pull them off the gutter
     .show-actions {
       align-items: center;
-      margin: 0;
+      margin: 0 -0.75rem;
     }
 
     // laid out rather than left inline, so the whitespace between the buttons
@@ -95,6 +95,8 @@
 
   .ref-record-inner {
     @include ref-gutter;
+    margin: 0 auto;
+    max-width: 1280px;
     padding-bottom: 34px;
     padding-top: 38px;
   }
@@ -123,7 +125,7 @@
   .ref-record-title {
     @include ref-serif;
     color: $ref-ink;
-    font-size: 40px;
+    font-size: 34px;
     font-weight: 400;
     letter-spacing: -0.01em;
     line-height: 1.16;
@@ -131,12 +133,8 @@
     overflow-wrap: anywhere;
     text-wrap: pretty;
 
-    @media (max-width: $ref-tablet-max) {
-      font-size: 32px;
-    }
-
     @media (max-width: $ref-mobile-max) {
-      font-size: 27px;
+      font-size: 26px;
     }
   }
 
@@ -170,7 +168,8 @@
   // only job here is being the positioned ancestor it fills
   .ref-viewer {
     @include ref-gutter;
-    margin-top: 24px;
+    margin: 24px auto 0;
+    max-width: 1280px;
 
     .viewer-wrapper {
       background: #000;
@@ -221,13 +220,15 @@
 
   // ---- description ----
   .ref-show-description {
-    @include ref-gutter(192px, 96px);
+    @include ref-gutter;
+    margin: 0 auto;
+    max-width: 1280px;
     padding-top: 26px;
 
     p {
       @include ref-serif;
       color: $ref-ink;
-      font-size: 25px;
+      font-size: 22px;
       line-height: 1.6;
       margin: 0 0 14px;
       max-width: 820px;
@@ -235,7 +236,7 @@
       text-wrap: pretty;
 
       @media (max-width: $ref-mobile-max) {
-        font-size: 20px;
+        font-size: 18px;
       }
     }
 
@@ -246,10 +247,12 @@
 
   // ---- body grid ----
   .ref-show-body {
-    @include ref-gutter(192px, 96px);
+    @include ref-gutter;
     display: grid;
     gap: 44px;
     grid-template-columns: minmax(0, 1fr) 360px;
+    margin: 0 auto;
+    max-width: 1280px;
     padding-bottom: 48px;
     padding-top: 26px;
 

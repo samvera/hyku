@@ -33,9 +33,12 @@ attributes:
       - "creator_tesim"
     predicate: http://purl.org/dc/elements/1.1/creator
     view:
+      display_label:
+        default: hyrax.etd.labels.creator
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="creator"]/mods:namePart
       simple_dc_pmh: dc:creator
   keyword:
     type: string
@@ -51,6 +54,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:topic
       simple_dc_pmh: dc:subject
   rights_statement:
     type: string
@@ -63,10 +67,13 @@ attributes:
       - "rights_statement_tesim"
     predicate: http://www.europeana.eu/schemas/edm/rights
     view:
+      display_label:
+        default: hyrax.etd.labels.rights_statement
       html_dl: true
       render_as: "rights_statement"
     predicate: http://www.europeana.eu/schemas/edm/rights
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     controlled_values:
       sources:
@@ -85,6 +92,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateIssued
       simple_dc_pmh: dc:date
   degree_name:
     type: string
@@ -97,7 +105,8 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/degree_name
     view:
-      render_as: "faceted"
+      display_label:
+        default: hyrax.etd.labels.degree_name
       html_dl: true
     mappings:
       simple_dc_pmh: dc:type
@@ -112,7 +121,8 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/degree_level
     view:
-      render_as: "faceted"
+      display_label:
+        default: hyrax.etd.labels.degree_level
       html_dl: true
     mappings:
       simple_dc_pmh: dc:type
@@ -127,7 +137,8 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/degree_discipline
     view:
-      render_as: "faceted"
+      display_label:
+        default: hyrax.etd.labels.degree_discipline
       html_dl: true
     mappings:
       simple_dc_pmh: dc:subject
@@ -142,9 +153,11 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/degree_grantor
     view:
-      render_as: "faceted"
+      display_label:
+        default: hyrax.etd.labels.degree_grantor
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="degree granting institution"]/mods:namePart
       simple_dc_pmh: dc:publisher
   resource_type:
     type: string
@@ -158,9 +171,12 @@ attributes:
       - "resource_type_tesim"
     predicate: http://purl.org/dc/terms/type
     view:
+      display_label:
+        default: hyrax.etd.labels.resource_type
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:genre
       simple_dc_pmh: dc:type
     controlled_values:
       sources:
@@ -178,6 +194,7 @@ attributes:
       render_as: "license"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     controlled_values:
       sources:
@@ -194,6 +211,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:abstract
       simple_dc_pmh: dc:description
   access_right:
     type: string
@@ -207,6 +225,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="restriction on access"]
       simple_dc_pmh: dc:rights
   additional_information:
     type: string
@@ -246,9 +265,11 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/advisor
     view:
-      render_as: "faceted"
+      display_label:
+        default: simple_form.labels.defaults.advisor
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="thesis advisor"]/mods:namePart
       simple_dc_pmh: dc:contributor
   alternative_title:
     type: string
@@ -262,6 +283,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:titleInfo[@type="alternative"]/mods:title
       simple_dc_pmh: dc:title
   based_near:
     type: string
@@ -276,6 +298,7 @@ attributes:
       render_term: 'based_near_label'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:geographic
       simple_dc_pmh: dc:coverage
   bibliographic_citation:
     type: string
@@ -289,6 +312,7 @@ attributes:
     view:
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:note[@type="preferred citation"]
       simple_dc_pmh: dc:relation
   committee_member:
     type: string
@@ -301,9 +325,11 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/committee_member
     view:
-      render_as: "faceted"
+      display_label:
+        default: hyrax.etd.labels.committee_member
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="degree committee member"]/mods:namePart
       simple_dc_pmh: dc:contributor
   contributor:
     type: string
@@ -318,6 +344,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="contributor"]/mods:namePart
       simple_dc_pmh: dc:contributor
   department:
     type: string
@@ -330,7 +357,8 @@ attributes:
       multiple: true
     predicate: https://hykucommons.org/terms/department
     view:
-      render_as: "faceted"
+      display_label:
+        default: simple_form.labels.defaults.department
       html_dl: true
     mappings:
       simple_dc_pmh: dc:contributor
@@ -344,6 +372,7 @@ attributes:
       - "description_tesim"
     predicate: http://purl.org/dc/elements/1.1/description
     mappings:
+      mods_oai_pmh: mods:note
       simple_dc_pmh: dc:description
   format:
     type: string
@@ -356,8 +385,11 @@ attributes:
       multiple: true
     predicate: http://purl.org/dc/terms/format
     view:
+      display_label:
+        default: simple_form.labels.defaults.format
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:physicalDescription/mods:form
       simple_dc_pmh: dc:format
   identifier:
     type: string
@@ -373,6 +405,7 @@ attributes:
       search_field: 'identifier_tesim'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:identifier
       simple_dc_pmh: dc:identifier
   language:
     type: string
@@ -387,6 +420,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:language/mods:languageTerm
       simple_dc_pmh: dc:language
   publisher:
     type: string
@@ -401,6 +435,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:publisher
       simple_dc_pmh: dc:publisher
   related_url:
     type: string
@@ -412,9 +447,12 @@ attributes:
       - "related_url_tesim"
     predicate: http://www.w3.org/2000/01/rdf-schema#seeAlso
     view:
+      display_label:
+        default: simple_form.labels.defaults.related_url
       render_as: "external_link"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:relatedItem/mods:location/mods:url
       simple_dc_pmh: dc:relation
   rights_notes:
     type: string
@@ -426,8 +464,10 @@ attributes:
       - "rights_notes_tesim"
     predicate: http://purl.org/dc/elements/1.1/rights
     view:
+      render_as: "linked"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
   source:
     type: string
@@ -455,6 +495,7 @@ attributes:
       render_as: "faceted"
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:subject/mods:topic
       simple_dc_pmh: dc:subject
   arkivo_checksum:
     type: string
@@ -472,10 +513,13 @@ attributes:
       - "date_created_tesim"
     predicate: http://purl.org/dc/terms/created
     view:
+      display_label:
+        default: hyrax.etd.labels.date_created
       render_as: "linked"
       search_field: 'date_created_tesim'
       html_dl: true
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateCreated
       simple_dc_pmh: dc:date
   import_url:
     type: string

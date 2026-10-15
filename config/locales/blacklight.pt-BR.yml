@@ -9,6 +9,7 @@ pt-BR:
           resource_type_label_sim: "Tipo de recurso"
           based_near_label_sim: Localização
           creator_sim: O Criador
+          date_range_isim: Intervalo de datas
           depositor_ssim: Depositante
           file_format_sim: Formato
           generic_type_sim: Tipo

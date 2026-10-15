@@ -9,6 +9,7 @@ it:
           resource_type_label_sim: "Tipo di risorsa"
           based_near_label_sim: luogo
           creator_sim: Creatore
+          date_range_isim: Intervallo di date
           depositor_ssim: Depositante
           file_format_sim: Formato
           generic_type_sim: Tipo

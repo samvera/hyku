@@ -23,10 +23,10 @@ $hrt-chrome: join($hrt-chrome-home, $hrt-chrome-show, comma);
   // ---- page frame ---------------------------------------------------------
 
   #content-wrapper {
-    max-width: none;
-    padding: 0;
-    // .navbar + .container pins a 0.5rem top padding, itself !important
-    padding-top: 0 !important;
+    margin: 0 auto;
+    max-width: 1280px;
+    padding: 0 24px !important;
+    width: 100%;
   }
 
   // ---- headings -----------------------------------------------------------
@@ -57,16 +57,12 @@ $hrt-chrome: join($hrt-chrome-home, $hrt-chrome-show, comma);
   // ---- breadcrumb ---------------------------------------------------------
 
   .breadcrumb {
-    @include hrt-gutter;
-
     background: $hrt-surface;
-    border-bottom: 1px solid $hrt-rule-light;
+    border: 0;
     border-radius: 0;
-    border-top: 0;
     font-size: 14px;
     margin: 0;
-    padding-bottom: 14px;
-    padding-top: 14px;
+    padding: 14px 0;
 
     li {
       color: $hrt-ink-label;
@@ -590,38 +586,35 @@ body.heritage.advanced-index {
   }
 }
 
-// ---- content pages and contact form -----------------------------------------
+// ---- contact form -----------------------------------------------------------
+
+body.heritage.hyrax-contact_form-new,
+body.heritage.hyrax-contact_form-create {
+  #content-wrapper {
+    margin: 0 auto;
+    max-width: 960px;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    width: 100%;
+  }
+}
 
 body.heritage.hyrax-pages-show,
 body.heritage.hyrax-contact_form-new,
 body.heritage.hyrax-contact_form-create {
-  #content-wrapper > .alert,
-  #content-wrapper > h1,
-  #content-wrapper > form {
-    @include hrt-gutter;
-  }
-
-  #content-wrapper > form > * {
-    max-width: 900px;
-  }
-
   #content-wrapper > .alert {
     background: $hrt-notice-bg;
     border-color: $hrt-notice-edge;
-    margin-left: 0;
-    margin-right: 0;
     padding-bottom: 14px;
     padding-top: 14px;
   }
 
   #content_block_page {
-    @include hrt-gutter;
-
-    margin-left: 0;
-    margin-right: 0;
-    max-width: 74ch;
+    margin: 0 auto;
+    max-width: 1280px;
     padding-bottom: 40px;
     padding-top: 30px;
+    text-align: left;
   }
 
   #content_block_page,
@@ -648,7 +641,7 @@ body.heritage.hyrax-contact_form-create {
   }
 
   #content-wrapper > .alert {
-    margin-top: 20px;
+    margin: 20px 0 0;
   }
 
   #content-wrapper > h1 {
@@ -689,10 +682,10 @@ body.heritage.hyrax-contact_form-create {
 
 // ---- collection show ---------------------------------------------------------
 
-body.heritage_show.hyrax-collections-show,
-body.heritage_show.hyrax-file_sets-show {
+body.heritage_show.hyrax-collections-show {
   .breadcrumb {
-    @include hrt-gutter($laptop: 32px);
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -715,7 +708,8 @@ body.heritage_show.hyrax-collections-show {
 
   .hyc-body,
   .hyc-blacklight {
-    @include hrt-gutter($laptop: 32px);
+    padding-left: 0;
+    padding-right: 0;
   }
 
   // ---- banner ----
@@ -847,7 +841,7 @@ body.heritage_show.hyrax-collections-show {
   }
 
   .hyc-body > [class*='col-']:first-child {
-    @include hrt-mat(14px);
+    @include hrt-mat(0);
 
     align-self: start;
   }
@@ -962,6 +956,12 @@ body.heritage_show.hyrax-collections-show {
 
 body.heritage_show.hyrax-file_sets-show {
   overflow-x: clip;
+
+  .breadcrumb {
+    @include hrt-gutter($laptop: 32px);
+    padding-bottom: 14px;
+    padding-top: 14px;
+  }
 
   .container-fluid {
     @include hrt-gutter($laptop: 32px);

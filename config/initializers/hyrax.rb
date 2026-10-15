@@ -265,6 +265,11 @@ Hyrax.config do |config|
   original_translator = config.translate_id_to_uri
   config.translate_id_to_uri = ->(id) { original_translator.call(id.to_s) }
 
+  config.flexible_schema_validators += %w[
+    Hyku::FlexibleSchemaValidators::ModsMappingValidator
+    Hyku::FlexibleSchemaValidators::DublinCoreMappingValidator
+  ]
+
   # Extend the redirects reserved-prefix list with Hyku-specific routes that
   # the upstream Hyrax default doesn't know about. Excludes admin-host-only
   # routes (/account, /proprietor) since those are host-scoped via
@@ -326,7 +331,7 @@ Rails.application.config.to_prepare do
   require 'hydra/derivatives'
   Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
 
-  Hyrax.publisher.subscribe(HyraxListener.new)
+  Hyku::ListenerSubscription.replace(HyraxListener.new)
 
   unless Hyrax::Transactions::Container.key?('collection_resource.save_collection_thumbnail')
     Hyrax::Transactions::Container.namespace('collection_resource') do |ops|

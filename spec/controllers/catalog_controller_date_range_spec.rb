@@ -11,6 +11,11 @@ RSpec.describe CatalogController do
       expect(facet).to be_present
     end
 
+    it 'takes its label from the locale' do
+      expect(facet.display_label('facet')).to eq 'Date Range'
+      I18n.with_locale(:de) { expect(facet.display_label('facet')).to eq 'Datumsbereich' }
+    end
+
     it 'is a range facet' do
       expect(facet.range).to be true
     end

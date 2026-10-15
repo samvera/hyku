@@ -134,6 +134,29 @@ RSpec.describe DemoTenantResetService do
       expect(snap['featured_work_identifiers']).to eq []
       expect(snap['captured_at']).to be_present
     end
+
+    context 'when a snapshot already exists' do
+      before do
+        account.update!(demo_tenant_snapshot: snapshot)
+      end
+
+      it 'raises SnapshotExists by default' do
+        service = described_class.new(account:)
+        allow(service).to receive(:within_tenant).and_yield
+        expect { service.snapshot! }.to raise_error(described_class::SnapshotExists)
+      end
+
+      it 'overwrites when force: true' do
+        service = described_class.new(account:)
+        allow(service).to receive(:within_tenant).and_yield
+        Site.instance.update!(application_name: 'Updated Golden')
+
+        service.snapshot!(force: true)
+
+        snap = account.reload.demo_tenant_snapshot
+        expect(snap['site']['application_name']).to eq 'Updated Golden'
+      end
+    end
   end
 
   describe 'seed csv path' do
@@ -255,6 +278,47 @@ RSpec.describe DemoTenantResetService do
     # drain excluding its own row and the hang would return with a green suite.
     it 'names a job class that exists' do
       expect(described_class::RESET_JOB_CLASS).to eq DemoTenantResetJob.name
+    end
+  end
+
+  describe '#delete_stored_files!' do
+    subject(:service) { described_class.new(account:) }
+
+    let(:file_set) { instance_double(Hyrax::FileSet, id: 'fs-1') }
+    let(:file_metadata) do
+      instance_double(Hyrax::FileMetadata, file_identifier: Valkyrie::ID.new('disk://path/to/file'))
+    end
+
+    before do
+      allow(Hyrax.custom_queries).to receive(:find_files).with(file_set: file_set).and_return([file_metadata])
+    end
+
+    it 'deletes stored files and file metadata for a file set' do
+      expect(Valkyrie::StorageAdapter).to receive(:delete).with(id: file_metadata.file_identifier)
+      expect(Hyrax.persister).to receive(:delete).with(resource: file_metadata)
+      service.send(:delete_stored_files!, file_set)
+    end
+
+    it 'skips storage deletion when file_identifier is blank' do
+      allow(file_metadata).to receive(:file_identifier).and_return(nil)
+      expect(Valkyrie::StorageAdapter).not_to receive(:delete)
+      expect(Hyrax.persister).to receive(:delete).with(resource: file_metadata)
+      service.send(:delete_stored_files!, file_set)
+    end
+
+    it 'logs a warning and continues to the next file when one deletion fails' do
+      good_metadata = instance_double(Hyrax::FileMetadata,
+                                      file_identifier: Valkyrie::ID.new('disk://path/to/good'))
+      allow(Hyrax.custom_queries).to receive(:find_files)
+        .with(file_set: file_set).and_return([file_metadata, good_metadata])
+      allow(Valkyrie::StorageAdapter).to receive(:delete)
+        .with(id: file_metadata.file_identifier).and_raise(StandardError, 'gone')
+      allow(Valkyrie::StorageAdapter).to receive(:delete).with(id: good_metadata.file_identifier)
+
+      expect(Rails.logger).to receive(:warn).with(/failed to delete stored file/)
+      expect(Hyrax.persister).not_to receive(:delete).with(resource: file_metadata)
+      expect(Hyrax.persister).to receive(:delete).with(resource: good_metadata)
+      service.send(:delete_stored_files!, file_set)
     end
   end
 

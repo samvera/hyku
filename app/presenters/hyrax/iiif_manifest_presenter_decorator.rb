@@ -62,6 +62,8 @@ end
 
 Hyrax::IiifManifestPresenter.prepend(Hyrax::IiifManifestPresenterDecorator)
 Hyrax::IiifManifestPresenter.prepend(Hyku::Ranges)
+Hyrax::IiifManifestPresenter.prepend(Hyku::FileSetMetadata)
+Hyrax::IiifManifestPresenter.prepend(Hyku::ViewingHint)
 Hyrax::IiifManifestPresenter::DisplayImagePresenter
   .prepend(Hyrax::IiifManifestPresenterDecorator::DisplayImagePresenterDecorator)
 Hyrax::IiifManifestPresenter::DisplayImagePresenter

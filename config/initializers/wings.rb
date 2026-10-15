@@ -105,7 +105,7 @@ Rails.application.config.after_initialize do
     end
 
     [
-      Wings::CustomQueries::FindBySourceIdentifier
+      Hyrax::CustomQueries::FindByPropertyValue
     ].each do |handler|
       Hyrax.query_service.services[1].custom_queries.register_query_handler(handler)
     end

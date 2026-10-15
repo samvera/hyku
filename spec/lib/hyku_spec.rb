@@ -103,6 +103,26 @@ RSpec.describe Hyku do
         expect(described_class.default_bulkrax_field_mappings).to be_a(ActiveSupport::HashWithIndifferentAccess)
         expect(described_class.default_bulkrax_field_mappings.keys.sort).to eq(default_bulkrax_mapping_keys.sort)
       end
+
+      describe 'the CSV parser mappings' do
+        subject(:csv_mappings) { described_class.default_bulkrax_field_mappings['Bulkrax::CsvParser'] }
+
+        it 'exports descriptive fields people enter' do
+          %w[rights_statement alternative_title additional_information].each do |field|
+            expect(csv_mappings[field]).not_to include('generated'), "#{field} is flagged generated, so exports drop it"
+          end
+        end
+
+        it 'still leaves system-maintained fields out of exports' do
+          %w[date_uploaded depositor admin_set_id state].each do |field|
+            expect(csv_mappings.dig(field, 'generated')).to be(true), "#{field} should stay generated"
+          end
+        end
+
+        it 'exports the rights statement under the rights_statement column' do
+          expect(csv_mappings.dig('rights_statement', 'from').first).to eq('rights_statement')
+        end
+      end
     end
   end
 end

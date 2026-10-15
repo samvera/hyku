@@ -4,16 +4,20 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <style>
-          html, body { margin: 0; height: 100%; }
+          /* Clover inherits its text colour from this page, and every show theme frames the
+             viewer in black, so a transparent page left the panel black on black. */
+          html, body { margin: 0; height: 100%; background: #000; color: #f2f2f2; color-scheme: dark; }
+          .clover-viewer-information-panel a { color: #7fb8ff; }
           clover-viewer { display: block; height: 100%; }
           clover-viewer :has(.clover-viewer-content) { height: 100% !important; }
           .clover-viewer-content { height: 100% !important; }
           .clover-viewer-player-wrapper,
           .clover-viewer-painting :has(> .clover-viewer-player-wrapper) { background-color: transparent !important; }
-          .clover-viewer-painting,
-          [data-testid="media"] { padding-left: 16px !important; padding-right: 16px !important; }
           .clover-viewer-information-panel { overflow-wrap: anywhere; }
           [data-testid="information-panel-cue"] strong { white-space: nowrap; margin-left: .75rem; }
+          .clover-viewer-information-panel, .clover-viewer-information-panel * { box-sizing: border-box; }
+          .clover-viewer-header > span:first-child { padding-left: 1rem !important; }
+          .clover-viewer-header > div:last-child { padding-right: 1rem !important; }
         </style>
     </head>
     <body>
@@ -25,6 +29,20 @@
         // Clover takes the manifest URL from `id`, and setAttribute would stringify
         // a missing one to "null" rather than leaving it unset.
         if (manifestUrl) viewer.setAttribute('id', manifestUrl);
+
+        // The web component cannot pass Clover the option to start with its information panel
+        // closed, and Clover opens it once mounted, so close it whenever it opens until the
+        // visitor uses the toggle themselves.
+        const keepPanelClosed = new MutationObserver(() => {
+          const toggle = document.getElementById('information-toggle');
+          if (toggle?.getAttribute('aria-checked') === 'true') toggle.click();
+        });
+        keepPanelClosed.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['aria-checked'] });
+        ['pointerdown', 'keydown'].forEach((type) => {
+          document.addEventListener(type, (event) => {
+            if (event.target.closest?.('#information-toggle')) keepPanelClosed.disconnect();
+          }, true);
+        });
     </script>
     </body>
 </html>

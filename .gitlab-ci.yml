@@ -87,7 +87,7 @@ test:
       alias: fcrepo
     - name: redis:5-alpine
       alias: redis
-    - name: bitnami/zookeeper:3
+    - name: soldevelo/zookeeper:3.9
       alias: zk
     - name: bitnami/solr:8
       alias: solr

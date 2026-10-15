@@ -263,6 +263,29 @@ When a flexible (m3) profile is saved, Hyrax emits **non-blocking warnings** (it
 - `input_type: rich_text` on a controlled-vocabulary property — the rich-text editor pre-empts the controlled-value widget, so the controlled config is effectively ignored.
 - `search_results_truncate` declared without `render_as: html` — the setting is a silent no-op there, since truncation is only wired into the HTML renderer.
 
+## IIIF Manifests
+
+Each work type's controller can adjust its IIIF manifest with these class attributes, set on the controller (for example `app/controllers/hyrax/images_controller.rb`):
+
+| Setting | Default | Effect |
+| --- | --- | --- |
+| `iiif_file_set_metadata` | `false` | When `true`, each page (canvas) carries its own file set's metadata, built from the file set's metadata profile. Needs flexible metadata and IiifPrint 3.2 or later (`IiifPrint::Flexibility`); otherwise pages get nothing extra. |
+| `iiif_viewing_hint` | `'paged'` | The layout hint viewers get: `viewingHint` in a IIIF v2 manifest, `behavior` in v3. `'paged'` shows two-page spreads; `nil` leaves the hint out, so viewers show one page at a time. |
+
+```ruby
+module Hyrax
+  class ImagesController < ApplicationController
+    include Hyrax::WorksControllerBehavior
+    include Hyku::WorksControllerBehavior
+    # ...
+    self.iiif_file_set_metadata = true
+    self.iiif_viewing_hint = nil
+  end
+end
+```
+
+These apply to every tenant. To change the viewing hint for every work type at once, override `Hyku::ViewingHint.default_viewing_hint`.
+
 ## Controlled Vocabularies
 
 For detailed information about configuring controlled vocabularies in Hyku when using flexible metadata, see the [Controlled Vocabularies Guide](./controlled-vocabularies.md).

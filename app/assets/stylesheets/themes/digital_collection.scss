@@ -234,7 +234,7 @@
     gap: $dc-space-3;
     left: calc((100% - #{$dc-content-max}) / 2 + #{$dc-gutter});
     margin: 0;
-    max-width: unquote("min(#{$dc-width-hero-caption}, calc(100% - #{$dc-gutter * 2} - #{$dc-hero-controls-reserve}))");
+    max-width: unquote("MIN(#{$dc-width-hero-caption}, calc(100% - #{$dc-gutter * 2} - #{$dc-hero-controls-reserve}))");
     padding: $dc-space-3 $dc-space-5;
     position: absolute;
     z-index: 2;

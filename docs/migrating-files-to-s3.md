@@ -29,7 +29,7 @@ New files now get `shrine://` identifiers. Existing files keep working from disk
 
 ## 4. Migrate existing files
 
-The task is re-runnable (migrated files are skipped) and never deletes the disk copy. Run it from a Rails console/shell on a pod with the volume mounted:
+The task is re-runnable (migrated files are skipped) and never deletes the disk copy. Each upload is read back from S3 and its SHA-256 compared with the disk file before the identifier is switched; on a mismatch the upload is removed and the file stays on disk. Run it from a Rails console/shell on a pod with the volume mounted:
 
 ```bash
 DRY_RUN=true TENANT=<cname> bundle exec rake hyku:migrate_files_to_s3
@@ -41,6 +41,7 @@ Omit `TENANT` to run every tenant. Errors (for example a file missing on disk) a
 
 ## 5. Verify
 
+- Audit what is in S3 (read-only; checks existence, recorded size and stored MD5): `TENANT=<cname> bundle exec rake hyku:verify_files_in_s3`. Expect `Problems: 0`.
 - A newly created work's original has a `shrine://` identifier.
 - Old and new works still display their files (viewer/IIIF, downloads) after clearing caches.
 - Thumbnails are unaffected (they are derivatives).

@@ -477,7 +477,7 @@
   }
 
   .dc-collection-plate {
-    @include dc-image-plate;
+    @include dc-image-plate($fit: contain);
     aspect-ratio: 16 / 10;
 
     &.dc-thumb-placeholder img {
@@ -867,10 +867,6 @@
     .dc-featured-thumb-wide {
       height: $dc-height-thumb-recent;
       width: $dc-width-thumb-recent;
-
-      img {
-        object-fit: cover;
-      }
     }
 
     .dc-featured-body {

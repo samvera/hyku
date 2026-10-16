@@ -796,6 +796,7 @@ body.digital_collection_show.hyrax-collections-show {
       background: $dc-surface-alt;
       border: $dc-border solid $dc-hairline;
       height: auto;
+      object-fit: contain;
       width: 100%;
     }
   }

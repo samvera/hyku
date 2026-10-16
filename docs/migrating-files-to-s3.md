@@ -29,15 +29,22 @@ New files now get `shrine://` identifiers. Existing files keep working from disk
 
 ## 4. Migrate existing files
 
-The task is re-runnable (migrated files are skipped) and never deletes the disk copy. Each upload is read back from S3 and its SHA-256 compared with the disk file before the identifier is switched; on a mismatch the upload is removed and the file stays on disk. Before uploading, the disk file is also checked against the checksum recorded at characterization (MD5 or SHA-1); a mismatch is reported as `SUSPECT` and the file is not migrated, so corruption already on disk is caught up front. Dry runs report suspects too, but hash every file. Run it from a Rails console/shell on a pod with the volume mounted:
+`hyku:migrate_files_to_s3` enqueues one background job per file set (`MigrateTenantFilesToS3Job` lists a tenant's disk files, `MigrateFileSetToS3Job` moves each one), so speed scales with your job workers. Each job uploads the file, reads it back from S3 and compares its SHA-256 with the disk file, and only then switches the identifier; on a mismatch the upload is removed and the file stays on disk. Before uploading, the disk file is also checked against the checksum recorded at characterization (MD5 or SHA-1); a mismatch is reported as `suspect` and the file is not migrated. Transient errors retry. The disk copy is never touched, and the task is re-runnable (migrated files are skipped).
+
+Start with a dry run, which runs inline and prints what it would do (it reads every file to check checksums, so it takes a while on large tenants):
 
 ```bash
 DRY_RUN=true TENANT=<cname> bundle exec rake hyku:migrate_files_to_s3
-LIMIT=5 TENANT=<cname> bundle exec rake hyku:migrate_files_to_s3
+```
+
+Then a small real batch, run inline so you can read the output, followed by the full run, which enqueues jobs:
+
+```bash
+INLINE=true LIMIT=5 TENANT=<cname> bundle exec rake hyku:migrate_files_to_s3
 TENANT=<cname> bundle exec rake hyku:migrate_files_to_s3
 ```
 
-Omit `TENANT` to run every tenant. For a large tenant, run several processes at once with `SHARD=<i>/<n>` (zero-based, e.g. `SHARD=0/4` through `SHARD=3/4`), each in its own pod or Job rather than an interactive console. Shards never overlap, and a file already migrated elsewhere is skipped (and its extra upload removed) just before the identifier is saved. Sum the summary lines at the end. Watch the shared volume's throughput while running: the live site reads from it too, so start with two shards. Every shard still lists all file sets for the tenant; only the per-file work is split. Errors (for example a file missing on disk) are printed per file and counted at the end; investigate them before cleaning up. To run in the background across tenants, see [Run rake task on all or selected tenants](wiki/Run-rake-task-on-all-or-selected-tenants.md).
+Omit `TENANT` to run every tenant (the cross-tenant `search` account is skipped, and a failing tenant is reported while the rest continue). Set `S3_MIGRATION_QUEUE` to run the jobs on a dedicated queue (your workers must be listening to it) so ingest and derivative jobs are not starved. Per-file results are logged as `[S3Migration] <file set id> <status>`. Every migrated file also gets a manifest object (see step 6). Watch the shared volume's throughput while it runs: the live site reads from it too, so start with few workers.
 
 ## 5. Verify
 
@@ -49,11 +56,11 @@ Omit `TENANT` to run every tenant. For a large tenant, run several processes at 
 
 ## 6. Reclaim EFS space
 
-Every migrated file is recorded in a manifest in the bucket (`_migration-manifests/<run id>/*.jsonl`: tenant, file set and file IDs, old disk id, new S3 id, size, SHA-256) and printed as `MANIFEST` lines. Deletion is manifest-driven, never `rm -rf storage/files`.
+Every migrated file is recorded in a manifest object in the bucket (`_migration-manifests/<file set id>.json`: tenant, file set and file IDs, old disk id, new S3 id, size, SHA-256). Deletion is manifest-driven, never `rm -rf storage/files`.
 
 1. Take an EFS snapshot / AWS Backup recovery point. Keep bucket versioning on.
 2. `bundle exec rake hyku:report_file_storage` lists what is still on disk by file use and scheme. The migration only moves originals; extracted text, other file versions etc. may still be `disk://` and are not covered by the manifest.
-3. Dry-run, then apply: `bundle exec rake hyku:quarantine_migrated_disk_files` (add `APPLY=true`; `MANIFEST_RUN=<run id>` to limit). For each file it re-checks that the database still points at the S3 id and that the S3 object matches the manifest size and SHA-256, then moves the disk copy to `<storage>/.quarantine` (same volume, so it is a rename).
+3. Dry-run, then apply: `bundle exec rake hyku:quarantine_migrated_disk_files` (add `APPLY=true`). For each file it re-checks that the database still points at the S3 id and that the S3 object matches the manifest size and SHA-256, then moves the disk copy to `<storage>/.quarantine` (same volume, so it is a rename).
 4. Soak (at least a week or two, through a backup cycle), re-checking the site. To undo, `bundle exec rake hyku:rollback_migrated_files` (dry-run by default, `APPLY=true`) restores the disk copy and the original identifier from the manifest.
 5. Permanently delete: `bundle exec rake hyku:purge_quarantine` (dry-run by default; `APPLY=true`, `MIN_AGE_DAYS=14`).
 

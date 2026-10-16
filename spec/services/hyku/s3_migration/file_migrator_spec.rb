@@ -113,6 +113,20 @@ RSpec.describe Hyku::S3Migration::FileMigrator do
 
       it { expect(result.status).to eq :migrated }
     end
+
+    context 'when a bare hex value has no known length' do
+      let(:checksum) { [Digest::SHA1.hexdigest('something else')] }
+
+      it 'does not treat it as a mismatch' do
+        expect(result.status).to eq :migrated
+      end
+    end
+
+    context 'when a urn:sha1: checksum does not match' do
+      let(:checksum) { ["urn:sha1:#{Digest::SHA1.hexdigest('something else')}"] }
+
+      it { expect(result.status).to eq :suspect }
+    end
   end
 
   context 'when the S3 copy does not match the disk file' do

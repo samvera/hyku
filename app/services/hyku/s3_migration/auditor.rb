@@ -3,7 +3,7 @@
 module Hyku
   module S3Migration
     # Read-only check of one original file already in S3: the object must be readable, match the
-    # recorded size, and match the stored MD5 checksum when one is present.
+    # recorded size, and match the stored checksum when one is present.
     class Auditor
       Result = Struct.new(:status, :problems, keyword_init: true)
 
@@ -33,11 +33,11 @@ module Hyku
       end
 
       def checksum_problems(s3_file)
-        stored = original.checksum.first.to_s
-        return [] unless stored.match?(/\A\h{32}\z/)
+        stored = StoredChecksum.for(original)
+        return [] unless stored
 
-        md5 = s3_file.checksum(digests: [Digest::MD5.new]).first
-        stored.downcase == md5 ? [] : ["md5 #{md5} != stored #{stored}"]
+        actual = s3_file.checksum(digests: [stored.digest_class.new]).first
+        actual == stored.digest ? [] : ["#{stored.algorithm} #{actual} != stored #{stored.digest}"]
       end
     end
   end

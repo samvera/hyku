@@ -8,9 +8,7 @@ module Hyku
     class FileMigrator
       Result = Struct.new(:status, :message, :entry, keyword_init: true)
 
-      CHECKSUM_ALGORITHMS = { 32 => Digest::MD5, 40 => Digest::SHA1 }.freeze
-
-      # @param file_set [Hyrax::FileSet]
+      # @param file_set [Valkyrie::Resource] a file set (Hyku::S3Migration.file_set_class)
       # @param original [Hyrax::FileMetadata] the file set's original file
       def initialize(file_set:, original:, dry_run: false, s3_storage: nil, manifest: nil, tenant: nil) # rubocop:disable Metrics/ParameterLists
         @file_set = file_set
@@ -61,9 +59,8 @@ module Hyku
       end
 
       def stored_checksum_mismatch
-        stored = original.checksum.first.to_s.downcase.delete_prefix('urn:sha1:').delete_prefix('urn:md5:')
-        algorithm = CHECKSUM_ALGORITHMS[stored.length] if stored.match?(/\A\h+\z/)
-        stored if algorithm && algorithm.file(disk_path).hexdigest != stored
+        stored = StoredChecksum.for(original)
+        stored.to_s if stored && stored.digest_class.file(disk_path).hexdigest != stored.digest
       end
 
       def migrate

@@ -7,7 +7,7 @@ class MigrateTenantFilesToS3Job < ApplicationJob
 
   def perform(limit: nil)
     enqueued = 0
-    Hyrax.query_service.find_all_of_model(model: Hyrax::FileSet).each do |file_set|
+    Hyrax.query_service.find_all_of_model(model: Hyku::S3Migration.file_set_class).each do |file_set|
       break if limit && enqueued >= limit
       next unless on_disk?(file_set)
 

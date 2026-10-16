@@ -28,7 +28,7 @@ namespace :hyku do
     limit = ENV['LIMIT']&.to_i
     s3_migration_each_tenant do |account|
       done = 0
-      Hyrax.query_service.find_all_of_model(model: Hyrax::FileSet).each do |file_set|
+      Hyrax.query_service.find_all_of_model(model: Hyku::S3Migration.file_set_class).each do |file_set|
         break if limit && done >= limit
 
         original = Hyrax.custom_queries.find_original_file(file_set:)
@@ -80,7 +80,7 @@ namespace :hyku do
     limit = ENV['LIMIT']&.to_i
     s3_migration_each_tenant do
       checked = 0
-      Hyrax.query_service.find_all_of_model(model: Hyrax::FileSet).each do |file_set|
+      Hyrax.query_service.find_all_of_model(model: Hyku::S3Migration.file_set_class).each do |file_set|
         break if limit && checked >= limit
 
         original = Hyrax.custom_queries.find_original_file(file_set:)

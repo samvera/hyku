@@ -5,8 +5,8 @@
 
 <%= render layout: 'hyrax/homepage/dc_featured_row',
            locals: { url:, link_data:, title: document.title_or_label, thumb_class: dc_thumb_placeholder_class(document),
-                     meta: [featured.creator&.first, (document['date_created_tesim']&.first.presence || document['date_issued_tesim']&.first)].compact_blank,
-                     description: document['description_tesim']&.first,
+                     meta: [dc_creator_names(featured).first, (document['date_created_tesim']&.first.presence || document['date_issued_tesim']&.first)].compact_blank,
+                     description: dc_summary(featured).first,
                      badge: document['resource_type_tesim']&.first } do %>
   <%= render_thumbnail_tag(featured, { alt: '' }, { suppress_link: true }) %>
 <% end %>

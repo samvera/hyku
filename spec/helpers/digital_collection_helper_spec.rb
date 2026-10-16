@@ -329,6 +329,38 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
     end
   end
 
+  describe 'creator and summary hooks' do
+    let(:document) { SolrDocument.new('id' => 'w1', 'has_model_ssim' => ['GenericWork'], 'creator_tesim' => ['Ada Lovelace'], 'description_tesim' => ['A short summary.']) }
+    let(:presenter) { Hyrax::WorkShowPresenter.new(document, Ability.new(nil), nil) }
+
+    before { without_partial_double_verification { allow(helper).to receive(:current_user).and_return(nil) } }
+
+    it "reads a work page's creator and summary when the profile shows them" do
+      allow(helper).to receive(:dc_profile_shows?).and_return(true)
+
+      expect(helper.dc_creator_names(presenter)).to eq(['Ada Lovelace'])
+      expect(helper.dc_summary(presenter)).to eq(['A short summary.'])
+    end
+
+    it 'leaves them out when the profile hides them' do
+      allow(helper).to receive(:dc_profile_shows?).and_return(false)
+
+      expect(helper.dc_creator_names(presenter)).to be_empty
+      expect(helper.dc_summary(presenter)).to be_empty
+    end
+
+    it "reads a search result's creator only when the results show it" do
+      allow(helper).to receive(:dc_result_field_shown?).with(document, 'creator_tesim').and_return(true, false)
+
+      expect(helper.dc_creator_names(document)).to eq(['Ada Lovelace'])
+      expect(helper.dc_creator_names(document)).to be_empty
+    end
+
+    it "reads a search result's summary" do
+      expect(helper.dc_summary(document)).to eq(['A short summary.'])
+    end
+  end
+
   describe '#dc_external_links_in_new_tab' do
     it 'opens links to other sites in a new tab without access to this page' do
       html = helper.dc_external_links_in_new_tab('<a href="https://example.org/x" rel="license">x</a>')

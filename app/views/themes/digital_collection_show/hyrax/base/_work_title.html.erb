@@ -12,7 +12,7 @@
 
   <% date = (Array(presenter.date_created).first if dc_profile_shows?(presenter, :date_created)).presence ||
             (Array(presenter.try(:date_issued)).first if dc_profile_shows?(presenter, :date_issued)) %>
-  <% byline = [(all_authors(presenter).first if dc_profile_shows?(presenter, :creator)), date].compact_blank %>
+  <% byline = [dc_creator_names(presenter).first, date].compact_blank %>
   <% if byline.any? %>
     <p class="dc-show-byline"><%= safe_join(byline, ' · ') %></p>
   <% end %>

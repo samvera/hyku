@@ -40,9 +40,9 @@
 
   <div class="dc-show-body">
     <div class="dc-show-main">
-      <% if @presenter.description.present? && dc_profile_shows?(@presenter, :description) %>
+      <% if (summary = dc_summary(@presenter)).any? %>
         <div class="dc-show-lede">
-          <%= dc_external_links_in_new_tab(render('work_description', presenter: @presenter)) %>
+          <%= dc_external_links_in_new_tab(safe_join(summary.map { |text| tag.p(markdown(text), class: 'work_description') })) %>
         </div>
       <% end %>
 

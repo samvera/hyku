@@ -254,7 +254,7 @@ module DigitalCollectionHelper
   def dc_collection_meta(presenter)
     updated = dc_long_date(presenter.modified_date)
     parts = [
-      (t('digital_collection.collection.created_by', creator: presenter.creator.first) if presenter.creator.present? && dc_profile_shows?(presenter, :creator)),
+      (t('digital_collection.collection.created_by', creator: dc_creator_names(presenter).first) if dc_creator_names(presenter).any?),
       tag.strong(t('digital_collection.collection.items', count: presenter.total_viewable_items)),
       (t('digital_collection.collection.updated', date: updated) if updated)
     ]
@@ -340,7 +340,7 @@ module DigitalCollectionHelper
     parts = if document.collection?
               [(t('digital_collection.search.results.collection') if collection_label), dc_works_count_label(document)]
             else
-              [(Array(document['creator_tesim']).first if dc_result_field_shown?(document, 'creator_tesim')), dc_result_date(document)]
+              [dc_creator_names(document).first, dc_result_date(document)]
             end
     parts.compact_blank.join(' · ')
   end
@@ -374,6 +374,20 @@ module DigitalCollectionHelper
     @dc_profile_view_definitions ||= {}
     @dc_profile_view_definitions[[model, document.schema_version, document.contexts]] ||=
       Hyrax::Schema.m3_schema_loader.view_definitions_for(schema: model, version: document.schema_version, contexts: document.contexts)
+  end
+
+  def dc_creator_names(record)
+    if record.is_a?(Blacklight::Document)
+      dc_result_field_shown?(record, 'creator_tesim') ? Array(record['creator_tesim']).compact_blank : []
+    else
+      dc_profile_shows?(record, :creator) ? Array(record.creator).compact_blank.uniq : []
+    end
+  end
+
+  def dc_summary(record)
+    return Array(record['description_tesim']).compact_blank if record.is_a?(Blacklight::Document)
+
+    dc_profile_shows?(record, :description) ? Array(record.description).compact_blank : []
   end
 
   def dc_profile_shows?(presenter, field)

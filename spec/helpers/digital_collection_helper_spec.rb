@@ -158,6 +158,8 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
   end
 
   describe '#dc_tall_banner?' do
+    before { allow(Rails.cache).to receive(:fetch).and_yield }
+
     def branding(path)
       CollectionBrandingInfo.new(collection_id: 'abc123', role: 'banner', local_path: path, filename: File.basename(path.to_s))
     end

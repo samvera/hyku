@@ -454,12 +454,18 @@ module DigitalCollectionHelper
     chips = advanced_query.filters.filter_map do |field, values|
       next unless blacklight_config.facet_fields[field]&.range
 
-      remove = search_action_path(remove_advanced_filter_group(field, search_state.params).except(:controller, :action))
+      remove = search_action_path(dc_without_advanced_filter(search_state, field).except(:controller, :action))
       Deprecation.silence(Blacklight::RenderConstraintsHelperBehavior) do
         render_constraint_element(facet_field_label(field), Array(values).join(', '), remove:)
       end
     end
     safe_join(chips, "\n") if chips.any?
+  end
+
+  def dc_without_advanced_filter(search_state, field)
+    params = search_state.to_h.with_indifferent_access
+    filters = params.fetch(:f_inclusive, {}).except(field)
+    filters.empty? ? params.except(:f_inclusive) : params.merge(f_inclusive: filters)
   end
 
   def dc_collection_view_definitions(presenter)

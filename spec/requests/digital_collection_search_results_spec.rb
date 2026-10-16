@@ -144,6 +144,7 @@ RSpec.describe 'the digital collection search results page', type: :request, sin
 
     expect(chip.at_css('.filter-name').text.strip).to eq('Date Range')
     expect(chip.at_css('.filter-value').text.strip).to eq('1864')
+    expect(chip.at_css('a.remove')['href']).not_to include('date_range_isim')
   end
 
   it 'shows an advanced search attribute in its facet box once, with one remove link' do

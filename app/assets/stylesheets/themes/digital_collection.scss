@@ -479,6 +479,11 @@
   .dc-collection-plate {
     @include dc-image-plate;
     aspect-ratio: 16 / 10;
+
+    &.dc-thumb-placeholder img {
+      height: 50%;
+      width: auto;
+    }
   }
 
   .dc-collection-body {

@@ -1,10 +1,13 @@
 <% thumbnail = theme_thumbnail_url(document, default: :collection) %>
 <% path = hyrax.collection_path(document.id) %>
+<% placeholder = dc_thumb_placeholder_class(document) %>
 
 <article class="dc-collection">
-  <div class="dc-collection-plate">
-    <%= image_tag thumbnail, alt: '', class: 'dc-collection-plate-blur', aria: { hidden: true }, loading: 'lazy' %>
-    <span class="dc-collection-plate-scrim"></span>
+  <div class="<%= token_list('dc-collection-plate', placeholder) %>">
+    <% unless placeholder %>
+      <%= image_tag thumbnail, alt: '', class: 'dc-collection-plate-blur', aria: { hidden: true }, loading: 'lazy' %>
+      <span class="dc-collection-plate-scrim"></span>
+    <% end %>
     <%= link_to path, class: 'dc-collection-plate-figure', tabindex: -1, aria: { hidden: true } do %>
       <%= image_tag thumbnail, alt: '', loading: 'lazy' %>
     <% end %>

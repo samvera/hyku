@@ -90,17 +90,6 @@ en:
         sub: Deposit works into the repository.
         button: Start a deposit
     show:
-      citation:
-        heading: "Cite this"
-        style: "Citation style"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "Copy citation"
-        copied: "Copied"
-        endnote: "Download EndNote record"
-        note: "Provided as a suggestion only. Check it against your preferred style guide."
       files:
         as_format: as %{name}
         heading: Files
@@ -838,17 +827,8 @@ en:
         one: 1 item
         other: "%{count} items"
       relationships: Relationships
-      cite: Cite
-      endnote: Download for EndNote
       permalink: Permalink
       contributors: Contributors
-      citation_style: Citation style
-      citation_styles:
-        apa: APA (7th ed.)
-        mla: MLA (9th ed.)
-        chicago: Chicago
-      citation_copy: Copy
-      citation_copied: Copied
   proprietor:
     accounts:
       edit:
@@ -981,16 +961,245 @@ en:
         children: "Child works"
       part_of:
         heading: "Part of"
-      citation:
-        heading: "Citation"
-        style: "Citation style"
-        endnote: "Export to EndNote"
-        copy: "Copy"
-        copied: "Copied"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
+  digital_collection:
+    form:
+      required: "(required)"
+    file_set:
+      actions:
+        delete: "Delete this file set"
+        edit: "Edit this file set"
+      activity: "Activity"
+      description: "Description"
+      details:
+        date_modified: "Date modified"
+        date_uploaded: "Date uploaded"
+        depositor: "Depositor"
+        dimensions: "Dimensions"
+        dimensions_value: "%{width} × %{height} px"
+        fixity: "Fixity check"
+        format: "File format"
+        heading: "File details"
+        size: "File size"
+      generate_link: "Generate download link"
+      share:
+        email: "Email"
+        facebook: "Facebook"
+        label: "Share"
+        x: "X"
+      technical:
+        alpha_channels: "Alpha channels"
+        byte_order: "Byte order"
+        capture_device: "Capture device"
+        color_map: "Color map"
+        color_space: "Color space"
+        compression: "Compression"
+        duration: "Duration"
+        file_format: "File format"
+        file_size: "File size"
+        file_title: "File title"
+        filename: "File name"
+        format_label: "Format label"
+        gps_timestamp: "GPS timestamp"
+        heading: "Technical details"
+        height: "Height"
+        image_producer: "Image producer"
+        last_modified: "Last modified"
+        latitude: "Latitude"
+        longitude: "Longitude"
+        mime_type: "MIME type"
+        orientation: "Orientation"
+        original_checksum: "Original checksum"
+        page_count: "Page count"
+        profile_name: "Profile name"
+        profile_version: "Profile version"
+        sample_rate: "Sample rate"
+        scanning_software: "Scanning software"
+        well_formed: "Well formed"
+        width: "Width"
+      user_activity: "User activity"
+    work:
+      actions:
+        select: "Select this work"
+        header: "Work actions"
+        feature: "Feature on homepage"
+        unfeature: "Remove from homepage"
+      copy_citation: "Copy citation"
+      part_of:
+        admin_set:
+          one: "Administrative set"
+          other: "Administrative sets"
+        collection:
+          one: "Collection"
+          other: "Collections"
+        parent_work:
+          one: "Parent work"
+          other: "Parent works"
+    chrome:
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 unread notification"
+        other: "%{name}, %{count} unread notifications"
+      announcement_label: "Announcement"
+      language: "Language"
+      masthead_label: "Site navigation"
+      menu:
+        zero: "Menu"
+        one: "Menu, 1 unread notification"
+        other: "Menu, %{count} unread notifications"
+      notifications:
+        zero: "Notifications"
+        one: "Notifications (1)"
+        other: "Notifications (%{count})"
+      signed_in_as: "Signed in as"
+      signed_in_as_name: "Signed in as %{name}"
+    homepage:
+      intro_label: "Introduction"
+      hero:
+        label: "Featured collections"
+        headline: "Explore the collections"
+        featured_collection: "Featured collection"
+        hold: "Pause"
+        resume: "Play"
+        segment: "Slide %{number}: %{title}"
+        slide: "Slide %{number} of %{total}"
+      featured_collections:
+        heading: "Featured collections"
+        unfeature_confirm: "Remove this collection from the featured list?"
+        reorder_hint: "Drag to reorder featured collections."
+        save_order: "Save order"
+        remove: "Remove %{title} from featured collections"
+      browse:
+        heading: "Browse collections"
+        grid: "Grid"
+        list: "List"
+        view_label: "Collection display options"
+        sort: "Sort"
+        sort_asc: "A to Z"
+        sort_desc: "Z to A"
+        sort_aria: "Sort by title, currently %{direction}. Activate to reverse."
+        previous: "Previous"
+        next: "Next"
+        page: "Page %{number}"
+        pages_label: "Collection pages"
+        status: "Showing %{shown} of %{total} collections, page %{page} of %{pages}, %{view} view, sorted %{sort}."
+        works_count:
+          one: "1 work"
+          other: "%{count} works"
+        empty: "No collections have been added yet."
+        all: "Browse all collections"
+      featured:
+        heading: "Featured works"
+        unfeature_confirm: "Remove this work from the featured list?"
+        reorder_hint: "Drag to reorder featured works."
+        save_order: "Save order"
+        remove: "Remove %{title} from featured works"
+      recent:
+        heading: "Recently added works"
+        view_all: "View all recent works"
+      about:
+        heading: "About the collections"
+      cta:
+        eyebrow: "Contribute"
+        heading: "Share your work"
+        sub: "Deposit materials into the repository."
+        button: "Start a deposit"
+      stats:
+        collections:
+          one: "Collection"
+          other: "Collections"
+        works:
+          one: "Work"
+          other: "Works"
+    search:
+      advanced: "Advanced search"
+      submit: "Search"
+      results:
+        heading: "Search results"
+        summary:
+          zero: "No results"
+          one: "%{formatted} result"
+          other: "%{formatted} results"
+        summary_query:
+          zero: "No results for “%{query}”"
+          one: "%{formatted} result for “%{query}”"
+          other: "%{formatted} results for “%{query}”"
+        filter_heading: "Filter results"
+        applied:
+          one: "%{count} filter applied"
+          other: "%{count} filters applied"
+        range_html: "<strong>%{first}–%{last}</strong> of <strong>%{total}</strong>"
+        sort_label: "Sort by"
+        per_page_label: "Per page"
+        previous: "Previous"
+        next: "Next"
+        more_html: "More <span class=\"sr-only\">%{field_name}</span>"
+        range_from: "From"
+        range_to: "To"
+        range_larger: "Choose dates in a larger window"
+        range_missing: "Date not specified"
+        facet_sort_label: "Sort values"
+        facet_sort_count: "Most results"
+        facet_pages_label: "Value pages"
+        query_label: "Search"
+        collection: "Collection"
+        no_results:
+          heading: "Try a different search"
+          tips:
+            - "Check the spelling of your search words."
+            - "Use fewer or broader words."
+            - "Remove a filter to widen the search."
+        clear_all: "Clear search and filters"
+        any_of: "Any of these"
+        remove_value: "Remove %{value}"
+        match_html: "Matching %{op} of these fields:"
+        from: "From:"
+        fields:
+          creator: "Creator"
+          date: "Date"
+          part_of: "Part of"
+          resource_type: "Resource type"
+          description: "Description"
+          works: "Works"
+    advanced:
+      match_html: "Find items that match %{select_menu} of these fields"
+      match_label: "Match all or any fields"
+      limits: "And have these attributes"
+      tips:
+        heading: "Search tips"
+        items:
+          - "Select \"match all\" to require all fields."
+          - "Select \"match any\" to find at least one field."
+          - "Combine keywords and attributes to find specific items."
+          - "Search by date with format: YYYYMMDD, YYYYMM or YYYY. Do not use \"-\", \"/\", or any other special characters."
+          - "Use quotation marks to search as a phrase."
+          - "Use \"+\" before a term to make it required. (Otherwise results matching only some of your terms may be included)."
+          - "Use \"-\" before a word or phrase to exclude."
+          - "Use \"OR\", \"AND\", and \"NOT\" to create complex boolean logic. You can use parentheses in your complex expressions."
+          - "Truncation and wildcards are not supported - word-stemming is done automatically."
+    collection:
+      actions:
+        add_to_collection: "Add to a collection"
+        add_works: "Add works"
+        feature: "Feature on homepage"
+        unfeature: "Remove from homepage"
+      created_by: "Created by %{creator}"
+      date_format: "%B %-d, %Y"
+      details: "Collection details"
+      items:
+        one: "%{count} item"
+        other: "%{count} items"
+      search_placeholder: "Search this collection"
+      updated: "Last updated %{date}"
+      no_results: "Nothing in this collection matches “%{query}”."
+      search_results: "Search results (%{number})"
+      subcollections: "Subcollections (%{number})"
+      works: "Works in this collection (%{number})"
+      logo: "%{title} logo"
+    show:
+      breadcrumbs: "Breadcrumb"
+      new_tab: "(opens in a new tab)"
+      part_of:
+        heading: "Part of"
   screening_room:
     chrome:
       toggle_navigation: Toggle navigation
@@ -1033,17 +1242,6 @@ en:
         unfeature_confirm: Remove this work from the featured list?
         view_work: View work
     show:
-      citation:
-        copied: Copied
-        copy_visible: Copy citation
-        endnote: Download EndNote record
-        heading: Cite this
-        note: Provided as a suggestion only. Check it against your preferred style guide.
-        style: Citation style
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 item

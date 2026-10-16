@@ -1,0 +1,19 @@
+<%# OVERRIDE Blacklight Advanced Search 7.0.0: labels above four-row lists in a two-column grid instead of the horizontal form %>
+<div class="dc-advanced-fields">
+  <% facets_from_request(facet_field_names).each do |display_facet| %>
+    <% next if display_facet.items.blank? %>
+    <div class="dc-advanced-field">
+      <%= label_tag display_facet.name.parameterize, facet_field_label(display_facet.name) %>
+      <%= content_tag(:select, multiple: true, size: 4,
+                      name: "f_inclusive[#{display_facet.name}][]",
+                      id: display_facet.name.parameterize,
+                      class: 'form-control advanced-search-facet-select') do %>
+        <% display_facet.items.each do |facet_item| %>
+          <%= content_tag :option, value: facet_item.value, selected: facet_value_checked?(display_facet.name, facet_item.value) do %>
+            <%= facet_item.label %>&nbsp;&nbsp;(<%= number_with_delimiter facet_item.hits %>)
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,42 @@
+<%# OVERRIDE Hyku 7.1.0: the serif page title, the directions as plain text, and stacked fields with their label above and a "(required)" marker, keeping the negative captcha %>
+<% provide :page_title, I18n.t('hyrax.contact_form.title') %>
+<% name = user_signed_in? ? current_user.name : '' %>
+<% email = user_signed_in? ? current_user.email : '' %>
+<% required = tag.span(t('digital_collection.form.required'), class: 'dc-field-required') %>
+
+<div class="dc-contact">
+  <h1 class="dc-contact-title"><%= t('hyrax.contact_form.header') %></h1>
+  <p class="dc-contact-intro"><%= render 'directions' %></p>
+
+  <%= form_for @contact_form, url: hyrax.contact_form_index_path, html: { class: 'dc-contact-form needs-validation' } do |f| %>
+    <%= raw negative_captcha(@captcha) %>
+    <%= f.text_field :contact_method, class: 'd-none' %>
+
+    <div class="dc-field">
+      <%= f.label :category do %><%= t('hyrax.contact_form.type_label') %> <%= required %><% end %>
+      <%= f.select 'category', options_for_select(contact_form_issue_type_options), { include_blank: t('hyrax.contact_form.select_type') }, { class: 'form-control', required: true } %>
+    </div>
+
+    <div class="dc-field">
+      <%= negative_label_tag(@captcha, :name, safe_join([t('hyrax.contact_form.name_label'), ' ', required])) %>
+      <%= negative_text_field_tag(@captcha, :name, value: name, class: 'form-control', required: true, autocomplete: 'name') %>
+    </div>
+
+    <div class="dc-field">
+      <%= negative_label_tag(@captcha, :email, safe_join([t('hyrax.contact_form.email_label'), ' ', required])) %>
+      <%= negative_text_field_tag(@captcha, :email, value: email, class: 'form-control', required: true, autocomplete: 'email', type: 'email') %>
+    </div>
+
+    <div class="dc-field">
+      <%= negative_label_tag(@captcha, :subject, safe_join([t('hyrax.contact_form.subject_label'), ' ', required])) %>
+      <%= negative_text_field_tag(@captcha, :subject, class: 'form-control', required: true) %>
+    </div>
+
+    <div class="dc-field">
+      <%= negative_label_tag(@captcha, :message, safe_join([t('hyrax.contact_form.message_label'), ' ', required])) %>
+      <%= negative_text_area_tag(@captcha, :message, rows: 6, class: 'form-control', required: true) %>
+    </div>
+
+    <%= f.submit value: t('hyrax.contact_form.button_label'), class: 'btn btn-primary dc-contact-send' %>
+  <% end %>
+</div>

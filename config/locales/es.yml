@@ -230,17 +230,6 @@ es:
         sub: Deposite obras en el repositorio.
         button: Iniciar un depósito
     show:
-      citation:
-        heading: "Cómo citar"
-        style: "Estilo de cita"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "Copiar cita"
-        copied: "Copiado"
-        endnote: "Descargar registro de EndNote"
-        note: "Se ofrece solo como sugerencia. Compruébela con su guía de estilo preferida."
       files:
         as_format: como %{name}
         heading: Archivos
@@ -895,6 +884,9 @@ es:
         roles:
           remove:
             confirmation: ¿Está seguro de que desea eliminar el rol "%{role}" del usuario "%{user}"?
+    users:
+      activity_log:
+        no_user_activity: "Sin actividad del usuario"
   permissions:
     collections:
       cannot:
@@ -970,17 +962,8 @@ es:
         one: 1 elemento
         other: "%{count} elementos"
       relationships: Relaciones
-      cite: Citar
-      endnote: Descargar para EndNote
       permalink: Enlace permanente
       contributors: Colaboradores
-      citation_style: Estilo de cita
-      citation_styles:
-        apa: APA (7.ª ed.)
-        mla: MLA (9.ª ed.)
-        chicago: Chicago
-      citation_copy: Copiar
-      citation_copied: Copiado
   proprietor:
     accounts:
       edit:
@@ -1114,16 +1097,245 @@ es:
         children: "Obras secundarias"
       part_of:
         heading: "Forma parte de"
-      citation:
-        heading: "Cita"
-        style: "Estilo de cita"
-        endnote: "Exportar a EndNote"
-        copy: "Copiar"
-        copied: "Copiado"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
+  digital_collection:
+    form:
+      required: "(obligatorio)"
+    file_set:
+      actions:
+        delete: "Eliminar este conjunto de archivos"
+        edit: "Editar este conjunto de archivos"
+      activity: "Actividad"
+      description: "Descripción"
+      details:
+        date_modified: "Fecha de modificación"
+        date_uploaded: "Fecha de carga"
+        depositor: "Depositante"
+        dimensions: "Dimensiones"
+        dimensions_value: "%{width} × %{height} px"
+        fixity: "Comprobación de integridad"
+        format: "Formato de archivo"
+        heading: "Detalles del archivo"
+        size: "Tamaño del archivo"
+      generate_link: "Generar enlace de descarga"
+      share:
+        email: "Correo electrónico"
+        facebook: "Facebook"
+        label: "Compartir"
+        x: "X"
+      technical:
+        alpha_channels: "Canales alfa"
+        byte_order: "Orden de bytes"
+        capture_device: "Dispositivo de captura"
+        color_map: "Mapa de color"
+        color_space: "Espacio de color"
+        compression: "Compresión"
+        duration: "Duración"
+        file_format: "Formato de archivo"
+        file_size: "Tamaño del archivo"
+        file_title: "Título del archivo"
+        filename: "Nombre del archivo"
+        format_label: "Etiqueta de formato"
+        gps_timestamp: "Marca de tiempo GPS"
+        heading: "Detalles técnicos"
+        height: "Alto"
+        image_producer: "Productor de la imagen"
+        last_modified: "Última modificación"
+        latitude: "Latitud"
+        longitude: "Longitud"
+        mime_type: "Tipo MIME"
+        orientation: "Orientación"
+        original_checksum: "Suma de verificación original"
+        page_count: "Número de páginas"
+        profile_name: "Nombre del perfil"
+        profile_version: "Versión del perfil"
+        sample_rate: "Frecuencia de muestreo"
+        scanning_software: "Software de escaneo"
+        well_formed: "Bien formado"
+        width: "Ancho"
+      user_activity: "Actividad del usuario"
+    work:
+      actions:
+        select: "Seleccionar esta obra"
+        header: "Acciones de la obra"
+        feature: "Destacar en la página de inicio"
+        unfeature: "Quitar de la página de inicio"
+      copy_citation: "Copiar cita"
+      part_of:
+        admin_set:
+          one: "Conjunto administrativo"
+          other: "Conjuntos administrativos"
+        collection:
+          one: "Colección"
+          other: "Colecciones"
+        parent_work:
+          one: "Obra principal"
+          other: "Obras principales"
+    chrome:
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 notificación no leída"
+        other: "%{name}, %{count} notificaciones no leídas"
+      announcement_label: "Anuncio"
+      language: "Idioma"
+      masthead_label: "Navegación del sitio"
+      menu:
+        zero: "Menú"
+        one: "Menú, 1 notificación no leída"
+        other: "Menú, %{count} notificaciones no leídas"
+      notifications:
+        zero: "Notificaciones"
+        one: "Notificaciones (1)"
+        other: "Notificaciones (%{count})"
+      signed_in_as: "Sesión iniciada como"
+      signed_in_as_name: "Sesión iniciada como %{name}"
+    homepage:
+      intro_label: "Introducción"
+      hero:
+        label: "Colecciones destacadas"
+        headline: "Explore las colecciones"
+        featured_collection: "Colección destacada"
+        hold: "Pausar"
+        resume: "Reproducir"
+        segment: "Diapositiva %{number}: %{title}"
+        slide: "Diapositiva %{number} de %{total}"
+      featured_collections:
+        heading: "Colecciones destacadas"
+        unfeature_confirm: "¿Quitar esta colección de la lista de destacadas?"
+        reorder_hint: "Arrastre para reordenar las colecciones destacadas."
+        save_order: "Guardar orden"
+        remove: "Quitar %{title} de las colecciones destacadas"
+      browse:
+        heading: "Explorar colecciones"
+        grid: "Cuadrícula"
+        list: "Lista"
+        view_label: "Opciones de visualización de colecciones"
+        sort: "Ordenar"
+        sort_asc: "De A a Z"
+        sort_desc: "De Z a A"
+        sort_aria: "Ordenar por título, actualmente %{direction}. Activar para invertir."
+        previous: "Anterior"
+        next: "Siguiente"
+        page: "Página %{number}"
+        pages_label: "Páginas de colecciones"
+        status: "Mostrando %{shown} de %{total} colecciones, página %{page} de %{pages}, vista %{view}, ordenadas %{sort}."
+        works_count:
+          one: "1 obra"
+          other: "%{count} obras"
+        empty: "Aún no se han añadido colecciones."
+        all: "Explorar todas las colecciones"
+      featured:
+        heading: "Obras destacadas"
+        unfeature_confirm: "¿Quitar esta obra de la lista de destacadas?"
+        reorder_hint: "Arrastre para reordenar las obras destacadas."
+        save_order: "Guardar orden"
+        remove: "Quitar %{title} de las obras destacadas"
+      recent:
+        heading: "Añadidos recientemente"
+        view_all: "Ver todas las obras recientes"
+      about:
+        heading: "Acerca de las colecciones"
+      cta:
+        eyebrow: "Contribuir"
+        heading: "Comparta su obra"
+        sub: "Deposite materiales en el repositorio."
+        button: "Iniciar un depósito"
+      stats:
+        collections:
+          one: "Colección"
+          other: "Colecciones"
+        works:
+          one: "Obra"
+          other: "Obras"
+    search:
+      advanced: "Búsqueda avanzada"
+      submit: "Buscar"
+      results:
+        heading: "Resultados de búsqueda"
+        summary:
+          zero: "Sin resultados"
+          one: "%{formatted} resultado"
+          other: "%{formatted} resultados"
+        summary_query:
+          zero: "Sin resultados para «%{query}»"
+          one: "%{formatted} resultado para «%{query}»"
+          other: "%{formatted} resultados para «%{query}»"
+        filter_heading: "Filtrar resultados"
+        applied:
+          one: "%{count} filtro aplicado"
+          other: "%{count} filtros aplicados"
+        range_html: "<strong>%{first}–%{last}</strong> de <strong>%{total}</strong>"
+        sort_label: "Ordenar por"
+        per_page_label: "Por página"
+        previous: "Anterior"
+        next: "Siguiente"
+        more_html: "Más <span class=\"sr-only\">%{field_name}</span>"
+        range_from: "Desde"
+        range_to: "Hasta"
+        range_larger: "Elegir fechas en una ventana más grande"
+        range_missing: "Fecha no especificada"
+        facet_sort_label: "Ordenar valores"
+        facet_sort_count: "Más resultados"
+        facet_pages_label: "Páginas de valores"
+        query_label: "Búsqueda"
+        collection: "Colección"
+        no_results:
+          heading: "Pruebe otra búsqueda"
+          tips:
+            - "Revise la ortografía de las palabras de búsqueda."
+            - "Use menos palabras o palabras más generales."
+            - "Quite un filtro para ampliar la búsqueda."
+        clear_all: "Borrar búsqueda y filtros"
+        any_of: "Cualquiera de estos"
+        remove_value: "Quitar %{value}"
+        match_html: "Coincidencias con %{op} estos campos:"
+        from: "De:"
+        fields:
+          creator: "Creador"
+          date: "Fecha"
+          part_of: "Parte de"
+          resource_type: "Tipo de recurso"
+          description: "Descripción"
+          works: "Obras"
+    advanced:
+      match_html: "Buscar elementos que coincidan con %{select_menu} de estos campos"
+      match_label: "Coincidir con todos o con cualquier campo"
+      limits: "Y que tengan estos atributos"
+      tips:
+        heading: "Consejos de búsqueda"
+        items:
+          - "Seleccione «todos» para exigir todos los campos."
+          - "Seleccione «cualquiera» para encontrar al menos un campo."
+          - "Combine palabras clave y atributos para encontrar elementos concretos."
+          - "Busque por fecha con el formato AAAAMMDD, AAAAMM o AAAA. No use «-», «/» ni otros caracteres especiales."
+          - "Use comillas para buscar una frase exacta."
+          - "Use «+» delante de un término para que sea obligatorio. (Si no, pueden aparecer resultados que solo contienen algunos de sus términos)."
+          - "Use «-» delante de una palabra o frase para excluirla."
+          - "Use «OR», «AND» y «NOT» para crear búsquedas booleanas complejas. Puede usar paréntesis en sus expresiones."
+          - "No se admiten comodines ni truncamiento; las variantes de las palabras se buscan automáticamente."
+    collection:
+      actions:
+        add_to_collection: "Agregar a una colección"
+        add_works: "Agregar obras"
+        feature: "Destacar en la página de inicio"
+        unfeature: "Quitar de la página de inicio"
+      created_by: "Creado por %{creator}"
+      date_format: "%-d de %B de %Y"
+      details: "Detalles de la colección"
+      items:
+        one: "%{count} elemento"
+        other: "%{count} elementos"
+      search_placeholder: "Buscar en esta colección"
+      updated: "Última actualización: %{date}"
+      no_results: "Nada en esta colección coincide con «%{query}»."
+      search_results: "Resultados de búsqueda (%{number})"
+      subcollections: "Subcolecciones (%{number})"
+      works: "Obras en esta colección (%{number})"
+      logo: "Logotipo de %{title}"
+    show:
+      breadcrumbs: "Ruta de navegación"
+      new_tab: "(se abre en una pestaña nueva)"
+      part_of:
+        heading: Parte de
   screening_room:
     chrome:
       toggle_navigation: Alternar la navegación
@@ -1166,17 +1378,6 @@ es:
         unfeature_confirm: '¿Quitar esta obra de la lista destacada?'
         view_work: Ver la obra
     show:
-      citation:
-        copied: Copiado
-        copy_visible: Copiar la cita
-        endnote: Descargar registro EndNote
-        heading: Cómo citar
-        note: Solo como sugerencia. Compruébela con su guía de estilo preferida.
-        style: Estilo de cita
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 elemento

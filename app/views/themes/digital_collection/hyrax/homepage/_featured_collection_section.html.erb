@@ -1,0 +1,15 @@
+<%# OVERRIDE Hyku 7.1.0: editor-only reorder section using the shared reorder form %>
+<% editable = can?(:update, FeaturedCollection) && !@featured_collection_list.empty? %>
+
+<% if editable %>
+  <section class="dc-featured-collections" aria-labelledby="dc-fc-heading">
+    <%= dc_section_head t('digital_collection.homepage.featured_collections.heading'), id: 'dc-fc-heading' %>
+
+    <%= render 'hyrax/homepage/dc_reorder_form',
+               record: [main_app, @featured_collection_list], association: :featured_collections,
+               row_partial: 'hyrax/homepage/sortable_featured_collections', nestable_id: 'ff',
+               confirm: t('digital_collection.homepage.featured_collections.unfeature_confirm'),
+               hint: t('digital_collection.homepage.featured_collections.reorder_hint'),
+               save: t('digital_collection.homepage.featured_collections.save_order') %>
+  </section>
+<% end %>

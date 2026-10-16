@@ -1,0 +1,6 @@
+<%# OVERRIDE Hyku 7.1.0: cards with the image, title and a creator and date line (description and works count for collections), each one link, instead of every index field, without the gem's documents-gallery class and its padding %>
+<ul id="documents" class="dc-cards dc-cards-gallery list-unstyled">
+  <% documents.each do |document| %>
+    <%= render 'catalog/dc_card', document:, variant: 'gallery' %>
+  <% end %>
+</ul>

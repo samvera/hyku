@@ -80,7 +80,14 @@ module ThemeHelper
   end
 
   def theme_type_label(object)
-    Array(object.resource_type).first.presence || object.human_readable_type
+    Array(object.resource_type).first.presence || theme_model_label(object)
+  end
+
+  def theme_model_label(object)
+    model = Array((object.try(:solr_document) || object).try(:[], 'has_model_ssim')).first
+    return object.human_readable_type if model.blank?
+
+    t("hyrax.select_type.#{model.demodulize.underscore.delete_suffix('_resource')}.name", default: object.human_readable_type)
   end
 
   def theme_license_badge(presenter)

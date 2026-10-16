@@ -1,0 +1,44 @@
+<%# OVERRIDE Hyrax 5.3.0: panel list of thumbnail rows with paging %>
+<% ids = presenter.list_of_item_ids_to_display %>
+<% members = presenter.member_presenters(ids) %>
+
+<% if members.present? || can?(:edit, presenter.id) %>
+  <%= render layout: 'hyrax/base/dc_panel',
+             locals: { modifier: 'dc-items', section_id: 'dc-items', label_id: 'dc-items-label', label: t('hyrax.base.items.header'),
+                       count: (ids.total_count if members.present?),
+                       empty: (t('hyrax.base.items.empty', type: presenter.human_readable_type) if members.blank?) } do %>
+    <% if members.present? %>
+      <ul class="dc-item-list list-unstyled">
+        <% members.each do |member| %>
+          <li class="dc-item-row">
+            <%= link_to contextual_path(member, @presenter), class: token_list('dc-item-thumb', dc_thumb_placeholder_class(member.solr_document)),
+                        tabindex: -1, aria: { hidden: true } do %>
+              <%= document_presenter(member).thumbnail.thumbnail_tag({ alt: '' }, { suppress_link: true }) %>
+            <% end %>
+            <div class="dc-item-body">
+              <%= link_to member.link_name, contextual_path(member, @presenter), class: 'dc-item-name' %>
+              <p class="dc-item-meta">
+                <%  mime = member.solr_document.mime_type
+                    vis = theme_plain_text(member.permission_badge)
+                    uploaded = member.solr_document.date_uploaded
+                    date_str = uploaded.present? ? t('hyrax.digital_collection.show.uploaded', date: l(uploaded, format: :long)) : nil
+                    %>
+                <%= [mime, vis, date_str].compact.join(' · ') %>
+              </p>
+            </div>
+            <% if member.model_name.singular.to_sym == :file_set %>
+              <%= render 'hyrax/file_sets/actions', file_set: member %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+
+      <% if presenter.total_pages > 1 %>
+        <nav class="dc-panel-pager" aria-labelledby="dc-items-label">
+          <%= paginate ids, theme: 'blacklight', window: 1, outer_window: 0, param_name: :page,
+                       route_set: main_app, params: { anchor: 'dc-items' } %>
+        </nav>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

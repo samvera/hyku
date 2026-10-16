@@ -1,0 +1,14 @@
+<%# OVERRIDE Hyrax 5.3.0: an "Item details" section of ruled rows that follow the flexible metadata profile, leaving out the title and description shown above it and the embargo and lease rows; links to other sites open in a new tab %>
+<% rows = dc_work_metadata_rows(presenter) %>
+<% if rows.any? %>
+  <section class="dc-meta" aria-labelledby="dc-meta-label">
+    <div class="dc-section-head">
+      <h2 class="dc-section-title" id="dc-meta-label"><%= t('hyrax.digital_collection.show.item_details') %></h2>
+    </div>
+    <dl class="work-show dc-meta-rows">
+      <% rows.each do |row| %>
+        <div><%= row %></div>
+      <% end %>
+    </dl>
+  </section>
+<% end %>

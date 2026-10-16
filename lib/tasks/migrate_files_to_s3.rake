@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
+# rubocop:disable Metrics/BlockLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
 namespace :hyku do
   def s3_migration_require_s3!
     abort 'Set REPOSITORY_S3_STORAGE=true (and the bucket variables) first.' unless Valkyrie::StorageAdapter.storage_adapters.key?(:repository_s3)
@@ -8,7 +8,10 @@ namespace :hyku do
 
   def s3_migration_client
     opts = { region: ENV.fetch('REPOSITORY_S3_REGION', 'us-east-1') }
-    opts.merge!(access_key_id: ENV['REPOSITORY_S3_ACCESS_KEY'], secret_access_key: ENV['REPOSITORY_S3_SECRET_KEY']) if ENV['REPOSITORY_S3_ACCESS_KEY'].present?
+    if ENV['REPOSITORY_S3_ACCESS_KEY'].present?
+      opts[:access_key_id] = ENV['REPOSITORY_S3_ACCESS_KEY']
+      opts[:secret_access_key] = ENV['REPOSITORY_S3_SECRET_KEY']
+    end
     Aws::S3::Client.new(**opts)
   end
 
@@ -18,11 +21,18 @@ namespace :hyku do
 
   def s3_migration_each_tenant(tenant: ENV['TENANT'])
     accounts = tenant.present? ? Account.where(cname: tenant) : Account.all
+    failed = []
     accounts.find_each do |account|
+      next if account.name == 'search'
+
       AccountElevator.switch!(account.cname)
       puts "=== Tenant: #{account.cname} ==="
       yield account
+    rescue StandardError => e
+      puts "  TENANT ERROR #{account.cname} - #{e.class}: #{e.message}"
+      failed << account.cname
     end
+    puts "\nTenants that failed (rerun with TENANT=<cname>): #{failed.join(', ')}" if failed.any?
   end
 
   def s3_migration_each_original(limit: ENV['LIMIT']&.to_i, shard: ENV['SHARD'])
@@ -314,7 +324,7 @@ namespace :hyku do
     puts "[DRY RUN] Nothing will be deleted. Set APPLY=true to delete.\n\n" unless apply
 
     Dir.glob(File.join(dir, '**', '*')).select { |f| File.file?(f) }.each do |file|
-      if Time.now - File.mtime(file) >= min_age
+      if Time.current - File.mtime(file) >= min_age
         File.delete(file) if apply
         purged += 1
       else
@@ -374,4 +384,4 @@ namespace :hyku do
     puts "\nRolled back: #{counts[:rolled_back]}  Skipped: #{counts[:skipped]}  Errors: #{counts[:errors]}"
   end
 end
-# rubocop:enable Metrics/BlockLength
+# rubocop:enable Metrics/BlockLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength

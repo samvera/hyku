@@ -2,7 +2,11 @@
 
 # rubocop:disable Metrics/BlockLength
 namespace :hyku do
-  def s3_migration_each_original(tenant: ENV['TENANT'], limit: ENV['LIMIT']&.to_i)
+  def s3_migration_each_original(tenant: ENV['TENANT'], limit: ENV['LIMIT']&.to_i, shard: ENV['SHARD'])
+    shard_index, shard_count = shard.to_s.split('/').map(&:to_i) if shard.present?
+    abort 'SHARD must look like 0/4 (zero-based index/count).' if shard && !(shard_count.to_i.positive? && (0...shard_count).cover?(shard_index))
+    puts "[Shard #{shard_index}/#{shard_count}]" if shard
+
     accounts = tenant.present? ? Account.where(cname: tenant) : Account.all
     accounts.find_each do |account|
       AccountElevator.switch!(account.cname)
@@ -11,6 +15,7 @@ namespace :hyku do
 
       Hyrax.query_service.find_all_of_model(model: Hyrax::FileSet).each do |file_set|
         break if limit && yielded >= limit
+        next if shard && Zlib.crc32(file_set.id.to_s) % shard_count != shard_index
 
         original = Hyrax.custom_queries.find_original_file(file_set:)
         next unless original
@@ -27,7 +32,8 @@ namespace :hyku do
     disk file before the identifier is switched; a mismatch deletes the upload and leaves
     the file on disk. Files whose disk copy does not match the stored characterization checksum
     are reported as SUSPECT and not migrated (dry runs report them too, but hash every file). Re-runnable (shrine:// files are skipped). Never deletes the disk copy.
-    Env: DRY_RUN=true to preview, TENANT=<cname> for one tenant, LIMIT=<n> files per tenant.
+    Env: DRY_RUN=true to preview, TENANT=<cname> for one tenant, LIMIT=<n> files per tenant,
+    SHARD=<i>/<n> (zero-based, e.g. 0/4) to split the work across n concurrent processes.
   DESC
   task migrate_files_to_s3: :environment do
     abort 'Set REPOSITORY_S3_STORAGE=true (and the bucket variables) first.' unless Valkyrie::StorageAdapter.storage_adapters.key?(:repository_s3)
@@ -83,8 +89,16 @@ namespace :hyku do
           next false
         end
 
-        original.file_identifier = uploaded.id
-        Hyrax.persister.save(resource: original)
+        current = Hyrax.query_service.find_by(id: original.id)
+        unless current.file_identifier.to_s.start_with?('disk://')
+          s3_storage.delete(id: uploaded.id)
+          puts "  SKIP  #{file_set.id} - already migrated by another process; upload removed"
+          counts[:skipped] += 1
+          next false
+        end
+
+        current.file_identifier = uploaded.id
+        Hyrax.persister.save(resource: current)
         Hyrax.index_adapter.save(resource: file_set)
         counts[:migrated] += 1
         true
@@ -102,7 +116,7 @@ namespace :hyku do
     Read-only audit of originals already in S3 (shrine://): the object must exist, match the
     recorded size, and match the stored MD5 checksum where one is present. Run it and get zero
     problems before deleting anything from disk.
-    Env: TENANT=<cname> for one tenant, LIMIT=<n> files per tenant.
+    Env: TENANT=<cname> for one tenant, LIMIT=<n> files per tenant, SHARD=<i>/<n> as above.
   DESC
   task verify_files_in_s3: :environment do
     counts = Hash.new(0)

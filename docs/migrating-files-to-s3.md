@@ -37,7 +37,7 @@ LIMIT=5 TENANT=<cname> bundle exec rake hyku:migrate_files_to_s3
 TENANT=<cname> bundle exec rake hyku:migrate_files_to_s3
 ```
 
-Omit `TENANT` to run every tenant. Errors (for example a file missing on disk) are printed per file and counted at the end; investigate them before cleaning up. To run in the background across tenants, see [Run rake task on all or selected tenants](wiki/Run-rake-task-on-all-or-selected-tenants.md).
+Omit `TENANT` to run every tenant. For a large tenant, run several processes at once with `SHARD=<i>/<n>` (zero-based, e.g. `SHARD=0/4` through `SHARD=3/4`), each in its own pod or Job rather than an interactive console. Shards never overlap, and a file already migrated elsewhere is skipped (and its extra upload removed) just before the identifier is saved. Sum the summary lines at the end. Watch the shared volume's throughput while running: the live site reads from it too, so start with two shards. Every shard still lists all file sets for the tenant; only the per-file work is split. Errors (for example a file missing on disk) are printed per file and counted at the end; investigate them before cleaning up. To run in the background across tenants, see [Run rake task on all or selected tenants](wiki/Run-rake-task-on-all-or-selected-tenants.md).
 
 ## 5. Verify
 

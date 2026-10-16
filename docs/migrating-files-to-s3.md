@@ -29,7 +29,7 @@ New files now get `shrine://` identifiers. Existing files keep working from disk
 
 ## 4. Migrate existing files
 
-The task is re-runnable (migrated files are skipped) and never deletes the disk copy. Each upload is read back from S3 and its SHA-256 compared with the disk file before the identifier is switched; on a mismatch the upload is removed and the file stays on disk. Run it from a Rails console/shell on a pod with the volume mounted:
+The task is re-runnable (migrated files are skipped) and never deletes the disk copy. Each upload is read back from S3 and its SHA-256 compared with the disk file before the identifier is switched; on a mismatch the upload is removed and the file stays on disk. Before uploading, the disk file is also checked against the checksum recorded at characterization (MD5 or SHA-1); a mismatch is reported as `SUSPECT` and the file is not migrated, so corruption already on disk is caught up front. Dry runs report suspects too, but hash every file. Run it from a Rails console/shell on a pod with the volume mounted:
 
 ```bash
 DRY_RUN=true TENANT=<cname> bundle exec rake hyku:migrate_files_to_s3

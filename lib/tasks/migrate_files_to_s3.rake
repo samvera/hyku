@@ -25,7 +25,8 @@ namespace :hyku do
     Move disk-stored original files (disk:// identifiers) to the S3 repository
     storage adapter. Each upload is read back from S3 and its SHA-256 compared to the
     disk file before the identifier is switched; a mismatch deletes the upload and leaves
-    the file on disk. Re-runnable (shrine:// files are skipped). Never deletes the disk copy.
+    the file on disk. Files whose disk copy does not match the stored characterization checksum
+    are reported as SUSPECT and not migrated (dry runs report them too, but hash every file). Re-runnable (shrine:// files are skipped). Never deletes the disk copy.
     Env: DRY_RUN=true to preview, TENANT=<cname> for one tenant, LIMIT=<n> files per tenant.
   DESC
   task migrate_files_to_s3: :environment do
@@ -54,6 +55,14 @@ namespace :hyku do
       unless File.exist?(disk_path)
         puts "  ERROR #{file_set.id} - file missing on disk: #{disk_path}"
         counts[:errors] += 1
+        next false
+      end
+
+      stored = original.checksum.first.to_s.downcase.delete_prefix('urn:sha1:').delete_prefix('urn:md5:')
+      algorithm = { 32 => Digest::MD5, 40 => Digest::SHA1 }[stored.length] if stored.match?(/\A\h+\z/)
+      if algorithm && algorithm.file(disk_path).hexdigest != stored
+        puts "  SUSPECT #{file_set.id} - disk file does not match stored checksum #{stored}; not migrated"
+        counts[:suspect] += 1
         next false
       end
 
@@ -86,7 +95,7 @@ namespace :hyku do
       end
     end
 
-    puts "\nMigrated: #{counts[:migrated]}  Skipped: #{counts[:skipped]}  Errors: #{counts[:errors]}"
+    puts "\nMigrated: #{counts[:migrated]}  Skipped: #{counts[:skipped]}  Suspect: #{counts[:suspect]}  Errors: #{counts[:errors]}"
   end
 
   desc <<~DESC

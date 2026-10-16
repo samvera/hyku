@@ -456,6 +456,28 @@ $dc-heading-roles: (
   }
 }
 
+@mixin dc-banner-figure {
+  bottom: $dc-space-6;
+  height: calc(100% - #{$dc-space-6 * 2});
+  max-width: $dc-width-banner-figure-max;
+  object-fit: contain;
+  object-position: right center;
+  position: absolute;
+  right: unquote("MAX(#{$dc-gutter}, calc((100% - #{$dc-content-max}) / 2 + #{$dc-gutter}))");
+  top: $dc-space-6;
+  width: auto;
+
+  @media (max-width: $dc-mobile-max) {
+    bottom: $dc-space-4;
+    height: calc(100% - #{$dc-space-4 * 2});
+    left: 50%;
+    object-position: center;
+    right: auto;
+    top: $dc-space-4;
+    transform: translateX(-50%);
+  }
+}
+
 @mixin dc-section-head {
   align-items: flex-end;
   border-bottom: $dc-rule-strong solid $dc-ink;

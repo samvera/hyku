@@ -36,9 +36,15 @@
   <div class="carousel-inner dc-hero-slides">
     <% if collections.any? %>
       <% collections.each_with_index do |collection, index| %>
-        <div class="carousel-item <%= 'active' if index.zero? %>" role="group" aria-roledescription="slide"
+        <% src = dc_banner_src(collection.id) %>
+        <% tall = dc_tall_banner?(dc_banner_branding(collection.id)) %>
+        <div class="<%= token_list('carousel-item', 'active' => index.zero?, 'dc-hero-item-tall' => tall) %>" role="group" aria-roledescription="slide"
              aria-label="<%= t('digital_collection.homepage.hero.slide', number: index + 1, total: collections.size) %>">
-          <img class="dc-hero-image" src="<%= dc_banner_src(collection.id) %>" alt="" data-dc-fallback="<%= banner_image %>">
+          <img class="dc-hero-image" src="<%= src %>" alt="" data-dc-fallback="<%= banner_image %>">
+          <% if tall %>
+            <span class="dc-hero-scrim"></span>
+            <img class="dc-hero-figure" src="<%= src %>" alt="">
+          <% end %>
           <p class="dc-hero-caption">
             <span class="dc-hero-caption-label"><%= t('digital_collection.homepage.hero.featured_collection') %></span>
             <% caption_title = Array(collection.title).first %>

@@ -157,6 +157,28 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
     end
   end
 
+  describe '#dc_tall_banner?' do
+    def branding(path)
+      CollectionBrandingInfo.new(collection_id: 'abc123', role: 'banner', local_path: path, filename: File.basename(path.to_s))
+    end
+
+    it 'treats a portrait banner as tall' do
+      expect(helper.dc_tall_banner?(branding(Rails.root.join('spec', 'fixtures', 'images', 'nypl-hydra-of-lerna.jpg').to_s))).to be(true)
+    end
+
+    it 'leaves a landscape banner full-bleed' do
+      path = Rails.root.join('spec', 'fixtures', 'images', 'nypl-hydra-of-lerna.jpg').to_s
+      allow(MiniMagick::Image).to receive(:new).with(path).and_return(instance_double(MiniMagick::Image, dimensions: [1600, 600]))
+
+      expect(helper.dc_tall_banner?(branding(path))).to be(false)
+    end
+
+    it 'is false without a banner file' do
+      expect(helper.dc_tall_banner?(nil)).to be(false)
+      expect(helper.dc_tall_banner?(branding(Rails.root.join('tmp', 'missing.jpg').to_s))).to be(false)
+    end
+  end
+
   describe '#dc_badge' do
     it 'renders a dc-badge by default' do
       expect(helper.dc_badge('Image')).to eq('<span class="dc-badge">Image</span>')

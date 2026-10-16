@@ -9,6 +9,7 @@ module DigitalCollectionHelper
   DC_URL_OPTION_KEYS = %i[host protocol port domain subdomain tld_length script_name user password anchor trailing_slash only_path params].freeze
   DC_COLLECTION_SHOWN_ELSEWHERE = %i[title date_modified description total_items].freeze
   DC_WORK_SHOWN_ELSEWHERE = '.attribute-title, .attribute-description'
+  DC_TALL_BANNER_RATIO = 4.0 / 3
 
   def dc_home
     theme_home(DigitalCollectionTheme::HomepagePresenter)
@@ -36,8 +37,24 @@ module DigitalCollectionHelper
   end
 
   def dc_banner_src(collection_id)
-    branding = dc_collection_branding(collection_id, 'banner').first
+    branding = dc_banner_branding(collection_id)
     branding ? dc_branding_path(branding) : banner_image
+  end
+
+  def dc_banner_branding(collection_id)
+    dc_collection_branding(collection_id, 'banner').first
+  end
+
+  def dc_tall_banner?(branding)
+    path = branding&.local_path
+    return false if path.blank? || !File.exist?(path)
+
+    Rails.cache.fetch(['dc-tall-banner', path, File.mtime(path).to_i]) do
+      width, height = MiniMagick::Image.new(path).dimensions
+      width.to_f / height < DC_TALL_BANNER_RATIO
+    end
+  rescue MiniMagick::Error
+    false
   end
 
   def dc_collection_branding(collection_id, role)

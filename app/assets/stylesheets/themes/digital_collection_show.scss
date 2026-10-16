@@ -556,6 +556,36 @@ body.digital_collection_show.hyrax-collections-show {
     }
   }
 
+  .dc-collection-banner-tall {
+    overflow: hidden;
+    position: relative;
+
+    .dc-collection-banner-inner {
+      position: relative;
+    }
+  }
+
+  .dc-collection-banner-backdrop {
+    filter: blur($dc-plate-blur) saturate(1.2);
+    height: 100%;
+    left: 0;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    transform: scale(1.1);
+    width: 100%;
+  }
+
+  .dc-collection-banner-scrim {
+    background: $dc-plate-scrim;
+    inset: 0;
+    position: absolute;
+  }
+
+  .dc-collection-banner-figure {
+    @include dc-banner-figure;
+  }
+
   .dc-collection-banner-inner {
     @include dc-gutter;
     @include dc-column;

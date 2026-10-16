@@ -4,11 +4,18 @@
   <link rel="canonical" href="<%= canonical_url_for(@presenter) %>" />
 <% end %>
 <div class="dc-collection-page" itemscope itemtype="http://schema.org/CollectionPage">
-  <% banner = dc_collection_branding(@presenter.id, 'banner').first&.then { |branding| dc_branding_path(branding) } %>
+  <% banner_branding = dc_banner_branding(@presenter.id) %>
+  <% banner = banner_branding&.then { |branding| dc_branding_path(branding) } %>
+  <% tall_banner = dc_tall_banner?(banner_branding) %>
   <% logos = dc_collection_branding(@presenter.id, 'logo') %>
-  <%= tag.section class: token_list('dc-collection-banner', 'dc-collection-banner-plain' => !banner),
+  <%= tag.section class: token_list('dc-collection-banner', 'dc-collection-banner-plain' => !banner, 'dc-collection-banner-tall' => tall_banner),
                   style: ("background-image: url('#{banner}')" if banner),
                   aria: { labelledby: 'dc-collection-title' } do %>
+    <% if tall_banner %>
+      <%= tag.img src: banner, alt: '', class: 'dc-collection-banner-backdrop' %>
+      <span class="dc-collection-banner-scrim"></span>
+      <%= tag.img src: banner, alt: '', class: 'dc-collection-banner-figure' %>
+    <% end %>
     <div class="dc-collection-banner-inner">
       <div class="dc-collection-plate">
         <div class="dc-collection-badges">

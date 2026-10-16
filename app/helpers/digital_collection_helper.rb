@@ -291,7 +291,7 @@ module DigitalCollectionHelper
     fragment = Nokogiri::HTML::DocumentFragment.parse(dc_external_links_in_new_tab(render('hyrax/base/attribute_rows', presenter:)))
     fragment.css('dt').filter_map do |term|
       values = dc_row_values(term)
-      next if values.any? { |value| value.at_css(DC_WORK_SHOWN_ELSEWHERE) }
+      next if values.any? { |value| value.at_css(dc_work_shown_elsewhere) }
 
       safe_join([term, *values].map { |node| node.to_html.html_safe }) # rubocop:disable Rails/OutputSafety
     end
@@ -388,6 +388,10 @@ module DigitalCollectionHelper
     return Array(record['description_tesim']).compact_blank if record.is_a?(Blacklight::Document)
 
     dc_profile_shows?(record, :description) ? Array(record.description).compact_blank : []
+  end
+
+  def dc_work_shown_elsewhere
+    DC_WORK_SHOWN_ELSEWHERE
   end
 
   def dc_profile_shows?(presenter, field)

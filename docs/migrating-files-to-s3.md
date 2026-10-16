@@ -49,4 +49,12 @@ Omit `TENANT` to run every tenant. For a large tenant, run several processes at 
 
 ## 6. Reclaim EFS space
 
-Only after verifying, and ideally after a snapshot/backup, delete the migrated files from `storage/files`. Do staging first and production after, checking again between each. EFS charges by stored bytes, so the saving only appears once the data is deleted. Derivatives often remain on the volume; size them separately (`du -sh $HYRAX_DERIVATIVES_PATH`) before expecting the volume to shrink to near zero.
+Every migrated file is recorded in a manifest in the bucket (`_migration-manifests/<run id>/*.jsonl`: tenant, file set and file IDs, old disk id, new S3 id, size, SHA-256) and printed as `MANIFEST` lines. Deletion is manifest-driven, never `rm -rf storage/files`.
+
+1. Take an EFS snapshot / AWS Backup recovery point. Keep bucket versioning on.
+2. `bundle exec rake hyku:report_file_storage` lists what is still on disk by file use and scheme. The migration only moves originals; extracted text, other file versions etc. may still be `disk://` and are not covered by the manifest.
+3. Dry-run, then apply: `bundle exec rake hyku:quarantine_migrated_disk_files` (add `APPLY=true`; `MANIFEST_RUN=<run id>` to limit). For each file it re-checks that the database still points at the S3 id and that the S3 object matches the manifest size and SHA-256, then moves the disk copy to `<storage>/.quarantine` (same volume, so it is a rename).
+4. Soak (at least a week or two, through a backup cycle), re-checking the site. To undo, `bundle exec rake hyku:rollback_migrated_files` (dry-run by default, `APPLY=true`) restores the disk copy and the original identifier from the manifest.
+5. Permanently delete: `bundle exec rake hyku:purge_quarantine` (dry-run by default; `APPLY=true`, `MIN_AGE_DAYS=14`).
+
+Do staging first and production after, checking again between each. EFS charges by stored bytes, so the saving only appears after step 5. Derivatives often remain on the volume; size them separately (`du -sh $HYRAX_DERIVATIVES_PATH`). EFS lifecycle management (transition to Infrequent Access) lowers the cost of untouched files in the meantime without deleting anything.

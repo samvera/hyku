@@ -1,5 +1,5 @@
 <%# OVERRIDE Hyrax 5.3.0: "Search this collection" with a "Search" button and no icon, as a search landmark %>
-<%= form_tag url, method: :get, class: 'dc-collection-search-form', role: 'search' do %>
+<%= form_tag url, method: :get, class: 'dc-collection-search-form', role: 'search', 'aria-label': t('hyrax.collections.search_form.label', title: presenter.to_s) do %>
   <label for="collection_search" class="sr-only"><%= t('hyrax.collections.search_form.label', title: presenter.to_s) %></label>
   <div class="input-group">
     <%= search_field_tag :cq, params[:cq], class: 'form-control', id: 'collection_search', placeholder: t('digital_collection.collection.search_placeholder') %>

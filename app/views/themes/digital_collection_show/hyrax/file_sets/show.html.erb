@@ -10,9 +10,9 @@
   </aside>
 
   <div class="dc-file-main" itemscope itemtype="<%= @presenter.itemtype %>">
-    <header>
+    <div>
       <%= render 'file_set_title', presenter: @presenter %>
-    </header>
+    </div>
 
     <% @presenter.show_partials.sort_by { |partial_path| partial_path == 'metadata' ? 0 : 1 }.each do |partial_path| %>
       <%= render partial_path %>

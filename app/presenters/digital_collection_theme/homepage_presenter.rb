@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module DigitalCollection
+module DigitalCollectionTheme
   class HomepagePresenter
     include ThemeHomepage
 

@@ -11,7 +11,7 @@ module DigitalCollectionHelper
   DC_WORK_SHOWN_ELSEWHERE = '.attribute-title, .attribute-description'
 
   def dc_home
-    theme_home(DigitalCollection::HomepagePresenter)
+    theme_home(DigitalCollectionTheme::HomepagePresenter)
   end
 
   def dc_section_head(title, id:, eyebrow: nil, action: nil, &block)

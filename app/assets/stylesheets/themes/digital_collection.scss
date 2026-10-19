@@ -17,7 +17,7 @@
   // ---- hero ----
   .dc-hero {
     align-items: center;
-    background: $dc-hero-ground;
+    background: var(--dc-hero-ground, #{$dc-hero-ground});
     display: flex;
     justify-content: center;
     min-height: $dc-height-hero;
@@ -245,7 +245,7 @@
 
   .dc-hero-caption {
     align-items: center;
-    background: $dc-plate;
+    background: var(--dc-plate, #{$dc-plate});
     border-radius: $dc-radius-pill;
     bottom: $dc-space-5;
     color: $dc-overlay-text;
@@ -1276,7 +1276,7 @@ body.digital_collection.advanced-index {
     margin: 0;
 
     label {
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
       font-size: $dc-text-sm;
       font-weight: $dc-weight-strong;
       line-height: $dc-leading-snug;
@@ -1291,19 +1291,19 @@ body.digital_collection.advanced-index {
   .form-control {
     border: $dc-border solid $dc-input-edge;
     border-radius: var(--dc-radius, #{$dc-radius});
-    color: $dc-ink-heading;
+    color: var(--dc-ink-heading, #{$dc-ink-heading});
     font-size: $dc-text-base;
     height: $dc-control-height;
     padding: 0 $dc-space-3;
 
     &:hover {
-      border-color: $dc-ink-heading;
+      border-color: var(--dc-ink-heading, #{$dc-ink-heading});
     }
 
     &:focus,
     &:focus-visible {
       @include dc-focus-ring;
-      border-color: $dc-ink-heading;
+      border-color: var(--dc-ink-heading, #{$dc-ink-heading});
       box-shadow: none;
     }
   }
@@ -1319,7 +1319,7 @@ body.digital_collection.advanced-index {
 
       &:checked {
         background: $dc-badge;
-        color: $dc-ink-heading;
+        color: var(--dc-ink-heading, #{$dc-ink-heading});
       }
     }
   }

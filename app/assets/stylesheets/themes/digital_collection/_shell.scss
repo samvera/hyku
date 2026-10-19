@@ -282,7 +282,7 @@ body.digital_collection_show.public-facing {
       &:hover,
       &:focus {
         background: $dc-surface-alt;
-        color: $dc-ink-heading;
+        color: var(--dc-ink-heading, #{$dc-ink-heading});
       }
 
       &:focus-visible {
@@ -318,7 +318,7 @@ body.digital_collection_show.public-facing {
     }
 
     .dc-menu-header-name {
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
       font-weight: $dc-weight-strong;
     }
 
@@ -450,9 +450,9 @@ body.digital_collection_show.public-facing {
 
   // ---- announcement band ----
   .dc-announcement {
-    background: color-mix(in srgb, var(--dc-link, #{$dc-link}) $dc-announcement-tint, #{$dc-surface});
+    background: color-mix(in srgb, var(--dc-accent, var(--dc-link, #{$dc-link})) $dc-announcement-tint, #{$dc-surface});
     border: 0;
-    border-top: $dc-rule-strong solid var(--dc-link, #{$dc-link});
+    border-top: $dc-rule-strong solid var(--dc-accent, var(--dc-link, #{$dc-link}));
     padding-bottom: $dc-space-3;
     padding-top: $dc-space-3;
   }

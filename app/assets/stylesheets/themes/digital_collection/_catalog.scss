@@ -86,7 +86,7 @@ body.digital_collection_show.hyrax-collections-show {
     background: none;
     border: 0;
     border-radius: var(--dc-radius, #{$dc-radius});
-    color: $dc-ink-heading;
+    color: var(--dc-ink-heading, #{$dc-ink-heading});
     display: flex;
     font-size: $dc-text-base;
     font-weight: $dc-weight-medium;
@@ -167,7 +167,7 @@ body.digital_collection_show.hyrax-collections-show {
 
       label {
         align-self: stretch;
-        color: $dc-ink-heading;
+        color: var(--dc-ink-heading, #{$dc-ink-heading});
         display: block;
         font-size: $dc-text-sm;
         font-weight: $dc-weight-strong;
@@ -186,7 +186,7 @@ body.digital_collection_show.hyrax-collections-show {
       appearance: textfield;
       border: $dc-border solid $dc-input-edge;
       border-radius: var(--dc-radius, #{$dc-radius}) !important;
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
       flex: 1 1 0;
       font-size: $dc-text-sm;
       height: $dc-control-height-small;
@@ -201,12 +201,12 @@ body.digital_collection_show.hyrax-collections-show {
       }
 
       &:hover {
-        border-color: $dc-ink-heading;
+        border-color: var(--dc-ink-heading, #{$dc-ink-heading});
       }
 
       &:focus {
         @include dc-focus-ring;
-        border-color: $dc-ink-heading;
+        border-color: var(--dc-ink-heading, #{$dc-ink-heading});
         box-shadow: none;
       }
     }
@@ -304,7 +304,7 @@ body.digital_collection_show.hyrax-collections-show {
     }
 
     li .selected {
-      color: $dc-ink-heading !important;
+      color: var(--dc-ink-heading, #{$dc-ink-heading}) !important;
       font-weight: $dc-weight-heading;
     }
 
@@ -325,7 +325,7 @@ body.digital_collection_show.hyrax-collections-show {
     .remove {
       align-items: center;
       border-radius: var(--dc-radius, #{$dc-radius});
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
       display: inline-flex;
       flex: none;
       height: $dc-space-5;
@@ -478,7 +478,7 @@ body.digital_collection_show.hyrax-collections-show {
     margin: 0 0 $dc-space-2;
 
     strong {
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
       font-weight: $dc-weight-strong;
     }
   }
@@ -516,7 +516,7 @@ body.digital_collection_show.hyrax-collections-show {
       background-color: transparent !important;
       border: 0;
       border-radius: 0;
-      color: $dc-ink-heading !important;
+      color: var(--dc-ink-heading, #{$dc-ink-heading}) !important;
       font-size: $dc-text-sm;
       padding: $dc-space-1 $dc-space-2;
     }
@@ -584,7 +584,7 @@ body.digital_collection_show.hyrax-collections-show {
     margin: 0;
 
     strong {
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
       font-weight: $dc-weight-strong;
     }
   }
@@ -625,7 +625,7 @@ body.digital_collection_show.hyrax-collections-show {
 
       &.active {
         background: none;
-        color: $dc-ink-heading;
+        color: var(--dc-ink-heading, #{$dc-ink-heading});
         font-weight: $dc-weight-heading;
 
         &::before {
@@ -768,7 +768,7 @@ body.digital_collection_show.hyrax-collections-show {
     }
 
     dd {
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
       margin: 0;
       min-width: 0;
       overflow-wrap: break-word;
@@ -1184,7 +1184,7 @@ body.digital_collection_show.hyrax-collections-show {
     }
 
     .dc-card-link {
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
     }
 
     .dc-card-meta {
@@ -1252,7 +1252,7 @@ body.digital_collection_show.hyrax-collections-show {
 
   #slideshow-modal {
     .modal-content {
-      background: $dc-hero-ground;
+      background: var(--dc-hero-ground, #{$dc-hero-ground});
       border: 0;
       border-radius: var(--dc-radius, #{$dc-radius});
       box-shadow: $dc-shadow-menu;
@@ -1324,7 +1324,7 @@ body.digital_collection_show.hyrax-collections-show {
 
     .carousel-control {
       @include dc-button($on: dark);
-      background-color: $dc-plate;
+      background-color: var(--dc-plate, #{$dc-plate});
       border-radius: $dc-radius-pill;
       height: $dc-control-height-small-touch;
       padding: 0;

@@ -35,7 +35,7 @@
 
 @mixin dc-focus-ring($color: null, $offset: $dc-focus-ring-offset, $on: light, $radius: null) {
   @if $color == null {
-    $color: if($on == dark, $dc-ink-heading-on-dark, var(--dc-link-hover, #{$dc-link-hover}));
+    $color: if($on == dark, $dc-ink-heading-on-dark, var(--dc-focus-ring, var(--dc-link-hover, #{$dc-link-hover})));
   }
   box-shadow: none;
   outline: $dc-focus-ring-width solid $color;
@@ -99,7 +99,7 @@ $dc-heading-roles: (
   } @else {
     @include dc-sans;
   }
-  color: if($on == dark, $dc-ink-heading-on-dark, $dc-ink-heading);
+  color: if($on == dark, $dc-ink-heading-on-dark, var(--dc-ink-heading, #{$dc-ink-heading}));
   font-size: nth($sizes, 1);
   font-weight: $dc-weight-heading;
   line-height: if($role == item-title, $dc-leading-snug, $dc-leading-tight);
@@ -127,10 +127,10 @@ $dc-heading-roles: (
   color: if($on == dark, $dc-ink-secondary-on-dark, $dc-ink-secondary);
   font-size: $dc-role-eyebrow;
   font-weight: $dc-weight-strong;
-  letter-spacing: $dc-tracking-label;
+  letter-spacing: var(--dc-label-tracking, #{$dc-tracking-label});
   line-height: $dc-leading-snug;
   margin: 0;
-  text-transform: uppercase;
+  text-transform: var(--dc-label-case, uppercase);
 }
 
 @mixin dc-badge($tone: null) {
@@ -143,10 +143,10 @@ $dc-heading-roles: (
   font-size: $dc-text-xs;
   font-weight: $dc-weight-heading;
   gap: $dc-space-1;
-  letter-spacing: $dc-tracking-label;
+  letter-spacing: var(--dc-badge-tracking, #{$dc-tracking-label});
   line-height: $dc-leading-snug;
   padding: $dc-space-1 $dc-space-2;
-  text-transform: uppercase;
+  text-transform: var(--dc-badge-case, uppercase);
 
   @if $tone != null {
     background: var(--dc-#{$tone}-tint, #{map-get((info: $dc-info-tint, success: $dc-success-tint, danger: $dc-danger-tint), $tone)});
@@ -170,7 +170,7 @@ $dc-heading-roles: (
   margin: 0;
 
   label {
-    color: $dc-ink-heading;
+    color: var(--dc-ink-heading, #{$dc-ink-heading});
     font-size: $dc-text-sm;
     font-weight: $dc-weight-strong;
     line-height: $dc-leading-snug;
@@ -180,7 +180,7 @@ $dc-heading-roles: (
   .form-control {
     border: $dc-border solid $dc-control-edge;
     border-radius: var(--dc-radius, #{$dc-radius});
-    color: $dc-ink-heading;
+    color: var(--dc-ink-heading, #{$dc-ink-heading});
     font-size: $dc-text-base;
     height: $dc-control-height;
     padding: 0 $dc-space-3;
@@ -190,13 +190,13 @@ $dc-heading-roles: (
     }
 
     &:hover {
-      border-color: $dc-ink-heading;
+      border-color: var(--dc-ink-heading, #{$dc-ink-heading});
     }
 
     &:focus,
     &:focus-visible {
       @include dc-focus-ring;
-      border-color: $dc-ink-heading;
+      border-color: var(--dc-ink-heading, #{$dc-ink-heading});
       box-shadow: none;
     }
   }
@@ -223,7 +223,7 @@ $dc-heading-roles: (
   .dropdown-item,
   li.dropdown-item > a {
     border-radius: var(--dc-radius, #{$dc-radius});
-    color: $dc-ink-heading;
+    color: var(--dc-ink-heading, #{$dc-ink-heading});
     display: block;
     line-height: $dc-leading-snug;
     padding: $dc-space-2 $dc-space-3;
@@ -233,7 +233,7 @@ $dc-heading-roles: (
     &:hover,
     &:focus {
       background: $dc-surface-alt;
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
     }
 
     &:focus-visible {
@@ -362,7 +362,7 @@ $dc-heading-roles: (
 }
 
 @mixin dc-link-title($on: light) {
-  color: if($on == dark, $dc-ink-heading-on-dark, $dc-ink-heading);
+  color: if($on == dark, $dc-ink-heading-on-dark, var(--dc-ink-heading, #{$dc-ink-heading}));
   text-decoration: none;
 
   &:hover,
@@ -388,7 +388,9 @@ $dc-heading-roles: (
   transition: color $dc-transition;
 
   &::#{$side} {
+    color: var(--dc-cta-icon, currentColor);
     content: if($arrow == left, '\f060', '\f061');
+    content: unquote(if($arrow == left, '"\\f060" / ""', '"\\f061" / ""'));
     display: inline-block;
     font-family: FontAwesome;
     font-size: 1em;
@@ -403,6 +405,7 @@ $dc-heading-roles: (
     color: if($on == dark, $dc-link-hover-on-dark, var(--dc-link-hover, #{$dc-link-hover}));
 
     &::#{$side} {
+      color: var(--dc-cta-icon-hover, currentColor);
       margin-inline: if($arrow == left, 0 $gap-hover, $gap-hover 0);
     }
   }
@@ -480,7 +483,7 @@ $dc-heading-roles: (
 
 @mixin dc-section-head {
   align-items: flex-end;
-  border-bottom: $dc-rule-strong solid $dc-ink;
+  border-bottom: $dc-rule-strong solid var(--dc-section-rule, #{$dc-ink});
   display: flex;
   flex-wrap: wrap;
   gap: $dc-space-4 $dc-space-5;
@@ -622,7 +625,7 @@ $dc-heading-roles: (
     border-radius: var(--dc-radius, #{$dc-radius}) 0 0 var(--dc-radius, #{$dc-radius});
     border-right: 0;
     box-shadow: none;
-    color: $dc-ink-heading;
+    color: var(--dc-ink-heading, #{$dc-ink-heading});
     flex: 1 1 0%;
     font-size: $dc-text-base;
     height: var(--dc-search-height, #{$dc-control-height});
@@ -688,7 +691,7 @@ $dc-heading-roles: (
 }
 
 @mixin dc-plate {
-  background: $dc-plate;
+  background: var(--dc-plate, #{$dc-plate});
   border-radius: var(--dc-radius, #{$dc-radius});
   color: $dc-overlay-text;
   padding: $dc-space-6;
@@ -712,7 +715,7 @@ $dc-heading-roles: (
 
 @mixin dc-hero-controls {
   align-items: center;
-  background: $dc-plate;
+  background: var(--dc-plate, #{$dc-plate});
   border-radius: $dc-radius-pill;
   display: flex;
   gap: $dc-space-3;

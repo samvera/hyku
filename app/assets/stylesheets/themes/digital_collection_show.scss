@@ -229,7 +229,7 @@ body.digital_collection_show.works-show {
   .dc-viewer-still,
   .dc-viewer-empty {
     align-items: center;
-    background: $dc-hero-ground;
+    background: var(--dc-hero-ground, #{$dc-hero-ground});
     display: flex;
     height: $dc-height-mat;
     justify-content: center;
@@ -361,7 +361,7 @@ body.digital_collection_show.works-show {
 
   // ---- citations ----
   .dc-cite-label {
-    color: $dc-ink-heading;
+    color: var(--dc-ink-heading, #{$dc-ink-heading});
     font-size: $dc-text-sm;
     font-weight: $dc-weight-strong;
     line-height: $dc-leading-snug;
@@ -373,7 +373,7 @@ body.digital_collection_show.works-show {
     background-color: $dc-surface;
     border: $dc-border solid $dc-control-edge;
     border-radius: var(--dc-radius, #{$dc-radius});
-    color: $dc-ink-heading;
+    color: var(--dc-ink-heading, #{$dc-ink-heading});
     font-size: $dc-text-base;
     height: $dc-control-height;
     padding-left: $dc-space-3;
@@ -537,7 +537,7 @@ body.digital_collection_show.hyrax-collections-show {
   // ---- banner ----
   .dc-collection-banner {
     align-items: center;
-    background-color: $dc-hero-ground;
+    background-color: var(--dc-hero-ground, #{$dc-hero-ground});
     background-position: center;
     background-size: cover;
     display: flex;
@@ -656,7 +656,7 @@ body.digital_collection_show.hyrax-collections-show {
       border: $dc-border solid $dc-input-edge;
       border-radius: var(--dc-radius, #{$dc-radius}) 0 0 var(--dc-radius, #{$dc-radius});
       box-shadow: none;
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
       font-size: $dc-text-base;
       height: $dc-control-height;
       min-width: 0;
@@ -744,7 +744,7 @@ body.digital_collection_show.hyrax-collections-show {
       color: $dc-ink-secondary;
 
       strong {
-        color: $dc-ink-heading;
+        color: var(--dc-ink-heading, #{$dc-ink-heading});
       }
     }
 
@@ -1222,7 +1222,7 @@ body.digital_collection_show.hyrax-file_sets-show {
     summary {
       align-items: center;
       border-radius: var(--dc-radius, #{$dc-radius});
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
       cursor: pointer;
       display: inline-flex;
       gap: $dc-space-2;
@@ -1284,7 +1284,7 @@ body.digital_collection_show.hyrax-file_sets-show {
     }
 
     th {
-      color: $dc-ink-heading;
+      color: var(--dc-ink-heading, #{$dc-ink-heading});
       font-weight: $dc-weight-strong;
     }
 

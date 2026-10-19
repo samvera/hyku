@@ -8,7 +8,7 @@ RSpec.describe 'Contact Form', type: :feature, clean: true do
   # optional association that is nil in a single-tenant test run. Supply an account the
   # same way spec/mailers/hyrax/contact_mailer_spec.rb does.
   #
-  # Add an example without this stub when issue #xxxx is fixed.
+  # Add an example without this stub when issue #3423 is fixed.
   # KNOWN APPLICATION ISSUE: with no Site.account, submitting the form raises NoMethodError
   # (nil.email_subject_prefix), which the controller does not rescue (it rescues only
   # RuntimeError). Fix goes in: app/models/hyrax/contact_form_decorator.rb (nil-safe headers).

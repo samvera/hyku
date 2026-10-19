@@ -80,7 +80,7 @@ RSpec.describe 'Profile and Notifications', type: :feature, clean: true do
       expect(find('.list-group-item', text: 'Collections created').first('.badge')).to have_text('2', exact: true)
     end
 
-    # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+    # Remove this comment and the `pending` call to re-enable this test when issue #3415 is fixed.
     # KNOWN APPLICATION ISSUE: the profile link's f[depositor_ssim] filter is ignored because
     # depositor_ssim is not a configured facet. Fix goes in app/controllers/catalog_controller.rb.
     it "links Works created to a search of only the user's works" do
@@ -94,7 +94,7 @@ RSpec.describe 'Profile and Notifications', type: :feature, clean: true do
       expect(page).not_to have_link('Profile collection One')
     end
 
-    # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+    # Remove this comment and the `pending` call to re-enable this test when issue #3415 is fixed.
     # KNOWN APPLICATION ISSUE: the profile link's f[depositor_ssim] filter is ignored because
     # depositor_ssim is not a configured facet. Fix goes in app/controllers/catalog_controller.rb.
     it "links Collections created to a search of only the user's collections" do

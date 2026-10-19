@@ -87,7 +87,7 @@
 - _Knapsack only (not tested in base Hyku): the institution list, each institution's theme logo or placeholder,
   and the link to each institution's tenant, in both the non-signed-in and administrator lists. Base Hyku's
   global index (app/views/splash/index.html.erb) does not list tenants._
-- [global_index_spec.rb](spec/features/global_index_spec.rb)
+- [global_index_spec.rb](features/global_index_spec.rb)
   - shows tenant administration links to a signed-in superadmin
   - as a non-signed-in visitor offers an Administrator login link in the footer that leads to the sign-in form
   - as a non-signed-in visitor offers a Language dropdown for choosing the display language
@@ -113,7 +113,7 @@
 
 **Spec coverage**
 
-- [global_authentication_spec.rb](spec/features/global_authentication_spec.rb)
+- [global_authentication_spec.rb](features/global_authentication_spec.rb)
   - Log in page shows an email field (type=email), a password field, a Remember me box and a Log in button
   - Log in page rejects an email that has no account and stays on the form
   - Log in page rejects a malformed email
@@ -144,7 +144,7 @@
 
 **Spec coverage**
 
-- [global_authentication_spec.rb](spec/features/global_authentication_spec.rb)
+- [global_authentication_spec.rb](features/global_authentication_spec.rb)
   - Sign up page shows required Your Name, Email address, Password and Password confirmation inputs
   - Sign up page does not register anyone when the required inputs are missing
   - Sign up page does not register anyone with an invalid email, short password or mismatched confirmation
@@ -173,7 +173,7 @@
 
 **Spec coverage**
 
-- [global_authentication_spec.rb](spec/features/global_authentication_spec.rb)
+- [global_authentication_spec.rb](features/global_authentication_spec.rb)
   - Forgot your password page shows an Email input
   - Forgot your password page rejects a blank email without sending anything
   - Forgot your password page rejects an email with no account (including a malformed one) without sending anything
@@ -200,7 +200,7 @@
 
 **Spec coverage**
 
-- [global_authentication_spec.rb](spec/features/global_authentication_spec.rb)
+- [global_authentication_spec.rb](features/global_authentication_spec.rb)
   - Change your password page shows New password and Confirm new password fields
   - Change your password page rejects a password that is too short
   - Change your password page rejects a confirmation that does not match
@@ -231,7 +231,7 @@
 
 **Spec coverage**
 
-- [admin_tenant_management_spec.rb](spec/features/admin_tenant_management_spec.rb)
+- [admin_tenant_management_spec.rb](features/admin_tenant_management_spec.rb)
   - redirects an unauthenticated visitor to the login page with a not-authorized flash
   - lists tenant accounts with UUID, CNAME, and Manage/Edit/Delete actions
   - navigates from the accounts index to the Manage, Edit and Create new account pages
@@ -252,7 +252,7 @@
 
 **Spec coverage**
 
-- [admin_tenant_management_spec.rb](spec/features/admin_tenant_management_spec.rb)
+- [admin_tenant_management_spec.rb](features/admin_tenant_management_spec.rb)
   - can create, edit, and delete a tenant account
   - offers a cancel link and rejects a blank short name on the new account form
   - rejects a short name that is already in use
@@ -279,7 +279,7 @@
 
 **Spec coverage**
 
-- [admin_tenant_management_spec.rb](spec/features/admin_tenant_management_spec.rb)
+- [admin_tenant_management_spec.rb](features/admin_tenant_management_spec.rb)
   - can invite and remove tenant administrators
   - shows the tenant cname, edit/cancel links, and admin tabs on the manage page
   - inviting administrators on the Manage page invites an email that has no user yet and lists it as a current administrator
@@ -307,7 +307,7 @@
 
 - _Knapsack only (not tested in base Hyku): "When this box is checked, the tenant is visible to the public from
   the Global Index page", because the tenant list on the Global Index is a knapsack feature._
-- [admin_tenant_management_spec.rb](spec/features/admin_tenant_management_spec.rb)
+- [admin_tenant_management_spec.rb](features/admin_tenant_management_spec.rb)
   - renders the editable account fields and a cancel link on the edit form
   - shows the account values and saves edits back to the Manage Account page _(pending/skipped: known gap)_
 
@@ -336,7 +336,7 @@
 
 **Spec coverage**
 
-- [global_users_management_spec.rb](spec/features/global_users_management_spec.rb)
+- [global_users_management_spec.rb](features/global_users_management_spec.rb)
   - index page lists every user with their attributes in separate columns
   - index page goes to the Manage User page from Manage
   - index page goes to the Edit User form from Edit
@@ -359,7 +359,7 @@
 
 **Spec coverage**
 
-- [global_users_management_spec.rb](spec/features/global_users_management_spec.rb)
+- [global_users_management_spec.rb](features/global_users_management_spec.rb)
   - new page creates a user on Save and returns to the users list
   - new page re-renders the form with errors when an attribute is invalid
   - new page returns to the users list on Cancel
@@ -379,7 +379,7 @@
 
 **Spec coverage**
 
-- [global_users_management_spec.rb](spec/features/global_users_management_spec.rb)
+- [global_users_management_spec.rb](features/global_users_management_spec.rb)
   - manage page assigns the superadmin role with the checkbox and Update
   - manage page unassigns the superadmin role by clearing the checkbox
   - manage page returns to the users list on Cancel
@@ -400,7 +400,7 @@
 
 **Spec coverage**
 
-- [global_users_management_spec.rb](spec/features/global_users_management_spec.rb)
+- [global_users_management_spec.rb](features/global_users_management_spec.rb)
   - edit page pre-fills the user's Display Name and Email address
   - edit page saves changes and returns to the users list
   - edit page returns to the users list on Cancel without saving
@@ -431,7 +431,7 @@
 
 **Spec coverage**
 
-- [homepage_spec.rb](spec/features/homepage_spec.rb)
+- [homepage_spec.rb](features/homepage_spec.rb)
   - login and account name directs a visitor from Login to the Log in form
   - login and account name shows a signed-in user's display name instead of Login
   - login and account name falls back to the email address when the user has no display name
@@ -444,7 +444,7 @@
   - tabs shows featured works, recent public uploads, featured collections and the featured researcher
   - tabs switches between the tabs
   - tabs lists all collections from View all collections
-- [ui_ux_and_static_pages_spec.rb](spec/features/ui_ux_and_static_pages_spec.rb)
+- [ui_ux_and_static_pages_spec.rb](features/ui_ux_and_static_pages_spec.rb)
   - switches the interface language and keeps it across the tenant pages
   - navigates static pages: Home, About, Help, Terms, Contact
 
@@ -467,7 +467,7 @@
 
 **Spec coverage**
 
-- [contact_form_spec.rb](spec/features/contact_form_spec.rb)
+- [contact_form_spec.rb](features/contact_form_spec.rb)
   - submits the contact form for each issue type and validates errors
   - shows a notice above the form describing what to use the Contact Form for
   - offers each Issue Type option in the dropdown menu
@@ -487,7 +487,7 @@
 
 **Spec coverage**
 
-- [catalog_controls_spec.rb](spec/features/catalog_controls_spec.rb)
+- [catalog_controls_spec.rb](features/catalog_controls_spec.rb)
   - searches from the search bar and returns the matching work
   - customizes the search results by selecting different filters (Sort by, number of records per page, layout)
   - limits results with a facet menu and clears it via New Search
@@ -509,7 +509,7 @@
 
 **Spec coverage**
 
-- [collection_show_spec.rb](spec/features/collection_show_spec.rb)
+- [collection_show_spec.rb](features/collection_show_spec.rb)
   - the public collection show page shows collection metadata, description, and member works
   - the public collection show page searches within the collection
   - shows the visibility badge, item count, and Last Updated date in the header
@@ -553,7 +553,7 @@
 
 **Spec coverage**
 
-- [work_show_actions_spec.rb](spec/features/work_show_actions_spec.rb)
+- [work_show_actions_spec.rb](features/work_show_actions_spec.rb)
   - the work show page as an administrator shows the Edit, Delete, Add to Collection, Feature and Attach Child controls
   - the work show page as an administrator hides the Feature action for a non-public work
   - the work show page as an administrator lists each attached file in the items table with its details and action menu
@@ -587,7 +587,7 @@
 
 **Spec coverage**
 
-- [fileset_show_and_actions_spec.rb](spec/features/fileset_show_and_actions_spec.rb)
+- [fileset_show_and_actions_spec.rb](features/fileset_show_and_actions_spec.rb)
   - the public FileSet show page shows the title, visibility, media, details, activity and social links
   - the admin FileSet controls shows the Edit, Delete, and Single-Use Link controls
   - the admin FileSet controls generates a single-use link that appears in the Single-Use Links table
@@ -623,7 +623,7 @@
 
 **Spec coverage**
 
-- [dashboard_and_admin_dashboard_spec.rb](spec/features/dashboard_and_admin_dashboard_spec.rb)
+- [dashboard_and_admin_dashboard_spec.rb](features/dashboard_and_admin_dashboard_spec.rb)
   - shows user dashboard with activity, notifications, proxies, and transfers
   - shows the user's own recent activity, notifications, proxies and transfers
   - shows the user sidebar Activity and Repository Contents navigation links
@@ -677,7 +677,7 @@
 
 **Spec coverage**
 
-- [dashboard_and_admin_dashboard_spec.rb](spec/features/dashboard_and_admin_dashboard_spec.rb)
+- [dashboard_and_admin_dashboard_spec.rb](features/dashboard_and_admin_dashboard_spec.rb)
   - shows admin dashboard with statistics and navigation
   - shows stats on the number of users and visitors _(pending/skipped: known gap)_
   - shows Workflow Roles under Configuration only when that menu item is enabled
@@ -704,7 +704,7 @@
 
 **Spec coverage**
 
-- [profile_and_notifications_spec.rb](spec/features/profile_and_notifications_spec.rb)
+- [profile_and_notifications_spec.rb](features/profile_and_notifications_spec.rb)
   - displays join date, stats, email, and edit link on the profile show page
   - shows the summed number of views and downloads under Works created
   - Works created and Collections created shows the number of works and collections the user created
@@ -730,7 +730,7 @@
 
 **Spec coverage**
 
-- [profile_and_notifications_spec.rb](spec/features/profile_and_notifications_spec.rb)
+- [profile_and_notifications_spec.rb](features/profile_and_notifications_spec.rb)
   - saves the profile and returns to the profile page
   - renders the profile picture, delete-picture, ORCID, Twitter, Facebook, and Google+ inputs
   - uploads a profile picture and removes it with Delete picture
@@ -754,7 +754,7 @@
 
 **Spec coverage**
 
-- [profile_and_notifications_spec.rb](spec/features/profile_and_notifications_spec.rb)
+- [profile_and_notifications_spec.rb](features/profile_and_notifications_spec.rb)
   - notifications lists notifications in a table with Date, Subject, and Message columns
   - notifications deletes an individual notification with its trash icon
   - notifications deletes all notifications with Delete All
@@ -785,7 +785,7 @@
 
 **Spec coverage**
 
-- [transfers_and_proxies_spec.rb](spec/features/transfers_and_proxies_spec.rb)
+- [transfers_and_proxies_spec.rb](features/transfers_and_proxies_spec.rb)
   - as a user permitted to search for other users (user_reader role) sends an ownership transfer request from the works dashboard
   - with a real pending ownership transfer request shows the sender a Transfers Sent list with Title, Date, recipient, Status and Comments
   - with a real pending ownership transfer request lets the sender cancel a pending sent transfer
@@ -809,7 +809,7 @@
 
 **Spec coverage**
 
-- [transfers_and_proxies_spec.rb](spec/features/transfers_and_proxies_spec.rb)
+- [transfers_and_proxies_spec.rb](features/transfers_and_proxies_spec.rb)
   - as a user permitted to search for other users (user_reader role) can add and remove proxies
   - lets a regular user find another user in the Manage Proxies picker _(pending/skipped: known gap)_
 
@@ -835,7 +835,7 @@
 
 **Spec coverage**
 
-- [collection_management_spec.rb](spec/features/collection_management_spec.rb)
+- [collection_management_spec.rb](features/collection_management_spec.rb)
   - Dashboard collections index page shows the Add New Collection control, count, and a search bar
   - Dashboard collections index page renders the managed collections table with the expected column headers
   - Dashboard collections index page lists a manageable collection with View/Edit/Delete/Add to collection actions
@@ -862,7 +862,7 @@
 
 **Spec coverage**
 
-- [collection_management_spec.rb](spec/features/collection_management_spec.rb)
+- [collection_management_spec.rb](features/collection_management_spec.rb)
   - creates, edits, and deletes a collection
   - Dashboard collection new page shows the required Title field and an Abstract field
   - Dashboard collection new page shows Additional fields, Add another / Remove controls, Save and Cancel
@@ -930,7 +930,7 @@
 
 **Spec coverage**
 
-- [collection_management_spec.rb](spec/features/collection_management_spec.rb)
+- [collection_management_spec.rb](features/collection_management_spec.rb)
   - Dashboard collection edit page tabs Description tab shows the metadata form, Additional fields, Save and Cancel
   - Dashboard collection edit page tabs Description tab adds and removes descriptor inputs with Add another / Remove and saves the result
   - Dashboard collection edit page tabs Description tab offers a dropdown to select the collection thumbnail _(pending/skipped: known gap)_
@@ -970,7 +970,7 @@
 
 **Spec coverage**
 
-- [collection_show_spec.rb](spec/features/collection_show_spec.rb)
+- [collection_show_spec.rb](features/collection_show_spec.rb)
   - shows the collection name, visibility, and collection type
   - shows Edit, Add-to, and Delete collection buttons
   - shows the collection's representative media
@@ -1002,7 +1002,7 @@
 
 **Spec coverage**
 
-- [dashboard_my_works_spec.rb](spec/features/dashboard_my_works_spec.rb)
+- [dashboard_my_works_spec.rb](features/dashboard_my_works_spec.rb)
   - page header buttons shows "Create batch of works" when batch upload is enabled, alongside "Add New Work"
   - page header buttons hides "Create batch of works" when batch upload is disabled
   - counts and lists only the works the user owns
@@ -1084,7 +1084,7 @@
 
 **Spec coverage**
 
-- [batch_work_creation_spec.rb](spec/features/batch_work_creation_spec.rb)
+- [batch_work_creation_spec.rb](features/batch_work_creation_spec.rb)
   - shows the batch requirements, visibility options, and all deposit tabs
   - shows per-file display label and resource type controls, sets all resource types, and deletes a file
   - adds a chosen collection to the list with a Remove from collection control
@@ -1164,7 +1164,7 @@
 
 **Spec coverage**
 
-- [work_new_form_spec.rb](spec/features/work_new_form_spec.rb)
+- [work_new_form_spec.rb](features/work_new_form_spec.rb)
   - sidebar lists the deposit requirements and offers every visibility option
   - sidebar shows an "Add files" requirement that completes once a file is uploaded, when files are required
   - Descriptions tab shows the required fields and adds another input for a descriptor
@@ -1173,10 +1173,10 @@
   - Sharing tab shares with a group at a chosen access level and notes that permissions are not yet saved
   - Sharing tab as a depositor permitted to search users (user_reader role) shares with a user at a chosen access level
   - Sharing tab lets a regular depositor find a user in the Sharing tab user search _(pending/skipped: known gap)_
-- [work_form_requirements_spec.rb](spec/features/work_form_requirements_spec.rb)
+- [work_form_requirements_spec.rb](features/work_form_requirements_spec.rb)
   - shows required metadata, file, relationship, and sharing controls
   - keeps Save disabled until the required metadata and deposit agreement are complete
-- [workflow_permissions_spec.rb](spec/features/workflow_permissions_spec.rb)
+- [workflow_permissions_spec.rb](features/workflow_permissions_spec.rb)
   - embargo workflow allows setting an embargo during work creation
   - lease workflow allows setting a lease during work creation
   - relationships tab shows the relationships tab on the new work form
@@ -1243,7 +1243,7 @@
 
 **Spec coverage**
 
-- [work_form_requirements_spec.rb](spec/features/work_form_requirements_spec.rb)
+- [work_form_requirements_spec.rb](features/work_form_requirements_spec.rb)
   - the work edit page tabs Descriptions tab shows the required fields pre-filled, a removable blank input, and Additional fields
   - the work edit page tabs Files tab shows the add-files controls and dropzone that render on load
   - the work edit page tabs Files tab uploads a file, lists its name and size, and deletes it
@@ -1252,7 +1252,7 @@
   - the work edit page tabs Sharing tab adds a group share, notes it is unsaved, and persists it when the work is saved
   - the work edit page tabs Sharing tab as a depositor permitted to search users (user_reader role) adds a user share with its access level
   - the edit page for an existing work (Dashboard Work Edit Page) when the work is in a collection lists the collection with a Remove control
-- [workflow_permissions_spec.rb](spec/features/workflow_permissions_spec.rb)
+- [workflow_permissions_spec.rb](features/workflow_permissions_spec.rb)
   - sharing workflow offers existing groups to share with on the Sharing tab
 
 ## Review Submissions Page
@@ -1286,7 +1286,7 @@
 
 **Spec coverage**
 
-- [review_submissions_spec.rb](spec/features/review_submissions_spec.rb)
+- [review_submissions_spec.rb](features/review_submissions_spec.rb)
   - lists a pending submission with its work, depositor, submission date and status
   - approves a pending submission and changes its workflow state
   - requests changes on a pending submission and changes its workflow state
@@ -1310,7 +1310,7 @@
 
 **Spec coverage**
 
-- [manage_users_and_groups_spec.rb](spec/features/manage_users_and_groups_spec.rb)
+- [manage_users_and_groups_spec.rb](features/manage_users_and_groups_spec.rb)
   - Manage Users Page shows the exact total number of users in the repository
   - Manage Users Page lists each user with their username, roles, last access, and status
   - Manage Users Page adds/invites a user via email with a role, listed as Pending
@@ -1334,7 +1334,7 @@
 
 **Spec coverage**
 
-- [manage_users_and_groups_spec.rb](spec/features/manage_users_and_groups_spec.rb)
+- [manage_users_and_groups_spec.rb](features/manage_users_and_groups_spec.rb)
   - Manage Groups Index Page shows the total number of groups
   - Manage Groups Index Page lists each group with its name, user count, and creation date
   - Manage Groups Index Page searches for specific groups
@@ -1359,7 +1359,7 @@
 
 **Spec coverage**
 
-- [manage_users_and_groups_spec.rb](spec/features/manage_users_and_groups_spec.rb)
+- [manage_users_and_groups_spec.rb](features/manage_users_and_groups_spec.rb)
   - Manage Groups New Page returns to the Manage Groups index from the back link
   - Manage Groups New Page has a required Name and a Description, with the other tabs disabled
   - Manage Groups New Page creates a new group with Save
@@ -1409,7 +1409,7 @@
 
 **Spec coverage**
 
-- [manage_users_and_groups_spec.rb](spec/features/manage_users_and_groups_spec.rb)
+- [manage_users_and_groups_spec.rb](features/manage_users_and_groups_spec.rb)
   - Manage Groups Edit Page returns to the Manage Groups index from the back link on the Description, Users, and Remove tabs
   - Manage Groups Edit Page Description tab shows the filled-in form and saves changes
   - Manage Groups Edit Page Description tab cancels the edits and returns to the Manage Groups index
@@ -1458,7 +1458,7 @@
 
 **Spec coverage**
 
-- [manage_embargoes_and_leases_spec.rb](spec/features/manage_embargoes_and_leases_spec.rb)
+- [manage_embargoes_and_leases_spec.rb](features/manage_embargoes_and_leases_spec.rb)
   - Manage Embargoes index page lists every enforced embargo (works and file sets) under All Active Embargoes
   - Manage Embargoes index page lists only past-due, still-enforced embargoes under Expired Active Embargoes
   - Manage Embargoes index page releases selected expired embargoes with "Deactivate Embargoes for Selected"
@@ -1481,7 +1481,7 @@
 
 **Spec coverage**
 
-- [manage_embargoes_and_leases_spec.rb](spec/features/manage_embargoes_and_leases_spec.rb)
+- [manage_embargoes_and_leases_spec.rb](features/manage_embargoes_and_leases_spec.rb)
   - Manage Embargoes edit page shows the current embargo in an editable form and Update changes it
   - Manage Embargoes edit page Deactivate Embargo releases the embargo and records it under Past Embargoes
   - Manage Embargoes edit page Cancel returns to Manage Embargoes and the return link opens the work edit page
@@ -1499,7 +1499,7 @@
 
 **Spec coverage**
 
-- [manage_embargoes_and_leases_spec.rb](spec/features/manage_embargoes_and_leases_spec.rb)
+- [manage_embargoes_and_leases_spec.rb](features/manage_embargoes_and_leases_spec.rb)
   - Manage Embargoes deactivating the embargo of a work with file sets asks whether to apply the change to the files, offering both choices
   - Manage Embargoes deactivating the embargo of a work with file sets names the work by its title on the confirmation page _(pending/skipped: known gap)_
   - Manage Embargoes deactivating the embargo of a work with file sets "Yes please." copies the released visibility to the files, lifting their embargo
@@ -1544,7 +1544,7 @@
 
 **Spec coverage**
 
-- [manage_embargoes_and_leases_spec.rb](spec/features/manage_embargoes_and_leases_spec.rb)
+- [manage_embargoes_and_leases_spec.rb](features/manage_embargoes_and_leases_spec.rb)
   - Manage Leases index page lists every enforced lease (works and file sets) under All Active Leases
   - Manage Leases index page lists only past-due, still-enforced leases under Expired Active Leases
   - Manage Leases index page releases selected expired leases with "Deactivate Leases for Selected"
@@ -1567,7 +1567,7 @@
 
 **Spec coverage**
 
-- [manage_embargoes_and_leases_spec.rb](spec/features/manage_embargoes_and_leases_spec.rb)
+- [manage_embargoes_and_leases_spec.rb](features/manage_embargoes_and_leases_spec.rb)
   - Manage Leases edit page shows the current lease in an editable form and Update changes it
   - Manage Leases edit page Deactivate Lease releases the lease and records it under Past Leases
   - Manage Leases edit page Cancel returns to Manage Leases and the return link opens the work edit page
@@ -1585,7 +1585,7 @@
 
 **Spec coverage**
 
-- [manage_embargoes_and_leases_spec.rb](spec/features/manage_embargoes_and_leases_spec.rb)
+- [manage_embargoes_and_leases_spec.rb](features/manage_embargoes_and_leases_spec.rb)
   - Manage Leases deactivating the lease of a work with file sets asks whether to apply the change to the files, offering both choices
   - Manage Leases deactivating the lease of a work with file sets "Yes please." copies the released visibility to the files, lifting their lease
   - Manage Leases deactivating the lease of a work with file sets "No. I'll update it manually." leaves the file leases in place
@@ -1605,7 +1605,7 @@
 
 **Spec coverage**
 
-- [admin_settings_spec.rb](spec/features/admin_settings_spec.rb)
+- [admin_settings_spec.rb](features/admin_settings_spec.rb)
   - Labels saves the application name, institution name, and full institution name
 
 ## Settings → Appearance Page
@@ -1666,12 +1666,12 @@
 
 **Spec coverage**
 
-- [admin_settings_spec.rb](spec/features/admin_settings_spec.rb)
+- [admin_settings_spec.rb](features/admin_settings_spec.rb)
   - Appearance uploads a logo and a banner image with Save changes
   - Appearance uploads default collection and work images with Save changes
   - Appearance saves a changed color with Save changes (Apply Changes) and applies it to the site
   - Appearance saves the body and headline fonts with Save changes and applies them to the site
-  - Appearance imports a changed headline font even when the body font stays the default _(pending/skipped: known gap)_
+  - Appearance imports a changed headline font even when the body font stays the default
   - Appearance saves custom CSS with Save changes and serves it on the site
   - Appearance with JavaScript has a color picker and a Restore Default button per element, plus Restore All Defaults
   - Appearance with JavaScript has body and headline font dropdowns with Restore Default buttons, plus Restore All Defaults
@@ -1692,7 +1692,7 @@
 
 **Spec coverage**
 
-- [collection_management_spec.rb](spec/features/collection_management_spec.rb)
+- [collection_management_spec.rb](features/collection_management_spec.rb)
   - Settings -> Collection Types (admin) index page shows the count, Create new collection type button, and edit/delete controls
   - Settings -> Collection Types (admin) index page expands more information about collection types
   - Settings -> Collection Types (admin) index page opens a collection type for editing from its Edit button
@@ -1712,7 +1712,7 @@
 
 **Spec coverage**
 
-- [collection_management_spec.rb](spec/features/collection_management_spec.rb)
+- [collection_management_spec.rb](features/collection_management_spec.rb)
   - Settings -> Collection Types (admin) new page shows required Type name, Type description, Save and Cancel
   - Settings -> Collection Types (admin) new page returns to the collection types index from Cancel
 
@@ -1769,7 +1769,7 @@
 
 **Spec coverage**
 
-- [collection_management_spec.rb](spec/features/collection_management_spec.rb)
+- [collection_management_spec.rb](features/collection_management_spec.rb)
   - Settings -> Collection Types (admin) edit page exposes Description, Settings, Participants and Badge Color tabs
   - Settings -> Collection Types (admin) edit page shows the Description form filled with the type name and description
   - Settings -> Collection Types (admin) edit page shows disabled admin-set-only checkboxes on the Settings tab
@@ -1795,7 +1795,7 @@
 
 **Spec coverage**
 
-- [admin_settings_spec.rb](spec/features/admin_settings_spec.rb)
+- [admin_settings_spec.rb](features/admin_settings_spec.rb)
   - Pages saves the content of each static page and shows it on the public page
   - Pages cancels changes and returns to the Pages form _(pending/skipped: known gap)_
   - Pages edits each page in a WYSIWYG editor
@@ -1817,7 +1817,7 @@
 
 **Spec coverage**
 
-- [admin_settings_spec.rb](spec/features/admin_settings_spec.rb)
+- [admin_settings_spec.rb](features/admin_settings_spec.rb)
   - Content Block saves each content block and shows it on the homepage
   - Content Block cancels changes and returns to the Content Blocks form _(pending/skipped: known gap)_
   - Content Block shows a WYSIWYG editor to change the content for each of the site's content blocks
@@ -1834,7 +1834,7 @@
 
 **Spec coverage**
 
-- [admin_settings_spec.rb](spec/features/admin_settings_spec.rb)
+- [admin_settings_spec.rb](features/admin_settings_spec.rb)
   - Features lists each feature with On and Off controls
   - Features turns a feature off and on, changing the site behavior
 
@@ -1851,10 +1851,10 @@
 
 **Spec coverage**
 
-- [workflow_permissions_spec.rb](spec/features/workflow_permissions_spec.rb)
+- [workflow_permissions_spec.rb](features/workflow_permissions_spec.rb)
   - Workflow Roles Page assigns an existing user a specific workflow role with the form
   - Workflow Roles Page lists all users in the repository with their workflow roles
   - Workflow Roles Page filters the user roles list with its search bar by user or by role
-- [dashboard_and_admin_dashboard_spec.rb](spec/features/dashboard_and_admin_dashboard_spec.rb)
+- [dashboard_and_admin_dashboard_spec.rb](features/dashboard_and_admin_dashboard_spec.rb)
   - shows Workflow Roles under Configuration only when that menu item is enabled
 

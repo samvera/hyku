@@ -23,15 +23,6 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
     Site.update(institution_name: 'Test Institution')
     # Batch upload is gated behind this Flipflop feature.
     allow(Flipflop).to receive(:batch_upload?).and_return(true)
-    # Remove this comment and the line below when issue #xxxx is fixed.
-    # KNOWN APPLICATION ISSUE (flexible metadata only): the batch form takes its required
-    # (primary) fields from GenericWorkResourceForm.required_fields, which stays empty until a
-    # GenericWorkResourceForm has been built in the process. On a freshly booted server the
-    # batch form shows no required fields, reports "being processed", then the job fails with
-    # "Rights statement can't be blank". Fix goes in Hyrax (samvera/hyrax):
-    # Hyrax::Forms::BatchUploadForm#required_fields -- read required fields from the flexible schema.
-    # Warming the form class here makes the test reflect an already-warm server.
-    GenericWorkResourceForm.new(resource: GenericWorkResource.new) if Hyrax.config.flexible?
     login_as user, scope: :user
   end
 

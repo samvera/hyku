@@ -68,7 +68,7 @@ RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true do
     end
   end
 
-  # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+  # Remove this comment and the `pending` call to re-enable this test when issue #3419 is fixed.
   # KNOWN APPLICATION ISSUE: a regular user's picker search (GET /users.json) is forbidden,
   # so they cannot find anyone to proxy or transfer to. This also breaks the transfer
   # recipient picker and the work Sharing tab user search for regular users.
@@ -122,7 +122,7 @@ RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true do
         # NOTE: hyrax labels this column "From" in both the sent and received tables
         # (both partials render t('.from')); for a sent transfer it holds the recipient
         # (the "To" party from the Manual Test Plan).
-        # Update this assertion to expect "To" when issue #xxxx is fixed. Fix goes in
+        # Update this assertion to expect "To" when issue #1816 is fixed. Fix goes in
         # Hyrax (samvera/hyrax): app/views/hyrax/transfers/_sent.html.erb.
         expect(page).to have_selector('th', text: 'From')
         expect(page).to have_link('Transfer Test Work')

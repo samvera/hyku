@@ -155,7 +155,7 @@ RSpec.describe 'FileSet Show and Actions', type: :feature, clean: true do
     # the AF ::FileSet never gets that property, so saving a legacy AF file set raises
     # NoMethodError. `pending` keeps these running and fails loudly once it is fixed.
     # (Declared before the let! below so it is marked pending before the setup raises.)
-    # Remove this comment and the `pending` call to re-enable these tests when issue #xxxx is fixed.
+    # Remove this comment and the `pending` call to re-enable these tests when issue #3418 is fixed.
     # KNOWN APPLICATION ISSUE (flexible metadata only): saving a legacy AF FileSet fails because
     # Hyrax's AF FileSetIndexer calls `transcript_ids`, which ::FileSet lacks when flexible
     # metadata is on. Fix goes in Hyrax (samvera/hyrax): Hyrax::FileSetIndexer (guard the

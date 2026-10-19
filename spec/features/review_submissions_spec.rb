@@ -39,7 +39,7 @@ RSpec.describe 'Review submissions', type: :request, singletenant: true, clean: 
   # NOTE: Hyrax's admin/workflows/index.html.erb labels this column "Depositor" but
   # renders the work's `creator` metadata (`document.creator`), not the depositing
   # user's account, so we assert on the creator value.
-  # Update this test to assert on the depositor when issue #xxxx is fixed. Fix goes in
+  # Update this test to assert on the depositor when issue #3414 is fixed. Fix goes in
   # Hyrax (samvera/hyrax): app/views/hyrax/admin/workflows/index.html.erb.
   it 'lists a pending submission with its work, depositor, submission date and status' do
     get '/admin/workflows'

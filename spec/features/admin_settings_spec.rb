@@ -122,9 +122,6 @@ RSpec.describe 'Admin settings pages', type: :feature, clean: true do
     end
 
     it 'imports a changed headline font even when the body font stays the default' do
-      # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
-      # KNOWN APPLICATION ISSUE: the headline font @import is guarded by the body font, so it is skipped while the body font is Helvetica. Fix goes in app/views/shared/_appearance_styles.html.erb.
-      pending('headline font @import is conditioned on body_font instead of headline_font')
       visit '/admin/appearance'
       within('#font') do
         fill_in 'admin_appearance[headline_font]', with: 'Roboto Slab:700'
@@ -242,7 +239,7 @@ RSpec.describe 'Admin settings pages', type: :feature, clean: true do
     it 'cancels changes and returns to the Pages form' do
       visit '/pages/edit'
       within('#about') { fill_in 'content_block_about', with: '<p>Discarded about text</p>' }
-      # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+      # Remove this comment and the `pending` call to re-enable this test when issue #3420 is fixed.
       # KNOWN APPLICATION ISSUE: Cancel on the Pages form links to Manage Admin Sets instead of back to the Pages form (Hyrax links edit_pages_path). Fix goes in app/views/hyrax/pages/_form.html.erb.
       pending('Pages Cancel links to hyrax.admin_admin_sets_path instead of hyrax.edit_pages_path')
       within('#about') { click_link 'Cancel' }
@@ -306,7 +303,7 @@ RSpec.describe 'Admin settings pages', type: :feature, clean: true do
     it 'cancels changes and returns to the Content Blocks form' do
       visit '/content_blocks/edit'
       within('#announcement_text') { fill_in 'content_block_announcement', with: '<p>Discarded announcement</p>' }
-      # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+      # Remove this comment and the `pending` call to re-enable this test when issue #3420 is fixed.
       # KNOWN APPLICATION ISSUE: Content Blocks Cancel links to Manage Admin Sets, not back to the form (Hyrax: edit_content_blocks_path). Fix goes in app/views/hyrax/content_blocks/_form.html.erb.
       pending('Content Blocks Cancel links to hyrax.admin_admin_sets_path instead of hyrax.edit_content_blocks_path')
       within('#announcement_text') { click_link 'Cancel' }

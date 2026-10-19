@@ -181,7 +181,7 @@ RSpec.describe 'New work form', type: :feature, js: true, clean: true do
     end
 
     # Potential duplicate: spec/features/transfers_and_proxies_spec.rb:80 (same /users.json 403 for regular users)
-    # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+    # Remove this comment and the `pending` call to re-enable this test when issue #3419 is fixed.
     # KNOWN APPLICATION ISSUE: GET /users.json is forbidden for a regular depositor, so the Sharing tab user
     # search finds no one. Fix goes in app/controllers/concerns/hyrax/users_controller_decorator.rb.
     it 'lets a regular depositor find a user in the Sharing tab user search' do

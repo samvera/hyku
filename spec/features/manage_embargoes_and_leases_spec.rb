@@ -151,7 +151,7 @@ RSpec.describe 'Manage embargoes and leases', type: :feature, clean: true do
         expect(find_resource(active_work).embargo.embargo_release_date).to be_present
       end
 
-      # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+      # Remove this comment and the `pending` call to re-enable this test when issue #3416 is fixed.
       # KNOWN APPLICATION ISSUE: batch deactivate never saves the released embargo. Fix goes in Hyrax (samvera/hyrax): app/controllers/concerns/hyrax/embargoes_controller_behavior.rb#update.
       it 'records the batch-released embargo in its history and under Deactivated Embargoes' do
         pending('EmbargoesControllerBehavior#update (Valkyrie) calls EmbargoManager#release! but never persists resource.embargo')
@@ -269,7 +269,7 @@ RSpec.describe 'Manage embargoes and leases', type: :feature, clean: true do
         expect(find_resource(work).visibility).to eq('open')
       end
 
-      # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+      # Remove this comment and the `pending` call to re-enable this test when issue #3424 is fixed.
       # KNOWN APPLICATION ISSUE: confirm page names a Valkyrie work "GenericWorkResource: <id>", not its title. Fix goes in Hyrax (samvera/hyrax): app/views/hyrax/permissions/confirm.html.erb.
       it 'names the work by its title on the confirmation page' do
         pending('hyrax/permissions/confirm renders curation_concern.to_s, which is not the title for a Valkyrie resource')
@@ -403,7 +403,7 @@ RSpec.describe 'Manage embargoes and leases', type: :feature, clean: true do
         expect(find_resource(active_work).lease.lease_expiration_date).to be_present
       end
 
-      # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+      # Remove this comment and the `pending` call to re-enable this test when issue #3416 is fixed.
       # KNOWN APPLICATION ISSUE: batch deactivate never saves the released lease. Fix goes in Hyrax (samvera/hyrax): app/controllers/concerns/hyrax/leases_controller_behavior.rb#update.
       it 'records the batch-released lease in its history and under Deactivated Leases' do
         pending('LeasesControllerBehavior#update (Valkyrie) calls LeaseManager#release! but never persists resource.lease')

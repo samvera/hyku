@@ -126,7 +126,7 @@ RSpec.describe 'Work show actions', type: :feature, clean: true do
     end
 
     def make_work_with_file(title:, visibility: 'open')
-      # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+      # Remove this comment and the `pending` call to re-enable this test when issue #3418 is fixed.
       # KNOWN APPLICATION ISSUE (flexible metadata only): saving a legacy AF file set fails
       # (Hyrax's AF FileSetIndexer reads `transcript_ids`, which the AF ::FileSet lacks when
       # flexible metadata is on). Fix goes in Hyrax (samvera/hyrax): Hyrax::FileSetIndexer
@@ -244,7 +244,7 @@ RSpec.describe 'Work show actions', type: :feature, clean: true do
 
   # (No setup here: a `skip` inside the example still runs let!/before hooks first.)
   describe 'documented gaps' do
-    # Remove this comment, replace the `skip` with a real test, and re-enable it when issue #xxxx
+    # Remove this comment, replace the `skip` with a real test, and re-enable it when issue #3417
     # is fixed. Fix goes in: app/views/hyrax/base/show.html.erb (render the
     # hyrax/base/_social_media partial, as file sets already do).
     it 'links to social-media share icons for the work' do

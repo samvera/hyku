@@ -175,7 +175,7 @@ RSpec.describe 'Admin Tenant Management', multitenant: true do
     expect(page).to have_field('Short name', with: account.name)
   end
 
-  # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+  # Remove this comment and the `pending` call to re-enable this test when issue #3421 is fixed.
   # KNOWN APPLICATION ISSUE: a short name ending in "." raises ArgumentError (500) instead of a
   # validation error. Fix goes in app/models/account.rb (before_validation calling AccountCname.default_cname).
   it 'rejects a short name with a trailing dot' do
@@ -252,7 +252,7 @@ RSpec.describe 'Admin Tenant Management', multitenant: true do
   # Manual Test Plan: "Global Tenant Account Edit Page (Admin only)"
   # The single Tenant CNAME input became a read-only "Primary Domain Name" plus editable Domain Names.
   # Potential duplicate: spec/features/accounts_spec.rb:43 (edit form saves endpoint URLs)
-  # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+  # Remove this comment and the `pending` call to re-enable this test when issue #3422 is fixed.
   # KNOWN APPLICATION ISSUE: saving the edit form raises NoMethodError when an array setting such
   # as email_format has values: the inputs are not array-named, so a String is posted. Fix goes in
   # app/views/shared/_settings.html.erb (see its FIXME) or AccountSettings#validate_email_format.

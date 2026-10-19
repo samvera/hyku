@@ -4,159 +4,200 @@ require 'rails_helper'
 
 RSpec.describe 'Profile and Notifications', type: :feature, clean: true do
   let(:user) { create(:user, email: 'profileuser@example.com') }
+  # Profiles are addressed by the user's to_param (email with '.' => '-dot-').
+  let(:profile_path) { "/dashboard/profiles/#{user.to_param}" }
 
   before do
     login_as user
   end
 
-  it 'allows editing profile and avatar' do
-    visit '/dashboard/profile/edit'
-    fill_in 'Display Name', with: 'Profile User'
-    fill_in 'Twitter handle', with: '@profileuser'
-    fill_in 'ORCID profile', with: '0000-0000-0000-0000'
+  it 'saves the profile and returns to the profile page' do
+    visit "#{profile_path}/edit"
+    fill_in 'Twitter Handle', with: 'profileuser'
+    fill_in 'Facebook Handle', with: 'profileuser.fb'
     click_button 'Save Profile'
-    expect(page).to have_content('Profile User')
-    expect(page).to have_content('@profileuser')
-    expect(page).to have_content('0000-0000-0000-0000')
+
+    expect(page).to have_current_path(profile_path, ignore_query: true)
+    expect(page).to have_link('profileuser', href: 'http://twitter.com/profileuser')
+    expect(user.reload.twitter_handle).to eq('profileuser')
+    expect(user.facebook_handle).to eq('profileuser.fb')
   end
 
-  it 'shows and deletes notifications' do
-    visit '/notifications'
-    expect(page).to have_content('Notifications')
-    click_link 'Delete All' if page.has_link?('Delete All')
-    expect(page).to have_content('No notifications')
-  end
-
-  # Profile SHOW page. Route/param mirror spec/requests/user_roles_spec.rb
-  # (`/dashboard/profiles/<email with '.' => '-dot-'>`). Labels are grounded in
-  # the Hyrax profile show view (hyrax/dashboard/profiles/show ->
-  # hyrax/users/_vitals + _user_info) and the stats locale keys.
-  it 'displays join date, collection/work links, stats, email, and edit link on the profile show page' do
-    visit "/dashboard/profiles/#{user.email.gsub('.', '-dot-')}"
+  # Profile SHOW page. Labels are grounded in the Hyrax profile show view
+  # (hyrax/dashboard/profiles/show -> hyrax/users/_vitals + _user_info) and the
+  # stats locale keys.
+  it 'displays join date, stats, email, and edit link on the profile show page' do
+    user.update!(created_at: Time.zone.local(2024, 3, 7, 12))
+    visit profile_path
 
     # I can see the date that I joined the site (hyrax.dashboard.stats.joined_on)
-    expect(page).to have_content('Joined on')
+    expect(page).to have_content('Joined on Mar 07, 2024')
 
-    # Collections Created / Works Created links to filtered search results,
-    # each with a count badge rendered to their left.
-    expect(page).to have_link('Collections created')
-    expect(page).to have_link('Works created', href: /catalog/)
-
-    # Under Works created: number of Views and number of Downloads
-    # (hyrax.dashboard.stats.file_views "View" / file_downloads "Download",
-    # pluralized).
-    expect(page).to have_content('Views')
-    expect(page).to have_content('Downloads')
+    # With no recorded usage, every Views/Downloads counter is zero.
+    expect(all('.views-downloads-dashboard li').map { |li| li.text.squish })
+      .to eq(['0 Metadata Views', '0 Views', '0 Downloads'])
 
     # I can see the email associated with my account (rendered via mail_to).
-    expect(page).to have_content(user.email)
+    within('#user_info') { expect(page).to have_link(user.email, href: "mailto:#{user.email}") }
 
     # I can click Edit Profile, directing me to the Edit Profile form.
-    expect(page).to have_link('Edit Profile')
     click_link 'Edit Profile'
-    expect(page).to have_field('Display Name')
+    expect(page).to have_current_path("#{profile_path}/edit", ignore_query: true)
+    expect(page).to have_field('Twitter Handle')
   end
 
-  # Profile EDIT page. Field ids are deterministic from `form_for @user` in the
-  # Hyku override app/views/hyrax/dashboard/profiles/_edit_primary.html.erb
-  # (f.file_field :avatar, f.check_box :remove_avatar, f.text_field
-  # :facebook_handle, f.text_field :googleplus_handle). The existing example
-  # already covers Display Name / Twitter handle / ORCID profile.
-  it 'renders the profile picture, delete-picture, Facebook, and Google+ inputs on the edit form' do
-    visit '/dashboard/profile/edit'
+  # Views/Downloads sum the user's UserStat rows (Hyrax::UserUsageStats).
+  it 'shows the summed number of views and downloads under Works created' do
+    UserStat.create!(user_id: user.id, date: 2.days.ago, work_views: 3, file_views: 2, file_downloads: 1)
+    UserStat.create!(user_id: user.id, date: 1.day.ago, work_views: 4, file_views: 3, file_downloads: 1)
+    visit profile_path
 
-    # File input for profile picture
+    expect(all('.views-downloads-dashboard li').map { |li| li.text.squish })
+      .to eq(['7 Metadata Views', '5 Views', '2 Downloads'])
+  end
+
+  describe 'Works created and Collections created' do
+    let(:other_user) { create(:user) }
+
+    before do
+      %w[Alpha Beta Gamma].each do |name|
+        FactoryBot.valkyrie_create(:generic_work_resource, :public, title: ["Profile work #{name}"],
+                                                                    depositor: user.user_key)
+      end
+      FactoryBot.valkyrie_create(:generic_work_resource, :public, title: ['Someone else work'],
+                                                                  depositor: other_user.user_key)
+      %w[One Two].each do |name|
+        FactoryBot.valkyrie_create(:hyku_collection, :public, user:, title: ["Profile collection #{name}"])
+      end
+      FactoryBot.valkyrie_create(:hyku_collection, :public, user: other_user, title: ['Someone else collection'])
+    end
+
+    it 'shows the number of works and collections the user created' do
+      visit profile_path
+
+      # The count badge sits in the same list item as its link.
+      expect(find('.list-group-item', text: 'Works created').first('.badge')).to have_text('3', exact: true)
+      expect(find('.list-group-item', text: 'Collections created').first('.badge')).to have_text('2', exact: true)
+    end
+
+    # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+    # KNOWN APPLICATION ISSUE: the profile link's f[depositor_ssim] filter is ignored because
+    # depositor_ssim is not a configured facet. Fix goes in app/controllers/catalog_controller.rb.
+    it "links Works created to a search of only the user's works" do
+      pending("Catalog ignores the depositor filter, so other users' works are listed")
+      visit profile_path
+      click_link 'Works created'
+
+      expect(page).to have_current_path(%r{/catalog})
+      %w[Alpha Beta Gamma].each { |name| expect(page).to have_link("Profile work #{name}") }
+      expect(page).not_to have_link('Someone else work')
+      expect(page).not_to have_link('Profile collection One')
+    end
+
+    # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+    # KNOWN APPLICATION ISSUE: the profile link's f[depositor_ssim] filter is ignored because
+    # depositor_ssim is not a configured facet. Fix goes in app/controllers/catalog_controller.rb.
+    it "links Collections created to a search of only the user's collections" do
+      pending("Catalog ignores the depositor filter, so other users' collections are listed")
+      visit profile_path
+      click_link 'Collections created'
+
+      expect(page).to have_current_path(%r{/catalog})
+      expect(page).to have_link('Profile collection One')
+      expect(page).to have_link('Profile collection Two')
+      expect(page).not_to have_link('Someone else collection')
+      expect(page).not_to have_link('Profile work Alpha')
+    end
+  end
+
+  # Profile EDIT page (Hyku override app/views/hyrax/dashboard/profiles/_edit_primary.html.erb).
+  it 'renders the profile picture, delete-picture, ORCID, Twitter, Facebook, and Google+ inputs' do
+    visit "#{profile_path}/edit"
+
     expect(page).to have_css("input#user_avatar[type='file']")
-    # Delete picture checkbox
-    expect(page).to have_css("input#user_remove_avatar[type='checkbox']")
-    # Facebook handle input
-    expect(page).to have_css('input#user_facebook_handle')
-    # Google+ handle input
-    expect(page).to have_css('input#user_googleplus_handle')
-    # Save Profile button (label rendered from save_profile locale key)
+    expect(page).to have_field('Delete picture', type: 'checkbox')
+    expect(page).to have_field('ORCID Profile')
+    expect(page).to have_field('Twitter Handle')
+    expect(page).to have_field('Facebook Handle')
+    expect(page).to have_field('Google+ Handle')
     expect(page).to have_button('Save Profile')
   end
 
-  # Notifications table structure. The Hyrax notifications/_notifications
-  # partial only renders the <table> (Date/Subject/Message headers + per-row
-  # trash link.itemtrash) when the mailbox has messages; an empty mailbox shows
-  # only "No notifications found". Seeding real Mailboxer messages is required
-  # and cannot be verified here, so this is skipped with the exact expectations
-  # documented for a real run.
-  it 'lists notifications in a table with Date, Subject, and Message columns' do
-    skip('Needs seeded Mailboxer notifications (e.g. Hyrax::MessengerService.deliver) ' \
-         'to render the table; cannot be reliably seeded/verified without running the suite.')
+  it 'uploads a profile picture and removes it with Delete picture' do
+    visit "#{profile_path}/edit"
+    attach_file 'user_avatar', Rails.root.join('spec', 'fixtures', 'images', 'world.png')
+    click_button 'Save Profile'
 
-    visit '/notifications'
-    within('table.datatable thead') do
-      expect(page).to have_content('Date')
-      expect(page).to have_content('Subject')
-      expect(page).to have_content('Message')
-    end
-    # Individual delete: per-row trash link (class itemtrash, method :delete)
-    expect(page).to have_css('a.itemtrash i.fa-trash')
+    expect(page).to have_current_path(profile_path, ignore_query: true)
+    expect(user.reload.avatar?).to be true
+    expect(user.avatar.url).to end_with('world.png')
+    # The dashboard sidebar shows the avatar thumbnail (hyrax/dashboard/_sidebar).
+    expect(page).to have_css(".profile-image img[src*='world.png']")
+
+    visit "#{profile_path}/edit"
+    expect(page).to have_css("img[src*='world.png']")
+    check 'Delete picture'
+    click_button 'Save Profile'
+
+    expect(page).to have_current_path(profile_path, ignore_query: true)
+    expect(user.reload.avatar?).to be false
+    expect(page).not_to have_css(".profile-image img")
   end
 
-  # Search bar, pagination, and total count are provided client-side by the
-  # DataTables plugin over the notifications table, which requires both seeded
-  # messages and a JavaScript-capable driver (this spec uses the default
-  # rack_test driver and does not set js: true).
-  it 'offers search, pagination, and a total count over notifications' do
-    skip('DataTables search/pagination/count are JS-rendered and require seeded ' \
-         'notifications plus a js: true driver; not exercisable under rack_test.')
+  # Notifications. The table (Date/Subject/Message + a per-row trash link) only renders
+  # when the mailbox has messages, so seed real Mailboxer messages the same way
+  # Hyrax::MessengerService does (sender.send_message).
+  describe 'notifications' do
+    let(:sender) { create(:user) }
+
+    def notify(count)
+      count.times { |i| sender.send_message(user, "Notification body #{i}", "Notification subject #{i}") }
+    end
+
+    it 'lists notifications in a table with Date, Subject, and Message columns' do
+      notify(2)
+      visit '/notifications'
+
+      within('table.datatable thead') do
+        expect(page).to have_content('Date')
+        expect(page).to have_content('Subject')
+        expect(page).to have_content('Message')
+      end
+      expect(page).to have_content('Notification subject 0')
+      expect(page).to have_content('Notification body 1')
+      expect(page).to have_css('a.itemtrash', count: 2)
+    end
+
+    it 'deletes an individual notification with its trash icon' do
+      notify(2)
+      visit '/notifications'
+
+      first('a.itemtrash').click
+
+      expect(page).to have_css('a.itemtrash', count: 1)
+    end
+
+    it 'deletes all notifications with Delete All' do
+      notify(2)
+      visit '/notifications'
+
+      click_link 'Delete All'
+
+      expect(page).not_to have_css('a.itemtrash')
+      expect(page).to have_content('No notifications')
+    end
+
+    # Search, pagination and the total count are added client-side by DataTables.
+    it 'offers search, pagination, and a total count', js: true do
+      notify(12)
+      visit '/notifications'
+
+      expect(page).to have_css('.dataTables_filter input[type="search"]')
+      expect(page).to have_css('.dataTables_info', text: 'of 12 entries')
+      expect(page).to have_css('.dataTables_paginate')
+
+      find('.dataTables_filter input[type="search"]').fill_in(with: 'subject 11')
+      expect(page).to have_css('.dataTables_info', text: '1 to 1 of 1 entries')
+    end
   end
 end
-
-
-# ## Profile Page
-# [Back to TOC](#table-of-contents)
-
-# ![image68](https://github.com/samvera/hyku/assets/19597776/e96ff5ff-3328-4979-86bc-c2fabd51b3cc)
-
-# ### As a user:
-
-# - [ ] I can see the date that I joined the site
-# - [ ] I can click on the link to Collections Created, directing me to a search results page of all of the collections that I have created
-#   - [ ] To the right, I can see the number of collections I have created
-# - [ ] I can click on the Works Created link, directing me to a search results page of all of the works that I have created
-#   - [ ] To the right, I can see the number of works I have created
-#   - [ ] Under Works created I can see
-#     - [ ] The number of Views
-#     - [ ] The number of Downloads
-# - [ ] I can see the email associated with my account
-# - [ ] I can click Edit Profile, directing me to the Edit Profile form  \
-
-
-# ## Profile Edit Page
-# [Back to TOC](#table-of-contents)
-
-# ![image48](https://github.com/samvera/hyku/assets/19597776/f1c5cf5b-885b-4798-8ded-5652ea1e079b)
-
-# ### As a user:
-
-# - [ ] I can see a form to update my profile with the following inputs:
-#   - [ ] File input for profile picture
-#   - [ ] Delete picture checkbox
-#     - [ ] If this is checked, the profile picture is removed
-#   - [ ] ORCID profile
-#   - [ ] Twitter handle
-#   - [ ] Facebook handle
-#   - [ ] Google+ handle
-# - [ ] I can click Save Profile, which saves my information and directs me to the Profile page
-
-# ## Notifications Page
-# [Back to TOC](#table-of-contents)
-
-# ![image13](https://github.com/samvera/hyku/assets/19597776/88a81c38-9d78-4301-babc-538c237a76f0)
-
-# ### As a user:
-
-# - [ ] I can click Delete All, deleting all of my notifications
-# - [ ] I can see a table listing all notifications associated with my account with the following attributes:
-#   - [ ] Date
-#   - [ ] Subject
-#   - [ ] Message
-# - [ ] I can delete individual notifications by clicking on the trash icon to the right
-# - [ ] I can filter through my notifications using the search bar
-# - [ ] I can see the total number of notifications
-# - [ ] I can see a pagination menu on the bottom right

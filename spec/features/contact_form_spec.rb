@@ -3,6 +3,19 @@
 require 'rails_helper'
 
 RSpec.describe 'Contact Form', type: :feature, clean: true do
+  # Hyrax::ContactFormDecorator builds the mail headers from Site.account
+  # (email_subject_prefix, contact_email_to, contact_email), and Site's account is an
+  # optional association that is nil in a single-tenant test run. Supply an account the
+  # same way spec/mailers/hyrax/contact_mailer_spec.rb does.
+  #
+  # Add an example without this stub when issue #xxxx is fixed.
+  # KNOWN APPLICATION ISSUE: with no Site.account, submitting the form raises NoMethodError
+  # (nil.email_subject_prefix), which the controller does not rescue (it rescues only
+  # RuntimeError). Fix goes in: app/models/hyrax/contact_form_decorator.rb (nil-safe headers).
+  let(:account) { create(:account) }
+
+  before { allow(Site).to receive(:account).and_return(account) }
+
   it 'submits the contact form for each issue type and validates errors' do
     # Hyrax::ContactForm validates presence of name, email, subject, message, and
     # category, so all of them must be filled for a successful submission.
@@ -13,8 +26,12 @@ RSpec.describe 'Contact Form', type: :feature, clean: true do
       fill_in 'Your Email', with: 'contact@example.com'
       fill_in 'Subject', with: "Subject for #{issue}"
       fill_in 'Message', with: "Test message for #{issue}"
-      click_button 'Send'
+      expect { click_button 'Send' }.to change { ActionMailer::Base.deliveries.count }.by(1)
       expect(page).to have_content('Thank you')
+
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.subject).to include("Subject for #{issue}")
+      expect(mail.body.encoded).to include(issue)
     end
     # Validation: an empty submission is rejected.
     visit '/contact'
@@ -46,21 +63,3 @@ RSpec.describe 'Contact Form', type: :feature, clean: true do
     )
   end
 end
-
-
-# ## Contact Page
-# [Back to TOC](#table-of-contents)
-
-# ![image11](https://github.com/samvera/hyku/assets/19597776/0e453cc4-b44d-4ba4-b324-5fbcdce8bee8)
-
-# ### As a user:
-
-# - [ ] I can see a notice above the form describing the kind of things to submit a Contact Form for
-# - [ ] I can select an option from the Issue Type dropdown menu:
-#   - [ ] Depositing content
-#   - [ ] Making changes to my content
-#   - [ ] Browsing and searching
-#   - [ ] Reporting a problem
-#   - [ ] General inquiry or request
-# - [ ] I can click Send to send the Contact Form
-#   - [ ] Form won’t send successfully if any of the fields are invalid

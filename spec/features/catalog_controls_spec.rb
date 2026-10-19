@@ -5,18 +5,19 @@ require 'rails_helper'
 # Manual test plan: "Catalog (Search Results) Page" — the search bar, the Sort by /
 # per-page / layout filters, New Search (clears active filters), the facet metadata
 # menus, and pagination. Works must be public to appear in the anonymous catalog.
+#
+# Speed: works are Valkyrie GenericWorkResources (persisted to Postgres rather than
+# Fedora; Hyku's primary work type), and each example creates only as many as it needs --
+# just the pagination example needs more than one page.
 RSpec.describe 'Catalog controls', type: :feature, clean: true do
-  let!(:control_work) do
-    create(:generic_work, :public,
-           title: ['Catalog control work'],
-           keyword: ['catalog test', 'catalog-unique'])
+  let!(:control_work) { public_work(title: 'Catalog control work', keyword: ['catalog test', 'catalog-unique']) }
+
+  def public_work(title:, keyword: ['catalog test'])
+    FactoryBot.valkyrie_create(:generic_work_resource, title: [title], keyword:, visibility_setting: 'open')
   end
 
-  before do
-    # More than one page of results (the catalog defaults to 10 per page).
-    12.times do |index|
-      create(:generic_work, :public, title: ["Catalog page #{index}"], keyword: ['catalog test'])
-    end
+  def create_page_works(count)
+    count.times { |index| public_work(title: "Catalog page #{index}") }
   end
 
   it 'searches from the search bar and returns the matching work' do
@@ -29,37 +30,46 @@ RSpec.describe 'Catalog controls', type: :feature, clean: true do
     expect(page).to have_css('.search-result-title a', text: 'Catalog control work')
   end
 
-  it 'customizes results with the Sort by, per-page, and layout controls' do
+  it 'customizes the search results by selecting different filters (Sort by, number of records per page, layout)' do
+    create_page_works(12)
     visit '/catalog?search_field=all_fields&q=catalog'
+    expect(page).to have_css('.search-result-title a', count: 10)
 
     within('#sort-dropdown') { click_link 'Title' }
-    expect(page).to have_css('#sort-dropdown a.active', text: 'Title')
+    titles = page.all('.search-result-title a').map(&:text)
+    expect(titles).to eq(titles.sort)
 
     within('#per_page-dropdown') { click_link '20' }
-    expect(page).to have_css('#per_page-dropdown a.active', text: '20')
+    expect(page).to have_css('.search-result-title a', count: 13)
 
     within('.view-type-group') { click_link 'Gallery' }
-    expect(page).to have_css('a.view-type-gallery.active')
+    expect(page).to have_css('#documents.documents-gallery')
+    expect(page).not_to have_css('#documents.documents-list')
   end
 
   it 'limits results with a facet menu and clears it via New Search' do
+    create_page_works(2)
     visit '/catalog?search_field=all_fields&q=catalog'
     expect(page).to have_css('.facets')
 
-    # Selecting the unique keyword facet narrows the 13 results down to just that work.
+    # Selecting the unique keyword facet narrows the results down to just that work.
     within('#facet-keyword_sim') { click_link 'catalog-unique' }
     expect(page).to have_css('.search-result-title a', text: 'Catalog control work')
+    expect(page).not_to have_css('.search-result-title a', text: 'Catalog page 0')
     expect(page).to have_content('Remove constraint')
     expect(page).to have_content('1 entry found')
 
     # New Search (Hyku's label for Blacklight's Start Over) removes active filters,
-    # restoring the full result set.
+    # bringing the other works back.
     click_link 'New Search'
     expect(page).not_to have_content('Remove constraint')
-    expect(page).to have_content('1 - 10 of 13')
+    expect(page).to have_css('.search-result-title a', text: 'Catalog page 0')
+    expect(page).to have_css('.search-result-title a', text: 'Catalog control work')
   end
 
   it 'paginates when results span multiple pages' do
+    # More than one page of results (the catalog defaults to 10 per page).
+    create_page_works(12)
     visit '/catalog?search_field=all_fields&q=catalog'
 
     expect(page).to have_css('.pagination')
@@ -69,16 +79,3 @@ RSpec.describe 'Catalog controls', type: :feature, clean: true do
     expect(page).to have_content('11 - 13 of 13')
   end
 end
-
-# ## Catalog (Search Results) Page
-# [Back to TOC](#table-of-contents)
-
-# ![image65](https://github.com/samvera/hyku/assets/19597776/6127f7ae-633d-4613-8b51-26268fb67efa)
-
-# ### As a user:
-
-# - [ ] I can see a search bar
-# - [ ] I can customize the search results by selecting different filters (Sort by, number of records per page, layout)
-# - [ ] I can click Start Over, removing all active filters
-# - [ ] If there are multiple pages, I can see a pagination menu at the bottom of the page
-# - [ ] I can limit my search by selecting from the metadata dropdown menus on the left

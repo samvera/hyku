@@ -10,47 +10,88 @@ RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true do
     login_as user
   end
 
-  it 'can send, accept, reject, and cancel transfers' do
-    visit '/dashboard/my/works'
-    # Simulate sending a transfer (adjust selectors as needed)
-    click_link 'Transfer Ownership', match: :first if page.has_link?('Transfer Ownership')
-    fill_in 'Recipient', with: recipient.email
-    click_button 'Send Transfer'
-    expect(page).to have_content('Transfer Sent')
-    # Mock recipient accepting the transfer
-    logout(:user)
-    login_as recipient
-    visit '/dashboard/transfers'
-    if page.has_button?('Accept')
-      click_button 'Accept'
-      expect(page).to have_content('Transfer Accepted')
+  # The proxy and transfer recipient pickers are select2 widgets that search users via
+  # GET /users.json (Hyrax::UsersController#index). Hyku's UsersControllerDecorator applies
+  # `authorize_resource class: '::User'` to the whole controller, so that search returns
+  # 403 Forbidden unless the user may read Users (the user_manager/user_reader roles).
+  # These examples run as a user_reader so the real UI flow can be exercised; the pending
+  # example below documents that a regular user currently cannot use the pickers.
+  context 'as a user permitted to search for other users (user_reader role)' do
+    let(:user) { create(:user, email: 'transferuser@example.com', roles: [:user_reader]) }
+
+    # Steps mirror Hyrax's own spec/features/ownership_transfer_spec.rb (work row actions ->
+    # Transfer Ownership -> select2 recipient search -> comment -> Transfer).
+    # Potential duplicate: spec/features/dashboard_my_works_spec.rb:161 (Transfer Ownership row action)
+    it 'sends an ownership transfer request from the works dashboard' do
+      work = create(:generic_work, user:, title: ['Work to transfer'])
+      recipient # must exist before it can be searched for
+      visit '/dashboard/my/works'
+
+      within("#document_#{work.id}") { find('.dropdown-toggle').click }
+      find('#action-transfer-work').click
+      find('#s2id_proxy_deposit_request_transfer_to').click
+      within('#select2-drop') { find('.select2-input').set(recipient.user_key) }
+      within('#select2-drop') { find('.select2-result-selectable').click }
+      fill_in 'proxy_deposit_request[sender_comment]', with: 'Please take this work'
+      accept_confirm { click_button 'Transfer' }
+
+      expect(page).to have_content('Transfer request created')
     end
-    # Mock recipient rejecting the transfer
-    visit '/dashboard/transfers'
-    if page.has_button?('Reject')
-      click_button 'Reject'
-      expect(page).to have_content('Transfer Rejected')
+
+    # Manage Proxies (/proxies). Steps mirror Hyrax's own spec/features/proxy_spec.rb.
+    it 'can add and remove proxies' do
+      recipient # must exist before it can be searched for
+      visit '/proxies'
+      # Help text and headings from hyrax/dashboard/_index_partials/_proxy_rights.
+      within('.proxy-rights') do
+        expect(page).to have_content('Select a user who can deposit works on your behalf. Both you and your ' \
+                                     'proxy will be able to make changes to these works.')
+        expect(page).to have_content('You can revoke a proxy by clicking the Delete Proxy button.')
+        expect(page).to have_selector('h2', text: 'Authorize Proxies')
+        expect(page).to have_selector('h2', text: 'Current Proxies')
+      end
+      expect(page).not_to have_css('td.depositor-name')
+
+      find('a.select2-choice').click
+      find('.select2-input').set(recipient.user_key)
+      find('div.select2-result-label').click
+      expect(page).to have_css('td.depositor-name', text: recipient.user_key)
+
+      click_link 'Delete Proxy'
+      # The page removes the row optimistically before the AJAX DELETE finishes, so wait
+      # for the server-side deletion itself (bounded), then reload to confirm it persisted.
+      Timeout.timeout(Capybara.default_max_wait_time) do
+        sleep 0.1 while user.reload.can_receive_deposits_from.include?(recipient)
+      end
+      visit '/proxies'
+      expect(page).not_to have_css('td.depositor-name', text: recipient.user_key)
     end
-    logout(:recipient)
-    login_as user
   end
 
-  it 'can add and remove proxies' do
-    visit '/dashboard/proxies'
-    fill_in 'Search users', with: recipient.email
-    click_button 'Authorize Proxy'
-    expect(page).to have_content(recipient.email)
-    within('.current-proxies') do
-      click_link 'Delete', match: :first
-    end
-    expect(page).not_to have_content(recipient.email)
+  # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+  # KNOWN APPLICATION ISSUE: a regular user's picker search (GET /users.json) is forbidden,
+  # so they cannot find anyone to proxy or transfer to. This also breaks the transfer
+  # recipient picker and the work Sharing tab user search for regular users.
+  # Fix goes in: app/controllers/concerns/hyrax/users_controller_decorator.rb -- scope
+  # `authorize_resource class: '::User'` so it does not apply to #index JSON search.
+  # Once fixed, the user_reader context above can likely run as a regular user.
+  # `pending` keeps this running: it fails loudly once the bug is fixed.
+  # Potential duplicate: spec/features/work_new_form_spec.rb:188 (same /users.json 403 for regular users)
+  it 'lets a regular user find another user in the Manage Proxies picker' do
+    pending('Hyku UsersControllerDecorator authorizes Hyrax::UsersController#index, so ' \
+            'GET /users.json returns 403 for users without the user_manager/user_reader role')
+    recipient
+    visit '/proxies'
+    find('a.select2-choice').click
+    find('.select2-input').set(recipient.user_key)
+
+    expect(page).to have_css('div.select2-result-label', text: recipient.user_key)
   end
 
-  # The examples above are heavily guarded (`if page.has_link?/has_button?`) and can
-  # pass without asserting anything. The examples below exercise the Transfers dashboard
+  # The examples below exercise the Transfers dashboard
   # (/dashboard/transfers) against a REAL ProxyDepositRequest created in setup, instead of
   # driving the flaky send-transfer UI, so the sent/received tables and their Cancel/
-  # Accept/Reject controls are actually tested. See the Manual Test Plan excerpt below.
+  # Accept/Reject controls are actually tested. Covers the Manual Test Plan's "Transfers Page".
   #
   # Grounding:
   # - ProxyDepositRequest model: sending_user/receiving_user/work_id/status/sender_comment,
@@ -81,6 +122,8 @@ RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true do
         # NOTE: hyrax labels this column "From" in both the sent and received tables
         # (both partials render t('.from')); for a sent transfer it holds the recipient
         # (the "To" party from the Manual Test Plan).
+        # Update this assertion to expect "To" when issue #xxxx is fixed. Fix goes in
+        # Hyrax (samvera/hyrax): app/views/hyrax/transfers/_sent.html.erb.
         expect(page).to have_selector('th', text: 'From')
         expect(page).to have_link('Transfer Test Work')
         expect(page).to have_link(recipient.email)
@@ -155,29 +198,50 @@ RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true do
 
       expect(page).to have_content('Transfer complete')
       expect(transfer_request.reload.status).to eq('accepted')
+      transferred = Hyrax.query_service.find_by(id: work.id)
+      expect(transferred.depositor).to eq(recipient.user_key)
+      expect(transferred.permission_manager.edit_users.to_a).to contain_exactly(user.user_key, recipient.user_key)
+      expect(recipient.reload.can_receive_deposits_from).to be_empty
+    end
+
+    # "Remove depositor access" passes reset=true, so Hyrax::ChangeDepositorService clears
+    # the work's previous permissions before granting the recipient edit access.
+    it 'lets the recipient accept a transfer and remove the depositor\'s access' do
+      expect(Hyrax.query_service.find_by(id: work.id).permission_manager.edit_users.to_a).to include(user.user_key)
+      logout(:user)
+      login_as recipient
+      visit '/dashboard/transfers'
+
+      within('#incoming-transfers') do
+        find('button.dropdown-toggle.accept').click
+        click_link('Remove depositor access')
+      end
+
+      expect(page).to have_content('Transfer complete')
+      expect(transfer_request.reload.status).to eq('accepted')
+      transferred = Hyrax.query_service.find_by(id: work.id)
+      expect(transferred.depositor).to eq(recipient.user_key)
+      expect(transferred.permission_manager.edit_users.to_a).to eq([recipient.user_key])
+    end
+
+    # "Authorize depositor as proxy" passes sticky=true, so the recipient also authorizes the
+    # sender to deposit on their behalf (Hyrax::TransfersController#accept).
+    it 'lets the recipient accept a transfer and authorize the depositor as a proxy' do
+      expect(recipient.can_receive_deposits_from).not_to include(user)
+      logout(:user)
+      login_as recipient
+      visit '/dashboard/transfers'
+
+      within('#incoming-transfers') do
+        find('button.dropdown-toggle.accept').click
+        click_link('Authorize depositor as proxy')
+      end
+
+      expect(page).to have_content('Transfer complete')
+      expect(transfer_request.reload.status).to eq('accepted')
+      expect(Hyrax.query_service.find_by(id: work.id).depositor).to eq(recipient.user_key)
+      expect(recipient.reload.can_receive_deposits_from).to contain_exactly(user)
+      expect(user.reload.can_make_deposits_for).to contain_exactly(recipient)
     end
   end
 end
-
-# ## Transfers Page
-# [Back to TOC](#table-of-contents)
-
-# ![image1](https://github.com/samvera/hyku/assets/19597776/352904b6-423d-4434-b768-23cb563a22ec)
-
-# ### As a user:
-
-# - [ ] I can see all my Transfers Sent
-#   - [ ] Title
-#   - [ ] Date
-#   - [ ] To
-#   - [ ] Status
-#     - [ ] Pending Sent transfers can be cancelled by the sender before transfer request is accepted
-#   - [ ] Comments
-# - [ ] I can see all my Transfers Received
-#   - [ ] Contains same table columns as Transfers Sent, except “To” has been replaced with “From”
-#     - [ ] Status actions include:
-#       - [ ] Accept
-#         - [ ] Allow depositor to retain edit access
-#         - [ ] Remove depositor access
-#         - [ ] Authorize depositor as proxy
-#       - [ ] Reject

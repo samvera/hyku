@@ -99,11 +99,13 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
         expect(response.status).to eq(200)
       end
 
+      # Potential duplicate: spec/features/manage_embargoes_and_leases_spec.rb:76 (GET /embargoes renders for an admin)
       it 'gets the url for manage embargoes' do # Manage Embargoes
         get '/embargoes'
         expect(response.status).to eq(200)
       end
 
+      # Potential duplicate: spec/features/manage_embargoes_and_leases_spec.rb:329 (GET /leases renders for an admin)
       it 'gets the url for manage leases' do # Manage Leases
         get '/leases'
         expect(response.status).to eq(200)

@@ -82,6 +82,35 @@ Start off by setting up a local development environment where you can experiment
     docker compose down
     ```
 
+### Running the Tests
+
+Run the specs inside the `web` container:
+
+```bash
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && RAILS_ENV=test bundle exec rspec'
+```
+
+#### Flexible and non-flexible metadata runs
+
+The suite runs **without** flexible metadata by default, regardless of any `HYRAX_FLEXIBLE` value
+set for development. To run it **with** flexible metadata, set `HYKU_TEST_FLEXIBLE=true`:
+
+```bash
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && HYKU_TEST_FLEXIBLE=true RAILS_ENV=test bundle exec rspec'
+```
+
+Run the suite both ways to cover both modes. Examples that apply to only one mode are tagged
+`flexible: true` or `flexible: false` and are skipped in the other mode; untagged examples run
+in both (see `spec/rails_helper.rb`).
+
+#### Watching browser (JavaScript) specs
+
+Specs tagged `js: true` run in a real Chrome browser in the `chrome` container, which you can
+watch live from your own browser at
+[https://chrome-hyku.localhost.direct](https://chrome-hyku.localhost.direct)
+(`https://chrome-${APP_NAME}.localhost.direct`). The VNC password is `secret`. Specs without
+`js: true` do not use a browser, so the window stays idle while they run.
+
 ### Additional Docker Options
 
 #### Configuration

@@ -78,6 +78,7 @@ RSpec.describe 'User Roles' do
       expect(page).to have_content 'Add Roles to Group'
     end
 
+    # Potential duplicate: spec/features/manage_users_and_groups_spec.rb:306 (Remove Group warning text)
     it 'can remove a group' do
       visit "/admin/groups/#{group_1.id}/remove"
       expect(page).to have_content 'Remove Group'

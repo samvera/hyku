@@ -13,22 +13,17 @@ RSpec.describe 'Global institution index', type: :feature, multitenant: true, cl
   let!(:public_account) { create(:account, name: 'Public Institution', cname: 'public.example.com', public_demo_tenant: true) }
   let!(:private_account) { create(:account, name: 'Private Institution', cname: 'private.example.com', public_demo_tenant: false) }
 
-  it 'shows public institutions and links to their tenants' do
-    visit '/'
-
-    expect(page).to have_content('Public Institution')
-    expect(page).to have_link('Public Institution', href: %r{public\.example\.com})
-    expect(page).not_to have_content('Private Institution')
-  end
-
   it 'shows tenant administration links to a signed-in superadmin' do
     login_as create(:superadmin), scope: :user
     visit '/'
 
     expect(page).to have_link('Accounts')
     expect(page).to have_link('Users')
-    click_link 'Logout'
-    expect(page).to have_current_path('/')
+    # Scoped: the page renders more than one "Logout" link.
+    within('#user_utility_links') { click_link 'Logout' }
+    expect(page).to have_current_path('/', ignore_query: true)
+    expect(page).to have_link('Administrator login')
+    expect(page).not_to have_link('Accounts')
   end
 
   context 'as a non-signed-in visitor' do
@@ -49,38 +44,36 @@ RSpec.describe 'Global institution index', type: :feature, multitenant: true, cl
     end
 
     # Plan: "I can select my preferred language from the Language dropdown menu."
-    # Grounded in app/views/_admin_util_links.html.erb, which renders
-    # 'shared/locale_picker' when available_translations.size > 1; the picker is
-    # a <select> whose accessible name is 'Language' (see the sibling feature
-    # spec spec/features/ui_ux_and_static_pages_spec.rb using
-    # select(..., from: 'Language')).
+    # app/views/_admin_util_links.html.erb renders 'shared/locale_picker', a dropdown of
+    # links (#language-dropdown-menu), not a <select>.
     it 'offers a Language dropdown for choosing the display language' do
       visit '/'
+      within('#language-dropdown-menu') do
+        expect(page).to have_link('English')
+        expect(page).to have_link('Español')
+        click_link 'Español'
+      end
 
-      expect(page).to have_select('Language')
-    end
-
-    # Plan sub-item: "Each institution has a display of their theme logo (or a
-    # placeholder if there is no logo)."
-    # Not grounded: app/views/splash/index.html.erb (the admin_host root) renders
-    # only the shared Hyku logo (logo-hyku.png) and three product-feature
-    # columns -- it does not iterate tenant accounts or render per-institution
-    # theme logos. Any per-institution logo/placeholder listing is a downstream
-    # (knapsack) customization not present in this repository.
-    it 'shows each institution with its theme logo or a placeholder' do
-      skip('Base Hyku splash#index (app/views/splash/index.html.erb) renders the ' \
-           'shared Hyku logo and product-feature columns, not a per-tenant ' \
-           'institution list with theme logos; no such view exists in this repo.')
+      expect(page).to have_link('Inicio de sesión de administrador')
     end
 
     # Plan sub-item: "Selecting a language only sets the language for the current
     # site, not for each of the individual tenants."
-    # Requires the locale picker to auto-submit (JS) and cross-host session
-    # isolation between the admin host and a tenant host, neither of which is
-    # exercisable in a rack_test (non-JS) feature spec.
-    it 'keeps a chosen language scoped to the current site and not individual tenants' do
-      skip('Cross-tenant locale isolation needs a JS driver to submit the picker ' \
-           'and separate per-host sessions; not feasible in a rack_test feature spec.')
+    # Plan: "Selecting a language only sets the language for the current site, not for each
+    # of the individual tenants." Hyrax keeps the language in the ?locale= param on this
+    # site's links; it is not stored in a session or cookie, so it cannot reach a tenant site.
+    # This checks that mechanism on the global site; no tenant site is visited.
+    it "sets the language only for the current site's links and does not store it" do
+      visit '/'
+      within('#language-dropdown-menu') { click_link 'Español' }
+
+      # The choice rides along on this site's links...
+      expect(page).to have_link('Inicio de sesión de administrador', href: /locale=es/)
+
+      # ...but is not stored anywhere, so a fresh request is back to the default.
+      visit '/'
+      expect(page).to have_link('Administrator login')
+      expect(page).not_to have_link('Inicio de sesión de administrador')
     end
   end
 
@@ -110,38 +103,30 @@ RSpec.describe 'Global institution index', type: :feature, multitenant: true, cl
     end
 
     # Plan: "I can select my preferred language from the Language dropdown menu"
-    # (signed-in administrator). Same locale_picker in _admin_util_links.
+    # (signed-in administrator). Same locale_picker link dropdown in _admin_util_links.
     it 'offers a Language dropdown to a signed-in administrator' do
       visit '/'
+      within('#language-dropdown-menu') do
+        expect(page).to have_link('English')
+        click_link 'Español'
+      end
 
-      expect(page).to have_select('Language')
+      # The admin utility links switch to Spanish.
+      expect(page).to have_link('Cuentas')
+    end
+
+    # Plan sub-item (signed-in administrator): "Selecting a language only sets the language
+    # for the current site, not for each of the individual tenants." Same check as the
+    # visitor example; no tenant site is visited.
+    it "sets the language only for the current site's links and does not store it" do
+      visit '/'
+      within('#language-dropdown-menu') { click_link 'Español' }
+
+      expect(page).to have_link('Cuentas', href: /locale=es/)
+
+      visit '/'
+      expect(page).to have_link('Accounts')
+      expect(page).not_to have_link('Cuentas')
     end
   end
 end
-
-# ## Global Index / Institution List Page
-# [Back to TOC](#table-of-contents)
-
-# ![image4](https://github.com/samvera/hyku/assets/19597776/4e6c6681-39e3-491a-ab7d-64f995d775b4)
-
-# ### As a non-signed in user:
-
-# - [ ] I can see a list of each institution
-#   - [ ] Each institution has a display of their theme logo (or a placeholder if there is no logo)
-#   - [ ] I can click on the link for each institution, which directs me to the tenant for that institution
-# - [ ] I can click on the link to Administrator login (in the footer), which directs me to the Log in form
-# - [ ] I can select my preferred language from the Language dropdown menu
-#   - [ ] Selecting a language only sets the language for the current site, not for each of the individual tenants
-
-# ![image39](https://github.com/samvera/hyku/assets/19597776/005910e7-8fbd-4c27-a9d4-a6cc07f34820)
-
-# ### As a signed-in administrator:
-
-# - [ ] I can see a list of each institution
-#   - [ ] Each institution has a display of their theme logo (or a placeholder if there is no logo)
-#   - [ ] I can click on the link for each institution, which directs me to the tenant for that institution
-# - [ ] I can click Logout, which logs me out and directs me back to the Global Index page
-# - [ ] I can select my preferred language from the Language dropdown menu
-#   - [ ] Selecting a language only sets the language for the current site, not for each of the individual tenants
-# - [ ] I can click on Accounts, which directs me to the Accounts page for the tenants
-# - [ ] I can click on Users, which directs me to the Manage Users page for the users

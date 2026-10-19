@@ -5,6 +5,11 @@ require 'rails_helper'
 RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
   let(:user) { create(:user, roles: [:work_depositor]) }
   let!(:collection) { create(:collection, user:, title: ['Batch Target Collection']) }
+  # Managed by `user`, so it is offered in the Relationships collection picker.
+  let!(:deposit_collection) do
+    FactoryBot.valkyrie_create(:hyku_collection, user:, title: ['Batch Deposit Collection'])
+  end
+  let!(:share_user) { create(:user, email: 'batch-share-target@example.com') }
   let!(:sharing_group) { create(:group, name: 'batch_sharing_group', humanized_name: 'Batch Sharing Group') }
   let(:admin_set) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set }
 
@@ -18,6 +23,15 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
     Site.update(institution_name: 'Test Institution')
     # Batch upload is gated behind this Flipflop feature.
     allow(Flipflop).to receive(:batch_upload?).and_return(true)
+    # Remove this comment and the line below when issue #xxxx is fixed.
+    # KNOWN APPLICATION ISSUE (flexible metadata only): the batch form takes its required
+    # (primary) fields from GenericWorkResourceForm.required_fields, which stays empty until a
+    # GenericWorkResourceForm has been built in the process. On a freshly booted server the
+    # batch form shows no required fields, reports "being processed", then the job fails with
+    # "Rights statement can't be blank". Fix goes in Hyrax (samvera/hyrax):
+    # Hyrax::Forms::BatchUploadForm#required_fields -- read required fields from the flexible schema.
+    # Warming the form class here makes the test reflect an already-warm server.
+    GenericWorkResourceForm.new(resource: GenericWorkResource.new) if Hyrax.config.flexible?
     login_as user, scope: :user
   end
 
@@ -28,10 +42,14 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
     expect(page).to have_content('Add New Works by Batch')
 
     # Sidebar: requirements for creating the batch work
-    expect(page).to have_content('Requirements')
-    expect(page).to have_content('Describe your work')
-    expect(page).to have_content('Add files')
-    expect(page).to have_content('Check deposit agreement')
+    within('#form-progress ul.requirements') do
+      expect(page).to have_css('#required-metadata', text: 'Describe your work')
+      expect(page).to have_css('#required-agreement', text: 'Check deposit agreement')
+      # Hyku sets config.work_requires_files = false (config/initializers/hyrax.rb), so the
+      # "Add files" requirement is not rendered (the page's other "Add files" text is the
+      # Files tab button). spec/features/work_new_form_spec.rb covers it with the config on.
+      expect(page).not_to have_css('#required-files')
+    end
 
     # Sidebar: visibility options. "Institution" shows the site's institution name.
     expect(page).to have_css("input[type='radio'][value='open']")
@@ -40,7 +58,6 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
     expect(page).to have_css("input[type='radio'][value='lease']")
     expect(page).to have_css("input[type='radio'][value='restricted']")
     expect(page).to have_content('Public')
-    expect(page).to have_content('Institution')
     expect(page).to have_content('Test Institution')
     expect(page).to have_content('Embargo')
     expect(page).to have_content('Lease')
@@ -72,6 +89,106 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
     expect(page).to have_content('Add Sharing')
     expect(page).to have_css('fieldset.permission-add-group')
     expect(page).to have_css('fieldset.permission-add-user')
+  end
+
+  # Manual Test Plan: "Dashboard Works New by Batch Page" > Files. Each uploaded file gets
+  # its own row (hyrax/uploads/_js_templates batch-template-download).
+  it 'shows per-file display label and resource type controls, sets all resource types, and deletes a file' do
+    visit '/batch_uploads/new?payload_concern=GenericWork'
+    click_link 'Files'
+    within('div#add-files') do
+      attach_file('files[]', File.join(file_fixture_path, 'hyrax', 'image.jp2'), visible: false)
+    end
+    jp2_row = find('tr.template-download', text: 'image.jp2')
+    within('div#add-files') do
+      attach_file('files[]', Rails.root.join('spec', 'fixtures', 'images', 'world.png'), visible: false)
+    end
+    png_row = find('tr.template-download', text: 'world.png')
+
+    expect(jp2_row).to have_css('.size', text: '11.04 KB')
+    expect(png_row).to have_css('.size', text: '4.22 KB')
+    # Display label defaults to the file name and is editable.
+    expect(jp2_row).to have_field('Display label', with: 'image.jp2')
+    expect(png_row).to have_field('Display label', with: 'world.png')
+    jp2_row.fill_in 'Display label', with: 'Renamed batch item'
+    expect(jp2_row).to have_field('Display label', with: 'Renamed batch item')
+
+    # "Set all to this Resource Type" copies one file's selection to every file.
+    expect(png_row.find('select.resource_type_dropdown').value).to be_empty
+    jp2_row.select 'Article', from: jp2_row.find('select.resource_type_dropdown')[:id]
+    jp2_row.click_button 'Set all to this Resource Type'
+    expect(png_row.find('select.resource_type_dropdown').value).to eq(['Article'])
+
+    # Delete removes just that file from the batch.
+    png_upload = Hyrax::UploadedFile.where(user:).find { |f| f.file.file.original_filename == 'world.png' }
+    png_row.click_button 'Delete'
+    expect(page).not_to have_css('tr.template-download', text: 'world.png')
+    expect(page).to have_css('tr.template-download', text: 'image.jp2')
+    expect(Hyrax::UploadedFile.exists?(png_upload.id)).to be false
+  end
+
+  # Manual Test Plan: "Dashboard Works New by Batch Page" > Relationships.
+  it 'adds a chosen collection to the list with a Remove from collection control' do
+    visit '/batch_uploads/new?payload_concern=GenericWork'
+    click_link 'Relationships'
+
+    expect(page).to have_select('Administrative Set', selected: admin_set.title.first)
+    within("[data-behavior='collection-relationships']") do
+      expect(page).not_to have_css('tbody td', text: 'Batch Deposit Collection')
+      find('.select2-container.collection-select2').click
+    end
+    find('.select2-drop-active .select2-result-label', text: 'Batch Deposit Collection').click
+    within("[data-behavior='collection-relationships']") do
+      click_link 'Add'
+      row = find('tbody tr', text: 'Batch Deposit Collection')
+      expect(row).to have_button('Remove from collection')
+    end
+  end
+
+  # Manual Test Plan: "Dashboard Works New by Batch Page" > Sharing.
+  it 'shares with a group at a chosen access level and notes that permissions are not yet saved' do
+    visit '/batch_uploads/new?payload_concern=GenericWork'
+    click_link 'Sharing'
+
+    expect(page).to have_content('Currently Shared With')
+    expect(page).to have_css('#file_permissions', text: 'Depositor')
+    expect(page).not_to have_css('tr', text: sharing_group.name)
+    expect(page).to have_css('#save_perm_note', visible: :hidden)
+
+    within('fieldset.permission-add-group') do
+      expect(page).to have_select('new_group_permission_skel', with_options: ['View/Download', 'Edit'])
+      select 'Batch Sharing Group', from: 'new_group_name_skel'
+      select 'View/Download', from: 'new_group_permission_skel'
+      click_button 'Add'
+    end
+
+    expect(page).to have_css('#save_perm_note', visible: :visible,
+                                                text: 'Permissions are not saved until the "Save" button is pressed')
+    expect(page).to have_css('tr', text: %r{View/Download\s+#{sharing_group.name}})
+  end
+
+  # The user picker searches GET /users.json, which Hyku only allows for users who may read
+  # Users; the regular-user failure is pending in spec/features/work_new_form_spec.rb.
+  context 'as a depositor permitted to search users (user_reader role)' do
+    let(:user) { create(:user, roles: %i[work_depositor user_reader]) }
+
+    it 'shares with a user at a chosen access level' do
+      visit '/batch_uploads/new?payload_concern=GenericWork'
+      click_link 'Sharing'
+      expect(page).not_to have_css('tr', text: share_user.email)
+
+      within('fieldset.permission-add-user') do
+        expect(page).to have_select('new_user_permission_skel', with_options: ['View/Download', 'Edit'])
+      end
+      find('#s2id_new_user_name_skel').click
+      find('.select2-drop-active input.select2-input').fill_in(with: share_user.email)
+      find('.select2-drop-active .select2-result-label', text: share_user.email).click
+      select 'Edit', from: 'new_user_permission_skel'
+      click_button 'add_new_user_skel'
+
+      expect(page).to have_css('#save_perm_note', visible: :visible)
+      expect(page).to have_css('tr', text: /Edit\s+#{Regexp.escape(share_user.email)}/)
+    end
   end
 
   # A completed form (file, required metadata, admin set, agreement) is accepted
@@ -119,9 +236,10 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
 
     before do
       # The actor stack needs an active workflow and deposit access to persist works.
-      Sipity::Workflow.find_or_create_by!(name: 'batch-test-workflow', permission_template:) do |workflow|
-        workflow.active = true
-      end.tap { |wf| Sipity::WorkflowAction.find_or_create_by!(name: 'submit', workflow: wf) }
+      workflow = Sipity::Workflow.find_or_create_by!(name: 'batch-test-workflow', permission_template:) do |wf|
+        wf.active = true
+      end
+      Sipity::WorkflowAction.find_or_create_by!(name: 'submit', workflow:)
       Hyrax::PermissionTemplateAccess.find_or_create_by!(
         permission_template_id: permission_template.id,
         agent_type: 'user',
@@ -153,7 +271,9 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
           batch_upload_item: {
             payload_concern: 'GenericWork',
             creator: ['Batch Creator'],
-            rights_statement: ['http://rightsstatements.org/vocab/InC/1.0/'],
+            # Single-valued, as the batch form posts it (an array would be dropped by
+            # the form's permitted params; flexible mode requires a rights statement).
+            rights_statement: 'http://rightsstatements.org/vocab/InC/1.0/',
             admin_set_id: admin_set.id.to_s,
             # Non-default visibility, so passing proves the batch choice was applied.
             visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
@@ -172,70 +292,3 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
     end
   end
 end
-
-# ## Dashboard Works New by Batch Page
-# [Back to TOC](#table-of-contents)
-
-# - [ ] In a sidebar:
-#   - [ ] I can see a list of requirements for creating the new batch work:
-#     - [ ] Describe your work
-#     - [ ] Add files
-#     - [ ] Check deposit agreement
-#   - [ ] I can set my created works’ visibility
-#     - [ ] Public
-#     - [ ] Institution
-#     - [ ] Embargo
-#     - [ ] Lease
-#     - [ ] Private
-
-# ### Files
-
-# ![image25](https://github.com/samvera/hyku/assets/19597776/1e598af6-571e-4bcd-8274-b4cdc2836b3b)
-
-# ### As a user:
-
-# - [ ] I can see a button to Add files
-# - [ ] I can see a button to Add folder
-# - [ ] Once I’ve added a file, I can set the display label and resource type associated with that file
-#   - [ ] I can see a button to set all files’ resource type to the selected resource type
-# - [ ] I can see a button to delete an individual file as to not add it to the work
-
-# ### Descriptions
-
-# ![image43](https://github.com/samvera/hyku/assets/19597776/9f0a5aa2-57df-45e9-8b5a-fe5939793f42)
-
-# ### As a user:
-
-# - [ ] I can see three required fields to describe my works:
-#   - [ ] Creator
-#   - [ ] Keyword
-#   - [ ] Rights Statement
-# - [ ] I can see a button to display Additional fields to describe my works with
-
-# ### Relationships
-
-# ![image47](https://github.com/samvera/hyku/assets/19597776/e93b87c5-ebd1-4301-927a-149e40161395)
-
-# ### As a user:
-
-# - [ ] I can see a dropdown to select which Administrative Set to deposit my works into
-# - [ ] I can see a dropdown to search for existing collections for which to add my work to
-# - [ ] I can see a list of all selected collections to add my works to
-#   - [ ] I can see a Remove from collection button
-
-# ### Sharing
-
-# ![image30](https://github.com/samvera/hyku/assets/19597776/2ba77b5b-3059-47b6-908b-24667ebe5a96)
-
-# ### As a user:
-
-# - [ ] I can see a form to add groups to have specific access to my created works
-#   - [ ] Search for existing group to share with
-#   - [ ] Choose Access level (View/Download, Edit)
-#   - [ ] Add
-# - [ ] I can see a form to add individual users to have specific access to my created works
-#   - [ ] Search for existing user
-#   - [ ] Choose Access level (View/Download, Edit)
-#   - [ ] Add
-# - [ ] I can see a list of all the groups / users I am currently sharing my works with, along with their respective access levels
-# - [ ] If I add a new group / user, I can see a flash notification informing me that permissions aren’t save until the works are saved

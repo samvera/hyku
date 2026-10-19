@@ -4,236 +4,253 @@ require 'rails_helper'
 
 RSpec.describe 'Work show actions', type: :feature, clean: true do
   let(:admin) { create(:admin) }
-  let!(:work) { create(:generic_work, user: admin, title: ['Work actions test'], visibility: 'open') }
 
-  before do
+  # Hyku runs Hyrax::ValkyrieLazyMigration, so a GenericWork (ActiveFedora) and a
+  # GenericWorkResource (Valkyrie) are shown through the SAME /concern/generic_works/:id
+  # route. We run the same show-page expectations against both backings; each backing
+  # context provides `make_work` / `make_work_with_file` returning a persisted work.
+  shared_examples 'the work show page' do
+    let!(:work) do
+      make_work(title: ['Work actions test'], keyword: ['grounded-metadata-value'], visibility: 'open')
+    end
+
+    describe 'as an administrator' do
+      before { login_as admin }
+
+      it 'shows the Edit, Delete, Add to Collection, Feature and Attach Child controls' do
+        visit "/concern/generic_works/#{work.id}"
+
+        # Edit/Delete are link_to and Add to Collection is a button_tag in
+        # app/views/hyrax/base/_show_actions.html.erb.
+        expect(page).to have_link('Edit')
+        expect(page).to have_link('Delete')
+        expect(page).to have_button('Add to collection')
+        # Feature renders for a Public work (work_featurable? -> solr public?).
+        expect(page).to have_link('Feature')
+        # _attach_child_control.html.erb renders "Attach #{human_readable_type}" per
+        # valid child concern (Work/Image) under an "Attach Child" dropdown-toggle button.
+        # rack_test ignores the collapsed dropdown CSS, so its items are findable.
+        expect(page).to have_button('Attach Child')
+        expect(page).to have_link('Attach Work')
+        expect(page).to have_link('Attach Image')
+      end
+
+      it 'hides the Feature action for a non-public work' do
+        private_work = make_work(title: ['Private feature test'], visibility: 'restricted')
+
+        visit "/concern/generic_works/#{private_work.id}"
+
+        expect(page).to have_content('Private feature test')
+        # For a Public work the Feature link renders without the `collapse` class; for a
+        # non-public work it must never be an actionable, non-collapsed control.
+        expect(page).not_to have_css('a.btn:not(.collapse)', text: 'Feature')
+      end
+
+      it 'lists each attached file in the items table with its details and action menu' do
+        work_with_file = make_work_with_file(title: ['Work with attached items'], visibility: 'open')
+
+        visit "/concern/generic_works/#{work_with_file.id}"
+
+        # Each row (hyrax/base/_member) shows thumbnail, title, date uploaded, visibility,
+        # and a per-file actions dropdown (hyrax/file_sets/_actions) for an editor.
+        within(find('tr', text: 'Attached file item')) do
+          expect(page).to have_css('td.thumbnail')
+          expect(page).to have_link('Attached file item')
+          expect(page).to have_css('td.attribute-date_uploaded')
+          expect(page).to have_css('.badge', text: 'Private')
+          expect(page).to have_button('Select an action')
+          expect(page).to have_link('Edit')
+          expect(page).to have_link('Versions')
+          expect(page).to have_link('Delete')
+          expect(page).to have_link('Download')
+        end
+      end
+    end
+
+    describe 'as an anonymous public user' do
+      # No login: exercise the genuinely public read-only view of a Public work.
+      it 'shows the title, visibility, metadata, relationships and citation affordances' do
+        visit "/concern/generic_works/#{work.id}"
+
+        # Title + permission badge ("Public" for an open work).
+        expect(page).to have_content('Work actions test')
+        expect(page).to have_content('Public')
+        # Descriptive metadata list.
+        expect(page).to have_css('dl')
+        expect(page).to have_content('grounded-metadata-value')
+        # Relations card (its title renders as "Relations").
+        expect(page).to have_content('Relations')
+        # Citations: the COinS span (read by Zotero/Mendeley) lives in _show_actions.html.erb.
+        expect(page).to have_content('Citation')
+        expect(page).to have_css('span.Z3988', visible: :all)
+      end
+
+      it 'offers EndNote, Zotero, and Mendeley citation downloads' do
+        visit "/concern/generic_works/#{work.id}"
+
+        # hyrax/base/_citations: a "Citation" dropdown (Hyku relabels its header) whose
+        # items are EndNote, Zotero and Mendeley.
+        within('.citations') do
+          expect(page).to have_link('EndNote')
+          expect(page).to have_link('Zotero')
+          expect(page).to have_link('Mendeley')
+        end
+      end
+
+      it 'downloads an EndNote citation of the work from the Citation menu' do
+        visit "/concern/generic_works/#{work.id}"
+
+        within('.citations') { click_link 'EndNote' }
+
+        # WorksControllerBehavior#respond_to_endnote sends the solr document as a Refer file.
+        expect(page.response_headers['Content-Type']).to include('application/x-endnote-refer')
+        expect(page.response_headers['Content-Disposition']).to include('.endnote')
+        expect(page.body).to include('%T Work actions test')
+      end
+
+      it 'does not show administrative action controls' do
+        visit "/concern/generic_works/#{work.id}"
+
+        expect(page).not_to have_link('Edit')
+        expect(page).not_to have_link('Delete')
+        expect(page).not_to have_link('Feature')
+        expect(page).not_to have_button('Attach Child')
+        expect(page).not_to have_button('Add to collection')
+      end
+    end
+  end
+
+  context 'with an ActiveFedora-backed work' do
+    def make_work(title:, visibility: 'open', **attrs)
+      create(:generic_work, user: admin, title: title, visibility: visibility, **attrs)
+    end
+
+    def make_work_with_file(title:, visibility: 'open')
+      # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+      # KNOWN APPLICATION ISSUE (flexible metadata only): saving a legacy AF file set fails
+      # (Hyrax's AF FileSetIndexer reads `transcript_ids`, which the AF ::FileSet lacks when
+      # flexible metadata is on). Fix goes in Hyrax (samvera/hyrax): Hyrax::FileSetIndexer
+      # (guard the `transcript_ids` call). Pending keeps this running and fails once fixed.
+      pending("ActiveFedora FileSets cannot be indexed with flexible metadata on (undefined method `transcript_ids')") if Hyrax.config.flexible?
+      make_work(title: title, visibility: visibility).tap do |work|
+        # Mirrors spec/factories/images.rb (:image_with_one_file).
+        work.ordered_members << create(:file_set, user: admin, title: ['Attached file item'])
+        work.save!
+      end
+    end
+
+    it_behaves_like 'the work show page'
+  end
+
+  context 'with a Valkyrie-backed work' do
+    def make_work(title:, visibility: 'open', **attrs)
+      FactoryBot.valkyrie_create(:generic_work_resource,
+                                 depositor: admin.user_key,
+                                 title: title,
+                                 visibility_setting: visibility,
+                                 **attrs)
+    end
+
+    def make_work_with_file(title:, visibility: 'open')
+      file_set = FactoryBot.valkyrie_create(:hyrax_file_set, title: ['Attached file item'])
+      make_work(title: title, visibility: visibility, member_ids: [file_set.id])
+    end
+
+    it_behaves_like 'the work show page'
+  end
+
+  # Documented gaps that are independent of the persistence backing (gem-only partials
+  # or theme-specific markup). Kept as single skips rather than duplicated per backing.
+  # IIIF media viewer: shown when the work's representative is a viewable image
+  # (WorkShowPresenter#iiif_viewer?, with config.iiif_image_server on). A real PNG is
+  # attached with an explicit MIME type, so no FITS characterization is needed; the
+  # viewer markup is server-rendered, so no image tiles have to load.
+  it 'renders the IIIF media viewer for a work whose representative is an image' do
+    image_file_set = FactoryBot.valkyrie_create(:hyrax_file_set, :public, title: ['Image file'])
+    Hyrax::ValkyrieUpload.file(filename: 'world.png', file_set: image_file_set,
+                               io: File.open(Rails.root.join('spec', "fixtures", "images", "world.png")),
+                               mime_type: 'image/png')
+    Hyrax.index_adapter.save(resource: Hyrax.query_service.find_by(id: image_file_set.id))
+    work = FactoryBot.valkyrie_create(:generic_work_resource, :public,
+                                      title: ['Image work'],
+                                      member_ids: [image_file_set.id],
+                                      representative_id: image_file_set.id,
+                                      thumbnail_id: image_file_set.id)
+
+    visit "/concern/generic_works/#{work.id}"
+
+    expect(page).to have_css(".viewer-wrapper iframe[src*='uv/uv.html'][src*='#{work.id}/manifest']")
+  end
+
+  # hyrax/base/_work_title.erb (Hyku override) renders presenter.workflow.badge next to the
+  # permission badge. A work deposited into a mediated-workflow admin set starts in
+  # `pending_review`, so its badge reads "Pending review" (state.humanize; no translation).
+  it 'shows the workflow status badge for a work in a review workflow' do
+    # Creating a workflow admin set grants workflow roles to the admin group.
+    FactoryBot.create(:admin_group) unless Hyrax::Group.exists?(name: 'admin')
+    allow(Hyrax.config).to receive(:default_active_workflow_name).and_return('one_step_mediated_deposit')
+    admin_set = Hyrax::AdminSetCreateService.call!(admin_set: AdminSet.new(title: ['Badge Admin Set']),
+                                                   creating_user: nil)
+    work = FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set,
+                                      admin_set:, depositor: admin.user_key,
+                                      title: ['Workflow badge work'], visibility_setting: 'open')
+    expect(Sipity::Entity(work).workflow_state.name).to eq('pending_review')
     login_as admin
+
+    visit "/concern/generic_works/#{work.id}"
+
+    within('.title-with-badges') do
+      expect(page).to have_css('h1', text: 'Workflow badge work')
+      expect(page).to have_css('.badge', text: 'Public')
+      expect(page).to have_css('span.state.state-pending_review.badge', text: 'Pending review')
+    end
   end
 
-  it 'shows work metadata, citations, relationships, and item actions' do
-    visit hyrax_generic_work_path(work)
+  it 'shows no workflow status badge for a work outside any workflow' do
+    work = FactoryBot.valkyrie_create(:generic_work_resource, :public, title: ['No workflow work'])
 
-    expect(page).to have_content('Work actions test')
-    expect(page).to have_content('Citation')
-    expect(page).to have_content('Edit')
-    expect(page).to have_content('Delete')
-    expect(page).to have_content('Add to Collection')
+    visit "/concern/generic_works/#{work.id}"
+
+    within('.title-with-badges') do
+      expect(page).to have_css('.badge', text: 'Public')
+      expect(page).not_to have_css('span.state')
+    end
   end
 
-  it 'offers public-work feature and child-work actions to an administrator' do
-    visit hyrax_generic_work_path(work)
+  # Relations card: hyrax/base/_relationships_parent_rows lists parent collections and the
+  # Hyku override of hyrax/base/_relationships adds "Part of:" links to parent works.
+  it 'links the parent collection and parent work in the Relations card' do
+    collection = FactoryBot.valkyrie_create(:hyku_collection, :public, title: ['Relations parent collection'])
+    child = FactoryBot.valkyrie_create(:generic_work_resource, :public,
+                                       title: ['Relations child work'],
+                                       member_of_collection_ids: [collection.id])
+    parent = FactoryBot.valkyrie_create(:generic_work_resource, :public,
+                                        title: ['Relations parent work'], member_ids: [child.id])
 
-    expect(page).to have_link('Feature')
-    expect(page).to have_link('Attach Child')
+    visit "/concern/generic_works/#{child.id}"
+
+    relations_card = "//div[contains(concat(' ', @class, ' '), ' card ')][.//h2[normalize-space()='Relations']]"
+    within(:xpath, relations_card) do
+      collection_link = find_link('Relations parent collection')
+      expect(collection_link[:href]).to include("/collections/#{collection.id}")
+      expect(page).to have_content('Part of:')
+      parent_link = find_link('Relations parent work')
+      expect(parent_link[:href]).to include("/concern/generic_works/#{parent.id}")
+    end
+
+    click_link 'Relations parent work'
+    expect(page).to have_css('h1', text: 'Relations parent work')
   end
 
-  # ---------------------------------------------------------------------------
-  # Manual Test Plan -> "Work Show Page" -> "As a user"
-  #
-  # The action buttons in app/views/hyrax/base/_show_actions.html.erb are all
-  # gated on the presenter's ability (editor?/work_featurable?/show_deposit_for?),
-  # so a logged-out visitor to a Public work sees the read-only display only.
-  # ---------------------------------------------------------------------------
-  describe 'as an anonymous public user' do
-    # Drop the admin session established by the outer `before` so we exercise the
-    # genuinely public view. `logout(:user)` is the in-repo pattern (see
-    # spec/features/transfers_and_proxies_spec.rb).
-    before { logout(:user) }
-
-    it 'shows the work title with its public visibility badge' do
-      visit hyrax_generic_work_path(work)
-
-      # Title from app/views/hyrax/base/_work_title.erb, followed by the
-      # permission_badge, which reads "Public" for an open work (grounded by
-      # spec/features/batch_work_creation_spec.rb, which asserts have_content('Public')).
-      expect(page).to have_content('Work actions test')
-      expect(page).to have_content('Public')
-    end
-
-    it 'shows a descriptive metadata list containing the work fields' do
-      described_work = create(:generic_work,
-                              user: admin,
-                              title: ['Metadata list work'],
-                              keyword: ['grounded-metadata-value'],
-                              visibility: 'open')
-
-      visit hyrax_generic_work_path(described_work)
-
-      # The metadata card in show.html.erb renders `render 'metadata'` into a
-      # definition list (see app/views/hyrax/base/_relationships.html.erb which
-      # shares the <dl class="work-show"> structure).
-      expect(page).to have_css('dl')
-      expect(page).to have_content('grounded-metadata-value')
-    end
-
-    it 'shows the Relationships section' do
-      visit hyrax_generic_work_path(work)
-
-      # Heading text from config/locales/en.yml (hyrax.base.show.relationships: "Relationships")
-      # rendered by the relationships card in app/views/hyrax/base/show.html.erb.
-      expect(page).to have_content('Relationships')
-    end
-
-    it 'exposes citation and export affordances' do
-      visit hyrax_generic_work_path(work)
-
-      # A fileless work falls into the no-viewer branch of show.html.erb, which
-      # renders the citations partial. The COinS span lives in _show_actions.html.erb
-      # (line 46) and is what Zotero/Mendeley browser connectors read to import a
-      # citation.
-      expect(page).to have_content('Citation')
-      expect(page).to have_css('span.Z3988', visible: :all)
-    end
-
-    it 'names the EndNote/Zotero/Mendeley citation download options' do
-      skip('The default Citations dropdown and its EndNote/Zotero/Mendeley item ' \
-           'labels are rendered by the Hyrax gem partial hyrax/base/_citations.html.erb, ' \
-           'which is installed only inside the Docker test image and could not be read ' \
-           'from disk in this environment. Verify the exact link labels in a real run.')
-
-      visit hyrax_generic_work_path(work)
-      expect(page).to have_link('EndNote')
-      expect(page).to have_link('Zotero')
-      expect(page).to have_link('Mendeley')
-    end
-
-    it 'renders a IIIF media viewer for a work with a viewable representative image' do
-      skip('The IIIF/Universal Viewer requires a representative image FileSet with a ' \
-           'derivative served by a configured IIIF image server (see ' \
-           'app/presenters/hyku/media_viewer_behavior.rb#iiif_viewer? and the tenant-level ' \
-           'checks it delegates to). That pipeline is not reproducible in a headless feature ' \
-           'spec without image derivatives; exercise it against a real tenant with js: true.')
-
-      # Intended assertion once a representative image + image server are present:
-      #   visit hyrax_generic_work_path(work_with_image)
-      #   expect(page).to have_css('.viewer, #uv, .universal-viewer-container')
-    end
-
+  # (No setup here: a `skip` inside the example still runs let!/before hooks first.)
+  describe 'documented gaps' do
+    # Remove this comment, replace the `skip` with a real test, and re-enable it when issue #xxxx
+    # is fixed. Fix goes in: app/views/hyrax/base/show.html.erb (render the
+    # hyrax/base/_social_media partial, as file sets already do).
     it 'links to social-media share icons for the work' do
-      skip("Hyku's overridden app/views/hyrax/base/show.html.erb does not render a " \
-           'social-media share partial on the default work show page (no _social_media ' \
-           'partial exists under app/views). Social sharing appears only in specific ' \
-           'themes, so there is no selector to assert on the default theme.')
-    end
-
-    it 'does not show administrative action buttons' do
-      visit hyrax_generic_work_path(work)
-
-      expect(page).not_to have_link('Edit')
-      expect(page).not_to have_link('Delete')
-      expect(page).not_to have_link('Feature')
-      expect(page).not_to have_link('Attach Child')
-      expect(page).not_to have_button('Add to Collection')
-    end
-  end
-
-  # ---------------------------------------------------------------------------
-  # Manual Test Plan -> "Work Show Page" -> "As a user" -> Items table
-  # ---------------------------------------------------------------------------
-  describe 'the Items/files table' do
-    let!(:work_with_file) do
-      w = create(:generic_work, user: admin, title: ['Work with attached items'], visibility: 'open')
-      # Mirrors the attach pattern used by spec/factories/images.rb (:image_with_one_file).
-      w.ordered_members << create(:file_set, user: admin, title: ['Attached file item'])
-      w.save!
-      w
-    end
-
-    it 'lists each attached file in the items section' do
-      visit hyrax_generic_work_path(work_with_file)
-
-      # The Items card (show.html.erb, `render 'items'`) lists the work's members
-      # via presenter.list_of_item_ids_to_display; the attached FileSet's title
-      # should surface as a row.
-      expect(page).to have_content('Attached file item')
-    end
-
-    it 'offers a per-file "Select an action" menu with Edit, Versions, Delete, and Download' do
-      skip('The per-file action dropdown ("Select an action" with Edit/Versions/Delete/Download) ' \
-           'is rendered by the Hyrax gem partial hyrax/base/_member.html.erb and its labels come ' \
-           'from the gem locale, neither of which was readable from disk in this environment ' \
-           '(the gem lives only in the Docker image). Verify the menu items in a real run.')
-
-      # Intended assertion once the gem markup/labels are confirmed:
-      #   visit hyrax_generic_work_path(work_with_file)
-      #   expect(page).to have_content('Select an action')
-      #   expect(page).to have_link('Edit')
-      #   expect(page).to have_link('Versions')
-      #   expect(page).to have_link('Delete')
-      #   expect(page).to have_link('Download')
-    end
-  end
-
-  # ---------------------------------------------------------------------------
-  # Manual Test Plan -> "Work Show Page" -> "As an admin"
-  # ---------------------------------------------------------------------------
-  describe 'as an administrator' do
-    it 'shows the Edit, Delete, and Add to Collection actions' do
-      visit hyrax_generic_work_path(work)
-
-      # Edit/Delete are link_to and Add to Collection is a button_tag in
-      # app/views/hyrax/base/_show_actions.html.erb.
-      expect(page).to have_link('Edit')
-      expect(page).to have_link('Delete')
-      expect(page).to have_button('Add to Collection')
-    end
-
-    it 'offers Attach Work and Attach Image options in the Attach Child menu' do
-      visit hyrax_generic_work_path(work)
-
-      # _attach_child_control.html.erb renders "Attach #{concern.human_readable_type}"
-      # for each valid child concern. human_readable_type resolves via
-      # config/locales/en.yml (activefedora.models.generic_work: "Work", image: "Image").
-      # enable_guided_deposit defaults to false (config/features.rb), so the per-concern
-      # dropdown (not the single wizard link) is rendered. rack_test ignores the
-      # collapsed dropdown's CSS, so the items are findable without js.
-      expect(page).to have_link('Attach Work')
-      expect(page).to have_link('Attach Image')
-    end
-
-    it 'hides the Feature action for a non-public work' do
-      private_work = create(:generic_work, user: admin, title: ['Private feature test'], visibility: 'restricted')
-
-      visit hyrax_generic_work_path(private_work)
-
-      expect(page).to have_content('Private feature test')
-      # For a Public work the Feature link renders without the `collapse` class
-      # (see _show_actions.html.erb display_feature_link? branch); for a non-public
-      # work it must never be an actionable, non-collapsed control.
-      expect(page).not_to have_css('a.btn:not(.collapse)', text: 'Feature')
+      skip("Not implemented for works in Hyku: app/views/hyrax/base/show.html.erb renders no " \
+           'social-media share partial, and no Hyku view renders work share links (file sets ' \
+           'do, via hyrax/base/_social_media). Gap between the test plan and the application.')
     end
   end
 end
-
-
-# ## Work Show Page
-# [Back to TOC](#table-of-contents)
-
-# ![image16](https://github.com/samvera/hyku/assets/19597776/f1e0d1ff-66b3-45ad-8965-9ef578b7b32b)
-
-# ### As a user:
-
-# - [ ] I can see the title of the work (as well as its visibility, deposited status, etc)
-# - [ ] I can see a IIIF media viewer
-# - [ ] I can see any relationships the work may have
-# - [ ] I can see a list of metadata specific to the work
-# - [ ] I can click on the social media icons to share the work on various social media platforms
-# - [ ] I can select a Citation to download from the Citations dropdown menu (EndNote, Zotero, Mendeley)
-# - [ ] I can see an Items table containing all the files associated with the work
-#   - [ ] I can see basic information for each item in the table (thumbnail, title, date uploaded, visibility, actions)
-#   - [ ] I can select an action from the Select an action dropdown menu
-#     - [ ] Edit
-#     - [ ] Versions
-#     - [ ] Delete
-#     - [ ] Download
-
-# ### As an admin:
-
-# - [ ] I can also see buttons with actions related to the individual work:
-#   - [ ] Edit
-#   - [ ] Delete
-#   - [ ] Attach Child
-#     - [ ] Attach Work
-#     - [ ] Attach Image
-#   - [ ] Add to Collection
-#   - [ ] Feature (only if the work is set to Public visibility)

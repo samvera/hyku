@@ -2,7 +2,11 @@
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
-ENV['HYRAX_FLEXIBLE'] = 'false'
+# The suite runs without flexible metadata by default, independent of any HYRAX_FLEXIBLE
+# value set for development. Opt in to a flexible-metadata run with HYKU_TEST_FLEXIBLE=true
+# (e.g. `HYKU_TEST_FLEXIBLE=true bundle exec rspec`). This must be decided before Rails
+# boots: config/initializers/1flexible.rb reads HYRAX_FLEXIBLE to pick the flexible classes.
+ENV['HYRAX_FLEXIBLE'] = ENV.fetch('HYKU_TEST_FLEXIBLE', 'false')
 # In test most, unset some variables that can cause trouble
 # before booting up Rails
 ENV['HYKU_ADMIN_HOST'] = 'test.host'
@@ -86,6 +90,11 @@ Capybara.default_driver = :rack_test
 ENV['WEB_HOST'] ||= `hostname -s`.strip
 
 if ENV['CHROME_HOSTNAME'].present?
+  REMOTE_FILE_DETECTOR = lambda do |args|
+    str = args.first.to_s
+    str if File.exist?(str)
+  end
+
   options = Selenium::WebDriver::Options.chrome(args: ["disable-gpu",
                                                        "no-sandbox",
                                                        "whitelisted-ips",
@@ -97,10 +106,7 @@ if ENV['CHROME_HOSTNAME'].present?
                                        capabilities: options,
                                        url: "http://#{ENV['CHROME_HOSTNAME']}:4444/wd/hub")
     # Fix for capybara vs remote files. Selenium handles this for us
-    d.browser.file_detector = lambda do |args|
-      str = args.first.to_s
-      str if File.exist?(str)
-    end
+    d.browser.file_detector = REMOTE_FILE_DETECTOR
     d
   end
   Capybara.server_host = '0.0.0.0'
@@ -200,6 +206,55 @@ RSpec.configure do |config|
       DatabaseCleaner.start
     end
   end
+
+  # In a flexible-metadata run, Valkyrie resources read their schema from the
+  # Hyrax::FlexibleSchema table every time they are loaded, and the cleaner empties that
+  # table between examples. Re-seed the default (m3) profile before each example so
+  # factories and pages have a schema. create_default_schema is a no-op if one exists.
+  config.before do
+    Hyrax::FlexibleSchema.create_default_schema if Hyrax.config.flexible?
+  end
+
+  # Examples that only apply to one metadata mode are tagged `flexible: true` or
+  # `flexible: false`; untagged examples run in both modes.
+  if Hyrax.config.flexible?
+    config.filter_run_excluding flexible: false
+  else
+    config.filter_run_excluding flexible: true
+  end
+
+  # The remote Selenium grid ends a browser session after SE_NODE_SESSION_TIMEOUT (300s)
+  # without commands, so a long run of non-JS examples kills it and every later JS example
+  # fails with InvalidSessionIdError. Start a fresh session when the old one is gone.
+  if ENV['CHROME_HOSTNAME'].present?
+    config.before(:each, js: true) do
+      page.driver.browser.window_handles
+    rescue Selenium::WebDriver::Error::WebDriverError # e.g. InvalidSessionIdError, or 404 once the grid forgets it
+      page.driver.quit
+      page.driver.browser.file_detector = REMOTE_FILE_DETECTOR
+    end
+  end
+
+  # Hyrax sets I18n.locale from params[:locale] without restoring it, and rack_test requests
+  # run in the test thread, so a request with ?locale=es would leak Spanish into later examples.
+  config.after { I18n.locale = I18n.default_locale }
+
+  # A `login_as` whose example never makes a request stays queued in Warden and signs in the
+  # NEXT example's first request (e.g. a sign-in page then redirects). Clear it after every
+  # example, not just feature specs.
+  config.after { Warden.test_reset! }
+
+  # `Flipflop::FeatureSet.current.test!` (used by some specs) swaps in a test strategy for the
+  # whole process and never restores it, which breaks later specs that use the real strategies
+  # (e.g. the admin Features page). Put the configured strategies back after every example.
+  flipflop_strategies = Flipflop::FeatureSet.current.instance_variable_get(:@strategies)
+  config.after { Flipflop::FeatureSet.current.instance_variable_set(:@strategies, flipflop_strategies) }
+
+  # Hyrax.config.flexible memoizes with `||=`, so while it is false it re-reads HYRAX_FLEXIBLE on
+  # every call; a spec that sets that ENV var to 'true' can flip the whole process into flexible
+  # mode. Restore this run's mode after every example.
+  flexible_mode = Hyrax.config.flexible?
+  config.after { Hyrax.config.flexible = flexible_mode }
 
   config.after(:each, type: :feature) do |example|
     # rubocop:disable Lint/Debugger

@@ -5,11 +5,14 @@ require 'rails_helper'
 RSpec.describe 'New work form requirements', type: :feature, js: true, clean: true do
   let(:user) { create(:user, roles: [:work_depositor]) }
 
+  let!(:share_user) { create(:user, email: 'edit-form-share-target@example.com') }
+  let!(:sharing_group) { create(:group, name: 'edit_form_sharing_group', humanized_name: 'Edit Form Sharing Group') }
+
   before do
-    create(:registered_group)
-    create(:admin_group)
-    create(:editors_group)
-    create(:depositors_group)
+    FactoryBot.create(:registered_group) unless Hyrax::Group.exists?(name: 'registered')
+    FactoryBot.create(:admin_group) unless Hyrax::Group.exists?(name: 'admin')
+    FactoryBot.create(:editors_group) unless Hyrax::Group.exists?(name: 'editors')
+    FactoryBot.create(:depositors_group) unless Hyrax::Group.exists?(name: 'depositors')
     Hyrax::AdminSetCreateService.find_or_create_default_admin_set
     login_as user
   end
@@ -17,47 +20,55 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
   it 'shows required metadata, file, relationship, and sharing controls' do
     visit new_hyrax_generic_work_path
 
+    # Title, Creator and Rights Statement are the primary (always-visible) fields.
     expect(page).to have_field('Title')
     expect(page).to have_field('Creator')
-    expect(page).to have_field('Keyword')
     expect(page).to have_select('Rights Statement')
-    expect(page).to have_link('Additional fields')
+    # Keyword lives in the collapsed "Additional fields" section.
+    click_link 'Additional fields'
+    expect(page).to have_field('Keyword')
     expect(page).to have_link('Files')
     expect(page).to have_link('Relationships')
     expect(page).to have_link('Sharing')
   end
 
-  it 'rejects a submission without required metadata' do
+  it 'keeps Save disabled until the required metadata and deposit agreement are complete' do
     visit new_hyrax_generic_work_path
-    click_button 'Save'
 
-    expect(page).to have_content("can't be blank")
+    # Without required metadata the requirements are incomplete and Save is disabled,
+    # so the form cannot be submitted.
+    expect(page).to have_css('#required-metadata.incomplete')
+    expect(page).to have_css('#required-agreement.incomplete')
+    expect(page).to have_button('Save', disabled: true)
+
+    fill_in 'Title', with: 'Required fields work'
+    fill_in 'Creator', with: 'Required Creator'
+    select 'In Copyright', from: 'Rights Statement'
+    find('#agreement').click
+
+    expect(page).to have_css('#required-metadata.complete')
+    expect(page).to have_css('#required-agreement.complete')
+    expect(page).to have_button('Save', disabled: false)
   end
 
-  # The manual test plan below documents the EDIT page for an existing work, where the
-  # required fields are pre-filled. The owner (depositor) of the work can edit it. The
-  # factory applies depositor metadata for `user`, so `user` owns and can edit this work.
-  # Keyword and Rights Statement are primary terms on the GenericWork form (unlike the
-  # batch form, where they live under "Additional fields"), so they render pre-populated
-  # on the Descriptions tab without expanding the collapsed section.
-  let(:existing_work) do
-    create(:generic_work,
-           user:,
-           title: ['Editable Work Title'],
-           creator: ['Edited Creator'],
-           keyword: ['edit-keyword'],
-           rights_statement: ['http://rightsstatements.org/vocab/InC/1.0/'])
-  end
-
-  describe 'the edit page for an existing work (Dashboard Work Edit Page)' do
+  # The Manual Test Plan's "Dashboard Work Edit Page" documents the EDIT page for an
+  # existing work, where the required fields are pre-filled. The owner (depositor) of the
+  # work can edit it.
+  # Title, Creator and Rights Statement are the primary fields; Keyword lives in the
+  # collapsed "Additional fields" section, so it is checked after expanding that section.
+  #
+  # Hyku runs Hyrax::ValkyrieLazyMigration, so a GenericWork (ActiveFedora) and a
+  # GenericWorkResource (Valkyrie) edit through the SAME /concern/generic_works/:id/edit
+  # route and form. We run the edit-page expectations against both backings; each backing
+  # context provides an editable `existing_work`.
+  shared_examples 'the work edit page tabs' do
     context 'Descriptions tab' do
       it 'shows the required fields pre-filled, a removable blank input, and Additional fields' do
-        visit edit_hyrax_generic_work_path(existing_work)
+        visit "/concern/generic_works/#{existing_work.id}/edit"
 
         # Required fields are present and pre-populated with the work's saved values.
         expect(page).to have_field('Title', with: 'Editable Work Title')
         expect(page).to have_field('Creator', with: 'Edited Creator')
-        expect(page).to have_field('Keyword', with: 'edit-keyword')
         expect(page).to have_select('Rights Statement', selected: 'In Copyright')
 
         # Multi-value fields render a trailing blank input under the filled one
@@ -65,14 +76,16 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
         expect(page).to have_css("input[name='generic_work[title][]']", minimum: 2)
         expect(page).to have_css('button.remove')
 
-        # Button to reveal the collapsed Additional fields section.
-        expect(page).to have_link('Additional fields')
+        # The Additional fields button reveals the collapsed section, where Keyword is
+        # also pre-populated.
+        click_link 'Additional fields'
+        expect(page).to have_field('Keyword', with: 'edit-keyword')
       end
     end
 
     context 'Files tab' do
       it 'shows the add-files controls and dropzone that render on load' do
-        visit edit_hyrax_generic_work_path(existing_work)
+        visit "/concern/generic_works/#{existing_work.id}/edit"
         click_link 'Files'
 
         expect(page).to have_content('Add files')
@@ -86,19 +99,44 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
         # is present in the DOM on load.
         expect(page).to have_css('script#template-download', visible: :all)
       end
+
+      it 'uploads a file, lists its name and size, and deletes it' do
+        visit "/concern/generic_works/#{existing_work.id}/edit"
+        click_link 'Files'
+
+        within('div#add-files') do
+          attach_file('files[]', Rails.root.join('spec', 'fixtures', 'hyrax', 'image.jp2'), visible: false)
+        end
+
+        row = find('tr.template-download', text: 'image.jp2')
+        # jquery-fileupload formats 11,043 bytes as "11.04 KB".
+        expect(row).to have_css('.size', text: '11.04 KB')
+        expect(row).to have_button('Delete')
+        uploaded = Hyrax::UploadedFile.where(user:).last
+        expect(uploaded.file.file.original_filename).to eq('image.jp2')
+
+        row.click_button('Delete')
+        expect(page).not_to have_css('tr.template-download', text: 'image.jp2')
+        expect(Hyrax::UploadedFile.exists?(uploaded.id)).to be false
+      end
     end
 
     context 'Relationships tab' do
       it 'shows admin set, collection and child-work pickers plus the child works list' do
-        visit edit_hyrax_generic_work_path(existing_work)
+        visit "/concern/generic_works/#{existing_work.id}/edit"
         click_link 'Relationships'
 
         # Administrative Set dropdown.
         expect(page).to have_select('Administrative Set')
 
-        # Collection search dropdown (select2-enhanced; the native control may be hidden).
-        expect(page).to have_css("[data-behavior='collection-relationships']")
-        expect(page).to have_css("[data-autocomplete='collection']", visible: :all)
+        # Collection search dropdown: a visible select2 widget backed by a hidden
+        # select[name='member_of_collection_ids'], plus the list of collections the work
+        # is currently in (where Remove controls appear for each selected collection).
+        within("[data-behavior='collection-relationships']") do
+          expect(page).to have_css('.select2-container.collection-select2')
+          expect(page).to have_css("select[name='member_of_collection_ids']", visible: :all)
+          expect(page).to have_content('This work is currently in these collections')
+        end
 
         # Child-works search dropdown. This section only renders for a persisted work,
         # which is why it is exercised on the edit page rather than the new-work form.
@@ -115,7 +153,7 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
 
     context 'Sharing tab' do
       it 'shows the group and user add forms with access levels and the current shares' do
-        visit edit_hyrax_generic_work_path(existing_work)
+        visit "/concern/generic_works/#{existing_work.id}/edit"
         click_link 'Sharing'
 
         expect(page).to have_content('Add Sharing')
@@ -129,7 +167,8 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
 
         # User-add form: search for a user, choose an access level, Add.
         within('fieldset.permission-add-user') do
-          expect(page).to have_field('new_user_name_skel')
+          # The user search is select2-enhanced, which hides the underlying input.
+          expect(page).to have_css('#new_user_name_skel', visible: :all)
           expect(page).to have_select('new_user_permission_skel', with_options: ['View/Download', 'Edit'])
           expect(page).to have_css('#add_new_user_skel')
         end
@@ -142,67 +181,112 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
         # it is revealed by JS after a group/user is added.
         expect(page).to have_css('#save_perm_note', visible: :all)
       end
+
+      # Potential duplicate: spec/features/edit_work_spec.rb:17 (group humanized name offered in the Sharing select)
+      it 'adds a group share, notes it is unsaved, and persists it when the work is saved' do
+        visit "/concern/generic_works/#{existing_work.id}/edit"
+        click_link 'Sharing'
+        expect(page).not_to have_css('tr', text: sharing_group.name)
+        expect(page).to have_css('#save_perm_note', visible: :hidden)
+
+        within('fieldset.permission-add-group') do
+          select 'Edit Form Sharing Group', from: 'new_group_name_skel'
+          select 'Edit', from: 'new_group_permission_skel'
+          click_button 'Add'
+        end
+
+        expect(page).to have_css('#save_perm_note', visible: :visible,
+                                                    text: 'Permissions are not saved until the "Save" button is pressed')
+        expect(page).to have_css('tr', text: /Edit\s+#{sharing_group.name}/)
+
+        find('#agreement').check unless find('#agreement').checked?
+        click_button 'with_files_submit'
+
+        expect(page).to have_css('h1', text: 'Editable Work Title')
+        expect(Hyrax.query_service.find_by(id: existing_work.id).edit_groups).to include(sharing_group.name)
+      end
+
+      # The user picker searches GET /users.json, which Hyku only allows for users who may read
+      # Users (user_manager/user_reader); the pending example in
+      # spec/features/work_new_form_spec.rb documents the regular-user failure.
+      context 'as a depositor permitted to search users (user_reader role)' do
+        let(:user) { create(:user, roles: %i[work_depositor user_reader]) }
+
+        it 'adds a user share with its access level' do
+          visit "/concern/generic_works/#{existing_work.id}/edit"
+          click_link 'Sharing'
+          expect(page).not_to have_css('tr', text: share_user.email)
+
+          find('#s2id_new_user_name_skel').click
+          find('.select2-drop-active input.select2-input').fill_in(with: share_user.email)
+          find('.select2-drop-active .select2-result-label', text: share_user.email).click
+          select 'View/Download', from: 'new_user_permission_skel'
+          click_button 'add_new_user_skel'
+
+          expect(page).to have_css('#save_perm_note', visible: :visible)
+          expect(page).to have_css('tr', text: %r{View/Download\s+#{Regexp.escape(share_user.email)}})
+        end
+      end
+    end
+  end
+
+  describe 'the edit page for an existing work (Dashboard Work Edit Page)' do
+    context 'with an ActiveFedora-backed work' do
+      # create(:generic_work, user:) applies depositor metadata, so `user` can edit.
+      let(:existing_work) do
+        create(:generic_work,
+               user:,
+               title: ['Editable Work Title'],
+               creator: ['Edited Creator'],
+               keyword: ['edit-keyword'],
+               rights_statement: ['http://rightsstatements.org/vocab/InC/1.0/'])
+      end
+
+      it_behaves_like 'the work edit page tabs'
+    end
+
+    context 'with a Valkyrie-backed work' do
+      # Grant the depositor edit access explicitly on the Valkyrie resource.
+      let(:existing_work) do
+        FactoryBot.valkyrie_create(:generic_work_resource,
+                                   depositor: user.user_key,
+                                   edit_users: [user.user_key],
+                                   title: ['Editable Work Title'],
+                                   creator: ['Edited Creator'],
+                                   keyword: ['edit-keyword'],
+                                   rights_statement: ['http://rightsstatements.org/vocab/InC/1.0/'])
+      end
+
+      it_behaves_like 'the work edit page tabs'
+
+      # Relationships tab: the collections the work already belongs to are listed (from the
+      # form's data-members) with a Remove control that asks for confirmation.
+      context 'when the work is in a collection' do
+        let(:collection) do
+          FactoryBot.valkyrie_create(:hyku_collection, user:, title: ['Edit Form Member Collection'])
+        end
+        let(:existing_work) do
+          FactoryBot.valkyrie_create(:generic_work_resource,
+                                     depositor: user.user_key,
+                                     edit_users: [user.user_key],
+                                     title: ['Editable Work Title'],
+                                     member_of_collection_ids: [collection.id])
+        end
+
+        it 'lists the collection with a Remove control' do
+          visit "/concern/generic_works/#{existing_work.id}/edit"
+          click_link 'Relationships'
+
+          within("[data-behavior='collection-relationships'] tbody") do
+            row = find('tr', text: 'Edit Form Member Collection')
+            expect(row).to have_button('Remove from collection')
+            row.click_button('Remove from collection')
+          end
+          within('.confirm-remove-dialog') { click_button 'Remove' }
+          expect(page).not_to have_css("[data-behavior='collection-relationships'] tbody tr",
+                                       text: 'Edit Form Member Collection')
+        end
+      end
     end
   end
 end
-
-
-# ## Dashboard Work Edit Page
-# [Back to TOC](#table-of-contents)
-
-# ### Descriptions
-
-# ![image50](https://github.com/samvera/hyku/assets/19597776/385552b8-3e8f-4797-9826-0b60cec3c0a3)
-
-# ### As a user:
-
-# - [ ] I can see the required fields already filled in:
-#   - [ ] Title
-#   - [ ] Creator
-#   - [ ] Keyword
-#   - [ ] Rights Statement
-# - [ ] I can see blank input fields under the filled input fields with an option to remove them
-# - [ ] I can see a button to add Additional Fields
-
-# ### Files
-
-# ![image9](https://github.com/samvera/hyku/assets/19597776/ced7da5d-642f-455b-8511-443f009cd0cc)
-
-# ### As a user:
-
-# - [ ] I can see a button to Add files
-# - [ ] I can see a button to Add folder
-# - [ ] I can see a dropzone to drag-and-drop files to upload
-# - [ ] I can see the file name and file size of uploaded files
-#   - [ ] I can see a Delete button next to each file to delete them individually
-
-# ### Relationships
-
-# ![image46](https://github.com/samvera/hyku/assets/19597776/c759f3ae-8760-4c36-b689-eebd9ef91d55)
-
-# ### As a user:
-
-# - [ ] I can see a dropdown to select which Administrative Set to deposit my work into
-# - [ ] I can see a dropdown to search for existing collections for which to add my work to
-# - [ ] I can see a list of all selected collections to add my works to
-#   - [ ] I can see a Remove from collection button
-# - [ ] I can see a dropdown to search for child works
-# - [ ] I can see a button to Deposit a new work as a child of this work
-# - [ ] I can see a list of all existing child works
-
-# ### Sharing
-
-# ![image78](https://github.com/samvera/hyku/assets/19597776/159b2ef8-3195-40d8-ad36-31c745bcd7ac)
-
-# ### As a user:
-
-# - [ ] I can see a form to add groups to have specific access to my created work
-#   - [ ] Search for existing group to share with
-#   - [ ] Choose Access level (View/Download, Edit)
-#   - [ ] Add
-# - [ ] I can see a form to add individual users to have specific access to my created work
-#   - [ ] Search for existing user
-#   - [ ] Choose Access level (View/Download, Edit)
-#   - [ ] Add
-# - [ ] I can see a list of all the groups / users I am currently sharing my works with, along with their respective access levels
-# - [ ] If I add a new group / user, I can see a flash notification informing me that permissions aren’t save until the works are saved

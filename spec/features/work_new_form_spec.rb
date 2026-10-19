@@ -84,9 +84,9 @@ RSpec.describe 'New work form', type: :feature, js: true, clean: true do
       expect(page).to have_button('Add another Title')
       expect(page).to have_button('Add another Keyword')
 
-      fill_in 'Creator', with: 'First Creator'
+      fill_in 'Creator', with: 'Okafor, Chiamaka'
       click_button 'Add another Creator'
-      expect(all("input[name='generic_work[creator][]']").map(&:value)).to eq(['First Creator', ''])
+      expect(all("input[name='generic_work[creator][]']").map(&:value)).to eq(['Okafor, Chiamaka', ''])
     end
   end
 

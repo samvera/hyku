@@ -21,7 +21,7 @@ RSpec.describe 'FileSet Show and Actions', type: :feature, clean: true do
       visit "/concern/file_sets/#{file_set.id}"
 
       # Title + visibility badge (public => "Public").
-      expect(page).to have_selector('h1', text: 'Test FileSet')
+      expect(page).to have_selector('h1', text: 'Harbor entrance photograph')
       expect(page).to have_css('.badge', text: 'Public')
 
       # Media display + download link. No binary is ingested, so the default media
@@ -87,17 +87,17 @@ RSpec.describe 'FileSet Show and Actions', type: :feature, clean: true do
       # Target the first title input by id (a blank trailing input follows it). Creator
       # is required on the file set form; the factory file set has none, and the browser
       # will not submit the form until it is filled.
-      find('#file_set_title').fill_in(with: 'Updated FileSet')
-      find('#file_set_creator').fill_in(with: 'File Creator')
+      find('#file_set_title').fill_in(with: 'Harbor entrance, looking east')
+      find('#file_set_creator').fill_in(with: 'Lindqvist, Maren')
       # The Permissions tab has its own Save; submit the Descriptions form.
       within("form#edit_file_set_#{file_set.id}") { click_button 'Save' }
       expect(page).to have_content('has been updated')
-      expect(page).to have_content('Updated FileSet')
+      expect(page).to have_content('Harbor entrance, looking east')
 
       # The delete link carries data-confirm ("Delete this File?").
       accept_confirm { click_link 'Delete This File' }
       expect(page).to have_current_path(%r{/concern/generic_works/#{parent_work.id}})
-      expect(page).not_to have_content('Updated FileSet')
+      expect(page).not_to have_content('Harbor entrance, looking east')
       expect(Hyrax.query_service.find_many_by_ids(ids: [file_set.id]).to_a).to be_empty
     end
   end
@@ -107,7 +107,7 @@ RSpec.describe 'FileSet Show and Actions', type: :feature, clean: true do
     it 'hides the Edit, Delete, and Single-Use Link controls' do
       visit "/concern/file_sets/#{file_set.id}"
 
-      expect(page).to have_selector('h1', text: 'Test FileSet') # the page did render
+      expect(page).to have_selector('h1', text: 'Harbor entrance photograph') # the page did render
       expect(page).not_to have_link('Edit This File')
       expect(page).not_to have_link('Delete This File')
       expect(page).not_to have_link('Single-Use Link to File')
@@ -135,18 +135,18 @@ RSpec.describe 'FileSet Show and Actions', type: :feature, clean: true do
   # with an explicit MIME type so no FITS characterization is needed. Derivatives are not
   # generated in tests, so the thumbnail <img> points at the default placeholder.
   it 'shows the thumbnail and Download image link for an image file' do
-    image_file_set = FactoryBot.valkyrie_create(:hyrax_file_set, :public, title: ['Image FileSet'])
+    image_file_set = FactoryBot.valkyrie_create(:hyrax_file_set, :public, title: ['Lighthouse at dusk'])
     Hyrax::ValkyrieUpload.file(filename: 'world.png', file_set: image_file_set,
                                io: File.open(Rails.root.join('spec', "fixtures", "images", "world.png")),
                                mime_type: 'image/png')
     Hyrax.index_adapter.save(resource: Hyrax.query_service.find_by(id: image_file_set.id))
     FactoryBot.valkyrie_create(:generic_work_resource, :public,
-                               title: ['Image Parent'], member_ids: [image_file_set.id])
+                               title: ['Lighthouse Photographs'], member_ids: [image_file_set.id])
 
     visit "/concern/file_sets/#{image_file_set.id}"
 
     expect(page).to have_css('img.representative-media')
-    expect(page).to have_link('Download image')
+    expect(page).to have_link('Download image', href: %r{/downloads/#{image_file_set.id}})
   end
 
   context 'with an ActiveFedora-backed file set' do
@@ -167,10 +167,10 @@ RSpec.describe 'FileSet Show and Actions', type: :feature, clean: true do
       end
     end
 
-    let(:file_set) { create(:file_set, :public, title: ['Test FileSet'], user: admin_user) }
+    let(:file_set) { create(:file_set, :public, title: ['Harbor entrance photograph'], user: admin_user) }
     # Attach to an inline public parent work (mirrors work_show_actions_spec.rb).
     let!(:parent_work) do
-      create(:generic_work, :public, user: admin_user, title: ['Parent Work']).tap do |work|
+      create(:generic_work, :public, user: admin_user, title: ['Harbor Survey 1962']).tap do |work|
         work.ordered_members << file_set
         work.save!
       end
@@ -180,11 +180,11 @@ RSpec.describe 'FileSet Show and Actions', type: :feature, clean: true do
   end
 
   context 'with a Valkyrie-backed file set' do
-    let(:file_set) { FactoryBot.valkyrie_create(:hyrax_file_set, :public, title: ['Test FileSet']) }
+    let(:file_set) { FactoryBot.valkyrie_create(:hyrax_file_set, :public, title: ['Harbor entrance photograph']) }
     # Attach via member_ids on a public Valkyrie GenericWorkResource and index it, so
     # the show page can resolve the parent (mirrors hyku_indexing_spec.rb).
     let!(:parent_work) do
-      FactoryBot.valkyrie_create(:generic_work_resource, :public, title: ['Parent Work'], member_ids: [file_set.id])
+      FactoryBot.valkyrie_create(:generic_work_resource, :public, title: ['Harbor Survey 1962'], member_ids: [file_set.id])
     end
 
     it_behaves_like 'a public file set viewable by admins and anonymous users'

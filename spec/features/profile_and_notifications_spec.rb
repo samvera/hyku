@@ -15,12 +15,17 @@ RSpec.describe 'Profile and Notifications', type: :feature, clean: true do
     visit "#{profile_path}/edit"
     fill_in 'Twitter Handle', with: 'profileuser'
     fill_in 'Facebook Handle', with: 'profileuser.fb'
+    # ORCID's own documentation example iD.
+    fill_in 'user_orcid', with: '0000-0002-1825-0097'
+    fill_in 'user_googleplus_handle', with: 'profileuser.gplus'
     click_button 'Save Profile'
 
     expect(page).to have_current_path(profile_path, ignore_query: true)
     expect(page).to have_link('profileuser', href: 'http://twitter.com/profileuser')
     expect(user.reload.twitter_handle).to eq('profileuser')
     expect(user.facebook_handle).to eq('profileuser.fb')
+    expect(user.orcid).to include('0000-0002-1825-0097')
+    expect(user.googleplus_handle).to eq('profileuser.gplus')
   end
 
   # Profile SHOW page. Labels are grounded in the Hyrax profile show view
@@ -151,7 +156,10 @@ RSpec.describe 'Profile and Notifications', type: :feature, clean: true do
     let(:sender) { create(:user) }
 
     def notify(count)
-      count.times { |i| sender.send_message(user, "Notification body #{i}", "Notification subject #{i}") }
+      count.times do |i|
+        sender.send_message(user, "Oral history interview #{i + 1} is waiting for your review.",
+                            "Deposit ready for review: interview #{i + 1}")
+      end
     end
 
     it 'lists notifications in a table with Date, Subject, and Message columns' do
@@ -163,8 +171,8 @@ RSpec.describe 'Profile and Notifications', type: :feature, clean: true do
         expect(page).to have_content('Subject')
         expect(page).to have_content('Message')
       end
-      expect(page).to have_content('Notification subject 0')
-      expect(page).to have_content('Notification body 1')
+      expect(page).to have_content('Deposit ready for review: interview 1')
+      expect(page).to have_content('Oral history interview 2 is waiting for your review.')
       expect(page).to have_css('a.itemtrash', count: 2)
     end
 
@@ -172,9 +180,11 @@ RSpec.describe 'Profile and Notifications', type: :feature, clean: true do
       notify(2)
       visit '/notifications'
 
-      first('a.itemtrash').click
+      within('tr', text: 'interview 1') { find('a.itemtrash').click }
 
       expect(page).to have_css('a.itemtrash', count: 1)
+      expect(page).not_to have_content('Deposit ready for review: interview 1')
+      expect(page).to have_content('Deposit ready for review: interview 2')
     end
 
     it 'deletes all notifications with Delete All' do
@@ -196,7 +206,7 @@ RSpec.describe 'Profile and Notifications', type: :feature, clean: true do
       expect(page).to have_css('.dataTables_info', text: 'of 12 entries')
       expect(page).to have_css('.dataTables_paginate')
 
-      find('.dataTables_filter input[type="search"]').fill_in(with: 'subject 11')
+      find('.dataTables_filter input[type="search"]').fill_in(with: 'interview 11')
       expect(page).to have_css('.dataTables_info', text: '1 to 1 of 1 entries')
     end
   end

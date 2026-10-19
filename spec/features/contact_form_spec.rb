@@ -22,20 +22,20 @@ RSpec.describe 'Contact Form', type: :feature, clean: true do
     %w[Depositing Making Browsing Reporting General].each do |issue|
       visit '/contact'
       select(issue, from: 'Issue Type')
-      fill_in 'Your Name', with: 'Contact Tester'
-      fill_in 'Your Email', with: 'contact@example.com'
-      fill_in 'Subject', with: "Subject for #{issue}"
-      fill_in 'Message', with: "Test message for #{issue}"
+      fill_in 'Your Name', with: 'Rosa Delgado'
+      fill_in 'Your Email', with: 'rosa.delgado@example.edu'
+      fill_in 'Subject', with: "Question about #{issue.downcase}"
+      fill_in 'Message', with: "Hello, I have a question about #{issue.downcase} in the repository."
       expect { click_button 'Send' }.to change { ActionMailer::Base.deliveries.count }.by(1)
       expect(page).to have_content('Thank you')
 
       mail = ActionMailer::Base.deliveries.last
-      expect(mail.subject).to include("Subject for #{issue}")
-      expect(mail.body.encoded).to include(issue)
+      expect(mail.subject).to include("Question about #{issue.downcase}")
+      expect(mail.body.encoded).to include("question about #{issue.downcase} in the repository")
     end
     # Validation: an empty submission is rejected.
     visit '/contact'
-    click_button 'Send'
+    expect { click_button 'Send' }.not_to change { ActionMailer::Base.deliveries.count }
     expect(page).to have_content("can't be blank")
   end
 

@@ -115,6 +115,7 @@ RSpec.describe 'Manage embargoes and leases', type: :feature, clean: true do
 
         expect(page).to have_link('Expired Active Embargoes', href: '#expired')
         within('#expired') do
+          expect(page).to have_css('th', text: 'Title')
           expect(page).to have_css('th', text: 'Type of Item')
           expect(page).to have_css('th', text: 'Current Visibility')
           expect(page).to have_css('th', text: 'Embargo Release Date')
@@ -368,6 +369,7 @@ RSpec.describe 'Manage embargoes and leases', type: :feature, clean: true do
 
         expect(page).to have_link('Expired Active Leases', href: '#expired')
         within('#expired') do
+          expect(page).to have_css('th', text: 'Title')
           expect(page).to have_css('th', text: 'Type of Item')
           expect(page).to have_css('th', text: 'Current Visibility')
           expect(page).to have_css('th', text: 'Lease Release Date')

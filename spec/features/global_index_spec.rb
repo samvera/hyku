@@ -10,9 +10,6 @@ RSpec.describe 'Global institution index', type: :feature, multitenant: true, cl
     Capybara.default_host = original_host
   end
 
-  let!(:public_account) { create(:account, name: 'Public Institution', cname: 'public.example.com', public_demo_tenant: true) }
-  let!(:private_account) { create(:account, name: 'Private Institution', cname: 'private.example.com', public_demo_tenant: false) }
-
   it 'shows tenant administration links to a signed-in superadmin' do
     login_as create(:superadmin), scope: :user
     visit '/'

@@ -66,7 +66,7 @@ RSpec.describe 'Workflows: embargo, lease, sharing, relationships', type: :featu
   end
 
   context 'sharing workflow' do
-    let!(:group) { FactoryBot.create(:group, name: 'dummy') }
+    let!(:group) { FactoryBot.create(:group, name: 'cataloging_team') }
     it 'offers existing groups to share with on the Sharing tab' do
       visit "/concern/generic_works/#{ERB::Util.url_encode(work.id)}/edit#share"
       expect(page).to have_content 'Add Sharing'

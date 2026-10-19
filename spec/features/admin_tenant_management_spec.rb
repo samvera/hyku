@@ -8,6 +8,8 @@ RSpec.describe 'Admin Tenant Management', multitenant: true do
     create(:account, name: 'Existing Institution').tap do |created_account|
       created_account.create_solr_endpoint(url: 'http://localhost:8080/solr')
       created_account.create_fcrepo_endpoint(url: 'http://localhost:8080/fcrepo')
+      # create_*_endpoint saves the endpoint but not the account's link to it.
+      created_account.save!
     end
   end
 
@@ -35,25 +37,26 @@ RSpec.describe 'Admin Tenant Management', multitenant: true do
 
   it 'can create, edit, and delete a tenant account' do
     visit new_proprietor_account_path
-    fill_in 'Short name', with: 'testtenant'
+    fill_in 'Short name', with: 'oakridge'
     within('.account-form') do
       click_button
     end
     # Save lands on the new tenant's Manage Account page.
-    expect(page).to have_current_path(proprietor_account_path(Account.find_by!(name: 'testtenant')), ignore_query: true)
-    expect(page).to have_content('testtenant')
+    expect(page).to have_current_path(proprietor_account_path(Account.find_by!(name: 'oakridge')), ignore_query: true)
+    expect(page).to have_content('oakridge')
     click_link 'Edit Account'
     check 'Is public'
     click_button 'Save changes'
     # Save changes lands back on the Manage Account page.
-    expect(page).to have_current_path(proprietor_account_path(Account.find_by!(name: 'testtenant')), ignore_query: true)
-    visit edit_proprietor_account_path(Account.find_by!(name: 'testtenant'))
+    expect(page).to have_current_path(proprietor_account_path(Account.find_by!(name: 'oakridge')), ignore_query: true)
+    visit edit_proprietor_account_path(Account.find_by!(name: 'oakridge'))
     expect(page).to have_checked_field('Is public')
     visit proprietor_accounts_path
-    within('tr', text: 'testtenant') do
+    within('tr', text: 'oakridge') do
       click_link 'Delete'
     end
-    expect(page).not_to have_content('testtenant')
+    expect(page).not_to have_content('oakridge')
+    expect(Account.find_by(name: 'oakridge')).to be_nil
   end
 
   it 'can invite and remove tenant administrators' do
@@ -99,12 +102,14 @@ RSpec.describe 'Admin Tenant Management', multitenant: true do
 
   it 'offers a cancel link and rejects a blank short name on the new account form' do
     visit new_proprietor_account_path
-    expect(page).to have_link('Cancel', href: %r{\A/proprietor/accounts(\?|\z)})
     within('.account-form') do
       click_button
     end
     expect(page).to have_content('prohibited this repository from being saved')
     expect(page).to have_field('Short name')
+
+    click_link 'Cancel'
+    expect(page).to have_current_path(proprietor_accounts_path, ignore_query: true)
   end
 
   it 'shows the tenant cname, edit/cancel links, and admin tabs on the manage page' do
@@ -113,10 +118,15 @@ RSpec.describe 'Admin Tenant Management', multitenant: true do
       click_link 'Manage'
     end
     expect(page).to have_content(account.cname)
-    expect(page).to have_link('Edit Account')
-    expect(page).to have_link('Cancel', href: %r{\A/proprietor/accounts(\?|\z)})
     expect(page).to have_content('Current Account Administrators')
     expect(page).to have_content('All Users')
+
+    click_link 'Edit Account'
+    expect(page).to have_current_path(edit_proprietor_account_path(account), ignore_query: true)
+
+    visit proprietor_account_path(account)
+    click_link 'Cancel'
+    expect(page).to have_current_path(proprietor_accounts_path, ignore_query: true)
   end
 
   it 'renders the editable account fields and a cancel link on the edit form' do
@@ -125,11 +135,15 @@ RSpec.describe 'Admin Tenant Management', multitenant: true do
     expect(page).to have_field('Tenant UUID', readonly: true)
     expect(page).to have_field('Primary Domain Name', readonly: true)
     expect(page).to have_content('Solr Endpoint')
+    expect(page).to have_field('account_solr_endpoint_attributes_url', with: account.solr_endpoint.url)
     unless Hyrax.config.disable_wings
       expect(page).to have_content('Fedora Endpoint')
+      expect(page).to have_field('account_fcrepo_endpoint_attributes_url', with: account.fcrepo_endpoint.url)
       expect(page).to have_field('Base Path')
     end
-    expect(page).to have_link('Cancel', href: %r{\A/proprietor/accounts(\?|\z)})
+
+    click_link 'Cancel'
+    expect(page).to have_current_path(proprietor_accounts_path, ignore_query: true)
   end
 
   # Manual Test Plan: "Global Tenant Accounts Index Page (Admin only)"

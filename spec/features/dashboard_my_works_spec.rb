@@ -139,17 +139,19 @@ RSpec.describe 'Dashboard My Works index', type: :feature, clean: true do
     end
 
     it 'changes how many works are shown from the per-page dropdown', js: true do
-      11.times { |i| make_work(format('Paged Work %02d', i + 1)) }
+      per_page = Hyrax::My::WorksController.blacklight_config.default_per_page
+      total = per_page + 1
+      total.times { |i| make_work(format('Paged Work %02d', i + 1)) }
 
       visit '/dashboard/my/works'
-      expect(page).to have_css('.count-display', exact_text: '11 works you own in the repository')
-      expect(page).to have_css('table.works-list tbody tr', count: 10)
+      expect(page).to have_css('.count-display', exact_text: "#{total} works you own in the repository")
+      expect(page).to have_css('table.works-list tbody tr', count: per_page)
 
       # Hyrax's select_submit.js submits the per_page form on change.
       select '20', from: 'per_page'
 
       expect(page).to have_current_path(/per_page=20/)
-      expect(page).to have_css('table.works-list tbody tr', count: 11)
+      expect(page).to have_css('table.works-list tbody tr', count: total)
     end
   end
 

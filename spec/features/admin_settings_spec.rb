@@ -91,16 +91,16 @@ RSpec.describe 'Admin settings pages', type: :feature, clean: true do
     it 'saves a changed color with Save changes (Apply Changes) and applies it to the site' do
       visit '/admin/appearance'
       within('#color') do
-        fill_in 'admin_appearance[link_color]', with: '#a1b2c3'
+        fill_in 'admin_appearance[link_color]', with: '#008080'
         click_button 'Apply Changes'
       end
 
-      expect(ContentBlock.block_for(name: 'link_color')).to eq('#a1b2c3')
+      expect(ContentBlock.block_for(name: 'link_color')).to eq('#008080')
       visit '/admin/appearance'
-      expect(find_field('admin_appearance[link_color]').value).to eq('#a1b2c3')
+      expect(find_field('admin_appearance[link_color]').value).to eq('#008080')
 
       visit '/'
-      expect(styles).to include('color: #a1b2c3;')
+      expect(styles).to include('color: #008080;')
     end
 
     it 'saves the body and headline fonts with Save changes and applies them to the site' do
@@ -136,13 +136,13 @@ RSpec.describe 'Admin settings pages', type: :feature, clean: true do
     it 'saves custom CSS with Save changes and serves it on the site' do
       visit '/admin/appearance'
       within('#css') do
-        fill_in 'Add Custom CSS Below', with: '.quokka-custom-rule { color: #0f0f0f; }'
+        fill_in 'Add Custom CSS Below', with: '.navbar-brand { letter-spacing: 1px; }'
         click_button 'Save changes'
       end
 
-      expect(ContentBlock.block_for(name: 'custom_css_block')).to eq('.quokka-custom-rule { color: #0f0f0f; }')
+      expect(ContentBlock.block_for(name: 'custom_css_block')).to eq('.navbar-brand { letter-spacing: 1px; }')
       visit '/'
-      expect(styles).to include('.quokka-custom-rule { color: #0f0f0f; }')
+      expect(styles).to include('.navbar-brand { letter-spacing: 1px; }')
     end
 
     context 'with JavaScript', js: true do
@@ -168,24 +168,28 @@ RSpec.describe 'Admin settings pages', type: :feature, clean: true do
           end
         end
 
-        set_input_value('link_color', '#123456')
-        set_input_value('navbar_background_color', '#654321')
+        teal = '#008080'
+        fuchsia = '#ff00ff'
+        set_input_value('link_color', teal)
+        set_input_value('navbar_background_color', fuchsia)
         find("a.restore-default-color[data-default-target='link_color']").click
-        expect(input_value('link_color')).to eq('#2e74b2')
+        expect(input_value('link_color')).to eq(defaults['link_color'])
         # Restoring one color leaves the others alone.
-        expect(input_value('navbar_background_color')).to eq('#654321')
+        expect(input_value('navbar_background_color')).to eq(fuchsia)
 
-        set_input_value('link_color', '#123456')
+        set_input_value('link_color', teal)
         within('#color') { click_link 'Restore All Defaults' }
-        expect(input_value('link_color')).to eq('#2e74b2')
-        expect(input_value('navbar_background_color')).to eq('#000000')
+        defaults.each do |color_name, hex|
+          expect(input_value(color_name)).to eq(hex)
+        end
       end
 
       it 'has body and headline font dropdowns with Restore Default buttons, plus Restore All Defaults' do
         visit '/admin/appearance'
         click_link 'Fonts'
 
-        default_font = 'Helvetica Neue, Helvetica, Arial, sans-serif'
+        # The Restore Default script (fonts.js) drops the trailing semicolon from the form's defaults.
+        defaults = Hyku::Forms::Admin::Appearance.default_fonts.transform_values { |font| font.delete(';') }
         within('#font') do
           expect(page).to have_css('label', text: 'Select Body Font')
           expect(page).to have_css('label', text: 'Select Header Font')
@@ -198,17 +202,17 @@ RSpec.describe 'Admin settings pages', type: :feature, clean: true do
         set_input_value('body_font', 'Lato:400')
         set_input_value('headline_font', 'Roboto:700')
         find("a.restore-default-font[data-default-target='body_font']").click
-        expect(input_value('body_font')).to eq(default_font)
+        expect(input_value('body_font')).to eq(defaults['body_font'])
         expect(input_value('headline_font')).to eq('Roboto:700')
 
         find("a.restore-default-font[data-default-target='headline_font']").click
-        expect(input_value('headline_font')).to eq(default_font)
+        expect(input_value('headline_font')).to eq(defaults['headline_font'])
 
         set_input_value('body_font', 'Lato:400')
         set_input_value('headline_font', 'Roboto:700')
         within('#font') { click_link 'Restore All Defaults' }
-        expect(input_value('body_font')).to eq(default_font)
-        expect(input_value('headline_font')).to eq(default_font)
+        expect(input_value('body_font')).to eq(defaults['body_font'])
+        expect(input_value('headline_font')).to eq(defaults['headline_font'])
       end
     end
   end
@@ -335,7 +339,7 @@ RSpec.describe 'Admin settings pages', type: :feature, clean: true do
       visit '/admin/features'
 
       rows = page.all('tr[data-feature]')
-      expect(rows.size).to be >= 10
+      expect(rows.size).to eq(Flipflop::FeatureSet.current.features.size)
       rows.each do |row|
         buttons = row.all("td.toggle input[type='submit']").map(&:value)
         expect(buttons.size).to eq(2)

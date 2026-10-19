@@ -282,6 +282,8 @@
 - [admin_tenant_management_spec.rb](features/admin_tenant_management_spec.rb)
   - can invite and remove tenant administrators
   - shows the tenant cname, edit/cancel links, and admin tabs on the manage page
+  - inviting administrators on the Manage page adds nobody for a blank or malformed email
+    _(the app accepts the submission instead of refusing it, as the plan expects)_
   - inviting administrators on the Manage page invites an email that has no user yet and lists it as a current administrator
   - lists every user under All Users and its Add makes that user an administrator
 
@@ -1174,7 +1176,7 @@
   - Sharing tab as a depositor permitted to search users (user_reader role) shares with a user at a chosen access level
   - Sharing tab lets a regular depositor find a user in the Sharing tab user search _(pending/skipped: known gap)_
 - [work_form_requirements_spec.rb](features/work_form_requirements_spec.rb)
-  - shows required metadata, file, relationship, and sharing controls
+  - shows the required metadata fields and the Files, Relationships and Sharing tabs
   - keeps Save disabled until the required metadata and deposit agreement are complete
 - [workflow_permissions_spec.rb](features/workflow_permissions_spec.rb)
   - embargo workflow allows setting an embargo during work creation

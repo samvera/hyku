@@ -133,16 +133,18 @@ RSpec.describe 'Collection show page (public view)', type: :feature, clean: true
     end
 
     it 'changes how many works are shown with Results per page' do
-      10.times { |i| create_member(format('Paged work %02d', i)) }
+      # One more work than a page holds, counting the member created above.
+      per_page = Hyrax::CollectionsController.blacklight_config.default_per_page
+      per_page.times { |i| create_member(format('Paged work %02d', i)) }
       visit hyrax.collection_path(collection.id)
-      expect(page).to have_content('Works (11)')
-      expect(listed_work_titles.size).to eq(10)
+      expect(page).to have_content("Works (#{per_page + 1})")
+      expect(listed_work_titles.size).to eq(per_page)
 
       select '20', from: 'per_page'
       click_button 'Refresh'
 
       expect(page).to have_select('per_page', selected: '20')
-      expect(listed_work_titles.size).to eq(11)
+      expect(listed_work_titles.size).to eq(per_page + 1)
     end
 
     it 'switches the works layout with the view-type buttons' do

@@ -20,6 +20,8 @@ RSpec.describe 'Catalog controls', type: :feature, clean: true do
     count.times { |index| public_work(title: "Catalog page #{index}") }
   end
 
+  let(:per_page) { CatalogController.blacklight_config.default_per_page }
+
   it 'searches from the search bar and returns the matching work' do
     visit '/catalog'
 
@@ -31,16 +33,17 @@ RSpec.describe 'Catalog controls', type: :feature, clean: true do
   end
 
   it 'customizes the search results by selecting different filters (Sort by, number of records per page, layout)' do
-    create_page_works(12)
+    # One more page of works than fits, plus the work created above.
+    create_page_works(per_page + 2)
     visit '/catalog?search_field=all_fields&q=catalog'
-    expect(page).to have_css('.search-result-title a', count: 10)
+    expect(page).to have_css('.search-result-title a', count: per_page)
 
     within('#sort-dropdown') { click_link 'Title' }
     titles = page.all('.search-result-title a').map(&:text)
     expect(titles).to eq(titles.sort)
 
     within('#per_page-dropdown') { click_link '20' }
-    expect(page).to have_css('.search-result-title a', count: 13)
+    expect(page).to have_css('.search-result-title a', count: per_page + 3)
 
     within('.view-type-group') { click_link 'Gallery' }
     expect(page).to have_css('#documents.documents-gallery')
@@ -68,14 +71,15 @@ RSpec.describe 'Catalog controls', type: :feature, clean: true do
   end
 
   it 'paginates when results span multiple pages' do
-    # More than one page of results (the catalog defaults to 10 per page).
-    create_page_works(12)
+    # More than one page of results, plus the work created above.
+    create_page_works(per_page + 2)
+    total = per_page + 3
     visit '/catalog?search_field=all_fields&q=catalog'
 
     expect(page).to have_css('.pagination')
-    expect(page).to have_content('1 - 10 of 13')
+    expect(page).to have_content("1 - #{per_page} of #{total}")
 
     find("a[rel='next']", match: :first).click
-    expect(page).to have_content('11 - 13 of 13')
+    expect(page).to have_content("#{per_page + 1} - #{total} of #{total}")
   end
 end

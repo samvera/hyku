@@ -195,7 +195,8 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
       expect(page).to have_selector('button.remove', visible: :all)
       # Save creates the collection; Cancel returns to the collections index
       expect(page).to have_button('Save')
-      expect(page).to have_link('Cancel', href: %r{/dashboard/my/collections})
+      click_link 'Cancel'
+      expect(page).to have_current_path(%r{\A/dashboard/my/collections})
     end
   end
 

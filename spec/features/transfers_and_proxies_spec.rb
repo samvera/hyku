@@ -101,7 +101,7 @@ RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true do
   # - Controller hyrax/transfers_controller.rb notices: "Transfer canceled" (destroy),
   #   "Transfer rejected" (reject), "Transfer complete" (accept).
   context 'with a real pending ownership transfer request' do
-    let!(:work) { create(:generic_work, user: user, title: ['Transfer Test Work']) }
+    let!(:work) { create(:generic_work, user: user, title: ['Harbor Survey 1962']) }
     let!(:transfer_request) do
       ProxyDepositRequest.create!(
         work_id: work.id,
@@ -125,7 +125,7 @@ RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true do
         # Update this assertion to expect "To" when issue #1816 is fixed. Fix goes in
         # Hyrax (samvera/hyrax): app/views/hyrax/transfers/_sent.html.erb.
         expect(page).to have_selector('th', text: 'From')
-        expect(page).to have_link('Transfer Test Work')
+        expect(page).to have_link('Harbor Survey 1962')
         expect(page).to have_link(recipient.email)
         expect(page).to have_content('Please take ownership')
         # A pending sent transfer exposes a Cancel control to the sender.
@@ -155,7 +155,7 @@ RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true do
         %w[Title Date From Status Comments].each do |heading|
           expect(page).to have_selector('th', text: heading)
         end
-        expect(page).to have_link('Transfer Test Work')
+        expect(page).to have_link('Harbor Survey 1962')
         expect(page).to have_link(user.email)
         expect(page).to have_content('Please take ownership')
         # Status actions: Accept (a button opening a dropdown) and Reject.

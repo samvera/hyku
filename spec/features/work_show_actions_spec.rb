@@ -11,7 +11,7 @@ RSpec.describe 'Work show actions', type: :feature, clean: true do
   # context provides `make_work` / `make_work_with_file` returning a persisted work.
   shared_examples 'the work show page' do
     let!(:work) do
-      make_work(title: ['Work actions test'], keyword: ['grounded-metadata-value'], visibility: 'open')
+      make_work(title: ['Coastal Erosion Survey 2019'], keyword: ['shoreline monitoring'], visibility: 'open')
     end
 
     describe 'as an administrator' do
@@ -73,11 +73,11 @@ RSpec.describe 'Work show actions', type: :feature, clean: true do
         visit "/concern/generic_works/#{work.id}"
 
         # Title + permission badge ("Public" for an open work).
-        expect(page).to have_content('Work actions test')
+        expect(page).to have_content('Coastal Erosion Survey 2019')
         expect(page).to have_content('Public')
         # Descriptive metadata list.
         expect(page).to have_css('dl')
-        expect(page).to have_content('grounded-metadata-value')
+        expect(page).to have_content('shoreline monitoring')
         # Relations card (its title renders as "Relations").
         expect(page).to have_content('Relations')
         # Citations: the COinS span (read by Zotero/Mendeley) lives in _show_actions.html.erb.
@@ -105,7 +105,7 @@ RSpec.describe 'Work show actions', type: :feature, clean: true do
         # WorksControllerBehavior#respond_to_endnote sends the solr document as a Refer file.
         expect(page.response_headers['Content-Type']).to include('application/x-endnote-refer')
         expect(page.response_headers['Content-Disposition']).to include('.endnote')
-        expect(page.body).to include('%T Work actions test')
+        expect(page.body).to include('%T Coastal Erosion Survey 2019')
       end
 
       it 'does not show administrative action controls' do

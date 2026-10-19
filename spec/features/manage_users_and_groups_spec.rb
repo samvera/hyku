@@ -75,6 +75,7 @@ RSpec.describe 'Manage Users and Groups', type: :feature, clean: true do
 
     it 'removes a user from the repository with the Delete button next to them' do
       visit '/admin/users'
+      within("tr##{depositor.email.parameterize}") { expect(page).to have_link('Delete') }
 
       within("tr##{reader.email.parameterize}") { click_link 'Delete' }
 
@@ -142,6 +143,7 @@ RSpec.describe 'Manage Users and Groups', type: :feature, clean: true do
 
     it 'opens a group for editing with Edit group & users' do
       visit '/admin/groups'
+      within('tr#beta_reviewers') { expect(page).to have_link('Edit group & users') }
       within('tr#alpha_testers') { click_link 'Edit group & users' }
 
       expect(page).to have_current_path(%r{\A/admin/groups/#{alpha.id}/edit})
@@ -178,6 +180,7 @@ RSpec.describe 'Manage Users and Groups', type: :feature, clean: true do
 
     it 'creates a new group with Save' do
       visit '/admin/groups/new'
+      expect(find_field('group_humanized_name')[:required]).to eq('required')
       fill_in 'Name', with: 'Gamma Curators'
       fill_in 'Description', with: 'Curates the gamma collection'
 
@@ -190,11 +193,11 @@ RSpec.describe 'Manage Users and Groups', type: :feature, clean: true do
 
     it 'cancels the new group and returns to the Manage Groups index' do
       visit '/admin/groups/new'
-      fill_in 'Name', with: 'Never Saved Group'
+      fill_in 'Name', with: 'Library Staff'
 
       expect { click_link 'Cancel' }.not_to change(Hyrax::Group, :count)
       expect(page).to have_current_path(%r{\A/admin/groups(\?|\z)})
-      expect(page).not_to have_content('Never Saved Group')
+      expect(page).not_to have_content('Library Staff')
     end
   end
 
@@ -238,7 +241,7 @@ RSpec.describe 'Manage Users and Groups', type: :feature, clean: true do
 
       it 'cancels the edits and returns to the Manage Groups index' do
         visit "/admin/groups/#{group.id}/edit"
-        fill_in 'Name', with: 'Discarded Name'
+        fill_in 'Name', with: 'Faculty Reviewers'
         click_link 'Cancel'
 
         expect(page).to have_current_path(%r{\A/admin/groups(\?|\z)})

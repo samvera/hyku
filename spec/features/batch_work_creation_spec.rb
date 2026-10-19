@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
   let(:user) { create(:user, roles: [:work_depositor]) }
-  let!(:collection) { create(:collection, user:, title: ['Batch Target Collection']) }
   # Managed by `user`, so it is offered in the Relationships collection picker.
   let!(:deposit_collection) do
     FactoryBot.valkyrie_create(:hyku_collection, user:, title: ['Batch Deposit Collection'])
@@ -101,8 +100,8 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
     # Display label defaults to the file name and is editable.
     expect(jp2_row).to have_field('Display label', with: 'image.jp2')
     expect(png_row).to have_field('Display label', with: 'world.png')
-    jp2_row.fill_in 'Display label', with: 'Renamed batch item'
-    expect(jp2_row).to have_field('Display label', with: 'Renamed batch item')
+    jp2_row.fill_in 'Display label', with: 'Interview transcript, side A'
+    expect(jp2_row).to have_field('Display label', with: 'Interview transcript, side A')
 
     # "Set all to this Resource Type" copies one file's selection to every file.
     expect(png_row.find('select.resource_type_dropdown').value).to be_empty
@@ -199,7 +198,7 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
     fill_in 'Creator', with: 'Batch Creator'
     # Keyword and Rights Statement are in the collapsed "Additional fields" section.
     click_on 'Additional fields'
-    fill_in 'Keyword', with: 'batch-test'
+    fill_in 'Keyword', with: 'oral history'
     select 'In Copyright', from: 'Rights Statement'
 
     click_link 'Relationships'

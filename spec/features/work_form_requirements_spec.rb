@@ -17,7 +17,7 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
     login_as user
   end
 
-  it 'shows required metadata, file, relationship, and sharing controls' do
+  it 'shows the required metadata fields and the Files, Relationships and Sharing tabs' do
     visit new_hyrax_generic_work_path
 
     # Title, Creator and Rights Statement are the primary (always-visible) fields.
@@ -67,8 +67,8 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
         visit "/concern/generic_works/#{existing_work.id}/edit"
 
         # Required fields are present and pre-populated with the work's saved values.
-        expect(page).to have_field('Title', with: 'Editable Work Title')
-        expect(page).to have_field('Creator', with: 'Edited Creator')
+        expect(page).to have_field('Title', with: 'Field Notes from Lake Erie')
+        expect(page).to have_field('Creator', with: 'Hargrove, Elena')
         expect(page).to have_select('Rights Statement', selected: 'In Copyright')
 
         # Multi-value fields render a trailing blank input under the filled one
@@ -79,7 +79,7 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
         # The Additional fields button reveals the collapsed section, where Keyword is
         # also pre-populated.
         click_link 'Additional fields'
-        expect(page).to have_field('Keyword', with: 'edit-keyword')
+        expect(page).to have_field('Keyword', with: 'limnology')
       end
     end
 
@@ -202,7 +202,7 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
         find('#agreement').check unless find('#agreement').checked?
         click_button 'with_files_submit'
 
-        expect(page).to have_css('h1', text: 'Editable Work Title')
+        expect(page).to have_css('h1', text: 'Field Notes from Lake Erie')
         expect(Hyrax.query_service.find_by(id: existing_work.id).edit_groups).to include(sharing_group.name)
       end
 
@@ -236,9 +236,9 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
       let(:existing_work) do
         create(:generic_work,
                user:,
-               title: ['Editable Work Title'],
-               creator: ['Edited Creator'],
-               keyword: ['edit-keyword'],
+               title: ['Field Notes from Lake Erie'],
+               creator: ['Hargrove, Elena'],
+               keyword: ['limnology'],
                rights_statement: ['http://rightsstatements.org/vocab/InC/1.0/'])
       end
 
@@ -251,9 +251,9 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
         FactoryBot.valkyrie_create(:generic_work_resource,
                                    depositor: user.user_key,
                                    edit_users: [user.user_key],
-                                   title: ['Editable Work Title'],
-                                   creator: ['Edited Creator'],
-                                   keyword: ['edit-keyword'],
+                                   title: ['Field Notes from Lake Erie'],
+                                   creator: ['Hargrove, Elena'],
+                                   keyword: ['limnology'],
                                    rights_statement: ['http://rightsstatements.org/vocab/InC/1.0/'])
       end
 
@@ -269,7 +269,7 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
           FactoryBot.valkyrie_create(:generic_work_resource,
                                      depositor: user.user_key,
                                      edit_users: [user.user_key],
-                                     title: ['Editable Work Title'],
+                                     title: ['Field Notes from Lake Erie'],
                                      member_of_collection_ids: [collection.id])
         end
 

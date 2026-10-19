@@ -148,7 +148,7 @@ RSpec.describe 'Global authentication pages', type: :feature, multitenant: true,
 
       expect { click_button 'Create account' }.not_to change(User, :count)
       within('.user_email') { expect(page).to have_content('is invalid') }
-      within('.user_password') { expect(page).to have_content('is too short (minimum is 8 characters)') }
+      within('.user_password') { expect(page).to have_content("is too short (minimum is #{Devise.password_length.min} characters)") }
       within('.user_password_confirmation') { expect(page).to have_content("doesn't match Password") }
     end
 
@@ -286,7 +286,7 @@ RSpec.describe 'Global authentication pages', type: :feature, multitenant: true,
       fill_in 'Confirm new password', with: 'short'
       click_button 'Change my password'
 
-      expect(page).to have_content('Password is too short (minimum is 8 characters)')
+      expect(page).to have_content("Password is too short (minimum is #{Devise.password_length.min} characters)")
       expect(user.reload.valid_password?(password)).to be(true)
     end
 

@@ -10,7 +10,7 @@ Set `REPOSITORY_S3_STORAGE=true`, `REPOSITORY_S3_BUCKET` and `REPOSITORY_S3_REGI
 
 ## 2. Run the Hyrax tasks for each tenant
 
-Hyku's `tenantize:task` runs a rake task inside each tenant (search-only accounts are skipped). Limit it with `tenants`, a space-separated list of tenant hostnames; leave it out to run every tenant:
+Hyku's `tenantize:task` runs a rake task inside each tenant (search-only accounts are skipped). It needs a Hyku version where it switches the tenant's database schema (samvera/hyku#3393); on older versions it leaves the default schema active and finds no records. Limit it with `tenants`, a space-separated list of tenant hostnames; leave it out to run every tenant:
 
 ```bash
 DRY_RUN=true tenants="one.example.com" bundle exec rake "tenantize:task[hyrax:migrate:files_to_s3]"

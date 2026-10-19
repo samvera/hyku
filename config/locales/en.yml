@@ -565,7 +565,7 @@ en:
       dismiss: Dismiss this notice for today
       last_reset: 'Last reset: %{time}.'
       not_yet_reset: It has not been reset yet.
-      reset_schedule: Content and settings reset nightly.
+      reset_schedule: Content resets nightly.
       title: Demo environment
       version: Running Hyku v%{version}.
     footer:

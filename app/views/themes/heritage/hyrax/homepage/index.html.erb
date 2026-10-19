@@ -8,11 +8,12 @@
       <%= render 'hyrax/homepage/featured_works' %>
       <%= render 'hyrax/homepage/featured_collection_section' %>
 
-      <div class="hrt-recent-row">
-        <%= render 'hyrax/homepage/recently_uploaded' if @presenter&.display_recently_uploaded? && @recent_documents.present? %>
-        <%= render 'hyrax/homepage/featured_researcher' if @presenter&.display_featured_researcher? && @featured_researcher&.value.present? %>
-      </div>
     </div>
+  </div>
+
+  <div class="hrt-recent-row">
+    <%= render 'hyrax/homepage/recently_uploaded' if @presenter&.display_recently_uploaded? && @recent_documents.present? %>
+    <%= render 'hyrax/homepage/featured_researcher' if @presenter&.display_featured_researcher? && @featured_researcher&.value.present? %>
   </div>
 
   <%= render 'hyrax/homepage/about' if @homepage_about_section_heading&.value.present? || @homepage_about_section_content&.value.present? %>

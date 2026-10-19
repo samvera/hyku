@@ -62,4 +62,17 @@ RSpec.describe 'records/edit_fields/_resource_type', type: :view do
       expect(rendered).to have_css("option[value='']")
     end
   end
+
+  context 'on a work type whose schema cites a different authority' do
+    let(:work) { OerResource.new }
+    let(:oer_term) { Hyrax::OerTypesService.select_active_options.first.last }
+    let(:general_term) { Hyrax::ResourceTypesService.select_active_options.first.last }
+
+    it 'offers that authority rather than the general one' do
+      render_field
+
+      expect(rendered).to have_css("option[value='#{oer_term}']")
+      expect(rendered).to have_no_css("option[value='#{general_term}']")
+    end
+  end
 end

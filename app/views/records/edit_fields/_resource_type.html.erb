@@ -1,11 +1,5 @@
-<%# OVERRIDE: Hyrax 5.2 %>
-<%# support dynamic labels and hints for custom worktypes %>
-<%# controlled vocabular varies for class Oer %>
-<%# Support flexible controlled vocabulary definitions %>
+<%# OVERRIDE Hyrax v5.3.0. Do not delete as redundant: without it, Hyrax's own
+    resource_type partial takes over and offers every work type the general
+    list, so an OER work never sees the oer_types its schema cites. %>
 
-<% if Hyrax.config.flexible? %>
-  <%= render partial: 'records/edit_fields/default', locals: { f: f, key: :resource_type } %>
-<% else %>
-  <%= render partial: 'records/edit_fields/service_backed_select',
-             locals: { f: f, key: key, service: Hyrax::ResourceTypesService } %>
-<% end %>
+<%= render partial: 'records/edit_fields/default', locals: { f: f, key: key } %>

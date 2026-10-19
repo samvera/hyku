@@ -218,14 +218,14 @@ RSpec.describe Hyku::DepositWizard::Presenter do
 
     it 'asks the helper to resolve the property' do
       service = Hyrax::TolerantSelectService.new('licenses')
-      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license', model: anything).and_return('licenses')
       allow(helpers).to receive(:controlled_vocabulary_service_for).with('licenses').and_return(service)
 
       expect(presenter.controlled_service_for('license')).to be service
     end
 
     it 'instantiates a service the helper returns as a class' do
-      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license', model: anything).and_return('licenses')
       allow(helpers).to receive(:controlled_vocabulary_service_for)
         .with('licenses').and_return(Hyrax::LicenseService)
 
@@ -233,20 +233,20 @@ RSpec.describe Hyku::DepositWizard::Presenter do
     end
 
     it 'is nil for a property the profile does not control' do
-      allow(helpers).to receive(:controlled_vocabulary_source_for).with('title').and_return(nil)
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('title', model: anything).and_return(nil)
 
       expect(presenter.controlled_service_for('title')).to be_nil
     end
 
     it 'is nil when the helper cannot resolve the source' do
-      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license', model: anything).and_return('licenses')
       allow(helpers).to receive(:controlled_vocabulary_service_for).with('licenses').and_return(nil)
 
       expect(presenter.controlled_service_for('license')).to be_nil
     end
 
     it 'resolves a property once per request' do
-      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license', model: anything).and_return('licenses')
       allow(helpers).to receive(:controlled_vocabulary_service_for).with('licenses').and_return(nil)
 
       2.times { presenter.controlled_service_for('license') }
@@ -281,7 +281,7 @@ RSpec.describe Hyku::DepositWizard::Presenter do
     # since there is no profile in this example group.
     let(:helpers) do
       Class.new { include Hyrax::FormHelperBehavior }.new.tap do |helper|
-        allow(helper).to receive(:controlled_vocabulary_source_for).with(:a_term).and_return(source)
+        allow(helper).to receive(:controlled_vocabulary_source_for).with(:a_term, model: anything).and_return(source)
       end
     end
 

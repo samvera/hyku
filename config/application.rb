@@ -357,7 +357,14 @@ module Hyku # rubocop:disable Metrics/ModuleLength
 
       # Because we're loading local translations early in the to_prepare block for our decorators,
       # the I18n.load_path is out of order.  This line ensures that we load local translations last.
-      I18n.load_path |= Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
+      #
+      # Removed before being appended: these paths are already listed by now, so any
+      # operation that only adds missing ones leaves them where they are, ahead of
+      # the engines'. Without eager loading the engines append after this runs, so
+      # development is where the ordering shows.
+      app_locales = Dir[Rails.root.join('config', 'locales', '**', '*.yml')].sort
+      I18n.load_path -= app_locales
+      I18n.load_path += app_locales
 
       ##
       # The first "#valid?" service is the one that we'll use for generating derivatives.

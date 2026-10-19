@@ -13,7 +13,10 @@ require 'spec_helper'
 RSpec.describe 'Tenant Config for IIIF Print' do
   let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
 
-  after { test_strategy.switch!(:default_pdf_viewer, true) }
+  after do
+    test_strategy.switch!(:default_pdf_viewer, true)
+    test_strategy.switch!(:iiif_print_ocr, false)
+  end
 
   describe IiifPrint::TenantConfig do
     describe '.use_iiif_print?' do
@@ -31,6 +34,46 @@ RSpec.describe 'Tenant Config for IIIF Print' do
 
       context 'when the feature is flipped to true' do
         before { test_strategy.switch!(:default_pdf_viewer, false) }
+
+        it { is_expected.to be_truthy }
+      end
+    end
+
+    describe '.use_iiif_print_derivatives?' do
+      subject { described_class.use_iiif_print_derivatives? }
+
+      context 'when both PDF.js and OCR are off' do
+        before do
+          test_strategy.switch!(:default_pdf_viewer, false)
+          test_strategy.switch!(:iiif_print_ocr, false)
+        end
+
+        it { is_expected.to be_truthy }
+      end
+
+      context 'when PDF.js is on and OCR is off (default)' do
+        before do
+          test_strategy.switch!(:default_pdf_viewer, true)
+          test_strategy.switch!(:iiif_print_ocr, false)
+        end
+
+        it { is_expected.to be_falsey }
+      end
+
+      context 'when PDF.js is on and OCR is on' do
+        before do
+          test_strategy.switch!(:default_pdf_viewer, true)
+          test_strategy.switch!(:iiif_print_ocr, true)
+        end
+
+        it { is_expected.to be_truthy }
+      end
+
+      context 'when PDF.js is off and OCR is on' do
+        before do
+          test_strategy.switch!(:default_pdf_viewer, false)
+          test_strategy.switch!(:iiif_print_ocr, true)
+        end
 
         it { is_expected.to be_truthy }
       end
@@ -60,14 +103,26 @@ RSpec.describe 'Tenant Config for IIIF Print' do
     describe '#valid?' do
       subject { instance.valid? }
 
-      context 'when the feature is flipped to false' do
+      context 'when PDF.js is on and OCR is off' do
         before { test_strategy.switch!(:default_pdf_viewer, true) }
 
         it { is_expected.to be_falsey }
       end
 
-      context 'when the feature is flipped to true' do
+      context 'when PDF.js is off (use IIIF Print)' do
         before { test_strategy.switch!(:default_pdf_viewer, false) }
+
+        it 'delegates to the configured iiif_service' do
+          expect(instance.iiif_print_service_instance).to receive(:valid?)
+          subject
+        end
+      end
+
+      context 'when PDF.js is on but OCR is on' do
+        before do
+          test_strategy.switch!(:default_pdf_viewer, true)
+          test_strategy.switch!(:iiif_print_ocr, true)
+        end
 
         it 'delegates to the configured iiif_service' do
           expect(instance.iiif_print_service_instance).to receive(:valid?)
@@ -79,7 +134,7 @@ RSpec.describe 'Tenant Config for IIIF Print' do
     describe '#create_derivatives' do
       subject { instance.create_derivatives("filename") }
 
-      context 'when the feature is flipped to false' do
+      context 'when PDF.js is on and OCR is off' do
         before { test_strategy.switch!(:default_pdf_viewer, true) }
 
         it 'raises an error' do
@@ -87,8 +142,20 @@ RSpec.describe 'Tenant Config for IIIF Print' do
         end
       end
 
-      context 'when the feature is flipped to true' do
+      context 'when PDF.js is off (use IIIF Print)' do
         before { test_strategy.switch!(:default_pdf_viewer, false) }
+        it 'delegates to the configured iiif_service' do
+          expect(instance.iiif_print_service_instance).to receive(:create_derivatives)
+          subject
+        end
+      end
+
+      context 'when PDF.js is on but OCR is on' do
+        before do
+          test_strategy.switch!(:default_pdf_viewer, true)
+          test_strategy.switch!(:iiif_print_ocr, true)
+        end
+
         it 'delegates to the configured iiif_service' do
           expect(instance.iiif_print_service_instance).to receive(:create_derivatives)
           subject
@@ -99,7 +166,7 @@ RSpec.describe 'Tenant Config for IIIF Print' do
     describe '#cleanup_derivatives' do
       subject { instance.cleanup_derivatives }
 
-      context 'when the feature is flipped to false' do
+      context 'when PDF.js is on and OCR is off' do
         before { test_strategy.switch!(:default_pdf_viewer, true) }
 
         it 'raises an error' do
@@ -107,8 +174,20 @@ RSpec.describe 'Tenant Config for IIIF Print' do
         end
       end
 
-      context 'when the feature is flipped to true' do
+      context 'when PDF.js is off (use IIIF Print)' do
         before { test_strategy.switch!(:default_pdf_viewer, false) }
+        it 'delegates to the configured iiif_service' do
+          expect(instance.iiif_print_service_instance).to receive(:cleanup_derivatives)
+          subject
+        end
+      end
+
+      context 'when PDF.js is on but OCR is on' do
+        before do
+          test_strategy.switch!(:default_pdf_viewer, true)
+          test_strategy.switch!(:iiif_print_ocr, true)
+        end
+
         it 'delegates to the configured iiif_service' do
           expect(instance.iiif_print_service_instance).to receive(:cleanup_derivatives)
           subject

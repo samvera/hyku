@@ -41,6 +41,29 @@ RSpec.describe Hyku::Forms::Admin::Appearance do
     subject { described_class.default_colors }
 
     it { is_expected.to be_a(Hash) }
+
+    describe 'the default link color' do
+      # WCAG relative luminance + contrast ratio (https://www.w3.org/TR/WCAG21/#dfn-contrast-ratio)
+      def relative_luminance(hex)
+        r, g, b = hex.delete('#').scan(/../).map { |c| c.to_i(16) / 255.0 }
+                     .map { |c| c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055)**2.4 }
+        (0.2126 * r) + (0.7152 * g) + (0.0722 * b)
+      end
+
+      def contrast_ratio(fg, bg)
+        l1, l2 = [relative_luminance(fg), relative_luminance(bg)].sort.reverse
+        (l1 + 0.05) / (l2 + 0.05)
+      end
+
+      # The default link color renders over these out-of-the-box backgrounds:
+      # white page body, Bootstrap's .breadcrumb (#e9ecef), and the striped
+      # list/table rows (#f2f2f2). WCAG AA requires 4.5:1 for normal text.
+      { 'white' => '#ffffff', 'breadcrumb' => '#e9ecef', 'striped rows' => '#f2f2f2' }.each do |name, background|
+        it "meets WCAG AA (4.5:1) against #{name}" do
+          expect(contrast_ratio(subject['link_color'], background)).to be >= 4.5
+        end
+      end
+    end
   end
 
   describe '.image_params' do

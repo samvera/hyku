@@ -10,15 +10,17 @@ Set `REPOSITORY_S3_STORAGE=true`, `REPOSITORY_S3_BUCKET` and `REPOSITORY_S3_REGI
 
 ## 2. Run the Hyrax tasks for each tenant
 
-Hyku's `tenantize:task` runs a rake task inside each tenant (search-only accounts are skipped). Limit it with `tenants`, a space-separated list of tenant hostnames; leave it out to run every tenant:
+Hyku wraps each Hyrax task so it runs inside every tenant (search-only accounts are skipped), switching both the tenant's database schema and its Solr, Fedora and Redis connections. Limit it with `tenants`, a space-separated list of tenant hostnames; leave it out to run every tenant:
 
 ```bash
-DRY_RUN=true tenants="one.example.com" bundle exec rake "tenantize:task[hyrax:migrate:files_to_s3]"
-INLINE=true LIMIT=5 tenants="one.example.com" bundle exec rake "tenantize:task[hyrax:migrate:files_to_s3]"
-tenants="one.example.com" bundle exec rake "tenantize:task[hyrax:migrate:files_to_s3]"
+DRY_RUN=true tenants="one.example.com" bundle exec rake hyku:s3_migration:files_to_s3
+INLINE=true LIMIT=5 tenants="one.example.com" bundle exec rake hyku:s3_migration:files_to_s3
+tenants="one.example.com" bundle exec rake hyku:s3_migration:files_to_s3
 ```
 
-The same wrapper works for the other tasks (`hyrax:migrate:verify_s3_files`, `report_file_storage`, `quarantine_disk_files`, `rollback_s3_migration`, `purge_quarantine`) and takes the same environment variables. Jobs enqueued from inside a tenant run in that tenant.
+There is a wrapper for each Hyrax task (`files_to_s3`, `verify_s3_files`, `report_file_storage`, `quarantine_disk_files`, `rollback_s3_migration`, `purge_quarantine`), and each takes the same environment variables as the Hyrax task. Jobs enqueued from inside a tenant run in that tenant. A tenant that fails is reported and the rest carry on.
+
+`tenantize:task` is not a substitute here: depending on the Hyku version it switches either the database schema or the Solr/Fedora/Redis connections, not both, and the migration needs both.
 
 Hyku scopes the migration manifest per tenant (`_migration-manifests/<tenant hostname>/<file set id>.json` in the bucket), so quarantine and rollback only touch the tenant they run in.
 

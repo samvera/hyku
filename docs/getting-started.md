@@ -101,7 +101,10 @@ docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && HYKU_TEST_FLEX
 
 Run the suite both ways to cover both modes. Examples that apply to only one mode are tagged
 `flexible: true` or `flexible: false` and are skipped in the other mode; untagged examples run
-in both (see `spec/rails_helper.rb`).
+in both (see `spec/rails_helper.rb`).  This format is intended to be extensible to other configurations that Hyku is able to enable.
+
+#### CI
+Spec suite is run in non flexible mode in CI.  This may change to include more variants but until the spec suite is sped up to test in alternate modes or configurations a developer would need to pull and run the specs in flexible mode, or whatever future configurations are enabled, and run them locally with the flags as described in the Flexible and non-flexible metadata runs section.
 
 #### Watching browser (JavaScript) specs
 

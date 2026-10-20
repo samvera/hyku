@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'the digital collection home page', type: :request, singletenant: true, clean_repo: true do
+  include Devise::Test::IntegrationHelpers
+
   before do
     allow_any_instance_of(ApplicationController).to receive(:home_page_theme).and_return('digital_collection')
   end
@@ -379,6 +381,19 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
       get root_path
 
       expect(Nokogiri::HTML(response.body).at_css('h2#dc-about-heading').text).to include('Our collections')
+    end
+
+    it 'shows a sign out message once, between the hero and the home text' do
+      ContentBlock.find_or_create_by(name: 'home_text').update!(value: '<p>Welcome to the collections</p>')
+      sign_in FactoryBot.create(:user)
+
+      get destroy_user_session_path
+      follow_redirect! while response.redirect?
+
+      doc = Nokogiri::HTML(response.body)
+      expect(doc.css('.alert').size).to eq(1)
+      expect(doc.at_css('.dc-hero + .dc-home-flash > .alert').text).to include(I18n.t('devise.sessions.signed_out'))
+      expect(doc.at_css('.dc-home-flash + .dc-home-text')).to be_present
     end
 
     it 'leaves the deposit band out when the tenant turns the share button off' do

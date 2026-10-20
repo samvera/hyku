@@ -1,10 +1,13 @@
-<%# OVERRIDE Hyku 7.1.0: the announcement band below the header, then the hero and home text in place of the banner and marketing masthead %>
+<%# OVERRIDE Hyku 7.1.0: the announcement band below the header, then the hero, flash messages and home text in place of the banner and marketing masthead %>
 <% content_for(:navbar) do %>
   <%= render '/controls' %>
   <% if controller_name == 'homepage' %>
     <%= render 'hyrax/homepage/announcement' %>
     <section aria-label="<%= t('digital_collection.homepage.intro_label') %>">
       <%= render 'hyrax/homepage/hero' %>
+      <div class="dc-home-flash">
+        <%= render '/flash_msg' %>
+      </div>
       <%= render 'hyrax/homepage/home_text' if display_content_block? @home_text %>
     </section>
   <% end %>

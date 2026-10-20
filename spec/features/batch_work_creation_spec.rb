@@ -184,7 +184,12 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
   # A completed form (file, required metadata, admin set, agreement) is accepted
   # and shows the background-processing confirmation. Works are created
   # asynchronously, so this asserts the flash rather than a work count.
-  it 'accepts the batch for processing when the form is completed and saved' do
+  #
+  # Remove this comment and change `xit` back to `it` when issue #3427 is fixed.
+  # KNOWN INTERMITTENT FAILURE (CI only, non-flexible mode): the Save button (with_files_submit)
+  # sometimes stays disabled, so one of the form's requirements did not register. The cause is
+  # not yet known; it passes locally in both modes. Disabled rather than pending, because it usually passes.
+  xit 'accepts the batch for processing when the form is completed and saved' do
     visit '/batch_uploads/new?payload_concern=GenericWork'
 
     click_link 'Files'

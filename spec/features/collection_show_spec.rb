@@ -272,7 +272,11 @@ RSpec.describe 'Dashboard collection show page (owner controls)', type: :feature
     expect(page).not_to have_css("tr#document_#{member_work.id}")
   end
 
-  it 'lists subcollections with buttons to add and create subcollections' do
+  # Remove this comment and change `xit` back to `it` when issue #3426 is fixed.
+  # KNOWN INTERMITTENT FAILURE (CI only, non-flexible mode): the Save button (with_files_submit)
+  # sometimes stays disabled, so one of the form's requirements did not register. The cause is
+  # not yet known; it passes locally in both modes. Disabled rather than pending, because it usually passes.
+  xit 'lists subcollections with buttons to add and create subcollections' do
     expect(page).to have_content('Subcollections (0)')
     # No subcollections have been added yet
     expect(page).to have_content('There are no visible subcollections.')

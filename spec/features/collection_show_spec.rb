@@ -273,9 +273,8 @@ RSpec.describe 'Dashboard collection show page (owner controls)', type: :feature
   end
 
   # Remove this comment and change `xit` back to `it` when issue #3426 is fixed.
-  # KNOWN INTERMITTENT FAILURE (CI only, non-flexible mode): the Save button (with_files_submit)
-  # sometimes stays disabled, so one of the form's requirements did not register. The cause is
-  # not yet known; it passes locally in both modes. Disabled rather than pending, because it usually passes.
+  # KNOWN INTERMITTENT FAILURE (CI only, non-flexible mode): Solr dashboard occassionally crashes 
+  # with a 500 server errror
   xit 'lists subcollections with buttons to add and create subcollections' do
     expect(page).to have_content('Subcollections (0)')
     # No subcollections have been added yet

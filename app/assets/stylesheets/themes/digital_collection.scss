@@ -152,7 +152,7 @@
   }
 
   .dc-hero-search {
-    @include dc-search-form;
+    @include dc-search-form($on: dark);
     --dc-search-height: #{$dc-control-height};
     text-align: left;
 

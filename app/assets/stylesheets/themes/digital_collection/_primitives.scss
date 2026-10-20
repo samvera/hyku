@@ -135,10 +135,10 @@ $dc-heading-roles: (
 
 @mixin dc-badge($tone: null) {
   align-items: center;
-  background: $dc-badge;
-  border: $dc-border solid $dc-badge-edge;
+  background: var(--dc-badge, #{$dc-badge});
+  border: $dc-border solid var(--dc-badge-edge, #{$dc-badge-edge});
   border-radius: var(--dc-radius, #{$dc-radius});
-  color: $dc-ink;
+  color: var(--dc-badge-ink, #{$dc-ink});
   display: inline-flex;
   font-size: $dc-text-xs;
   font-weight: $dc-weight-heading;
@@ -288,9 +288,9 @@ $dc-heading-roles: (
   &[aria-current='true'],
   &[aria-current='page'],
   &.active {
-    background-color: var(--dc-action, #{$dc-action});
-    border-color: if($on == dark, $dc-button-selected-edge-on-dark, $dc-button-selected-edge);
-    color: var(--dc-action-ink, #{$dc-action-ink});
+    background-color: var(--dc-selected, var(--dc-action, #{$dc-action}));
+    border-color: if($on == dark, $dc-button-selected-edge-on-dark, var(--dc-selected-edge, #{$dc-button-selected-edge}));
+    color: var(--dc-selected-ink, var(--dc-action-ink, #{$dc-action-ink}));
     font-weight: $dc-weight-regular;
 
     @media (forced-colors: active) {
@@ -598,7 +598,7 @@ $dc-heading-roles: (
 }
 
 // skin for Hyku's catalog/_search_form, shared by the search row and the hero
-@mixin dc-search-form {
+@mixin dc-search-form($on: light) {
   .form-group.row {
     margin: 0;
     padding-top: 0 !important;
@@ -636,7 +636,7 @@ $dc-heading-roles: (
     }
 
     &:focus-visible {
-      @include dc-focus-ring;
+      @include dc-focus-ring($on: $on);
     }
   }
 
@@ -686,7 +686,7 @@ $dc-heading-roles: (
 
   .btn:focus-visible,
   .dropdown-toggle:focus-visible {
-    @include dc-focus-ring;
+    @include dc-focus-ring($on: $on);
   }
 }
 

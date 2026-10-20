@@ -127,7 +127,7 @@ body.digital_collection_show.hyrax-collections-show {
 
   .dc-facet-body,
   .dc-facets-groups .facet-limit.card .card-body {
-    border-top: $dc-border solid $dc-hairline;
+    border-top: $dc-border solid var(--dc-facet-rule, #{$dc-hairline});
     padding: $dc-space-3 $dc-space-4;
   }
 
@@ -259,7 +259,7 @@ body.digital_collection_show.hyrax-collections-show {
     }
 
     .slider-handle {
-      background: var(--dc-action, #{$dc-action});
+      background: var(--dc-selected, var(--dc-action, #{$dc-action}));
       background-image: none;
       border: $dc-border solid $dc-surface;
       box-shadow: 0 0 0 $dc-border $dc-control-edge;
@@ -309,6 +309,7 @@ body.digital_collection_show.hyrax-collections-show {
     }
 
     .facet-label .selected::before {
+      color: var(--dc-facet-selected-icon, currentColor);
       content: '\f00c';
       font-family: FontAwesome;
       font-weight: normal;
@@ -325,7 +326,7 @@ body.digital_collection_show.hyrax-collections-show {
     .remove {
       align-items: center;
       border-radius: var(--dc-radius, #{$dc-radius});
-      color: var(--dc-ink-heading, #{$dc-ink-heading});
+      color: var(--dc-facet-selected-icon, var(--dc-ink-heading, #{$dc-ink-heading}));
       display: inline-flex;
       flex: none;
       height: $dc-space-5;
@@ -492,8 +493,8 @@ body.digital_collection_show.hyrax-collections-show {
 
   .applied-filter {
     align-items: stretch;
-    background: $dc-surface-alt;
-    border: $dc-border solid var(--dc-button-edge, #{$dc-button-edge});
+    background: var(--dc-chip, #{$dc-surface-alt});
+    border: $dc-border solid var(--dc-chip-edge, var(--dc-button-edge, #{$dc-button-edge}));
     border-radius: var(--dc-radius, #{$dc-radius});
     cursor: pointer;
     display: inline-flex;
@@ -558,6 +559,17 @@ body.digital_collection_show.hyrax-collections-show {
       &:focus-visible {
         box-shadow: none;
         outline: none;
+      }
+
+      .remove-icon::before {
+        background: var(--dc-chip-remove-surface, transparent);
+        border-radius: 50%;
+        color: var(--dc-chip-remove, currentColor);
+        display: inline-block;
+        height: 1.25em;
+        line-height: 1.25em;
+        text-align: center;
+        width: 1.25em;
       }
     }
   }
@@ -838,9 +850,9 @@ body.digital_collection_show.hyrax-collections-show {
     }
 
     &.active .page-link {
-      background-color: var(--dc-action, #{$dc-action});
-      border-color: $dc-button-selected-edge;
-      color: var(--dc-action-ink, #{$dc-action-ink});
+      background-color: var(--dc-selected, var(--dc-action, #{$dc-action}));
+      border-color: var(--dc-selected-edge, #{$dc-button-selected-edge});
+      color: var(--dc-selected-ink, var(--dc-action-ink, #{$dc-action-ink}));
 
       @media (forced-colors: active) {
         background-color: Highlight;

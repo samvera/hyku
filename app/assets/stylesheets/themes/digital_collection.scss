@@ -1134,6 +1134,7 @@
 body.digital_collection.hyrax-pages-show,
 body.digital_collection.hyrax-contact_form-new,
 body.digital_collection.hyrax-contact_form-create,
+body.digital_collection.dc-account-page,
 body.digital_collection.catalog-advanced_search,
 body.digital_collection.advanced-index {
   #content-wrapper {
@@ -1166,7 +1167,8 @@ body.digital_collection.advanced-index {
 // narrower max-width for prose-only pages (not advanced search)
 body.digital_collection.hyrax-pages-show,
 body.digital_collection.hyrax-contact_form-new,
-body.digital_collection.hyrax-contact_form-create {
+body.digital_collection.hyrax-contact_form-create,
+body.digital_collection.dc-account-page {
   #content-wrapper {
     max-width: $dc-width-prose-page;
   }
@@ -1175,14 +1177,17 @@ body.digital_collection.hyrax-contact_form-create {
 // ---- contact form ----
 
 body.digital_collection.hyrax-contact_form-new,
-body.digital_collection.hyrax-contact_form-create {
-  .dc-contact {
+body.digital_collection.hyrax-contact_form-create,
+body.digital_collection.dc-account-page {
+  .dc-contact,
+  .dc-account {
     display: flex;
     flex-direction: column;
     gap: $dc-space-5;
   }
 
-  .dc-contact-title {
+  .dc-contact-title,
+  .dc-account-title {
     @include dc-heading(page-title);
   }
 
@@ -1193,7 +1198,8 @@ body.digital_collection.hyrax-contact_form-create {
     margin: 0;
   }
 
-  .dc-contact-form {
+  .dc-contact-form,
+  .dc-account-form {
     display: flex;
     flex-direction: column;
     gap: $dc-space-5;
@@ -1208,9 +1214,108 @@ body.digital_collection.hyrax-contact_form-create {
     font-weight: $dc-weight-regular;
   }
 
-  .dc-contact-send {
+  .dc-contact-send,
+  .dc-account-submit {
     @include dc-button-primary;
     align-self: flex-start;
+  }
+}
+
+// ---- sign in, password and sign up pages ----
+
+body.digital_collection.dc-account-page {
+  .dc-field-hint {
+    color: $dc-ink-secondary;
+    font-size: $dc-text-sm;
+    line-height: $dc-leading-snug;
+    margin: 0;
+  }
+
+  .dc-check {
+    align-items: center;
+    display: flex;
+    gap: $dc-space-2;
+
+    input {
+      accent-color: var(--dc-action, #{$dc-action});
+      height: $dc-size-icon;
+      margin: 0;
+      width: $dc-size-icon;
+
+      &:focus-visible {
+        @include dc-focus-ring;
+      }
+    }
+
+    label {
+      color: $dc-ink;
+      font-size: $dc-text-base;
+      margin: 0;
+    }
+  }
+
+  #error_explanation {
+    background: $dc-danger-tint;
+    border: 0;
+    border-left: $dc-rule-strong solid $dc-danger;
+    border-radius: var(--dc-radius, #{$dc-radius});
+    color: $dc-ink-heading;
+    margin: 0;
+    padding: $dc-space-3 $dc-space-4;
+
+    h2 {
+      font-size: $dc-text-base;
+      font-weight: $dc-weight-strong;
+      margin: 0 0 $dc-space-2;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: $dc-space-5;
+    }
+  }
+
+  .dc-account-intro {
+    color: $dc-ink;
+    font-size: $dc-text-base;
+    line-height: $dc-leading-body;
+    margin: 0;
+  }
+
+  .dc-account-providers {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: $dc-space-3;
+    margin-bottom: $dc-space-5 - $dc-space-2;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    form {
+      margin: 0;
+    }
+  }
+
+  .dc-account-provider {
+    @include dc-button;
+  }
+
+  .dc-account-provider-logo {
+    height: $dc-size-icon-xl;
+    width: auto;
+  }
+
+  .dc-account-links {
+    display: flex;
+    flex-direction: column;
+    gap: $dc-space-2;
+
+    a {
+      @include dc-link;
+      align-self: flex-start;
+    }
   }
 }
 

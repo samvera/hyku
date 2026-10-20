@@ -1100,6 +1100,25 @@ it:
   digital_collection:
     form:
       required: "(obbligatorio)"
+    account:
+      sign_in:
+        title: "Accedi"
+        submit: "Accedi"
+      forgot_password:
+        title: "Password dimenticata?"
+        submit: "Inviami le istruzioni per reimpostare la password"
+      change_password:
+        title: "Cambia la tua password"
+        password: "Nuova password"
+        password_confirmation: "Conferma la nuova password"
+        minimum_length: "Minimo %{count} caratteri"
+        submit: "Cambia la mia password"
+      sign_up:
+        title: "Crea un nuovo account"
+        submit: "Crea account"
+      single_signon:
+        title: "Seleziona un provider di accesso unico"
+        redirecting: "Attendi mentre ti reindirizziamo…"
     file_set:
       actions:
         delete: "Elimina questo insieme di file"

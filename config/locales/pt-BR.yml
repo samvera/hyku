@@ -983,6 +983,25 @@ pt-BR:
   digital_collection:
     form:
       required: "(obrigatório)"
+    account:
+      sign_in:
+        title: "Entrar"
+        submit: "Entrar"
+      forgot_password:
+        title: "Esqueceu sua senha?"
+        submit: "Enviar instruções para redefinir a senha"
+      change_password:
+        title: "Alterar sua senha"
+        password: "Nova senha"
+        password_confirmation: "Confirme sua nova senha"
+        minimum_length: "Mínimo de %{count} caracteres"
+        submit: "Alterar minha senha"
+      sign_up:
+        title: "Criar uma nova conta"
+        submit: "Criar conta"
+      single_signon:
+        title: "Selecione um provedor de login único"
+        redirecting: "Aguarde enquanto redirecionamos você…"
     file_set:
       actions:
         delete: "Excluir este conjunto de arquivos"

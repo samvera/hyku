@@ -1117,6 +1117,25 @@ zh:
   digital_collection:
     form:
       required: "（必填）"
+    account:
+      sign_in:
+        title: "登录"
+        submit: "登录"
+      forgot_password:
+        title: "忘记密码？"
+        submit: "发送重置密码说明"
+      change_password:
+        title: "修改密码"
+        password: "新密码"
+        password_confirmation: "确认新密码"
+        minimum_length: "至少 %{count} 个字符"
+        submit: "修改我的密码"
+      sign_up:
+        title: "创建新帐号"
+        submit: "创建帐号"
+      single_signon:
+        title: "选择单点登录提供方"
+        redirecting: "正在为您跳转，请稍候…"
     file_set:
       actions:
         delete: "删除此文件集"

@@ -202,8 +202,7 @@ body.digital_collection_show.public-facing {
       }
 
       &[aria-current='page'] {
-        text-decoration-line: underline;
-        text-decoration-thickness: $dc-underline-current;
+        @include dc-nav-current;
       }
     }
 
@@ -234,6 +233,10 @@ body.digital_collection_show.public-facing {
       &:focus-visible {
         @include dc-focus-ring($on: dark);
       }
+    }
+
+    .dc-masthead-login[aria-current='page'] {
+      @include dc-nav-current;
     }
 
     .dc-masthead-trigger {

@@ -1100,6 +1100,25 @@ es:
   digital_collection:
     form:
       required: "(obligatorio)"
+    account:
+      sign_in:
+        title: "Iniciar sesión"
+        submit: "Iniciar sesión"
+      forgot_password:
+        title: "¿Ha olvidado su contraseña?"
+        submit: "Envíeme las instrucciones para restablecer mi contraseña"
+      change_password:
+        title: "Cambie su contraseña"
+        password: "Nueva contraseña"
+        password_confirmation: "Confirme la nueva contraseña"
+        minimum_length: "Mínimo %{count} caracteres"
+        submit: "Cambiar mi contraseña"
+      sign_up:
+        title: "Crear una cuenta nueva"
+        submit: "Crear una cuenta"
+      single_signon:
+        title: "Seleccione un proveedor de inicio de sesión único"
+        redirecting: "Espere mientras le redirigimos…"
     file_set:
       actions:
         delete: "Eliminar este conjunto de archivos"

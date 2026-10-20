@@ -964,6 +964,25 @@ en:
   digital_collection:
     form:
       required: "(required)"
+    account:
+      sign_in:
+        title: "Log in"
+        submit: "Log in"
+      forgot_password:
+        title: "Forgot your password?"
+        submit: "Send me reset password instructions"
+      change_password:
+        title: "Change your password"
+        password: "New password"
+        password_confirmation: "Confirm new password"
+        minimum_length: "%{count} characters minimum"
+        submit: "Change my password"
+      sign_up:
+        title: "Create a new account"
+        submit: "Create account"
+      single_signon:
+        title: "Select a single sign-on provider"
+        redirecting: "Please wait while we redirect you…"
     file_set:
       actions:
         delete: "Delete this file set"

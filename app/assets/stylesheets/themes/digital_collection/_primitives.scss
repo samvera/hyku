@@ -52,6 +52,13 @@
   text-underline-offset: $dc-underline-offset;
 }
 
+@mixin dc-nav-current {
+  text-decoration-color: currentColor;
+  text-decoration-line: underline;
+  text-decoration-thickness: $dc-underline-current;
+  text-underline-offset: $dc-underline-offset-nav;
+}
+
 @mixin dc-link($color: null, $on: light, $visited: false) {
   @if $color == null {
     $color: if($on == dark, var(--dc-link-on-dark, #{$dc-link-on-dark}), var(--dc-link, #{$dc-link}));

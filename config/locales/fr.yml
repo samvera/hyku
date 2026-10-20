@@ -1105,6 +1105,25 @@ fr:
   digital_collection:
     form:
       required: "(obligatoire)"
+    account:
+      sign_in:
+        title: "Connexion"
+        submit: "Se connecter"
+      forgot_password:
+        title: "Mot de passe oublié ?"
+        submit: "Envoyez-moi des instructions pour réinitialiser mon mot de passe"
+      change_password:
+        title: "Changer votre mot de passe"
+        password: "Nouveau mot de passe"
+        password_confirmation: "Confirmez votre nouveau mot de passe"
+        minimum_length: "%{count} caractères minimum"
+        submit: "Changer mon mot de passe"
+      sign_up:
+        title: "Créer un nouveau compte"
+        submit: "Créer un compte"
+      single_signon:
+        title: "Sélectionnez un fournisseur d’authentification unique"
+        redirecting: "Veuillez patienter pendant la redirection…"
     file_set:
       actions:
         delete: "Supprimer cet ensemble de fichiers"

@@ -1,0 +1,28 @@
+<%# OVERRIDE Hyku 7.1.0: the account page title and provider buttons, still sending the visitor on when there is one provider %>
+<% provide :page_title, t('digital_collection.account.single_signon.title') %>
+<% content_for(:extra_body_classes, 'dc-account-page ') %>
+
+<div class="dc-account">
+  <h1 class="dc-account-title"><%= t('digital_collection.account.single_signon.title') %></h1>
+
+  <% if @identity_providers.one? %>
+    <p class="dc-account-intro"><%= t('digital_collection.account.single_signon.redirecting') %></p>
+  <% end %>
+
+  <% if devise_mapping.omniauthable? %>
+    <div class="dc-account-providers">
+      <% @identity_providers.each do |ip| %>
+        <%= button_to omniauth_authorize_path(resource_name, ip.provider, ip.id), form_class: 'button_to', class: 'btn dc-account-provider', data: { turbo: false } do %>
+          <%= image_tag ip.logo_image.url(:medium), class: 'dc-account-provider-logo', alt: ip.logo_image_text.to_s if ip.logo_image? %>
+          <%= t('single_signon.index.sign_in_with_provider', provider: ip.name) %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<% if @identity_providers.one? %>
+  <script>
+    $('form.button_to').submit();
+  </script>
+<% end %>

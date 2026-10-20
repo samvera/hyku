@@ -1103,6 +1103,25 @@ de:
   digital_collection:
     form:
       required: "(erforderlich)"
+    account:
+      sign_in:
+        title: "Anmelden"
+        submit: "Anmelden"
+      forgot_password:
+        title: "Passwort vergessen?"
+        submit: "Anweisungen zum Zurücksetzen meines Passworts senden"
+      change_password:
+        title: "Ihr Passwort ändern"
+        password: "Neues Passwort"
+        password_confirmation: "Neues Passwort bestätigen"
+        minimum_length: "Mindestens %{count} Zeichen"
+        submit: "Mein Passwort ändern"
+      sign_up:
+        title: "Ein neues Konto erstellen"
+        submit: "Benutzerkonto anlegen"
+      single_signon:
+        title: "Single-Sign-On-Anbieter auswählen"
+        redirecting: "Bitte warten Sie, während wir Sie weiterleiten …"
     file_set:
       actions:
         delete: "Diesen Dateisatz löschen"

@@ -1,5 +1,6 @@
 <% languages = available_translations %>
 <% current_language = I18n.locale.to_s %>
+<% locale_url = ->(code) { "?#{request.query_parameters.merge('locale' => code).to_query}" } %>
 <% signed_in = user_signed_in? %>
 <% account_links = signed_in ? dc_account_links(unread) : [] %>
 <% logout_link = dc_logout_link if signed_in %>
@@ -17,7 +18,7 @@
       </button>
       <div class="dropdown-menu dropdown-menu-right dc-masthead-dropdown" aria-labelledby="dc-language-trigger">
         <% languages.each do |code, label| %>
-          <%= link_to "?locale=#{code}", class: 'dropdown-item dc-menu-item', lang: code, hreflang: code,
+          <%= link_to locale_url.call(code), class: 'dropdown-item dc-menu-item', lang: code, hreflang: code,
                       aria: { current: ('true' if code == current_language) } do %>
             <span class="fa fa-check dc-menu-check" aria-hidden="true"></span>
             <%= label %>
@@ -87,7 +88,7 @@
     <ul class="dc-language-row list-unstyled" aria-labelledby="dc-language-section-label">
       <% languages.each do |code, label| %>
         <li>
-          <%= link_to label, "?locale=#{code}", class: 'nav-link', lang: code, hreflang: code,
+          <%= link_to label, locale_url.call(code), class: 'nav-link', lang: code, hreflang: code,
                       aria: { current: ('true' if code == current_language) } %>
         </li>
       <% end %>

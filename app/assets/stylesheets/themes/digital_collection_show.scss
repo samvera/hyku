@@ -1251,8 +1251,12 @@ body.digital_collection_show.hyrax-file_sets-show {
       }
 
       &::before {
+        align-items: center;
         content: '\f105';
+        display: inline-flex;
         font: normal normal normal $dc-size-icon-large / 1 FontAwesome;
+        height: $dc-size-icon-large;
+        justify-content: center;
         transition: transform $dc-transition;
         width: $dc-size-icon-large;
       }

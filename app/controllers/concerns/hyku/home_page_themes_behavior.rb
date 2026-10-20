@@ -16,7 +16,7 @@ module Hyku
     # Add this method to prepend the theme views into the view_paths
     def inject_theme_views
       if home_page_theme && home_page_theme != 'default_home'
-        Hyku::Application.theme_view_path_roots.each do |root|
+        Hyku::Application.theme_view_path_roots.reverse_each do |root|
           home_theme_view_path = File.join(root, 'app', 'views', "themes", home_page_theme.to_s)
           prepend_view_path(home_theme_view_path)
         end

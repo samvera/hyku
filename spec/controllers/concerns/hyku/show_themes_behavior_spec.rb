@@ -48,6 +48,17 @@ RSpec.describe Hyku::ShowThemesBehavior do
       expect(order.first).to be < order.last
     end
 
+    it "puts a knapsack's theme views ahead of Hyku's, so a knapsack override wins" do
+      allow(controller).to receive(:show_page_theme).and_return('screening_room_show')
+      allow(Hyku::Application).to receive(:theme_view_path_roots).and_return(['/knapsack', Rails.root.to_s])
+      paths = nil
+
+      controller.inject_show_theme_views { paths = controller.view_paths.map { |resolver| resolver.to_path.to_s } }
+
+      expect(paths.index('/knapsack/app/views/themes/screening_room_show'))
+        .to be < paths.index(Rails.root.join('app', 'views', 'themes', 'screening_room_show').to_s)
+    end
+
     it 'adds no companion for a show theme without one' do
       allow(controller).to receive(:show_page_theme).and_return('screening_room_show')
       paths = nil

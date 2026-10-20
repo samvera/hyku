@@ -372,6 +372,19 @@ body.public-facing .hyc-banner .hyc-title h1 {
   --dc-danger-on-dark: <%= dc_on_dark(dc_danger, dc_hero_ground) %>;
   --dc-danger-tint: <%= dc_mix(dc_surface, dc_danger, 0.1) %>;
 }
+body.public-facing.digital_collection .page-item.active > .page-link,
+body.public-facing.digital_collection_show .page-item.active > .page-link {
+  background-color: var(--dc-selected, var(--dc-action)) !important;
+  border-color: var(--dc-selected-edge, var(--dc-action-edge)) !important;
+  color: var(--dc-selected-ink, var(--dc-action-ink)) !important;
+}
+@media (forced-colors: active) {
+  body.public-facing.digital_collection .page-item.active > .page-link,
+  body.public-facing.digital_collection_show .page-item.active > .page-link {
+    background-color: Highlight !important;
+    color: HighlightText !important;
+  }
+}
 <% end %>
 
 <%= appearance.custom_css_block %>

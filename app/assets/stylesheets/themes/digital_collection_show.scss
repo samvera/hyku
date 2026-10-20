@@ -186,7 +186,8 @@ body.digital_collection_show.works-show {
       @include dc-badge(info);
     }
 
-    .badge-danger {
+    .badge-danger,
+    .badge-warning {
       @include dc-badge(danger);
     }
   }

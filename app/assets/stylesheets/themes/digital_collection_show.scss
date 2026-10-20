@@ -527,7 +527,24 @@ body.digital_collection_show.works-show {
   }
 
   .dc-panel-pager {
-    margin-top: $dc-space-3;
+    @include dc-pagination;
+    @include dc-pagination-compact;
+
+    ul.pagination {
+      padding-top: $dc-space-3;
+    }
+
+    @media (max-width: $dc-tablet-max) {
+      @include dc-pagination-full;
+    }
+
+    @media (max-width: $dc-mobile-max) {
+      @include dc-pagination-compact;
+
+      .page-item:not(.gap) .page-link {
+        padding: 0 $dc-space-2;
+      }
+    }
   }
 }
 

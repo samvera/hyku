@@ -827,53 +827,7 @@ body.digital_collection_show.hyrax-collections-show {
     padding: 0;
   }
 
-  ul.pagination {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: $dc-space-1;
-    justify-content: flex-end;
-    margin: 0;
-    padding-top: $dc-space-5;
-    width: 100%;
-  }
-
-  .page-item {
-    .page-link {
-      @include dc-button(small);
-      margin: 0;
-      min-width: $dc-control-height-small;
-    }
-
-    &:nth-child(2) {
-      order: 1;
-    }
-
-    &.active .page-link {
-      background-color: var(--dc-selected, var(--dc-action, #{$dc-action}));
-      border-color: var(--dc-selected-edge, #{$dc-button-selected-edge});
-      color: var(--dc-selected-ink, var(--dc-action-ink, #{$dc-action-ink}));
-
-      @media (forced-colors: active) {
-        background-color: Highlight;
-        color: HighlightText;
-        forced-color-adjust: none;
-      }
-    }
-
-    &.disabled .page-link {
-      background: none;
-      border-color: transparent;
-      color: $dc-ink-tertiary;
-    }
-
-    &.gap .page-link {
-      background: none;
-      border-color: transparent;
-      min-width: 0;
-      padding: 0 $dc-space-1;
-    }
-  }
+  @include dc-pagination;
 
   @media (max-width: $dc-tablet-max) {
     --dc-width-result-thumb: #{$dc-width-result-thumb-tablet};
@@ -984,10 +938,6 @@ body.digital_collection_show.hyrax-collections-show {
       dd {
         overflow: hidden;
       }
-    }
-
-    ul.pagination {
-      justify-content: center;
     }
   }
 

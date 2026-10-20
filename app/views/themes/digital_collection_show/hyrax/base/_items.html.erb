@@ -35,7 +35,7 @@
 
       <% if presenter.total_pages > 1 %>
         <nav class="dc-panel-pager" aria-labelledby="dc-items-label">
-          <%= paginate ids, theme: 'blacklight', window: 1, outer_window: 0, param_name: :page,
+          <%= paginate ids, theme: 'blacklight', outer_window: 2, param_name: :page,
                        route_set: main_app, params: { anchor: 'dc-items' } %>
         </nav>
       <% end %>

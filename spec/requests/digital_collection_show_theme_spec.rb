@@ -235,6 +235,35 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
     end
   end
 
+  describe 'the items pager' do
+    let(:paged) do
+      files = Array.new(5) { |n| valkyrie_create(:hyrax_file_set, title: ["page-#{n + 1}.jpg"], visibility_setting: 'open') }
+      indexed(GenericWorkResource.new(title: ['Paged record'], member_ids: files.map(&:id)))
+    end
+
+    def pager_items(page)
+      get "/concern/generic_works/#{paged.id}", params: { rows: 1, page: }
+      Nokogiri::HTML(response.body).css('.dc-panel-pager li.page-item')
+    end
+
+    def labels(items)
+      items.map { |li| li.at_css('.page-link').children.first.text.strip }
+    end
+
+    it 'keeps the first, current and last pages for phones and marks the rest as full width only' do
+      items = pager_items(3)
+
+      expect(labels(items.reject { |li| li['class'].include?('dc-page-full') })).to eq(%w[Previous Next 1 … 3 … 5])
+      expect(labels(items.reject { |li| li['class'].include?('dc-page-compact') })).to eq(%w[Previous Next 1 2 3 4 5])
+    end
+
+    it 'adds no phone gap where no pages are skipped' do
+      expect(labels(pager_items(2).select { |li| li['class'].include?('dc-page-compact') })).to eq(%w[…])
+      expect(labels(pager_items(4).select { |li| li['class'].include?('dc-page-compact') })).to eq(%w[…])
+      expect(pager_items(5).count { |li| li['class'].include?('dc-page-compact') }).to eq(1)
+    end
+  end
+
   describe 'the secondary header' do
     let(:collection) { indexed_collection('Harbor Photographs') }
     let(:filed) do

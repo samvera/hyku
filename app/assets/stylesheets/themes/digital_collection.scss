@@ -615,14 +615,32 @@
 
   // ---- pager ----
   .dc-pager {
+    --dc-pager-window: #{$dc-pager-window};
+    --dc-pager-outer-window: #{$dc-pager-outer-window};
     display: flex;
     flex-wrap: wrap;
     gap: $dc-space-1;
     justify-content: flex-end;
 
+    @media (max-width: $dc-tablet-max) {
+      --dc-pager-window: #{$dc-pager-window-tablet};
+    }
+
     @media (max-width: $dc-mobile-max) {
+      --dc-pager-window: #{$dc-pager-window-mobile};
+      --dc-pager-outer-window: #{$dc-pager-outer-window-mobile};
       justify-content: center;
     }
+
+    .dc-control[disabled] {
+      @include dc-pager-quiet;
+    }
+  }
+
+  .dc-pager-gap {
+    @include dc-button-shape(small);
+    @include dc-pager-gap;
+    cursor: default;
   }
 
   // ---- featured works ----

@@ -57,6 +57,22 @@
     remember(state.view);
   }
 
+  function pagerWindows(pager) {
+    var style = getComputedStyle(pager);
+    var inner = parseInt(style.getPropertyValue('--dc-pager-window'), 10);
+    var outer = parseInt(style.getPropertyValue('--dc-pager-outer-window'), 10);
+    return {
+      window: isNaN(inner) ? Infinity : inner,
+      outerWindow: isNaN(outer) ? 0 : outer
+    };
+  }
+
+  function visiblePage(number, current, count, windows) {
+    return number <= windows.outerWindow ||
+      count - number < windows.outerWindow ||
+      Math.abs(current - number) <= windows.window;
+  }
+
   function fill(template, values) {
     return template.replace(/%\{(\w+)\}/g, function (_, key) { return values[key]; });
   }
@@ -78,6 +94,8 @@
     var pager = root.querySelector('[data-dc-browse-pager]');
     var live = root.querySelector('[data-dc-browse-live]');
     var state = initialState();
+    var windows = null;
+    var pageCount = 1;
     var announced = false;
 
     function set(next) {
@@ -94,13 +112,57 @@
       return el;
     }
 
+    function gap() {
+      var el = document.createElement('span');
+      el.className = 'dc-pager-gap';
+      el.textContent = data.gap;
+      return el;
+    }
+
+    function renderPager() {
+      windows = pagerWindows(pager);
+      var focused = pager.contains(document.activeElement) ? document.activeElement.dataset : {};
+      var focusedNav = focused.dcBrowseNav;
+      var focusedPage = focused.dcBrowsePage;
+
+      pager.innerHTML = '';
+      pager.hidden = pageCount < 2;
+      if (pageCount > 1) {
+        var previous = button(data.previous, { 'data-dc-browse-nav': 'previous', 'data-dc-browse-page': String(state.page - 1) });
+        previous.disabled = state.page <= 1;
+        pager.appendChild(previous);
+        var truncated = false;
+        for (var number = 1; number <= pageCount; number += 1) {
+          if (!visiblePage(number, state.page, pageCount, windows)) {
+            if (!truncated) pager.appendChild(gap());
+            truncated = true;
+            continue;
+          }
+          truncated = false;
+          var attributes = { 'data-dc-browse-page': String(number), 'aria-label': fill(data.page, { number: number }) };
+          if (number === state.page) attributes['aria-current'] = 'page';
+          pager.appendChild(button(String(number), attributes));
+        }
+        var next = button(data.next, { 'data-dc-browse-nav': 'next', 'data-dc-browse-page': String(state.page + 1) });
+        next.disabled = state.page >= pageCount;
+        pager.appendChild(next);
+      }
+
+      if (focusedNav || focusedPage) {
+        var restore = (focusedNav && pager.querySelector('[data-dc-browse-nav="' + focusedNav + '"]:not([disabled])')) ||
+          (focusedPage && pager.querySelector('[data-dc-browse-page="' + focusedPage + '"]:not([data-dc-browse-nav]):not([disabled])')) ||
+          pager.querySelector('[aria-current="page"]');
+        if (restore) restore.focus();
+      }
+    }
+
     function render() {
       var ascending = state.sort === 'asc';
       var sorted = items.slice().sort(function (a, b) {
         var order = a.dataset.title.localeCompare(b.dataset.title);
         return ascending ? order : -order;
       });
-      var pageCount = Math.max(1, Math.ceil(sorted.length / perPage));
+      pageCount = Math.max(1, Math.ceil(sorted.length / perPage));
       var page = Math.min(Math.max(1, state.page), pageCount);
       var start = (page - 1) * perPage;
       var shown = sorted.slice(start, start + perPage);
@@ -122,32 +184,7 @@
       sortLabel.textContent = direction;
       sortButton.setAttribute('aria-label', fill(data.sortAria, { direction: direction }));
 
-      var focused = pager.contains(document.activeElement) ? document.activeElement.dataset : {};
-      var focusedNav = focused.dcBrowseNav;
-      var focusedPage = focused.dcBrowsePage;
-
-      pager.innerHTML = '';
-      pager.hidden = pageCount < 2;
-      if (pageCount > 1) {
-        var previous = button(data.previous, { 'data-dc-browse-nav': 'previous', 'data-dc-browse-page': String(page - 1) });
-        previous.disabled = page <= 1;
-        pager.appendChild(previous);
-        for (var number = 1; number <= pageCount; number += 1) {
-          var attributes = { 'data-dc-browse-page': String(number), 'aria-label': fill(data.page, { number: number }) };
-          if (number === page) attributes['aria-current'] = 'page';
-          pager.appendChild(button(String(number), attributes));
-        }
-        var next = button(data.next, { 'data-dc-browse-nav': 'next', 'data-dc-browse-page': String(page + 1) });
-        next.disabled = page >= pageCount;
-        pager.appendChild(next);
-      }
-
-      if (focusedNav || focusedPage) {
-        var restore = (focusedNav && pager.querySelector('[data-dc-browse-nav="' + focusedNav + '"]:not([disabled])')) ||
-          (focusedPage && pager.querySelector('[data-dc-browse-page="' + focusedPage + '"]:not([data-dc-browse-nav]):not([disabled])')) ||
-          pager.querySelector('[aria-current="page"]');
-        if (restore) restore.focus();
-      }
+      renderPager();
 
       if (announced) {
         live.textContent = fill(data.status, {
@@ -176,12 +213,23 @@
       set({ view: state.view, sort: state.sort, page: parseInt(target.dataset.dcBrowsePage, 10) });
     });
 
+    root.addEventListener('dc:browse-resize', function () {
+      var next = pagerWindows(pager);
+      if (next.window !== windows.window || next.outerWindow !== windows.outerWindow) renderPager();
+    });
+
     controls.hidden = false;
     render();
   }
 
   function bind() {
     Array.prototype.forEach.call(document.querySelectorAll('[data-dc-browse]'), mount);
+  }
+
+  function resize() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-dc-browse][data-mounted]'), function (root) {
+      root.dispatchEvent(new CustomEvent('dc:browse-resize'));
+    });
   }
 
   function release() {
@@ -193,6 +241,7 @@
   document.addEventListener('DOMContentLoaded', bind);
   document.addEventListener('turbolinks:load', bind);
   document.addEventListener('turbolinks:before-cache', release);
+  window.addEventListener('resize', resize);
 }();
 
 +function () {

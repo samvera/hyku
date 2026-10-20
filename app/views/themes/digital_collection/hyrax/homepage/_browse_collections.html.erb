@@ -11,7 +11,8 @@
          data-sort-aria="<%= t('digital_collection.homepage.browse.sort_aria') %>"
          data-previous="<%= t('digital_collection.homepage.browse.previous') %>"
          data-next="<%= t('digital_collection.homepage.browse.next') %>"
-         data-page="<%= t('digital_collection.homepage.browse.page') %>">
+         data-page="<%= t('digital_collection.homepage.browse.page') %>"
+         data-gap="<%= t('views.pagination.truncate') %>">
   <%= dc_section_head t('digital_collection.homepage.browse.heading'), id: 'dc-browse-heading' do %>
     <% if collections.any? %>
       <div class="dc-browse-controls" role="group" aria-label="<%= t('digital_collection.homepage.browse.view_label') %>" hidden data-dc-browse-controls>

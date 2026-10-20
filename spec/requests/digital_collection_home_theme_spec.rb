@@ -52,6 +52,14 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
       expect(doc.at_css('[data-dc-browse-pager]').attribute('hidden')).to be_present
     end
 
+    it 'hands the script the gap mark for truncated pages' do
+      indexed_collection('Public papers', 'open')
+
+      get root_path
+
+      expect(Nokogiri::HTML(response.body).at_css('[data-dc-browse]')['data-gap']).to eq(I18n.t('views.pagination.truncate'))
+    end
+
     it 'says so when the tenant has no collections' do
       get root_path
       doc = Nokogiri::HTML(response.body)

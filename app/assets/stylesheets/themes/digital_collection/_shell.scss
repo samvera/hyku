@@ -8,6 +8,13 @@ html body.digital_collection {
   margin-bottom: 0;
 }
 
+body.digital_collection,
+body.digital_collection_show {
+  .page-item.dc-page-compact {
+    display: none;
+  }
+}
+
 body.digital_collection.public-facing,
 body.digital_collection_show.public-facing {
   .dc-external-end {

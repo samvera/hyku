@@ -1177,6 +1177,7 @@ pt-BR:
         keyword: Palavras ou frases que você selecionar para descrever sobre o que é o trabalho. Eles são usados para procurar conteúdo.
         language: A linguagem do conteúdo da obra.
         license: Informações de licenciamento e distribuição que regem o acesso à obra. Selecione na lista suspensa fornecida.
+        media_viewer: "O visualizador que exibe os arquivos desta obra em sua página. Deixe em branco para usar o padrão. O PDF.js é o único visualizador que exibe arquivos PDF."
         publisher: A pessoa ou grupo que disponibiliza o trabalho. Geralmente esta é a instituição.
         related_url: Um link para um site ou outro conteúdo específico (áudio, vídeo, documento PDF) relacionado ao trabalho. Um exemplo é o URL de um projeto de pesquisa do qual o trabalho foi derivado.
         resource_type: Categorias predefinidas para descrever o tipo de conteúdo que está sendo carregado, como "artigo" ou "conjunto de dados". Mais de um tipo pode ser selecionado.

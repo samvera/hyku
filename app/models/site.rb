@@ -41,6 +41,7 @@ class Site < ApplicationRecord
     # Clears the memoized Site so the next call to .instance re-fetches it.
     def reset!
       RequestStore.delete(:site_instance)
+      RequestStore.delete(:hyrax_analytics_config)
     end
   end
 

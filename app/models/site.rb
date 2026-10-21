@@ -58,7 +58,7 @@ class Site < ApplicationRecord
     # Clears the request-scoped caches that only hold rows from the tenant they
     # were read under, the memoized Site included.
     def reset!
-      RequestStore.store.except!(:site_instance, :content_blocks, :qa_local_authorities)
+      RequestStore.store.except!(:site_instance, :content_blocks, :qa_local_authorities, :hyrax_analytics_config)
       Hyrax.config.controlled_vocabulary_label_service.try(:reset!)
       Hyrax::Current.flexible_schema = nil
     end

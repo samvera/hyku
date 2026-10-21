@@ -109,7 +109,9 @@ class Account < ApplicationRecord
     redis_endpoint.switch!
     data_cite_endpoint.switch!
     switch_host!(cname)
-    setup_tenant_cache(cache_api?) if self.class.column_names.include?('settings')
+    return unless self.class.column_names.include?('settings')
+    setup_tenant_cache(cache_api?)
+    reload_library_config
   end
 
   def switch

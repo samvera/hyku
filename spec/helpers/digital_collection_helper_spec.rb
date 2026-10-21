@@ -420,6 +420,22 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
       expect(link.at_css('.dc-external-end').text).to eq('International')
     end
 
+    it 'keeps only the last path segment of a bare URL with the icon so the rest of the URL can wrap' do
+      html = helper.dc_external_links_in_new_tab('<a href="https://n2t.net/ark:/87290/v8pz5703">https://n2t.net/ark:/87290/v8pz5703</a>')
+      link = Nokogiri::HTML::DocumentFragment.parse(html).at_css('a')
+
+      expect(link.children.first.text).to eq('https://n2t.net/ark:/87290/')
+      expect(link.at_css('.dc-external-end').text).to eq('v8pz5703')
+      expect(link.text).to start_with('https://n2t.net/ark:/87290/v8pz5703')
+    end
+
+    it 'keeps a trailing slash with the last path segment' do
+      html = helper.dc_external_links_in_new_tab('<a href="https://www.loc.gov/item/00694305/">https://www.loc.gov/item/00694305/</a>')
+      link = Nokogiri::HTML::DocumentFragment.parse(html).at_css('a')
+
+      expect(link.at_css('.dc-external-end').text).to eq('00694305/')
+    end
+
     it 'leaves links on this site, relative links and email links alone' do
       html = helper.dc_external_links_in_new_tab(%(<a href="http://#{helper.request.host}/catalog">a</a><a href="/catalog">b</a><a href="mailto:x@example.org">c</a>))
 

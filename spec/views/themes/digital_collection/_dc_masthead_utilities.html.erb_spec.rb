@@ -3,6 +3,7 @@
 RSpec.describe 'themes/digital_collection/_dc_masthead_utilities.html.erb', type: :view do
   let(:languages) { { 'en' => 'English' } }
   let(:show_login) { true }
+  let(:account_page) { false }
   let(:utilities) { Capybara.string(rendered) }
 
   before do
@@ -10,6 +11,7 @@ RSpec.describe 'themes/digital_collection/_dc_masthead_utilities.html.erb', type
       allow(view).to receive(:available_translations).and_return(languages)
       allow(view).to receive(:user_signed_in?).and_return(false)
       allow(view).to receive(:admin_host?).and_return(false)
+      allow(view).to receive(:themed_account_page?).and_return(account_page)
     end
     allow(Flipflop).to receive(:show_login_link?).and_return(show_login)
     render partial: 'themes/digital_collection/dc_masthead_utilities', locals: { unread: 0 }
@@ -23,6 +25,16 @@ RSpec.describe 'themes/digital_collection/_dc_masthead_utilities.html.erb', type
   it 'shows a log in link when the login link is switched on' do
     expect(utilities).to have_css('.dc-masthead-utilities a.dc-masthead-login', text: I18n.t('hyrax.toolbar.profile.login'))
     expect(utilities).to have_no_css('.dc-masthead-login .fa')
+    expect(utilities).to have_no_css('a[aria-current="page"]')
+  end
+
+  context 'on a sign in or password page' do
+    let(:account_page) { true }
+
+    it 'marks the log in links as the current page' do
+      expect(utilities).to have_css('a.dc-masthead-login[aria-current="page"]')
+      expect(utilities).to have_css('.dc-masthead-section a.nav-link[aria-current="page"]', text: I18n.t('hyrax.toolbar.profile.login'))
+    end
   end
 
   context 'when the login link is switched off' do

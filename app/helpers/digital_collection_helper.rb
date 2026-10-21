@@ -597,6 +597,8 @@ module DigitalCollectionHelper
     return link.add_child(icon) unless text
 
     before, last_word = text.content.match(/\A(.*?)(\S+)\s*\z/m)&.captures
+    head, last_word = last_word.to_s.match(%r{\A(.*/)([^/]+/?)\z})&.captures || ['', last_word]
+    before = "#{before}#{head}"
     keep = link.document.create_element('span', class: 'dc-external-end')
     keep.add_child(Nokogiri::XML::Text.new(last_word.to_s, link.document))
     keep.add_child(icon)

@@ -13,7 +13,7 @@ set -euo pipefail
 node_index=${1:?usage: bin/ci_rspec NODE_INDEX NODE_TOTAL}
 node_total=${2:?usage: bin/ci_rspec NODE_INDEX NODE_TOTAL}
 
-# spec/rails_helper.rb keeps only the examples tagged HYKU_TEST_FLEXIBLE_TAG.
+# spec/rails_helper.rb keeps only the examples tagged HYKU_TEST_ONLY_FLEXIBLE_TAG.
 case "$node_index" in
   0) mode=true; tag=true ;;
   1) mode=false; tag=false ;;
@@ -30,12 +30,12 @@ case "$node_index" in
 esac
 
 echo "======================================================================"
-echo " CI node ${node_index} of ${node_total}: flexible: ${tag} examples, HYKU_TEST_FLEXIBLE=${mode}"
-echo " Rerun locally: HYKU_TEST_FLEXIBLE=${mode} HYKU_TEST_FLEXIBLE_TAG=${tag} bundle exec rspec"
+echo " CI node ${node_index} of ${node_total}: flexible: ${tag} examples, HYKU_TEST_FLEXIBLE_METADATA=${mode}"
+echo " Rerun locally: HYKU_TEST_FLEXIBLE_METADATA=${mode} HYKU_TEST_ONLY_FLEXIBLE_TAG=${tag} bundle exec rspec"
 echo "======================================================================"
 
-export HYKU_TEST_FLEXIBLE=$mode
-export HYKU_TEST_FLEXIBLE_TAG=$tag
+export HYKU_TEST_FLEXIBLE_METADATA=$mode
+export HYKU_TEST_ONLY_FLEXIBLE_TAG=$tag
 bundle
 
 if [ "$node_index" -lt 2 ]; then

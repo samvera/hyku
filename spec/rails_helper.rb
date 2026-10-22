@@ -3,10 +3,10 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 # The suite runs without flexible metadata by default, independent of any HYRAX_FLEXIBLE
-# value set for development. Opt in to a flexible-metadata run with HYKU_TEST_FLEXIBLE=true
-# (e.g. `HYKU_TEST_FLEXIBLE=true bundle exec rspec`). This must be decided before Rails
+# value set for development. Opt in to a flexible-metadata run with HYKU_TEST_FLEXIBLE_METADATA=true
+# (e.g. `HYKU_TEST_FLEXIBLE_METADATA=true bundle exec rspec`). This must be decided before Rails
 # boots: config/initializers/1flexible.rb reads HYRAX_FLEXIBLE to pick the flexible classes.
-ENV['HYRAX_FLEXIBLE'] = ENV.fetch('HYKU_TEST_FLEXIBLE', 'false')
+ENV['HYRAX_FLEXIBLE'] = ENV.fetch('HYKU_TEST_FLEXIBLE_METADATA', 'false')
 # In test most, unset some variables that can cause trouble
 # before booting up Rails
 ENV['HYKU_ADMIN_HOST'] = 'test.host'
@@ -227,10 +227,10 @@ RSpec.configure do |config|
 
   # Every spec file is tagged `flexible: true`, `flexible: false` or `flexible: :either`
   # (CustomCops/FlexibleMetadataTag). By default, run the examples that apply to this mode.
-  # HYKU_TEST_FLEXIBLE_TAG=true|false|either keeps only that tag (CI runs one per node; see bin/ci_rspec).
+  # HYKU_TEST_ONLY_FLEXIBLE_TAG=true|false|either keeps only that tag (CI runs one per node; see bin/ci_rspec).
   # This is one exclusion filter rather than --tag options: a filter value of `true` matches any truthy
   # tag, :either included, and a command-line exclusion on a key drops any inclusion on the same key.
-  only_flexible_tag = ENV['HYKU_TEST_FLEXIBLE_TAG'].presence
+  only_flexible_tag = ENV['HYKU_TEST_ONLY_FLEXIBLE_TAG'].presence
   config.filter_run_excluding flexible: lambda { |value|
     next value.to_s != only_flexible_tag if only_flexible_tag
     value == !Hyrax.config.flexible? # flexible on: drop `false`; flexible off: drop `true`

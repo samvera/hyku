@@ -93,10 +93,10 @@ docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && RAILS_ENV=test
 #### Flexible and non-flexible metadata runs
 
 The suite runs **without** flexible metadata by default, regardless of any `HYRAX_FLEXIBLE` value
-set for development. To run it **with** flexible metadata, set `HYKU_TEST_FLEXIBLE=true`:
+set for development. To run it **with** flexible metadata, set `HYKU_TEST_FLEXIBLE_METADATA=true`:
 
 ```bash
-docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && HYKU_TEST_FLEXIBLE=true RAILS_ENV=test bundle exec rspec'
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && HYKU_TEST_FLEXIBLE_METADATA=true RAILS_ENV=test bundle exec rspec'
 ```
 
 Every spec file's top-level `describe` must say which mode it runs in:
@@ -112,25 +112,44 @@ An inner `describe`, `context` or `it` can override the file's tag, for example
 "Fails in flexible mode … behavior gap" comment pass today only with flexible metadata off; they mark
 places where flexible mode may be missing behavior.
 
-Two environment variables control a run, and they do different jobs:
+Every test run answers two separate questions, each with its own setting:
 
-| Variable | What it controls | Values |
-|---|---|---|
-| `HYKU_TEST_FLEXIBLE` | how the app boots: flexible metadata on or off | `true` or `false` (default `false`) |
-| `HYKU_TEST_FLEXIBLE_TAG` | which examples run; it only filters, and doesn't change the app | `true`, `false` or `either` (default: every tag that fits the mode) |
+1. **Which way does the app start up?** Set `HYKU_TEST_FLEXIBLE_METADATA`.
+   - `true` starts the app with flexible metadata on.
+   - `false`, or leaving it unset, starts it with flexible metadata off.
 
-Without `HYKU_TEST_FLEXIBLE_TAG`, a plain run covers `false` and `:either`, and `HYKU_TEST_FLEXIBLE=true`
-covers `true` and `:either`. Run the suite both ways to cover both modes. Set `HYKU_TEST_FLEXIBLE_TAG` to
-run a single tag (see `spec/rails_helper.rb`):
+   This changes the app itself.
+2. **Which tests do you want to run?** Set `HYKU_TEST_ONLY_FLEXIBLE_TAG`.
+   - Set it to `true`, `false` or `either` to run only the specs with that `flexible:` tag.
+   - Leave it unset to run every spec that makes sense for the way the app started:
+     `false` and `either` with flexible metadata off, `true` and `either` with it on.
 
-```bash
-docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && HYKU_TEST_FLEXIBLE=true HYKU_TEST_FLEXIBLE_TAG=true RAILS_ENV=test bundle exec rspec'
-```
+   This doesn't change the app. It only picks tests.
 
-They are separate because `:either` examples run in either mode. CI's random nodes always select
-`either`, but boot with flexible metadata on or off depending on the coin flip, so the filter can't be
-derived from the mode. To rerun what a random node ran, set both, as its log shows, e.g.
-`HYKU_TEST_FLEXIBLE=true HYKU_TEST_FLEXIBLE_TAG=either`.
+Examples (run inside the `web` container, as above):
+
+- **Everything, flexible metadata off:**
+  ```bash
+  RAILS_ENV=test bundle exec rspec
+  ```
+- **Everything, flexible metadata on:**
+  ```bash
+  HYKU_TEST_FLEXIBLE_METADATA=true RAILS_ENV=test bundle exec rspec
+  ```
+- **Just the `either` specs, flexible metadata on:**
+  ```bash
+  HYKU_TEST_FLEXIBLE_METADATA=true HYKU_TEST_ONLY_FLEXIBLE_TAG=either RAILS_ENV=test bundle exec rspec
+  ```
+
+Run the suite with flexible metadata off and on to cover both modes.
+
+**Why two settings?** The `either` specs are supposed to work whichever way the app starts, so CI
+sometimes runs them with flexible metadata on and sometimes with it off. One setting says "start the app
+this way", the other says "run these tests", and for `either` specs the two answers don't match.
+
+Day to day you'll mostly use only `HYKU_TEST_FLEXIBLE_METADATA`. The second setting is mainly for CI, and
+for rerunning exactly what a CI node ran: the node's log prints the full command (see `spec/rails_helper.rb`
+for how the filter works).
 
 RuboCop enforces the tag (`CustomCops/FlexibleMetadataTag`, in `lib/rubocop/flexible_metadata_tag.rb`).
 `.rubocop.yml` excludes `spec/features` from RuboCop, so check every spec file, and add

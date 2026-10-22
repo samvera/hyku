@@ -1223,6 +1223,7 @@ es:
         reorder_hint: "Arrastre para reordenar las colecciones destacadas."
         save_order: "Guardar orden"
         remove: "Quitar %{title} de las colecciones destacadas"
+        empty_admin: "Todavía no hay colecciones destacadas. Abra una colección y elija «Destacar en la página de inicio» para mostrarla en el banner de la página de inicio. Puede destacar hasta %{limit}."
       browse:
         heading: "Explorar colecciones"
         grid: "Cuadrícula"
@@ -1248,6 +1249,7 @@ es:
         reorder_hint: "Arrastre para reordenar las obras destacadas."
         save_order: "Guardar orden"
         remove: "Quitar %{title} de las obras destacadas"
+        empty_admin: "Todavía no hay obras destacadas. Abra una obra y elija «Destacar en la página de inicio» para incluirla aquí. Puede destacar hasta %{limit}."
       recent:
         heading: "Añadidos recientemente"
         view_all: "Ver todas las obras recientes"

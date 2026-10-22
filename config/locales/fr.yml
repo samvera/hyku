@@ -1228,6 +1228,7 @@ fr:
         reorder_hint: "Faites glisser pour réordonner les collections."
         save_order: "Enregistrer l'ordre"
         remove: "Retirer %{title} des collections en vedette"
+        empty_admin: "Aucune collection n’est encore mise en avant. Ouvrez une collection et choisissez « Mettre en avant sur l'accueil » pour l’afficher dans la bannière de la page d’accueil. Vous pouvez en mettre jusqu’à %{limit} en avant."
       browse:
         heading: "Parcourir les collections"
         grid: "Grille"
@@ -1253,6 +1254,7 @@ fr:
         reorder_hint: "Faites glisser pour réordonner les œuvres."
         save_order: "Enregistrer l'ordre"
         remove: "Retirer %{title} des œuvres en vedette"
+        empty_admin: "Aucune œuvre n’est encore mise en avant. Ouvrez une œuvre et choisissez « Mettre en avant sur l'accueil » pour la lister ici. Vous pouvez en mettre jusqu’à %{limit} en avant."
       recent:
         heading: "Ajouts récents"
         view_all: "Voir toutes les œuvres récentes"

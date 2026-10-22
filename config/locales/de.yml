@@ -1226,6 +1226,7 @@ de:
         reorder_hint: "Ziehen, um die Reihenfolge der Sammlungen zu ändern."
         save_order: "Reihenfolge speichern"
         remove: "%{title} aus den hervorgehobenen Sammlungen entfernen"
+        empty_admin: "Es sind noch keine Sammlungen hervorgehoben. Öffnen Sie eine Sammlung und wählen Sie „Auf der Startseite zeigen“, um sie im Banner der Startseite zu zeigen. Sie können bis zu %{limit} hervorheben."
       browse:
         heading: "Sammlungen durchstöbern"
         grid: "Raster"
@@ -1251,6 +1252,7 @@ de:
         reorder_hint: "Ziehen, um die Reihenfolge zu ändern."
         save_order: "Reihenfolge speichern"
         remove: "%{title} aus den hervorgehobenen Werken entfernen"
+        empty_admin: "Es sind noch keine Werke hervorgehoben. Öffnen Sie ein Werk und wählen Sie „Auf der Startseite zeigen“, um es hier aufzulisten. Sie können bis zu %{limit} hervorheben."
       recent:
         heading: "Kürzlich hinzugefügt"
         view_all: "Alle neuen Werke anzeigen"

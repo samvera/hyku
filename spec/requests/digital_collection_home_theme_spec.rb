@@ -223,6 +223,29 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
     end
   end
 
+  describe 'prompts to feature collections and works' do
+    let(:doc) { Nokogiri::HTML(response.body) }
+
+    it 'asks an admin to feature collections and works when none are' do
+      Hyrax::Group.create(name: 'admin')
+      sign_in FactoryBot.create(:admin)
+
+      get root_path
+
+      expect(doc.at_css("section[aria-labelledby='dc-fc-heading'] p.dc-empty").text)
+        .to eq(I18n.t('digital_collection.homepage.featured_collections.empty_admin', limit: FeaturedCollection.feature_limit))
+      expect(doc.at_css("section[aria-labelledby='dc-featured-heading'] p.dc-empty").text)
+        .to eq(I18n.t('digital_collection.homepage.featured.empty_admin', limit: FeaturedWork.feature_limit))
+    end
+
+    it 'shows a visitor no featured sections when none are featured' do
+      get root_path
+
+      expect(doc.at_css('#dc-fc-heading')).to be_nil
+      expect(doc.at_css('#dc-featured-heading')).to be_nil
+    end
+  end
+
   describe 'hero' do
     context 'with two featured collections' do
       before do

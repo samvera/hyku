@@ -1106,6 +1106,7 @@ pt-BR:
         reorder_hint: "Arraste para reordenar as coleções em destaque."
         save_order: "Salvar ordem"
         remove: "Remover %{title} das coleções em destaque"
+        empty_admin: "Ainda não há coleções em destaque. Abra uma coleção e escolha “Destacar na página inicial” para mostrá-la no banner da página inicial. Você pode destacar até %{limit}."
       browse:
         heading: "Explorar acervos"
         grid: "Grade"
@@ -1131,6 +1132,7 @@ pt-BR:
         reorder_hint: "Arraste para reordenar as obras em destaque."
         save_order: "Salvar ordem"
         remove: "Remover %{title} das obras em destaque"
+        empty_admin: "Ainda não há obras em destaque. Abra uma obra e escolha “Destacar na página inicial” para listá-la aqui. Você pode destacar até %{limit}."
       recent:
         heading: "Adicionados recentemente"
         view_all: "Ver todas as obras recentes"

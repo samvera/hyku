@@ -1087,6 +1087,7 @@ en:
         reorder_hint: "Drag to reorder featured collections."
         save_order: "Save order"
         remove: "Remove %{title} from featured collections"
+        empty_admin: "No collections are featured yet. Open a collection and choose “Feature on homepage” to show it in the homepage banner. You can feature up to %{limit}."
       browse:
         heading: "Browse collections"
         grid: "Grid"
@@ -1112,6 +1113,7 @@ en:
         reorder_hint: "Drag to reorder featured works."
         save_order: "Save order"
         remove: "Remove %{title} from featured works"
+        empty_admin: "No works are featured yet. Open a work and choose “Feature on homepage” to list it here. You can feature up to %{limit}."
       recent:
         heading: "Recently added works"
         view_all: "View all recent works"

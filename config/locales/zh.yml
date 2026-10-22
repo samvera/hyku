@@ -1240,6 +1240,7 @@ zh:
         reorder_hint: "拖动以重新排列精选合集。"
         save_order: "保存排序"
         remove: "从精选馆藏中移除 %{title}"
+        empty_admin: "尚未推荐任何合集。打开一个合集并选择“在首页推荐”，即可在首页横幅中显示。最多可推荐 %{limit} 个。"
       browse:
         heading: "浏览馆藏"
         grid: "网格"
@@ -1265,6 +1266,7 @@ zh:
         reorder_hint: "拖动以重新排列精选作品。"
         save_order: "保存顺序"
         remove: "从精选作品中移除 %{title}"
+        empty_admin: "尚未推荐任何作品。打开一个作品并选择“在首页推荐”，即可在此处列出。最多可推荐 %{limit} 个。"
       recent:
         heading: "最近添加"
         view_all: "查看全部最新作品"

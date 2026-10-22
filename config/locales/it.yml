@@ -1223,6 +1223,7 @@ it:
         reorder_hint: "Trascina per riordinare le collezioni in evidenza."
         save_order: "Salva ordine"
         remove: "Rimuovi %{title} dalle collezioni in evidenza"
+        empty_admin: "Non ci sono ancora collezioni in evidenza. Apri una collezione e scegli «Metti in evidenza nella home» per mostrarla nel banner della home. Puoi metterne in evidenza fino a %{limit}."
       browse:
         heading: "Esplora le collezioni"
         grid: "Griglia"
@@ -1248,6 +1249,7 @@ it:
         reorder_hint: "Trascina per riordinare le opere in evidenza."
         save_order: "Salva ordine"
         remove: "Rimuovi %{title} dalle opere in evidenza"
+        empty_admin: "Non ci sono ancora opere in evidenza. Apri un’opera e scegli «Metti in evidenza nella home» per elencarla qui. Puoi metterne in evidenza fino a %{limit}."
       recent:
         heading: "Aggiunti di recente"
         view_all: "Vedi tutte le opere recenti"

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::AnalyticsDecorator do
+RSpec.describe Hyrax::AnalyticsDecorator, flexible: :either do
   let(:account_a) { FactoryBot.build(:sign_up_account) }
   let(:account_b) { FactoryBot.build(:sign_up_account) }
   let(:account_c) { FactoryBot.build(:sign_up_account) }

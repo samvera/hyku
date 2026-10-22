@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::Forms::WorkflowResponsibilityForm, type: :decorator do
+RSpec.describe Hyrax::Forms::WorkflowResponsibilityForm, type: :decorator, flexible: :either do
   describe ".new" do
     context "when user_id is present" do
       let(:user) { create(:user) }

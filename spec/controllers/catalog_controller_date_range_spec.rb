@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe CatalogController do
+RSpec.describe CatalogController, flexible: :either do
   let(:config) { described_class.blacklight_config }
   let(:facet) { config.facet_fields[DateRangeIndexing::SOLR_FIELD] }
 

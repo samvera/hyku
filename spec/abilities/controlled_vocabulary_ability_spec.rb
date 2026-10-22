@@ -2,7 +2,7 @@
 
 require 'cancan/matchers'
 
-RSpec.describe Hyrax::Ability::ControlledVocabularyAbility do
+RSpec.describe Hyrax::Ability::ControlledVocabularyAbility, flexible: :either do
   subject { ability }
 
   let(:ability) { Ability.new(current_user) }

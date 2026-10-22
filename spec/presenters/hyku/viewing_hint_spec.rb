@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::ViewingHint do
+RSpec.describe Hyku::ViewingHint, flexible: :either do
   subject(:presenter) do
     Hyrax::IiifManifestPresenter.new(SolrDocument.new(id: 'w1', has_model_ssim: ['GenericWork'], title_tesim: ['A work'],
                                                       system_modified_dtsi: '2026-10-14T00:00:00Z'))

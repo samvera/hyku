@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Global (admin host) user management: app/controllers/proprietor/users_controller.rb and
 # app/views/proprietor/users. Users live in the shared (public) schema, so this list spans tenants.
-RSpec.describe 'Global users management', type: :feature, multitenant: true, clean: true do
+RSpec.describe 'Global users management', type: :feature, multitenant: true, clean: true, flexible: :either do
   let(:superadmin) { create(:superadmin, email: 'global.boss@example.com') }
   let!(:target) do
     create(:user, email: 'pat.target@example.com', display_name: 'Pat Target',

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'catalog facet limits' do
+RSpec.describe 'catalog facet limits', flexible: :either do
   let(:catalog) do
     Class.new(CatalogController) do
       include Hyrax::FlexibleCatalogBehavior

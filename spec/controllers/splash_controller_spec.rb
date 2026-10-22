@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SplashController do
+RSpec.describe SplashController, flexible: :either do
   describe 'get index' do
     it 'is successful' do
       get :index

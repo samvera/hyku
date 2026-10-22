@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Hyrax::DownloadsController, type: :controller do
+RSpec.describe Hyrax::DownloadsController, type: :controller, flexible: :either do
   routes { Hyrax::Engine.routes }
 
   let(:user) { create(:user) }

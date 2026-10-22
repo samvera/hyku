@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Proprietor::UsersController, type: :routing do
+RSpec.describe Proprietor::UsersController, type: :routing, flexible: :either do
   let(:admin_host) { Account.admin_host }
   let(:admin_host_url) { "http://#{admin_host}" }
 

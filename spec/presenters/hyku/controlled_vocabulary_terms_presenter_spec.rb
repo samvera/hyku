@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::ControlledVocabularyTermsPresenter do
+RSpec.describe Hyku::ControlledVocabularyTermsPresenter, flexible: :either do
   def entry_for(origin:, vocabulary: nil)
     ControlledVocabularyCatalog::Entry.new(source_key: 'reading_rooms',
                                            label: 'Reading Rooms',

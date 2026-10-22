@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "hyrax/admin/appearances/show", type: :view do
+RSpec.describe "hyrax/admin/appearances/show", type: :view, flexible: :either do
   let(:form) { Hyku::Forms::Admin::Appearance.new }
 
   before do

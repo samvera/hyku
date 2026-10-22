@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Qa::LocalAuthority, type: :model do
+RSpec.describe Qa::LocalAuthority, type: :model, flexible: :either do
   it "can persist data" do
     expect { described_class.create!(name: 'language') }
       .to change(described_class, :count).by(1)

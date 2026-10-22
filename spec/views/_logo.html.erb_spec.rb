@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe '_logo.html.erb', type: :view do
+RSpec.describe '_logo.html.erb', type: :view, flexible: :either do
   before do
     allow(view).to receive(:logo_image).and_return('/uploads/site/logo.png')
     allow(view).to receive(:application_name).and_return('Ellison State University')

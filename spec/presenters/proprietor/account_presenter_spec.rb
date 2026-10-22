@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Proprietor::AccountPresenter do
+RSpec.describe Proprietor::AccountPresenter, flexible: :either do
   subject(:presenter) { described_class.new(account) }
 
   let(:account) { instance_double(Account, cname: 'example', admin_emails: admin_emails, superadmin_emails: superadmin_emails, public_demo_tenant: public_demo_tenant) }

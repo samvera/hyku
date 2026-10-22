@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-RSpec.describe SortTitle, type: :model do
+RSpec.describe SortTitle, type: :model, flexible: :either do
   describe "Alphabetical" do
     it "Titlecase title and remove 'The', 'And' and 'A'" do
       expect(SortTitle.new("THE APPLE").alphabetical).to eq "apple"

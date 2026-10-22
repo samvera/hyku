@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # These tests appear to fail because of concurrency; namely Flipflop features are being toggled on
 # and off.
-RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clean: true, cohort: 'bravo' do
+RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clean: true, cohort: 'bravo', flexible: :either do
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:account) { FactoryBot.create(:account) }
 

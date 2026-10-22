@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: If want to run spec in browser, you have to set "js: true"
-RSpec.describe 'Proprietor administration', multitenant: true do
+RSpec.describe 'Proprietor administration', multitenant: true, flexible: :either do
   context 'as an superadmin' do
     let(:user) { FactoryBot.create(:superadmin) }
 

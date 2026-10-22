@@ -5,7 +5,7 @@ require 'rails_helper'
 # Pages come from the hyrax gem (Hyrax::EmbargoesController / LeasesController) and list Solr records.
 # Hyrax only indexes a release date while the embargo/lease is active, so an "expired but still
 # active" record is created time-travelled to before its (past) date, as happens in production.
-RSpec.describe 'Manage embargoes and leases', type: :feature, clean: true do
+RSpec.describe 'Manage embargoes and leases', type: :feature, clean: true, flexible: :either do
   include ActiveSupport::Testing::TimeHelpers
 
   let(:admin) { create(:admin) }

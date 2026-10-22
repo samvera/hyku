@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe PdfJsHelper, type: :helper do
+RSpec.describe PdfJsHelper, type: :helper, flexible: :either do
   describe '#pdf_js_url' do
     it 'returns the viewer URL without a fragment when there is no search query' do
       allow(helper).to receive(:params).and_return({})

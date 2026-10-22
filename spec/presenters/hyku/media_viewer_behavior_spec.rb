@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::MediaViewerBehavior do
+RSpec.describe Hyku::MediaViewerBehavior, flexible: :either do
   subject(:presenter) { Hyku::WorkShowPresenter.new(solr_document, ability, nil) }
 
   let(:solr_document) { SolrDocument.new({ 'media_viewer_ssi' => selected_viewer }.compact) }

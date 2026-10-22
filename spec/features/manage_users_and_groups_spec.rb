@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Manual Test Plan: "Manage Users Page", "Manage Groups Index Page", "Manage Groups New Page",
 # and "Manage Groups Edit Page" (Description, Users, and Remove tabs).
-RSpec.describe 'Manage Users and Groups', type: :feature, clean: true do
+RSpec.describe 'Manage Users and Groups', type: :feature, clean: true, flexible: :either do
   let(:admin) { create(:admin, email: 'admin-manager@example.com') }
 
   before do

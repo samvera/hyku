@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::IiifManifestPresenter do
+RSpec.describe Hyrax::IiifManifestPresenter, flexible: :either do
   subject(:presenter) { described_class.new(work) }
 
   let(:work) { double(GenericWork) }

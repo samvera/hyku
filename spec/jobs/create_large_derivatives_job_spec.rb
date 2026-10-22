@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe CreateLargeDerivativesJob, type: :job do
+RSpec.describe CreateLargeDerivativesJob, type: :job, flexible: :either do
   before do
     ActiveJob::Base.queue_adapter = :test
     allow(FileSet).to receive(:find).with(id).and_return(file_set)

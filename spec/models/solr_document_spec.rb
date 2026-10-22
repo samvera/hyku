@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe SolrDocument, type: :model do
+RSpec.describe SolrDocument, type: :model, flexible: :either do
   let(:solr_document) { described_class.new }
   let(:query_result) do
     { 'response' => { 'docs' => [

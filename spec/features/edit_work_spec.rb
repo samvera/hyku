@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: If want to run spec in browser, you have to set "js: true"
-RSpec.describe 'Editing an existing Work', type: :feature, js: true, clean: true do
+RSpec.describe 'Editing an existing Work', type: :feature, js: true, clean: true, flexible: :either do
   let(:admin_user) { create(:admin) }
   let(:work) { FactoryBot.valkyrie_create(:generic_work_resource) }
 

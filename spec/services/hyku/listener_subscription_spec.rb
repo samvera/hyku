@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Hyku::ListenerSubscription do
+RSpec.describe Hyku::ListenerSubscription, flexible: :either do
   describe '.replace' do
     let(:publisher) { Hyrax::Publisher.send(:new) }
     let(:collection) { FactoryBot.build(:hyku_collection) }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ReindexAdminSetsJob do
+RSpec.describe ReindexAdminSetsJob, flexible: :either do
   describe '#perform' do
     let(:admin_set_classes) { [AdminSetResource] }
 

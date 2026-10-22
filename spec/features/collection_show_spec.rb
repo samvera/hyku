@@ -12,7 +12,7 @@ require 'rails_helper'
 # expectations against a legacy ActiveFedora collection to confirm the lazy migration
 # still renders it -- see the note on that context below.
 # Manual Test Plan: "Collection Show Page"
-RSpec.describe 'Collection show page (public view)', type: :feature, clean: true do
+RSpec.describe 'Collection show page (public view)', type: :feature, clean: true, flexible: :either do
   let(:admin) { create(:admin) }
   # A public work that matches the member's title words but is NOT in the collection, so
   # a search scoped to the collection must leave it out.
@@ -204,7 +204,7 @@ end
 # link requires :create_collection_of_type, and when HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS
 # is set (as in the dev/test environment) the default User Collection type grants create only
 # to admins and the collection_manager/collection_editor roles, not to all registered users.
-RSpec.describe 'Dashboard collection show page (owner controls)', type: :feature, clean: true do
+RSpec.describe 'Dashboard collection show page (owner controls)', type: :feature, clean: true, flexible: :either do
   let(:user) { create(:user, roles: [:collection_manager]) }
   let!(:collection) do
     FactoryBot.valkyrie_create(:hyku_collection,
@@ -303,7 +303,7 @@ end
 # spec/features/create_generic_work_spec.rb. The owner still gets the
 # collection-level abilities via `create_access: true`.
 RSpec.describe 'Dashboard collection show page: creating a work through the collection',
-               type: :feature, clean: true do
+               type: :feature, clean: true, flexible: :either do
   let(:user) { create(:user, roles: [:work_depositor]) }
   let!(:collection) do
     create(:collection,

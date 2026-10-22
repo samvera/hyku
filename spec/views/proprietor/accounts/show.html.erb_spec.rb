@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "proprietor/accounts/show", type: :view do
+RSpec.describe "proprietor/accounts/show", type: :view, flexible: :either do
   let(:account) { FactoryBot.create(:account) }
   let(:superadmin1) { FactoryBot.create(:superadmin, email: 'superadmin_1@example.com') }
   let(:superadmin2) { FactoryBot.create(:superadmin, email: 'superadmin_2@example.com') }

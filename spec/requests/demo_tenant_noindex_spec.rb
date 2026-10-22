@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Public demo tenant noindex directives', type: :request, clean: true, multitenant: true do
+RSpec.describe 'Public demo tenant noindex directives', type: :request, clean: true, multitenant: true, flexible: :either do
   before do
     WebMock.disable!
     Apartment::Tenant.create(account.tenant)

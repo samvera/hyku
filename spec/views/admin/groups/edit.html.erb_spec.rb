@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'admin/groups/edit', type: :view do
+RSpec.describe 'admin/groups/edit', type: :view, flexible: :either do
   include Warden::Test::Helpers
   include Devise::Test::ControllerHelpers
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe DateRangeIndexing do
+RSpec.describe DateRangeIndexing, flexible: :either do
   let(:base_indexer) do
     Class.new do
       attr_reader :resource

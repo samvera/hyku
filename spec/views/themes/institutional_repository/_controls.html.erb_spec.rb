@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'themes/institutional_repository/_controls.html.erb', type: :view do
+RSpec.describe 'themes/institutional_repository/_controls.html.erb', type: :view, flexible: :either do
   before do
     allow(view).to receive(:admin_host?).and_return(false)
     # The partial renders '/user_util_links' (leading slash = from the view

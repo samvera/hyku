@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::ShowThemesBehavior do
+RSpec.describe Hyku::ShowThemesBehavior, flexible: :either do
   let(:controller) { Hyrax::CollectionsController.new }
 
   describe 'the around action' do

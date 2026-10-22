@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # For work approval permissions, see spec/requests/work_approval_permissions_spec.rb
-RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: true do
+RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: true, flexible: :either do
   include WorksHelper
 
   # `before`s and `let!`s are order-dependent -- do not move this `before` from the top

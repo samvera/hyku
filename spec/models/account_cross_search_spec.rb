@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AccountCrossSearch, type: :model do
+RSpec.describe AccountCrossSearch, type: :model, flexible: :either do
   it do
     is_expected.to belong_to(:full_account)
       .class_name('Account')

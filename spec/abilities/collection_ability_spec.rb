@@ -3,7 +3,7 @@
 # OVERRIDE Hyrax v3.4.2 Add tests covering Groups with Roles permissions
 require 'cancan/matchers'
 # rubocop:disable RSpec/FilePath
-RSpec.describe Ability::CollectionAbility do
+RSpec.describe Ability::CollectionAbility, flexible: :either do
   # rubocop:enable RSpec/FilePath
   subject { ability }
 

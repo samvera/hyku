@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Qa::Authorities::Mesh do
+RSpec.describe Qa::Authorities::Mesh, flexible: :either do
   subject(:authority) { described_class.new }
 
   # A MeSH import replaces every row, so the dashboard must not offer these terms

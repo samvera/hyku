@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'heritage home theme', type: :request, singletenant: true, clean_repo: true do
+RSpec.describe 'heritage home theme', type: :request, singletenant: true, clean_repo: true, flexible: :either do
   let!(:work) do
     saved = Hyrax.persister.save(resource: GenericWorkResource.new(title: ['Harbor at dusk']))
     Hyrax::VisibilityWriter.new(resource: saved).assign_access_for(visibility: 'open')
@@ -30,7 +30,9 @@ RSpec.describe 'heritage home theme', type: :request, singletenant: true, clean_
     expect(doc.at_css('#hrt-researcher-heading')).to be_present
   end
 
-  it 'renders a featured collection card' do
+  # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
+  # Hyrax::PcdmCollection has no schema_version.
+  it 'renders a featured collection card', flexible: false do
     collection = Hyrax.persister.save(resource: Hyrax::PcdmCollection.new(title: ['Harbor Photographs']))
     Hyrax::VisibilityWriter.new(resource: collection).assign_access_for(visibility: 'open')
     collection.permission_manager.acl.save

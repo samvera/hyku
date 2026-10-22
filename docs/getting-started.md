@@ -99,12 +99,66 @@ set for development. To run it **with** flexible metadata, set `HYKU_TEST_FLEXIB
 docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && HYKU_TEST_FLEXIBLE=true RAILS_ENV=test bundle exec rspec'
 ```
 
-Run the suite both ways to cover both modes. Examples that apply to only one mode are tagged
-`flexible: true` or `flexible: false` and are skipped in the other mode; untagged examples run
-in both (see `spec/rails_helper.rb`).  This format is intended to be extensible to other configurations that Hyku is able to enable.
+Every spec file's top-level `describe` must say which mode it runs in:
+
+| Tag | Runs in | Use it for |
+|---|---|---|
+| `flexible: :either` | both modes | most specs: behavior that doesn't depend on the metadata mode |
+| `flexible: true` | flexible mode only | behavior that only exists with flexible metadata on |
+| `flexible: false` | non-flexible mode only | behavior that only exists, or currently only works, with flexible metadata off |
+
+An inner `describe`, `context` or `it` can override the file's tag, for example
+`it 'shows the custom Etd labels', flexible: false do`. Examples tagged `flexible: false` that carry a
+"Fails in flexible mode … behavior gap" comment pass today only with flexible metadata off; they mark
+places where flexible mode may be missing behavior.
+
+Two environment variables control a run, and they do different jobs:
+
+| Variable | What it controls | Values |
+|---|---|---|
+| `HYKU_TEST_FLEXIBLE` | how the app boots: flexible metadata on or off | `true` or `false` (default `false`) |
+| `HYKU_TEST_FLEXIBLE_TAG` | which examples run; it only filters, and doesn't change the app | `true`, `false` or `either` (default: every tag that fits the mode) |
+
+Without `HYKU_TEST_FLEXIBLE_TAG`, a plain run covers `false` and `:either`, and `HYKU_TEST_FLEXIBLE=true`
+covers `true` and `:either`. Run the suite both ways to cover both modes. Set `HYKU_TEST_FLEXIBLE_TAG` to
+run a single tag (see `spec/rails_helper.rb`):
+
+```bash
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && HYKU_TEST_FLEXIBLE=true HYKU_TEST_FLEXIBLE_TAG=true RAILS_ENV=test bundle exec rspec'
+```
+
+They are separate because `:either` examples run in either mode. CI's random nodes always select
+`either`, but boot with flexible metadata on or off depending on the coin flip, so the filter can't be
+derived from the mode. To rerun what a random node ran, set both, as its log shows, e.g.
+`HYKU_TEST_FLEXIBLE=true HYKU_TEST_FLEXIBLE_TAG=either`.
+
+RuboCop enforces the tag (`CustomCops/FlexibleMetadataTag`, in `lib/rubocop/flexible_metadata_tag.rb`).
+`.rubocop.yml` excludes `spec/features` from RuboCop, so check every spec file, and add
+`flexible: :either` to any that are missing it, with:
+
+```bash
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && bin/rubocop_flexible_tags'
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && bin/rubocop_flexible_tags -a'
+```
+
+This format is intended to be extensible to other configurations that Hyku is able to enable.
 
 #### CI
-Spec suite is run in non flexible mode in CI.  This may change to include more variants but until the spec suite is sped up to test in alternate modes or configurations a developer would need to pull and run the specs in flexible mode, or whatever future configurations are enabled, and run them locally with the flags as described in the Flexible and non-flexible metadata runs section.
+
+The main `test` job runs on six nodes, split by the `flexible:` tag (see `bin/ci_rspec`):
+
+| Node | Examples | Flexible metadata |
+|---|---|---|
+| 0 | `flexible: true` | on |
+| 1 | `flexible: false` | off |
+| 2–5 | `flexible: :either`, split across the four nodes | on or off, chosen at random per node |
+
+Each node prints its mode at the top of its log, with the command to rerun it locally. To force the
+random nodes into one mode, set `CI_FLEXIBLE=true` or `CI_FLEXIBLE=false`. Because those nodes pick a
+mode at random, an `:either` spec that fails only in one mode fails on about half of the runs; rerun it
+locally in the mode the log shows.
+
+The `lint` job also runs `bin/rubocop_flexible_tags`, so a spec file without a `flexible:` tag fails CI.
 
 #### Watching browser (JavaScript) specs
 

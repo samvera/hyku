@@ -3,7 +3,7 @@
 #  `rails generate hyrax:work Etd`
 require 'rails_helper'
 
-RSpec.describe Hyrax::EtdForm do
+RSpec.describe Hyrax::EtdForm, flexible: :either do
   let(:work) { Etd.new }
   let(:form) { described_class.new(work, nil, nil) }
   let(:file_set) { FactoryBot.create(:file_set) }

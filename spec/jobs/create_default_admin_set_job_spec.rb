@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe CreateDefaultAdminSetJob do
+RSpec.describe CreateDefaultAdminSetJob, flexible: :either do
   let!(:account) { FactoryBot.create(:account) }
 
   describe '#perform' do

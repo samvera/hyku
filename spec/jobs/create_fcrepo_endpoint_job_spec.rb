@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe CreateFcrepoEndpointJob do
+RSpec.describe CreateFcrepoEndpointJob, flexible: :either do
   let(:account) { FactoryBot.create(:account) }
 
   it 'sets the base path configuration for fcrepo' do

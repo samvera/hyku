@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true do
+RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true, flexible: :either do
   let(:user) { create(:user, email: 'transferuser@example.com') }
   let(:recipient) { create(:user, email: 'recipient@example.com') }
 

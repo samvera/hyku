@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Only the edit-then-delete example needs a browser (the confirm dialog, and the HTML5
 # required-field check that blocks Save); the rest are server-rendered and run under rack_test.
-RSpec.describe 'FileSet Show and Actions', type: :feature, clean: true do
+RSpec.describe 'FileSet Show and Actions', type: :feature, clean: true, flexible: :either do
   let(:admin_user) { create(:admin) }
 
   # A FileSet is a child member of a parent work, and the show page's presenter

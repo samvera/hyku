@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe AccountElevator do
+RSpec.describe AccountElevator, flexible: :either do
   subject { described_class.new(nil) }
 
   let(:request) { double(host: 'example.com') }

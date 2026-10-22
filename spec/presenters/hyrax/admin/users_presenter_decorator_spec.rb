@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Hyrax::Admin::UsersPresenter do
+RSpec.describe Hyrax::Admin::UsersPresenter, flexible: :either do
   subject(:instance) { described_class.new }
   describe '#search' do
     subject { instance.send(:search) }

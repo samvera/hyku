@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Groups", type: :request, singletenant: true, clean: true do
+RSpec.describe "Groups", type: :request, singletenant: true, clean: true, flexible: :either do
   let!(:user) { FactoryBot.create(:admin) }
   let!(:managers_group) { FactoryBot.create(:admin_group, roles: ['admin', 'dinosaur'], member_users: [user]) }
 

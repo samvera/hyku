@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-RSpec.describe Hyrax::FlexibleSchema, type: :model do
+RSpec.describe Hyrax::FlexibleSchema, type: :model, flexible: :either do
   it 'has a valid .current_schema' do
     described_class.create_default_schema
 

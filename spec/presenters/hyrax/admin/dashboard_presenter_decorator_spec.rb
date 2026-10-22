@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::Admin::DashboardPresenter, type: :decorator do
+RSpec.describe Hyrax::Admin::DashboardPresenter, type: :decorator, flexible: :either do
   let(:presenter) { described_class.new }
   let(:start_date) { Time.zone.today - 1.day }
   let(:end_date) { Time.zone.today + 1.day }

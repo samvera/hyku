@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ControlledVocabularyCatalog do
+RSpec.describe ControlledVocabularyCatalog, flexible: :either do
   # The suite seeds every real yaml vocabulary into the tables, so an unstubbed
   # file_based_names would be entirely claimed by database rows. Naming a fictional
   # file set keeps these examples independent of that seed state.

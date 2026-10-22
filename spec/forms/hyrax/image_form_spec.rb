@@ -3,7 +3,7 @@
 # Generated via
 # `rails generate hyrax:work Image`
 
-RSpec.describe Hyrax::ImageForm do
+RSpec.describe Hyrax::ImageForm, flexible: :either do
   let(:work) { Image.new }
   let(:form) { described_class.new(work, nil, nil) }
   let(:file_set) { FactoryBot.create(:file_set) }

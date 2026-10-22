@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::DepositWizardHelper, type: :helper do
+RSpec.describe Hyrax::DepositWizardHelper, type: :helper, flexible: :either do
   describe '#guided_replaces_standard?' do
     let(:capabilities) { Hyku::DepositWizard.config.capabilities }
 

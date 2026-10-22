@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Factories", clean: true do
+RSpec.describe "Factories", clean: true, flexible: :either do
   before { Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name) }
 
   describe ':generic_work_resource' do

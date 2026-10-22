@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe HyraxListener do
+RSpec.describe HyraxListener, flexible: :either do
   let(:instance) { HyraxListener.new }
   let(:collection) { FactoryBot.build(:hyku_collection) }
   let(:event) { Dry::Events::Event.new(event_type, { collection: }) }

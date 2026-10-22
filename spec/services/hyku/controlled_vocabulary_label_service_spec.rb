@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::ControlledVocabularyLabelService do
+RSpec.describe Hyku::ControlledVocabularyLabelService, flexible: :either do
   subject(:service) { described_class.new }
 
   let(:vocabulary) do

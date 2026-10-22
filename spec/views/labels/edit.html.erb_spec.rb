@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "labels/edit", type: :view do
+RSpec.describe "labels/edit", type: :view, flexible: :either do
   let(:site) { Site.create!(application_name: "MyString", institution_name: "My Inst Name") }
 
   before do

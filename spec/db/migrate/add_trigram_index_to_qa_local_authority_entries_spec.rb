@@ -10,7 +10,7 @@ require 'rails_helper'
 # path from `db:migrate`'s per-existing-tenant loop, and it does not appear to
 # resolve `gin_trgm_ops` the same way `Apartment::Tenant.switch!` does, even
 # though the pg_trgm extension itself lives in shared_extensions.
-RSpec.describe 'AddTrigramIndexToQaLocalAuthorityEntries', :multitenant do
+RSpec.describe 'AddTrigramIndexToQaLocalAuthorityEntries', :multitenant, flexible: :either do
   let(:tenant) { "trgm_regression_test_#{SecureRandom.hex(4)}" }
 
   after do

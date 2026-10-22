@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe CatalogController, type: :request, clean: true, multitenant: true do
+RSpec.describe CatalogController, type: :request, clean: true, multitenant: true, flexible: :either do
   let(:user) { create(:user, email: 'test_user@repo-sample.edu') }
   let(:work) { build(:work, title: ['welcome test'], id: SecureRandom.uuid, user:) }
   let(:hyku_sample_work) { build(:work, title: ['sample test'], id: SecureRandom.uuid, user:) }

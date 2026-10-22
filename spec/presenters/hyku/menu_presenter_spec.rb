@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::MenuPresenter do
+RSpec.describe Hyku::MenuPresenter, flexible: :either do
   let(:instance) { described_class.new(context) }
   let(:context) { double }
 

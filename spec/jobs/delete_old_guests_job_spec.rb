@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe DeleteOldGuestsJob do
+RSpec.describe DeleteOldGuestsJob, flexible: :either do
   before do
     ActiveJob::Base.queue_adapter = :test
   end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'shared/_appearance_styles.html.erb', type: :view do
+RSpec.describe 'shared/_appearance_styles.html.erb', type: :view, flexible: :either do
   let(:default_body_font) { 'Helvetica Neue, Helvetica, Arial, sans-serif;' }
   let(:default_headline_font) { 'Helvetica Neue, Helvetica, Arial, sans-serif;' }
   let(:body_font) { default_body_font }

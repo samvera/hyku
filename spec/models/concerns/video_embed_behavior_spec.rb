@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe VideoEmbedBehavior do
+RSpec.describe VideoEmbedBehavior, flexible: :either do
   describe '#responds_to_video_embed?' do
     context 'when the object responds to video_embed' do
       let(:instance) do

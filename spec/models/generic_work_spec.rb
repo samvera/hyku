@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe GenericWork do
+RSpec.describe GenericWork, flexible: :either do
   describe 'class configuration' do
     subject { described_class }
 

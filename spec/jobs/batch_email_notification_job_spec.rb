@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe BatchEmailNotificationJob do
+RSpec.describe BatchEmailNotificationJob, flexible: :either do
   let(:subject) { BatchEmailNotificationJob.perform_now }
   let(:account) { create(:account_with_public_schema) }
   let(:receipt) { FactoryBot.create(:mailboxer_receipt, receiver: user) }

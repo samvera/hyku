@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Global institution index', type: :feature, multitenant: true, clean: true do
+RSpec.describe 'Global institution index', type: :feature, multitenant: true, clean: true, flexible: :either do
   around do |example|
     original_host = Capybara.default_host
     Capybara.default_host = Capybara.app_host || "http://#{Account.admin_host}"

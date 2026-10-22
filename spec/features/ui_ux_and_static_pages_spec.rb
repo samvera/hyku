@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 # Manual Test Plan: "Homepage" (Language dropdown and the static page links).
-RSpec.describe 'UI/UX and Static Pages', type: :feature, clean: true do
+RSpec.describe 'UI/UX and Static Pages', type: :feature, clean: true, flexible: :either do
   # The language picker is a dropdown of links (shared/_locale_picker), not a <select>.
   # Hyku carries the chosen locale as a URL parameter: Hyrax sets I18n.locale from
   # params[:locale] and default_url_options adds `locale` to every generated link, so the

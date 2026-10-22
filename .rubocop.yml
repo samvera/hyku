@@ -5,6 +5,17 @@ inherit_from:
 inherit_gem:
   bixby: bixby_default.yml
 
+require:
+  - ./lib/rubocop/flexible_metadata_tag.rb
+
+# Every spec file declares the metadata mode it runs in; see lib/rubocop/flexible_metadata_tag.rb.
+# spec/features is excluded from RuboCop below, so CI also runs this cop on its own against every
+# spec file (bin/rubocop_flexible_tags).
+CustomCops/FlexibleMetadataTag:
+  Enabled: true
+  Include:
+    - "spec/**/*_spec.rb"
+
 Layout/IndentationWidth:
   Width: 2
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Hyrax.publisher subscriptions' do
+RSpec.describe 'Hyrax.publisher subscriptions', flexible: :either do
   # prepare! re-runs every to_prepare block, which replaces the derivative
   # services after_initialize set at boot (samvera/hyku#3359) and appends to
   # I18n.load_path again.

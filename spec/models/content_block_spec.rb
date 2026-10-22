@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Copied from Hyrax v2.9.0 to add home_text methods - Adding themes
-RSpec.describe ContentBlock, type: :model do
+RSpec.describe ContentBlock, type: :model, flexible: :either do
   describe '.for' do
     context 'with a nil' do
       it 'raises an ArgumentError' do

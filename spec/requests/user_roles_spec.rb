@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "User roles", type: :request, singletenant: true, clean: true do
+RSpec.describe "User roles", type: :request, singletenant: true, clean: true, flexible: :either do
   let(:tenant_user_attributes) { attributes_for(:user) }
   let!(:group_1) { FactoryBot.create(:group) }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "themes/cultural_repository/hyrax/homepage/_featured_collection_section.html.erb", type: :view do
+RSpec.describe "themes/cultural_repository/hyrax/homepage/_featured_collection_section.html.erb", type: :view, flexible: :either do
   let(:list) { FeaturedCollectionList.new }
   let(:presenter) do
     Hyku::WorkShowPresenter.new(

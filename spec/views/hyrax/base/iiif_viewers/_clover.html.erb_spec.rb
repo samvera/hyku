@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'hyrax/base/iiif_viewers/_clover.html.erb', type: :view do
+RSpec.describe 'hyrax/base/iiif_viewers/_clover.html.erb', type: :view, flexible: :either do
   let(:presenter) { double('WorkShowPresenter', iiif_viewer: :clover) }
 
   before do

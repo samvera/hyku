@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ActiveJobTenant do
+RSpec.describe ActiveJobTenant, flexible: :either do
   before do
     allow(Apartment::Tenant).to receive(:current).and_return('x')
     allow(Account).to receive(:find_by).with(tenant: 'x').and_return(account)

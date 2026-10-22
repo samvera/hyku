@@ -9,7 +9,7 @@ class SiteNameCapturingJob < ApplicationJob
   end
 end
 
-RSpec.describe Site, type: :model do
+RSpec.describe Site, type: :model, flexible: :either do
   let(:admin1) { FactoryBot.create(:user, email: 'bob@was_here.net') }
   let(:admin2) { FactoryBot.create(:user, email: 'jane@was_here.net') }
   let(:admin3) { FactoryBot.create(:user, email: 'i@was_here.net') }

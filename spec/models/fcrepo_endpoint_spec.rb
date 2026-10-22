@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe FcrepoEndpoint do
+RSpec.describe FcrepoEndpoint, flexible: :either do
   let(:base_path) { 'foobar' }
   subject { described_class.new base_path: }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Controlled Vocabularies Integration', type: :service do
+RSpec.describe 'Controlled Vocabularies Integration', type: :service, flexible: :either do
   around do |example|
     original_env = ENV['HYRAX_FLEXIBLE']
     ENV['HYRAX_FLEXIBLE'] = 'true'

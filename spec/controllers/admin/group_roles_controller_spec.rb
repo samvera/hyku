@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Admin::GroupRolesController, faketenant: true do
+RSpec.describe Admin::GroupRolesController, faketenant: true, flexible: :either do
   let(:group) { FactoryBot.create(:group) }
 
   context 'as an anonymous user' do

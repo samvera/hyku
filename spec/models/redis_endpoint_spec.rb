@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RedisEndpoint do
+RSpec.describe RedisEndpoint, flexible: :either do
   it { should have_one(:account).with_foreign_key(:redis_endpoint_id) }
 
   let(:namespace) { 'foobar' }

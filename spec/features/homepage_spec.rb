@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Manual Test Plan: "Homepage" (tenant homepage, default theme: app/views/hyrax/homepage).
 # Language picker and static page links: spec/features/ui_ux_and_static_pages_spec.rb.
-RSpec.describe 'Homepage', type: :feature, clean: true do
+RSpec.describe 'Homepage', type: :feature, clean: true, flexible: :either do
   def public_work(title)
     FactoryBot.valkyrie_create(:generic_work_resource, visibility_setting: 'open', title: [title])
   end

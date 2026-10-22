@@ -9,7 +9,7 @@ require 'rails_helper'
 # Speed: works are Valkyrie GenericWorkResources (persisted to Postgres rather than
 # Fedora; Hyku's primary work type), and each example creates only as many as it needs --
 # just the pagination example needs more than one page.
-RSpec.describe 'Catalog controls', type: :feature, clean: true do
+RSpec.describe 'Catalog controls', type: :feature, clean: true, flexible: :either do
   let!(:control_work) { public_work(title: 'Catalog control work', keyword: ['catalog test', 'catalog-unique']) }
 
   def public_work(title:, keyword: ['catalog test'])

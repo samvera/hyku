@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'hyrax/base/_attach_child_control.html.erb', type: :view do
+RSpec.describe 'hyrax/base/_attach_child_control.html.erb', type: :view, flexible: :either do
   let(:concern) { GenericWorkResource }
   let(:presenter) { double('WorkShowPresenter', id: 'parent-9', valid_child_concerns: [concern]) }
 

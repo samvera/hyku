@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator, skip: 'TODO: We need to revisit this for Valkyrie' do
+RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator, skip: 'TODO: We need to revisit this for Valkyrie', flexible: :either do
   subject(:csv_parser) do
     Bulkrax::CsvParser.new(
       instance_double(

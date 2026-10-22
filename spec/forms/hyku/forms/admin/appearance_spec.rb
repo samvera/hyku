@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Hyku::Forms::Admin::Appearance do
+RSpec.describe Hyku::Forms::Admin::Appearance, flexible: :either do
   let(:instance) { described_class.new }
 
   def count_queries(&block)

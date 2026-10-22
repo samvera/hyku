@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'txt indexer' do
+RSpec.describe 'txt indexer', flexible: :either do
   let(:work) { valkyrie_create(:generic_work_resource) }
   let(:file_set) { valkyrie_create(:hyrax_file_set, :with_files, ios: [File.open(File.join(file_fixture_path, 'files', 'text_file.txt'))]) }
 

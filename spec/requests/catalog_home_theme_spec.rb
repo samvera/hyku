@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'the catalog under each home theme', type: :request, singletenant: true do
+RSpec.describe 'the catalog under each home theme', type: :request, singletenant: true, flexible: :either do
   let(:themes) { YAML.load_file(Rails.root.join('config', 'home_themes.yml')).keys.map(&:to_s) }
 
   # institutional_repository is the theme whose _controls fork carries the

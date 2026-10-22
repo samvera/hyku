@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Admin Tenant Management', multitenant: true do
+RSpec.describe 'Admin Tenant Management', multitenant: true, flexible: :either do
   let(:superadmin) { create(:superadmin) }
   let(:account) do
     create(:account, name: 'Existing Institution').tap do |created_account|

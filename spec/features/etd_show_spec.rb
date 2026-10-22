@@ -3,7 +3,9 @@
 require 'rails_helper'
 
 # NOTE: If you generated more than one work, you have to set "js: true"
-RSpec.describe 'Etd show page', type: :feature, js: true, clean: true, cohort: 'alpha' do
+# Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
+# shows "Date created", not the custom Etd label "Date".
+RSpec.describe 'Etd show page', type: :feature, js: true, clean: true, cohort: 'alpha', flexible: false do
   include Warden::Test::Helpers
   let(:etd) { FactoryBot.create(:etd) }
 

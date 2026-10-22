@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Copied from Hyrax v2.9.0 to add home_text form - Adding themes
-RSpec.describe "hyrax/content_blocks/edit", type: :view do
+RSpec.describe "hyrax/content_blocks/edit", type: :view, flexible: :either do
   before { render }
   # these first 3 tests are from hyrax
   # Potential duplicate: spec/features/admin_settings_spec.rb:319 (renders each content block form)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::IiifSearchDecorator do
+RSpec.describe Hyku::IiifSearchDecorator, flexible: :either do
   let(:parent_id) { 'parent-work-id' }
   let(:child_id) { 'child-work-id' }
   let(:iiif_config) do

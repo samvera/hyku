@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::ContactForm, type: :model do
+RSpec.describe Hyrax::ContactForm, type: :model, flexible: :either do
   describe 'headers' do
     before do
       subject do

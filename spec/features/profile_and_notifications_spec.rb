@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Profile and Notifications', type: :feature, clean: true do
+RSpec.describe 'Profile and Notifications', type: :feature, clean: true, flexible: :either do
   let(:user) { create(:user, email: 'profileuser@example.com') }
   # Profiles are addressed by the user's to_param (email with '.' => '-dot-').
   let(:profile_path) { "/dashboard/profiles/#{user.to_param}" }
@@ -206,7 +206,8 @@ RSpec.describe 'Profile and Notifications', type: :feature, clean: true do
       expect(page).to have_css('.dataTables_info', text: 'of 12 entries')
       expect(page).to have_css('.dataTables_paginate')
 
-      find('.dataTables_filter input[type="search"]').fill_in(with: 'interview 11')
+      # Quoted, so DataTables matches the phrase; unquoted, it matches each word anywhere in the row (dates too).
+      find('.dataTables_filter input[type="search"]').fill_in(with: '"interview 11"')
       expect(page).to have_css('.dataTables_info', text: '1 to 1 of 1 entries')
     end
   end

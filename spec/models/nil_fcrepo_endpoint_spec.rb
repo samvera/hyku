@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe NilFcrepoEndpoint do
+RSpec.describe NilFcrepoEndpoint, flexible: :either do
   let(:instance) { described_class.new }
 
   describe "#ping" do

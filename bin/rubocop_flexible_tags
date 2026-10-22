@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Checks that every spec file is tagged with its metadata mode (CustomCops/FlexibleMetadataTag).
+#
+# .rubocop.yml excludes spec/features from RuboCop as a whole, and RuboCop skips excluded files when it
+# walks a directory. Files named explicitly on the command line bypass that exclusion, so this names every
+# spec file and runs only this one cop. Extra arguments go to RuboCop, e.g. `-a` to add `flexible: :either`.
+set -euo pipefail
+
+find spec -name '*_spec.rb' -not -path 'spec/test_app_templates/*' -print0 |
+  xargs -0 bundle exec rubocop --only CustomCops/FlexibleMetadataTag "$@"

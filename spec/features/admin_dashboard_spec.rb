@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
+RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true, flexible: :either do
   context 'as an administrator' do
     let(:user) { FactoryBot.create(:admin) }
     let(:group) { FactoryBot.create(:group) }

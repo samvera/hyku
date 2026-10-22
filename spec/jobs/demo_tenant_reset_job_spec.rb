@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe DemoTenantResetJob do
+RSpec.describe DemoTenantResetJob, flexible: :either do
   let(:account) { create(:account, :public_schema, :public_demo_tenant) }
   let(:service) { instance_double(DemoTenantResetService, reset!: true) }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Proprietor::AccountsController, type: :routing do
+RSpec.describe Proprietor::AccountsController, type: :routing, flexible: :either do
   let(:admin_host) { Account.admin_host }
   let(:admin_host_url) { "http://#{admin_host}" }
 

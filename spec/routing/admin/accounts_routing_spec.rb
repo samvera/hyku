@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Admin::AccountsController, type: :routing do
+RSpec.describe Admin::AccountsController, type: :routing, flexible: :either do
   describe "routing" do
     it "routes to #edit" do
       expect(get: "/admin/account/edit").to route_to("admin/accounts#edit")

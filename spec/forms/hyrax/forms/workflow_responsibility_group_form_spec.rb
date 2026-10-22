@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::Forms::WorkflowResponsibilityGroupForm do
+RSpec.describe Hyrax::Forms::WorkflowResponsibilityGroupForm, flexible: :either do
   let(:instance) { described_class.new }
 
   describe "#initialize" do

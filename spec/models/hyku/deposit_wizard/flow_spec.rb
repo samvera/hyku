@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::DepositWizard::Flow do
+RSpec.describe Hyku::DepositWizard::Flow, flexible: :either do
   subject(:flow) { described_class.default }
 
   let(:config) { Hyku::DepositWizard::Config.new }

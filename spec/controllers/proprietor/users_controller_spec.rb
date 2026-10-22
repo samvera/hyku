@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true do
+RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true, flexible: :either do
   let(:user) {}
   let(:valid_attributes) do
     attributes_for(:user)

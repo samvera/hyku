@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ControlledVocabularyExport do
+RSpec.describe ControlledVocabularyExport, flexible: :either do
   subject(:export) { described_class.new(entry) }
 
   context 'with a database-backed vocabulary' do

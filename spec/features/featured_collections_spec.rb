@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe "The homepage", :clean_repo do
+RSpec.describe "The homepage", :clean_repo, flexible: :either do
   let(:user) { create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
   let(:account) { create(:account) }
   let(:collection1) { create(:collection, user:) }

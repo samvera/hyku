@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
+RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view, flexible: :either do
   include Warden::Test::Helpers
   include Devise::Test::ControllerHelpers
   let(:presenter) { Hyrax::Admin::UsersPresenter.new }

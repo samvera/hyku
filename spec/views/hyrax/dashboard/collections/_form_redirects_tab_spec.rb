@@ -3,7 +3,7 @@
 # Hyku overrides the collection form partial to add a Redirects tab.
 # This spec verifies the tab appears when the feature is active and
 # the form is a persisted ResourceForm whose model carries :redirects.
-RSpec.describe 'hyrax/dashboard/collections/_form.html.erb', type: :view do
+RSpec.describe 'hyrax/dashboard/collections/_form.html.erb', type: :view, flexible: :either do
   let(:collection) { FactoryBot.valkyrie_create(:hyku_collection, with_permission_template: true) }
   let(:collection_form) { Hyrax::Forms::ResourceForm.for(resource: collection) }
   let(:banner_info) { { file: "", alttext: "" } }

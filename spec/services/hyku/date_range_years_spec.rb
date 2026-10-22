@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Hyku::DateRangeYears do
+RSpec.describe Hyku::DateRangeYears, flexible: :either do
   describe '.call' do
     it 'reads a bare year' do
       expect(described_class.call('1911')).to eq [1911]

@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Hyku::Application do
+RSpec.describe Hyku::Application, flexible: :either do
   describe '.html_head_title' do
     subject { described_class.html_head_title }
 

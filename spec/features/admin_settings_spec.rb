@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Manual Test Plan: "Settings → Labels Page", "Settings → Appearance Page", "Settings → Pages Page",
 # "Settings → Content Block", and "Settings → Features Page".
-RSpec.describe 'Admin settings pages', type: :feature, clean: true do
+RSpec.describe 'Admin settings pages', type: :feature, clean: true, flexible: :either do
   let(:admin) { create(:admin) }
   let(:image_path) { Rails.root.join('spec', 'fixtures', 'images', 'world.png') }
 

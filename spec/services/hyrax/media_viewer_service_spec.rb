@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::MediaViewerService do
+RSpec.describe Hyrax::MediaViewerService, flexible: :either do
   describe "select_options" do
     subject { described_class.select_all_options }
 

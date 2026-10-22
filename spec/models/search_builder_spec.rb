@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SearchBuilder do
+RSpec.describe SearchBuilder, flexible: :either do
   describe ".default_processor_chain" do
     subject { described_class.default_processor_chain }
 

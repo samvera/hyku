@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe CleanupAccountJob do
+RSpec.describe CleanupAccountJob, flexible: :either do
   it 'removes the various end points and database records' do
     account = Account.new(
       name: ENV.fetch('HYKU_SINGLE_TENANT_NAME', 'Single Tenant'),

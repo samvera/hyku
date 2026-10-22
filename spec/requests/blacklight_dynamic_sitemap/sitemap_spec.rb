@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Sitemap generation', :clean_repo, singletenant: true, type: :request do
+RSpec.describe 'Sitemap generation', :clean_repo, singletenant: true, type: :request, flexible: :either do
   context 'with UUIDs as identifiers' do
     let(:collection_id) { 'c0a0cbbd-c7fa-4d5d-b8f6-ad5fddf171fc' }
     let(:private_work_id) { '91d96555-d40f-40e5-9f27-1b20885b066a' }

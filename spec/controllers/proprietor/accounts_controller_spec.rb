@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: true do
+RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: true, flexible: :either do
   let(:user) {}
 
   before do

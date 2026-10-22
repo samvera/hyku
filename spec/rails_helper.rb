@@ -86,6 +86,9 @@ ActiveRecord::Migration.maintain_test_schema!
 # Uses faster rack_test driver when JavaScript support not needed
 Capybara.default_max_wait_time = 8
 Capybara.default_driver = :rack_test
+# Turn off CSS transitions and jQuery animations in pages served to the browser, so a click never lands while
+# an element is still moving (e.g. a Bootstrap collapse panel expanding above the next radio button).
+Capybara.disable_animation = true
 
 ENV['WEB_HOST'] ||= `hostname -s`.strip
 
@@ -222,13 +225,16 @@ RSpec.configure do |config|
     Hyrax::FlexibleSchema.create_default_schema if Hyrax.config.flexible?
   end
 
-  # Examples that only apply to one metadata mode are tagged `flexible: true` or
-  # `flexible: false`; untagged examples run in both modes.
-  if Hyrax.config.flexible?
-    config.filter_run_excluding flexible: false
-  else
-    config.filter_run_excluding flexible: true
-  end
+  # Every spec file is tagged `flexible: true`, `flexible: false` or `flexible: :either`
+  # (CustomCops/FlexibleMetadataTag). By default, run the examples that apply to this mode.
+  # HYKU_TEST_FLEXIBLE_TAG=true|false|either keeps only that tag (CI runs one per node; see bin/ci_rspec).
+  # This is one exclusion filter rather than --tag options: a filter value of `true` matches any truthy
+  # tag, :either included, and a command-line exclusion on a key drops any inclusion on the same key.
+  only_flexible_tag = ENV['HYKU_TEST_FLEXIBLE_TAG'].presence
+  config.filter_run_excluding flexible: lambda { |value|
+    next value.to_s != only_flexible_tag if only_flexible_tag
+    value == !Hyrax.config.flexible? # flexible on: drop `false`; flexible off: drop `true`
+  }
 
   # The remote Selenium grid ends a browser session after SE_NODE_SESSION_TIMEOUT (300s)
   # without commands, so a long run of non-JS examples kills it and every later JS example

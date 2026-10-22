@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Copied from Hyrax v2.9.0 to add home_text content block - Adding themes
-RSpec.describe Hyrax::ContentBlocksController, type: :controller, clean: true do
+RSpec.describe Hyrax::ContentBlocksController, type: :controller, clean: true, flexible: :either do
   routes { Hyrax::Engine.routes }
 
   let!(:announcement_text) do

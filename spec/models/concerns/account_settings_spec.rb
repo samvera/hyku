@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe AccountSettings do
+RSpec.describe AccountSettings, flexible: :either do
   let(:account) { FactoryBot.create(:account) }
 
   before do

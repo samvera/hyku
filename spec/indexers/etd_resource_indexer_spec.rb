@@ -5,7 +5,7 @@
 require 'rails_helper'
 require 'hyrax/specs/shared_specs/indexers'
 
-RSpec.describe EtdResourceIndexer do
+RSpec.describe EtdResourceIndexer, flexible: :either do
   let(:indexer_class) { described_class }
   let!(:resource) { Hyrax.persister.save(resource: EtdResource.new) }
 

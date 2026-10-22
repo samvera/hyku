@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'themes/cultural_repository/hyrax/homepage/_recently_uploaded.html.erb', type: :view do
+RSpec.describe 'themes/cultural_repository/hyrax/homepage/_recently_uploaded.html.erb', type: :view, flexible: :either do
   # This partial is rendered by its explicit path from _recent_works_section, so
   # lazy i18n lookup resolves under themes.cultural_repository.*, where no keys
   # exist. It must not leak a missing-translation artifact into the page.

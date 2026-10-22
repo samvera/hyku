@@ -5,7 +5,7 @@
 require 'rails_helper'
 require 'hyrax/specs/shared_specs/hydra_works'
 
-RSpec.describe ImageResource do
+RSpec.describe ImageResource, flexible: :either do
   subject(:work) { described_class.new }
 
   # it_behaves_like 'a Hyrax::Work'

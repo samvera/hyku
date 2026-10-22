@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SitesController, type: :controller, singletenant: true do
+RSpec.describe SitesController, type: :controller, singletenant: true, flexible: :either do
   before { sign_in user }
 
   context 'with an unprivileged user' do

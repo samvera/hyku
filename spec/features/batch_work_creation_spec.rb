@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
+RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true, flexible: :either do
   let(:user) { create(:user, roles: [:work_depositor]) }
   # Managed by `user`, so it is offered in the Relationships collection picker.
   let!(:deposit_collection) do

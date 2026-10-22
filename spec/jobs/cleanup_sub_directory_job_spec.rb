@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe CleanupSubDirectoryJob do
+RSpec.describe CleanupSubDirectoryJob, flexible: :either do
   let(:old_time) { Time.zone.now - 1.year }
   let(:very_old_time) { Time.zone.now - 3.years }
   let(:new_time) { Time.zone.now - 1.week }

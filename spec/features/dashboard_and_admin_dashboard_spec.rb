@@ -5,7 +5,7 @@ require 'rails_helper'
 # The sidebar's collapsed sub-menus are present in the DOM (only hidden by CSS), and the
 # dashboard statistics headings are server-rendered, so this runs under rack_test rather
 # than a JS browser.
-RSpec.describe 'Dashboard and Admin Dashboard', type: :feature, clean: true do
+RSpec.describe 'Dashboard and Admin Dashboard', type: :feature, clean: true, flexible: :either do
   let(:admin_user) { create(:admin) }
   let(:user) { create(:user) }
 

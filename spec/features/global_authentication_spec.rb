@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Devise pages served on the global (admin) host: app/views/devise/{sessions,registrations,passwords}
 # plus the gem's passwords/edit view, and the links in app/views/devise/shared/_links.html.erb.
-RSpec.describe 'Global authentication pages', type: :feature, multitenant: true, clean: true do
+RSpec.describe 'Global authentication pages', type: :feature, multitenant: true, clean: true, flexible: :either do
   around do |example|
     original_host = Capybara.default_host
     Capybara.default_host = Capybara.app_host || "http://#{Account.admin_host}"

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Review submissions', type: :request, singletenant: true, clean: true do
+RSpec.describe 'Review submissions', type: :request, singletenant: true, clean: true, flexible: :either do
   let(:reviewer) { create(:admin) }
   let(:creator) { create(:user) }
   let!(:admin_group) { create(:admin_group, member_users: [reviewer]) }

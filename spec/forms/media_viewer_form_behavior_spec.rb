@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe MediaViewerFormBehavior do
+RSpec.describe MediaViewerFormBehavior, flexible: :either do
   subject(:form) { GenericWorkResourceForm.new(GenericWorkResource.new) }
 
   let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
@@ -24,7 +24,7 @@ RSpec.describe MediaViewerFormBehavior do
   context 'when the feature is enabled' do
     before { test_strategy.switch!(:per_work_media_viewer, true) }
 
-    it 'offers the viewer picker' do
+    it 'offers the viewer picker', flexible: false do
       skip 'flexible mode takes the field from the profile, not the static schema' if Hyrax.config.flexible?
 
       expect(form.secondary_terms).to include(:media_viewer)

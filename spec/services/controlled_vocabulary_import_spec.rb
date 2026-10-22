@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ControlledVocabularyImport do
+RSpec.describe ControlledVocabularyImport, flexible: :either do
   let(:vocabulary) { Qa::LocalAuthority.create!(name: 'reading_rooms', label: 'Reading Rooms') }
 
   def plan_for(content, filename: 'terms.csv')

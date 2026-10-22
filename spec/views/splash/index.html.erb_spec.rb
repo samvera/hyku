@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "splash/index.html.erb", type: :view do
+RSpec.describe "splash/index.html.erb", type: :view, flexible: :either do
   let(:page) { Capybara::Node::Simple.new(rendered) }
 
   context 'Anonymous or non-Admin user with admin_only_tenant_creation=false' do

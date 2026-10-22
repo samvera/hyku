@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::MenuPresenter do
+RSpec.describe Hyrax::MenuPresenter, flexible: :either do
   let(:instance) { described_class.new(context) }
   let(:context) { double }
   let(:controller_name) { controller.controller_name }

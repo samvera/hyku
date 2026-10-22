@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RemoveSolrCollectionJob do
+RSpec.describe RemoveSolrCollectionJob, flexible: :either do
   let(:collection) { 'x' }
   let(:connection_options) { double }
   let(:connection) { double }

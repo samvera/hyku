@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe GroupRole, type: :model, clean: true do
+RSpec.describe GroupRole, type: :model, clean: true, flexible: :either do
   let(:group) { FactoryBot.create(:group) }
   let(:role) { FactoryBot.create(:role) }
 

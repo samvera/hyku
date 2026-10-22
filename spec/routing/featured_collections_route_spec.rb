@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "file routes", type: :routing do
+RSpec.describe "file routes", type: :routing, flexible: :either do
   routes { Rails.application.routes }
 
   # rubocop:disable Layout/LineLength

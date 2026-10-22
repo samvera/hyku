@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Redirects catch-all route placement', type: :request do
+RSpec.describe 'Redirects catch-all route placement', type: :request, flexible: :either do
   # The redirects catch-all route must be the last application-defined route
   # in routes.rb so that every other route gets first crack at matching.
   # (Rails may append framework routes like ActiveStorage/ActionMailbox after it.)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::NotificationsController, type: :controller do
+RSpec.describe Hyrax::NotificationsController, type: :controller, flexible: :either do
   routes { Hyrax::Engine.routes }
 
   let(:user) { create(:user) }

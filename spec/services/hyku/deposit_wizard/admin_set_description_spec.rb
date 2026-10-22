@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::DepositWizard::AdminSetDescription do
+RSpec.describe Hyku::DepositWizard::AdminSetDescription, flexible: :either do
   subject(:builder) { described_class.new(admin_set: admin_set, permission_template: template) }
 
   let(:admin_set) { double(description: description) }

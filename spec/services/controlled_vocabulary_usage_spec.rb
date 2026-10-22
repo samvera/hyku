@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ControlledVocabularyUsage do
+RSpec.describe ControlledVocabularyUsage, flexible: :either do
   let(:profile) do
     {
       'classes' => {

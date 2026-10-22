@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::AttachedFilesHelperBehavior, type: :helper do
+RSpec.describe Hyrax::AttachedFilesHelperBehavior, type: :helper, flexible: :either do
   describe '#attached_file_set_presenters' do
     let(:form) { double('WorkForm', member_ids: member_ids) }
     let(:query_service) { instance_double(Hyrax::SolrQueryService) }

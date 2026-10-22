@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Contact Form', type: :feature, clean: true do
+RSpec.describe 'Contact Form', type: :feature, clean: true, flexible: :either do
   # Hyrax::ContactFormDecorator builds the mail headers from Site.account
   # (email_subject_prefix, contact_email_to, contact_email), and Site's account is an
   # optional association that is nil in a single-tenant test run. Supply an account the

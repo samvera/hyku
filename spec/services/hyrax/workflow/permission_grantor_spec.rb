@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Hyrax::Workflow::PermissionGrantor do
+RSpec.describe Hyrax::Workflow::PermissionGrantor, flexible: :either do
   subject(:permission_grantor) do
     described_class.new(
       permission_template:,

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe "proprietor/users/index", type: :view do
+RSpec.describe "proprietor/users/index", type: :view, flexible: :either do
   before do
     assign(:users, [
              User.create!(

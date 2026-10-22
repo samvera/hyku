@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'hyrax/base/_attribute_rows_list.html.erb' do
+RSpec.describe 'hyrax/base/_attribute_rows_list.html.erb', flexible: :either do
   let(:ability) { double(admin?: false, can?: false) }
   let(:doc) { Nokogiri::HTML(rendered) }
   let(:rendered_fields) { doc.css('li.attribute').map { |li| li['class'][/attribute-(\w+)/, 1] } }

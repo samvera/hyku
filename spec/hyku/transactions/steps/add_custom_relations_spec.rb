@@ -2,7 +2,7 @@
 
 require 'hyrax/transactions'
 
-RSpec.describe Hyku::Transactions::Steps::AddCustomRelations do
+RSpec.describe Hyku::Transactions::Steps::AddCustomRelations, flexible: :either do
   subject(:step) { described_class.new }
   let(:change_set) { OerResourceForm.new(resource) }
   let(:resource) { valkyrie_create(:oer_resource) }

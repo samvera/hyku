@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::DepositWizard::State do
+RSpec.describe Hyku::DepositWizard::State, flexible: :either do
   subject(:state) { described_class.new(store) }
 
   let(:store) { {} }

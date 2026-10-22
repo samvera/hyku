@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Work show actions', type: :feature, clean: true do
+RSpec.describe 'Work show actions', type: :feature, clean: true, flexible: :either do
   let(:admin) { create(:admin) }
 
   # Hyku runs Hyrax::ValkyrieLazyMigration, so a GenericWork (ActiveFedora) and a

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'hyrax/homepage/index.html.erb', type: :view do
+RSpec.describe 'hyrax/homepage/index.html.erb', type: :view, flexible: :either do
   let(:presenter) do
     double('HomepagePresenter', display_share_button?: true,
                                 create_many_work_types?: false, first_work_type: GenericWorkResource,

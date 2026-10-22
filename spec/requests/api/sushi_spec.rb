@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'api/sushi/r51', type: :request, singletenant: true do
+RSpec.describe 'api/sushi/r51', type: :request, singletenant: true, flexible: :either do
   before { create_hyrax_countermetric_objects }
   let(:required_parameters) do
     {

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::InvitationsController, type: :controller do
+RSpec.describe Hyku::InvitationsController, type: :controller, flexible: :either do
   let(:user) { create(:admin) }
 
   before do

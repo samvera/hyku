@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'shared/_demo_banner.html.erb', type: :view do
+RSpec.describe 'shared/_demo_banner.html.erb', type: :view, flexible: :either do
   let(:account) do
     FactoryBot.build(:account, :public_demo_tenant, last_reset_at:).tap do |acct|
       acct.demo_acceptable_use_url = acceptable_use_url

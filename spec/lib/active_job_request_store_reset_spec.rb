@@ -16,7 +16,7 @@ class RequestStoreWritingThenRaisingJob < ApplicationJob
   end
 end
 
-RSpec.describe ActiveJobRequestStoreReset do
+RSpec.describe ActiveJobRequestStoreReset, flexible: :either do
   around do |example|
     RequestStore.clear!
     example.run

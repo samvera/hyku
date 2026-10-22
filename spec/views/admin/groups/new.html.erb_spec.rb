@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'admin/groups/new', type: :view do
+RSpec.describe 'admin/groups/new', type: :view, flexible: :either do
   context 'groups index page' do
     let(:group) { FactoryBot.build(:group) }
 

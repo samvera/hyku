@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::OaiPmh::MappedValues do
+RSpec.describe Hyku::OaiPmh::MappedValues, flexible: :either do
   subject(:read) do
     [].tap { |out| mapped_values.each { |*pair| out << pair } }
   end

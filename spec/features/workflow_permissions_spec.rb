@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Workflows: embargo, lease, sharing, relationships', type: :feature, js: true, clean: true do
+RSpec.describe 'Workflows: embargo, lease, sharing, relationships', type: :feature, js: true, clean: true, flexible: :either do
   let(:admin_user) { create(:admin) }
   let(:work) { FactoryBot.valkyrie_create(:generic_work_resource) }
 

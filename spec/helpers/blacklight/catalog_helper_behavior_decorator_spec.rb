@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Blacklight::CatalogHelperBehaviorDecorator, type: :helper do
+RSpec.describe Blacklight::CatalogHelperBehaviorDecorator, type: :helper, flexible: :either do
   let(:own_cname) { 'dev-hyku.localhost.direct' }
   let(:path) { '/downloads/abc123?file=thumbnail' }
   let(:document) do

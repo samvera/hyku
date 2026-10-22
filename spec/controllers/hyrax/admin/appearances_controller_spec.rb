@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::Admin::AppearancesController, type: :controller, singletenant: true do
+RSpec.describe Hyrax::Admin::AppearancesController, type: :controller, singletenant: true, flexible: :either do
   before { sign_in user }
 
   routes { Hyrax::Engine.routes }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Mailboxer::Receipt, type: :decorator do
+RSpec.describe Mailboxer::Receipt, type: :decorator, flexible: :either do
   describe '#mark_as_delivered' do
     context 'when the user has batch_email_frequency set to never' do
       let(:user) { create(:user, batch_email_frequency: 'never') }

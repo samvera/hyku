@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "hyrax/content_blocks/edit", type: :view do
+RSpec.describe "hyrax/content_blocks/edit", type: :view, flexible: :either do
   before { render }
   # these first 3 tests are from hyrax
   it "renders the announcement form" do

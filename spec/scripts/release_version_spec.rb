@@ -3,7 +3,7 @@
 require 'spec_helper'
 require_relative '../../.github/scripts/release_version'
 
-RSpec.describe ReleaseVersion do
+RSpec.describe ReleaseVersion, flexible: :either do
   describe '.next' do
     it 'increments only the RC sequence for an active staging release candidate' do
       expect(described_class.next(current: '7.2.0.rc1', resolved: '7.2.1', staging: true)).to eq('7.2.0.rc2')

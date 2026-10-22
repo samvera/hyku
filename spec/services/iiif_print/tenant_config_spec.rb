@@ -10,7 +10,7 @@ require 'spec_helper'
 # IiifPrint::TenantConfig module.
 #
 # rubocop:disable RSpec/DescribeClass
-RSpec.describe 'Tenant Config for IIIF Print' do
+RSpec.describe 'Tenant Config for IIIF Print', flexible: :either do
   let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
 
   after do

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Manual Test Plan: "Dashboard My Works Index Page"
 # The owner is an admin so Delete renders whatever HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS is.
-RSpec.describe 'Dashboard My Works index', type: :feature, clean: true do
+RSpec.describe 'Dashboard My Works index', type: :feature, clean: true, flexible: :either do
   include ActiveSupport::Testing::TimeHelpers
 
   let(:owner) { create(:admin, email: 'my-works-owner@example.com') }

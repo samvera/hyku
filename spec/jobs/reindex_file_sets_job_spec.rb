@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ReindexFileSetsJob do
+RSpec.describe ReindexFileSetsJob, flexible: :either do
   describe '#perform' do
     let(:file_set_classes) { [Hyrax::FileSet] }
 

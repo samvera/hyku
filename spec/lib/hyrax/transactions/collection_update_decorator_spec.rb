@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::Transactions::CollectionUpdateDecorator do
+RSpec.describe Hyrax::Transactions::CollectionUpdateDecorator, flexible: :either do
   let(:decorated_steps) { Hyrax::Transactions::CollectionUpdate.new.steps }
 
   describe 'DEFAULT_STEPS' do

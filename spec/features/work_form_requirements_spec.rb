@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'New work form requirements', type: :feature, js: true, clean: true do
+RSpec.describe 'New work form requirements', type: :feature, js: true, clean: true, flexible: :either do
   let(:user) { create(:user, roles: [:work_depositor]) }
 
   let!(:share_user) { create(:user, email: 'edit-form-share-target@example.com') }

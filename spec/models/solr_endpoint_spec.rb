@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SolrEndpoint do
+RSpec.describe SolrEndpoint, flexible: :either do
   subject(:instance) { described_class.new url: 'http://example.com/solr/' }
 
   it { should have_one(:account).with_foreign_key(:solr_endpoint_id) }

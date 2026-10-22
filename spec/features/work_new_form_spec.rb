@@ -5,7 +5,7 @@ require 'rails_helper'
 # Manual Test Plan: "Dashboard Work New Page" (sidebar, Descriptions, Files, Relationships, Sharing).
 # The older end-to-end version in spec/features/create_generic_work_spec.rb is disabled (xit);
 # these examples exercise each tab's controls without submitting the form.
-RSpec.describe 'New work form', type: :feature, js: true, clean: true do
+RSpec.describe 'New work form', type: :feature, js: true, clean: true, flexible: :either do
   let(:user) { create(:user, roles: [:work_depositor]) }
   let!(:share_user) { create(:user, email: 'new-form-share-target@example.com') }
   # The creating user manages the collection, so it is offered for deposit.

@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'hyrax/specs/shared_specs/indexers'
 
-RSpec.describe AdminSetResourceIndexer do
+RSpec.describe AdminSetResourceIndexer, flexible: :either do
   let(:indexer_class) { described_class }
   let(:resource)      { AdminSetResource.new }
 

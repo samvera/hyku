@@ -201,14 +201,19 @@ jobs:
     with:
       webTarget: hyku-web
       workerTarget: hyku-worker
-      rubocop_cmd: "bundle exec rubocop --parallel --format progress"
+      # The second command checks spec/features too, which .rubocop.yml excludes; see bin/rubocop_flexible_tags.
+      rubocop_cmd: "bundle exec rubocop --parallel --format progress && bin/rubocop_flexible_tags"
 
   test:
     needs: push
     uses: notch8/actions/.github/workflows/test.yaml@v1.0.6
     with:
       confdir: "/app/samvera/hyrax-webapp/solr/conf"
-      rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
+      # Node 0 runs `flexible: true` specs, node 1 `flexible: false`, and nodes 2-5 split the
+      # `flexible: :either` specs, each in a randomly chosen mode. See bin/ci_rspec.
+      node_index: "[0, 1, 2, 3, 4, 5]"
+      node_total: "[6]"
+      rspec_cmd: "bin/ci_rspec $CI_NODE_INDEX $CI_NODE_TOTAL"
 
   single-tenant-test:
     needs: push

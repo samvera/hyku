@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ApplicationHelper, type: :helper do
+RSpec.describe ApplicationHelper, type: :helper, flexible: :either do
   describe '#thumbnail_alt_text_for' do
     let(:document) { SolrDocument.new('has_model_ssim' => ['GenericWork'], 'thumbnail_alt_text_tesim' => thumbnail_alt_text, 'title_tesim' => ['My Work']) }
 

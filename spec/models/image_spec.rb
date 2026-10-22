@@ -3,7 +3,7 @@
 # Generated via
 #  `rails generate hyrax:work Image`
 
-RSpec.describe Image do
+RSpec.describe Image, flexible: :either do
   describe 'indexer' do
     subject { described_class.indexer }
 

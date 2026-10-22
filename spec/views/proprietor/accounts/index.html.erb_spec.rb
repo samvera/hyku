@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "proprietor/accounts/index", type: :view do
+RSpec.describe "proprietor/accounts/index", type: :view, flexible: :either do
   let(:account_a) { FactoryBot.create(:account) }
   let(:account_b) { FactoryBot.create(:account) }
 

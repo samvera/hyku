@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Hyrax::CollectionThumbnailPathService do
+RSpec.describe Hyrax::CollectionThumbnailPathService, flexible: :either do
   describe '.default_image' do
     context 'super_method' do
       it 'is in Hyrax' do

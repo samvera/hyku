@@ -2,7 +2,7 @@
 
 # Generated via
 #  `rails generate curation_concerns:work GenericWork`
-RSpec.describe Hyrax::Actors::GenericWorkActor do
+RSpec.describe Hyrax::Actors::GenericWorkActor, flexible: :either do
   it "exists" do
     expect(Hyrax::Actors::GenericWorkActor).to be_a(Class)
   end

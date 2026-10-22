@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Augment the v5.0.0 tests to account for Hyku specific scenarios
-RSpec.describe 'collection', type: :feature, js: true, clean: true do
+RSpec.describe 'collection', type: :feature, js: true, clean: true, flexible: :either do
   let(:user) { create(:user) }
   # OVERRIDE: new (non-hyrax) test cases below
 

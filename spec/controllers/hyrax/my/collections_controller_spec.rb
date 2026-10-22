@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::My::CollectionsController, type: :controller do
+RSpec.describe Hyrax::My::CollectionsController, type: :controller, flexible: :either do
   describe "#configure_facets" do
     subject { controller.blacklight_config.sort_fields.keys }
 

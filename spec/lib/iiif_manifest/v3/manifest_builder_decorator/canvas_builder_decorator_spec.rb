@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe IIIFManifest::V3::ManifestBuilderDecorator::CanvasBuilderDecorator, type: :decorator do
+RSpec.describe IIIFManifest::V3::ManifestBuilderDecorator::CanvasBuilderDecorator, type: :decorator, flexible: :either do
   let(:record) { double('Record', id: 123, parent_title_tesim: 'I am the parent') }
   let(:parent) { double('Parent', manifest_url: 'http://test.host/books/book-77/manifest') }
   let(:builder) do

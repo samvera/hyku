@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::Indexers::FileSetIndexer do
+RSpec.describe Hyku::Indexers::FileSetIndexer, flexible: :either do
   let(:indexer_class) { described_class }
   let(:resource)      { Hyrax.config.file_set_model.constantize.new }
   let(:original_file) { Hyrax::FileMetadata.new }

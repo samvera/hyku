@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Requesting a work type the tenant does not offer', type: :request, singletenant: true, clean: true do
+RSpec.describe 'Requesting a work type the tenant does not offer', type: :request, singletenant: true, clean: true, flexible: :either do
   let(:admin) { FactoryBot.create(:admin) }
 
   before do

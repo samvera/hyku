@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'hyrax/dashboard/collections/_form_share.html.erb', type: :view do
+RSpec.describe 'hyrax/dashboard/collections/_form_share.html.erb', type: :view, flexible: :either do
   let(:template) { stub_model(Hyrax::PermissionTemplate) }
   let(:pt_form) do
     instance_double(Hyrax::Forms::PermissionTemplateForm,

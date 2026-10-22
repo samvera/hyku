@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-RSpec.describe UserStatCollectionJob, type: :job do
+RSpec.describe UserStatCollectionJob, type: :job, flexible: :either do
   before do
     ActiveJob::Base.queue_adapter = :test
     FactoryBot.create(:group, name: "public")

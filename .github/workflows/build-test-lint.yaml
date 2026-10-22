@@ -57,7 +57,7 @@ jobs:
         uses: haya14busa/action-cond@v1
         id: gitsha
         with:
-          cond: ${{ github.event_name == 'pull_request' }}
+          cond: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) }}
           if_true: ${{ github.event.pull_request.head.sha }}
           if_false: ${{ github.sha }}
       - name: Set env
@@ -115,7 +115,7 @@ jobs:
         uses: haya14busa/action-cond@v1
         id: gitsha
         with:
-          cond: ${{ github.event_name == 'pull_request' }}
+          cond: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) }}
           if_true: ${{ github.event.pull_request.head.sha }}
           if_false: ${{ github.sha }}
       - name: Set env
@@ -167,7 +167,7 @@ jobs:
         uses: haya14busa/action-cond@v1
         id: gitsha
         with:
-          cond: ${{ github.event_name == 'pull_request' }}
+          cond: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) }}
           if_true: ${{ github.event.pull_request.head.sha }}
           if_false: ${{ github.sha }}
       - name: Set env
@@ -203,6 +203,7 @@ jobs:
       workerTarget: hyku-worker
       # The second command checks spec/features too, which .rubocop.yml excludes; see bin/rubocop_flexible_tags.
       rubocop_cmd: "bundle exec rubocop --parallel --format progress && bin/rubocop_flexible_tags"
+      tag: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) && github.event.pull_request.head.sha || github.sha }}
 
   test:
     needs: push
@@ -214,6 +215,7 @@ jobs:
       node_index: "[0, 1, 2, 3, 4, 5]"
       node_total: "[6]"
       rspec_cmd: "bin/ci_rspec $CI_NODE_INDEX $CI_NODE_TOTAL"
+      tag: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) && github.event.pull_request.head.sha || github.sha }}
 
   single-tenant-test:
     needs: push
@@ -231,7 +233,7 @@ jobs:
         uses: haya14busa/action-cond@v1
         id: gitsha
         with:
-          cond: ${{ github.event_name == 'pull_request' }}
+          cond: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) }}
           if_true: ${{ github.event.pull_request.head.sha }}
           if_false: ${{ github.sha }}
       - name: Set env

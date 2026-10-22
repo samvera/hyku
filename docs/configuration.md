@@ -304,7 +304,7 @@ $ I18N_DEBUG=true bin/rails server
 
 ## S3 Like Storage
 
-You can upload your primary works to S3 in Valkyrie mode by turning on `REPOSITORY_S3_STORAGE` and setting the accompanying bucket and credentials variables. This enables both AWS S3 and other S3 like storage engines such as Minio. As of this writing this only affects Valkyrie resources and only the primary storage. Derivatives, uploads and branding assets all still go to the shared storage directories.
+You can upload your primary works to S3 in Valkyrie mode by turning on `REPOSITORY_S3_STORAGE` and setting the accompanying bucket and credentials variables. This enables both AWS S3 and other S3 like storage engines such as Minio. As of this writing this only affects Valkyrie resources and only the primary storage. Derivatives, uploads and branding assets all still go to the shared storage directories. To move files that are already on disk, see [Migrating original files to S3](migrating-files-to-s3.md).
 
 ```
 

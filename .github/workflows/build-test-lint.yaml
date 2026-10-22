@@ -57,7 +57,7 @@ jobs:
         uses: haya14busa/action-cond@v1
         id: gitsha
         with:
-          cond: ${{ github.event_name == 'pull_request' }}
+          cond: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) }}
           if_true: ${{ github.event.pull_request.head.sha }}
           if_false: ${{ github.sha }}
       - name: Set env
@@ -115,7 +115,7 @@ jobs:
         uses: haya14busa/action-cond@v1
         id: gitsha
         with:
-          cond: ${{ github.event_name == 'pull_request' }}
+          cond: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) }}
           if_true: ${{ github.event.pull_request.head.sha }}
           if_false: ${{ github.sha }}
       - name: Set env
@@ -167,7 +167,7 @@ jobs:
         uses: haya14busa/action-cond@v1
         id: gitsha
         with:
-          cond: ${{ github.event_name == 'pull_request' }}
+          cond: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) }}
           if_true: ${{ github.event.pull_request.head.sha }}
           if_false: ${{ github.sha }}
       - name: Set env
@@ -202,6 +202,7 @@ jobs:
       webTarget: hyku-web
       workerTarget: hyku-worker
       rubocop_cmd: "bundle exec rubocop --parallel --format progress"
+      tag: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) && github.event.pull_request.head.sha || github.sha }}
 
   test:
     needs: push
@@ -209,6 +210,7 @@ jobs:
     with:
       confdir: "/app/samvera/hyrax-webapp/solr/conf"
       rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
+      tag: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) && github.event.pull_request.head.sha || github.sha }}
 
   single-tenant-test:
     needs: push
@@ -226,7 +228,7 @@ jobs:
         uses: haya14busa/action-cond@v1
         id: gitsha
         with:
-          cond: ${{ github.event_name == 'pull_request' }}
+          cond: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) }}
           if_true: ${{ github.event.pull_request.head.sha }}
           if_false: ${{ github.sha }}
       - name: Set env

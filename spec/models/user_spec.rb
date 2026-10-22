@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe User, type: :model do
+RSpec.describe User, type: :model, flexible: :either do
   include ActiveSupport::Testing::TimeHelpers
 
   before do

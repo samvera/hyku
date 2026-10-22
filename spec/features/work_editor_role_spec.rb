@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 # For work approval permissions, see spec/features/work_approval_permissions_spec.rb
-RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 'skip' do
+RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 'skip', flexible: :either do
   include WorksHelper
 
   # `before`s and `let!`s are order-dependent -- do not move this `before` from the top
@@ -43,6 +43,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
           expect(page).to have_content(work.title.first)
         end
 
+        # Potential duplicate: spec/features/dashboard_my_works_spec.rb:55 ("works you own" header and own work listed)
         it 'can see works it deposited in the dashboard' do
           my_work = FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, depositor: work_editor.user_key, visibility_setting:, admin_set:)
           visit '/dashboard/my/works'
@@ -68,6 +69,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
       login_as work_editor
     end
 
+    # Potential duplicate: spec/features/dashboard_my_works_spec.rb:36 (Add New Work button on my works)
     it 'can see the "Add new work" button in the dashboard' do
       visit '/dashboard/my/works'
 
@@ -130,6 +132,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
       expect(page).to have_selector(:link_or_button, 'Edit')
     end
 
+    # Potential duplicate: spec/features/dashboard_my_works_spec.rb:161 (Edit action in my works row)
     it 'can see the edit button for works it creates on the dashboard index page' do
       FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, admin_set:, visibility_setting:, depositor: work_editor.user_key)
       visit '/dashboard/my/works'

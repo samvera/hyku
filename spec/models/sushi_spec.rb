@@ -1,6 +1,6 @@
 # frozen_string_literal:true
 
-RSpec.describe Sushi do
+RSpec.describe Sushi, flexible: :either do
   describe '#coerce_to_date' do
     subject { described_class.coerce_to_date(given_date) }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::DepositWizard::Presenter do
+RSpec.describe Hyku::DepositWizard::Presenter, flexible: :either do
   subject(:presenter) { described_class.new(context) }
 
   # Stands in for the controller the presenter delegates request primitives to.

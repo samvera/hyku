@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "account_sign_up/new", type: :view do
+RSpec.describe "account_sign_up/new", type: :view, flexible: :either do
   before do
     assign(:account, Account.new(
                        name: "MyString"

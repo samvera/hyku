@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe IdentityProvider, type: :model do
+RSpec.describe IdentityProvider, type: :model, flexible: :either do
   subject do
     described_class.new(
       name: 'SAML Test',

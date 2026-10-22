@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'actions permitted by the collection_reader role', type: :feature, js: true, clean: true, ci: 'skip' do # rubocop:disable Layout/LineLength
+RSpec.describe 'actions permitted by the collection_reader role', type: :feature, js: true, clean: true, ci: 'skip', flexible: :either do # rubocop:disable Layout/LineLength
   let(:role) { FactoryBot.create(:role, :collection_reader) }
   let(:collection) { FactoryBot.valkyrie_create(:hyku_collection, collection_type_gid:) }
   let(:collection_type_gid) { create(:collection_type).to_global_id.to_s }

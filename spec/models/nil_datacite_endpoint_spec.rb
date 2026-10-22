@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe NilDataCiteEndpoint do
+RSpec.describe NilDataCiteEndpoint, flexible: :either do
   describe '#switch!' do
     # Why test this?  Because the underlying datacite gem does not work with Hyrax 3.  And it would
     # be useful to demonstrate that switch! for a nil endpoint doesn't raise an exception.

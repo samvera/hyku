@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Hyrax do
+RSpec.describe Hyrax, flexible: :either do
   describe '.config' do
     subject { described_class.config }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Deposit wizard modes', type: :request, singletenant: true, clean: true do
+RSpec.describe 'Deposit wizard modes', type: :request, singletenant: true, clean: true, flexible: :either do
   let(:admin) { FactoryBot.create(:admin) }
 
   before do

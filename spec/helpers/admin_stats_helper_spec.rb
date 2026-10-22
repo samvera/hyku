@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe AdminStatsHelper do
+RSpec.describe AdminStatsHelper, flexible: :either do
   describe "#graph_tag" do
     subject { helper.graph_tag('work', data, {}) }
 

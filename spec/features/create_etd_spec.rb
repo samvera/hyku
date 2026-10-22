@@ -5,7 +5,7 @@
 require 'rails_helper'
 
 # NOTE: If you generated more than one work, you have to set "js: true"
-RSpec.describe 'Create a Etd', type: :feature, js: true, clean: true, cohort: 'bravo' do
+RSpec.describe 'Create a Etd', type: :feature, js: true, clean: true, cohort: 'bravo', flexible: :either do
   include Warden::Test::Helpers
 
   context 'a logged in user with the :work_depositor role' do

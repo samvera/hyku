@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe AppIndexer do
+RSpec.describe AppIndexer, flexible: :either do
   subject(:solr_document) { service.generate_solr_document }
 
   let(:service) { described_class.new(work) }

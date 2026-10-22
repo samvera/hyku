@@ -1,6 +1,6 @@
 # frozen_string_literal:true
 
-RSpec.describe Sushi::ItemReport do
+RSpec.describe Sushi::ItemReport, flexible: :either do
   subject { described_class.new(params, created:, account:).as_json }
 
   let(:account) { double(Account, institution_name: 'Pitt', institution_id_data: {}, cname: 'pitt.hyku.test') }

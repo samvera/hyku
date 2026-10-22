@@ -6,7 +6,7 @@
 # tenant flag must be stubbed before the first render and the sibling spec
 # renders in a top-level before.
 # @see Hyrax::Ability::TenantControlAbility
-RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
+RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view, flexible: :either do
   include Devise::Test::ControllerHelpers
 
   let(:presenter) { Hyrax::Admin::UsersPresenter.new }

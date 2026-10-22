@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::ThumbnailPresenter, type: :helper do
+RSpec.describe Hyku::ThumbnailPresenter, type: :helper, flexible: :either do
   let(:own_cname) { 'dev-hyku.localhost.direct' }
   let(:path) { '/downloads/abc123?file=thumbnail' }
 

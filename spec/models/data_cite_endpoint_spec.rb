@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe DataCiteEndpoint do
+RSpec.describe DataCiteEndpoint, flexible: :either do
   subject(:endpoint) { described_class.new mode: 'test', prefix: '10.1234', username: 'user123', password: 'pass123' }
 
   describe '.options' do

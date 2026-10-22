@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-RSpec.describe TenantMaintenanceJob, type: :job do
+RSpec.describe TenantMaintenanceJob, type: :job, flexible: :either do
   let(:account) { create(:account_with_public_schema) }
 
   describe '#reenqueue' do

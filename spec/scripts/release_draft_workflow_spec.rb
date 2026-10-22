@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe 'Draft Release Notes workflow' do
+RSpec.describe 'Draft Release Notes workflow', flexible: :either do
   let(:workflow) { File.read(Rails.root.join('.github', 'workflows', 'release-draft.yml')) }
 
   it 'does not trigger for version-file-only pushes' do

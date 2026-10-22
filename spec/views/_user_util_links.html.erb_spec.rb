@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe '/_user_util_links.html.erb', type: :view do
+RSpec.describe '/_user_util_links.html.erb', type: :view, flexible: :either do
   let(:user) { create(:user) }
   let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
   let(:admin_ability) { double(user_groups: ['admin']) }

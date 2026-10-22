@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'catalog/_index_header_list_default.html.erb', type: :view do
+RSpec.describe 'catalog/_index_header_list_default.html.erb', type: :view, flexible: :either do
   let(:document) do
     SolrDocument.new('id' => 'work1',
                      'has_model_ssim' => ['GenericWork'],

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Demo environment banner', type: :feature do
+RSpec.describe 'Demo environment banner', type: :feature, flexible: :either do
   let(:account) do
     FactoryBot.create(:account, :public_schema, :public_demo_tenant,
                       last_reset_at: Time.zone.parse('2026-07-05 08:00'))

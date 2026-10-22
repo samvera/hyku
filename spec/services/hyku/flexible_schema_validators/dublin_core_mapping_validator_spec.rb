@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::FlexibleSchemaValidators::DublinCoreMappingValidator do
+RSpec.describe Hyku::FlexibleSchemaValidators::DublinCoreMappingValidator, flexible: :either do
   subject(:validator) { described_class.new(context) }
   let(:context) { Hyrax::FlexibleSchemaValidators::ValidationContext.new(profile:) }
   let(:warnings) { validator.tap(&:validate!).violations.map(&:message) }

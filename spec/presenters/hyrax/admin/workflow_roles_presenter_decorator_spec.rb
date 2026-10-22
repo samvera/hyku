@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::Admin::WorkflowRolesPresenter, type: :decorator do
+RSpec.describe Hyrax::Admin::WorkflowRolesPresenter, type: :decorator, flexible: :either do
   subject { described_class.new }
 
   let(:number_of_groups) { 3 }

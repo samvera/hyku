@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: If want to run spec in browser, you have to set "js: true"
-RSpec.describe 'Creating a new Work', type: :feature, clean: true do
+RSpec.describe 'Creating a new Work', type: :feature, clean: true, flexible: :either do
   let(:user) { create(:user, roles: [:work_depositor]) }
 
   before do
@@ -13,6 +13,9 @@ RSpec.describe 'Creating a new Work', type: :feature, clean: true do
     login_as user, scope: :user
   end
 
+  # Potential duplicate: spec/features/homepage_spec.rb:128 (logged-in Share Your Work reaches the work form)
+  # Note: this passes without the click doing anything; the homepage already renders the work-type
+  # modal (with its "Create work" button), so the assertion holds before "Share Your Work" is clicked.
   it 'creates the work' do
     visit '/'
     click_link "Share Your Work"
@@ -44,6 +47,7 @@ RSpec.describe 'Creating a new Work', type: :feature, clean: true do
                agent_id: user.user_key)
       end
 
+      # Potential duplicate: spec/features/dashboard_my_works_spec.rb:36 (Add New Work button on my works)
       it 'can see the add new work button' do
         visit '/dashboard/my/works'
         expect(page).to have_link "Add New Work"

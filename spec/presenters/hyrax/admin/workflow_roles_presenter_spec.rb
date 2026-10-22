@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::Admin::WorkflowRolesPresenter do
+RSpec.describe Hyrax::Admin::WorkflowRolesPresenter, flexible: :either do
   let(:presenter) { described_class.new }
 
   describe "#users" do

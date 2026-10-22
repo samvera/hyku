@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ThemeHelper, type: :helper do
+RSpec.describe ThemeHelper, type: :helper, flexible: :either do
   describe '#theme_plain_text' do
     it 'strips tags revealed by unescaping so they cannot reconstitute as markup' do
       result = helper.theme_plain_text('&lt;b&gt;bold&lt;/b&gt;')

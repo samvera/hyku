@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::RegistrationsController, type: :controller do
+RSpec.describe Hyku::RegistrationsController, type: :controller, flexible: :either do
   before do
     allow_any_instance_of(Account).to receive(:allow_signup).and_return(account_signup_enabled)
     # Recommended by Devise: https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-%28and-RSpec%29

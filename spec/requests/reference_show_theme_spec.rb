@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'reference_show theme', type: :request, singletenant: true, clean_repo: true do
+RSpec.describe 'reference_show theme', type: :request, singletenant: true, clean_repo: true, flexible: :either do
   include Devise::Test::IntegrationHelpers
 
   let(:admin) { FactoryBot.create(:admin) }

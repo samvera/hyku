@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::FeaturedCollectionListsController, type: :controller do
+RSpec.describe Hyrax::FeaturedCollectionListsController, type: :controller, flexible: :either do
   describe "#create" do
     before do
       allow(controller).to receive(:authorize!).with(:update, FeaturedCollection)

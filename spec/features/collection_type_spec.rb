@@ -4,7 +4,7 @@
 # - Set :js to true because some specs require it
 # - Changed #sign_in to #login_as (#sign_in was throwing undefined method errors)
 # Other overrides are marked with an OVERRIDE comment
-RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
+RSpec.describe 'collection_type', type: :feature, js: true, clean: true, flexible: :either do
   let(:admin_user) { create(:admin) }
   let(:exhibit_title) { 'Exhibit' }
   let(:exhibit_description) { 'Description for exhibit collection type.' }
@@ -30,6 +30,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
     end
 
     # NOTE(bkiahstroud): set :js to false because the page can't see the modal Delete button if it's true
+    # Potential duplicate: spec/features/collection_management_spec.rb:475 (Edit/Delete buttons per collection type)
     it 'has page title and lists collection types', js: false do
       expect(page).to have_content 'Collection Types'
       expect(page).to have_content 'Admin Set'
@@ -180,6 +181,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         expect(manager_row_html).to include('<a class="btn btn-sm btn-danger disabled" disabled="disabled"')
       end
 
+      # Potential duplicate: spec/features/collection_management_spec.rb:579 (adding a participant via the Participants form)
       it 'shows an enabled remove button next to Repository Administrator group as a Creator' do
         # select the Repository Administrators, assign role 'Creator', and add it to the collection type
         select("Repository Administrators", from: 'collection_type_participant_agent_id')

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # OVERRIDE: Hyrax 5.0.x to add an additional spec to test the Sipity.Entity conversions with migration
 # This can be removed once code is ported back to Hyrax
-RSpec.describe Sipity do
+RSpec.describe Sipity, flexible: :either do
   describe '.Entity' do
     let(:user) { create(:user) }
     let(:workflow_state) { FactoryBot.create(:workflow_state) }

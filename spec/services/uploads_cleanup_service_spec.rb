@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe UploadsCleanupService do
+RSpec.describe UploadsCleanupService, flexible: :either do
   subject(:service) do
     described_class.new(
       delete_ingested_after_days: 180,

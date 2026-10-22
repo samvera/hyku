@@ -5,7 +5,7 @@
 require 'rails_helper'
 
 # NOTE: If you generated more than one work, you have to set "js: true"
-RSpec.describe 'Create a GenericWork', type: :feature, js: true, clean: true do
+RSpec.describe 'Create a GenericWork', type: :feature, js: true, clean: true, flexible: :either do
   include Warden::Test::Helpers
 
   context 'a logged in user with the :work_depositor role' do

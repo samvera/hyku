@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'hyrax/base/_download_pdf.html.erb', type: :view do
+RSpec.describe 'hyrax/base/_download_pdf.html.erb', type: :view, flexible: :either do
   # Stands in for a file set presenter: the partial only needs id, pdf? and to_param.
   let(:file_set_class) do
     Struct.new(:id, :pdf) do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe AdvSearchBuilder do
+RSpec.describe AdvSearchBuilder, flexible: :either do
   let(:scope) do
     double(blacklight_config: CatalogController.blacklight_config,
            current_ability: ability)

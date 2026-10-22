@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Runs one CI node's share of the spec suite, split by each example group's `flexible:` tag
+# (required by CustomCops/FlexibleMetadataTag):
+#
+#   node 0                  `flexible: true` examples, with flexible metadata on
+#   node 1                  `flexible: false` examples, with flexible metadata off
+#   nodes 2 to TOTAL - 1    `flexible: :either` examples, split across those nodes; each node picks
+#                           flexible on or off at random (set CI_FLEXIBLE=true or false to choose)
+#
+# Usage: bin/ci_rspec NODE_INDEX NODE_TOTAL    (NODE_INDEX counts from 0; NODE_TOTAL is at least 3)
+set -euo pipefail
+
+node_index=${1:?usage: bin/ci_rspec NODE_INDEX NODE_TOTAL}
+node_total=${2:?usage: bin/ci_rspec NODE_INDEX NODE_TOTAL}
+
+# spec/rails_helper.rb keeps only the examples tagged HYKU_TEST_ONLY_FLEXIBLE_TAG.
+case "$node_index" in
+  0) mode=true; tag=true ;;
+  1) mode=false; tag=false ;;
+  *)
+    if [ -n "${CI_FLEXIBLE:-}" ]; then
+      mode=$CI_FLEXIBLE
+    elif (( RANDOM % 2 )); then
+      mode=true
+    else
+      mode=false
+    fi
+    tag=either
+    ;;
+esac
+
+echo "======================================================================"
+echo " CI node ${node_index} of ${node_total}: flexible: ${tag} examples, HYKU_TEST_FLEXIBLE_METADATA=${mode}"
+echo " Rerun locally: HYKU_TEST_FLEXIBLE_METADATA=${mode} HYKU_TEST_ONLY_FLEXIBLE_TAG=${tag} bundle exec rspec"
+echo "======================================================================"
+
+export HYKU_TEST_FLEXIBLE_METADATA=$mode
+export HYKU_TEST_ONLY_FLEXIBLE_TAG=$tag
+bundle
+
+if [ "$node_index" -lt 2 ]; then
+  exec bundle exec rspec
+fi
+
+# rspec_booster numbers its jobs from 1.
+gem install semaphore_test_boosters
+exec rspec_booster --job "$((node_index - 1))/$((node_total - 2))"

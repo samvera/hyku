@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::Ranges, :clean_repo do
+RSpec.describe Hyku::Ranges, :clean_repo, flexible: :either do
   subject(:presenter) do
     Hyrax::IiifManifestPresenter.new(SolrDocument.find(work.id.to_s))
   end

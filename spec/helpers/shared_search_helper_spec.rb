@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe SharedSearchHelper do
+RSpec.describe SharedSearchHelper, flexible: :either do
   let(:helper) { _view }
 
   context "shared search records" do

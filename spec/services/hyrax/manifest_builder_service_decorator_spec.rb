@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::ManifestBuilderServiceDecorator do
+RSpec.describe Hyrax::ManifestBuilderServiceDecorator, flexible: :either do
   subject(:service) { Hyrax::ManifestBuilderService.new }
 
   describe 'sanitizing manifest strings with ranges on' do

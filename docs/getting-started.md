@@ -82,6 +82,111 @@ Start off by setting up a local development environment where you can experiment
     docker compose down
     ```
 
+### Running the Tests
+
+Run the specs inside the `web` container:
+
+```bash
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && RAILS_ENV=test bundle exec rspec'
+```
+
+#### Flexible and non-flexible metadata runs
+
+The suite runs **without** flexible metadata by default, regardless of any `HYRAX_FLEXIBLE` value
+set for development. To run it **with** flexible metadata, set `HYKU_TEST_FLEXIBLE_METADATA=true`:
+
+```bash
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && HYKU_TEST_FLEXIBLE_METADATA=true RAILS_ENV=test bundle exec rspec'
+```
+
+Every spec file's top-level `describe` must say which mode it runs in:
+
+| Tag | Runs in | Use it for |
+|---|---|---|
+| `flexible: :either` | both modes | most specs: behavior that doesn't depend on the metadata mode |
+| `flexible: true` | flexible mode only | behavior that only exists with flexible metadata on |
+| `flexible: false` | non-flexible mode only | behavior that only exists, or currently only works, with flexible metadata off |
+
+An inner `describe`, `context` or `it` can override the file's tag, for example
+`it 'shows the custom Etd labels', flexible: false do`. Examples tagged `flexible: false` that carry a
+"Fails in flexible mode … behavior gap" comment pass today only with flexible metadata off; they mark
+places where flexible mode may be missing behavior.
+
+Every test run answers two separate questions, each with its own setting:
+
+1. **Which way does the app start up?** Set `HYKU_TEST_FLEXIBLE_METADATA`.
+   - `true` starts the app with flexible metadata on.
+   - `false`, or leaving it unset, starts it with flexible metadata off.
+
+   This changes the app itself.
+2. **Which tests do you want to run?** Set `HYKU_TEST_ONLY_FLEXIBLE_TAG`.
+   - Set it to `true`, `false` or `either` to run only the specs with that `flexible:` tag.
+   - Leave it unset to run every spec that makes sense for the way the app started:
+     `false` and `either` with flexible metadata off, `true` and `either` with it on.
+
+   This doesn't change the app. It only picks tests.
+
+Examples (run inside the `web` container, as above):
+
+- **Everything, flexible metadata off:**
+  ```bash
+  RAILS_ENV=test bundle exec rspec
+  ```
+- **Everything, flexible metadata on:**
+  ```bash
+  HYKU_TEST_FLEXIBLE_METADATA=true RAILS_ENV=test bundle exec rspec
+  ```
+- **Just the `either` specs, flexible metadata on:**
+  ```bash
+  HYKU_TEST_FLEXIBLE_METADATA=true HYKU_TEST_ONLY_FLEXIBLE_TAG=either RAILS_ENV=test bundle exec rspec
+  ```
+
+Run the suite with flexible metadata off and on to cover both modes.
+
+**Why two settings?** The `either` specs are supposed to work whichever way the app starts, so CI
+sometimes runs them with flexible metadata on and sometimes with it off. One setting says "start the app
+this way", the other says "run these tests", and for `either` specs the two answers don't match.
+
+Day to day you'll mostly use only `HYKU_TEST_FLEXIBLE_METADATA`. The second setting is mainly for CI, and
+for rerunning exactly what a CI node ran: the node's log prints the full command (see `spec/rails_helper.rb`
+for how the filter works).
+
+RuboCop enforces the tag (`CustomCops/FlexibleMetadataTag`, in `lib/rubocop/flexible_metadata_tag.rb`).
+`.rubocop.yml` excludes `spec/features` from RuboCop, so check every spec file, and add
+`flexible: :either` to any that are missing it, with:
+
+```bash
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && bin/rubocop_flexible_tags'
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && bin/rubocop_flexible_tags -a'
+```
+
+This format is intended to be extensible to other configurations that Hyku is able to enable.
+
+#### CI
+
+The main `test` job runs on six nodes, split by the `flexible:` tag (see `bin/ci_rspec`):
+
+| Node | Examples | Flexible metadata |
+|---|---|---|
+| 0 | `flexible: true` | on |
+| 1 | `flexible: false` | off |
+| 2–5 | `flexible: :either`, split across the four nodes | on or off, chosen at random per node |
+
+Each node prints its mode at the top of its log, with the command to rerun it locally. To force the
+random nodes into one mode, set `CI_FLEXIBLE=true` or `CI_FLEXIBLE=false`. Because those nodes pick a
+mode at random, an `:either` spec that fails only in one mode fails on about half of the runs; rerun it
+locally in the mode the log shows.
+
+The `lint` job also runs `bin/rubocop_flexible_tags`, so a spec file without a `flexible:` tag fails CI.
+
+#### Watching browser (JavaScript) specs
+
+Specs tagged `js: true` run in a real Chrome browser in the `chrome` container, which you can
+watch live from your own browser at
+[https://chrome-hyku.localhost.direct](https://chrome-hyku.localhost.direct)
+(`https://chrome-${APP_NAME}.localhost.direct`). The VNC password is `secret`. Specs without
+`js: true` do not use a browser, so the window stays idle while they run.
+
 ### Additional Docker Options
 
 #### Configuration

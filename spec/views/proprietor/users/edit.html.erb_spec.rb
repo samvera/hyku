@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe "proprietor/users/edit", type: :view do
+RSpec.describe "proprietor/users/edit", type: :view, flexible: :either do
   let!(:proprietor_user) do
     assign(:user,
            User.create!(

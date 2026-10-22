@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Valkyrie::Indexing::Solr::IndexingAdapterDecorator do
+RSpec.describe Valkyrie::Indexing::Solr::IndexingAdapterDecorator, flexible: :either do
   let(:adapter) { Valkyrie::IndexingAdapter.find(:solr_index) }
   let(:own_connection) { instance_double(RSolr::Client, delete_by_id: nil, delete_by_query: nil, commit: nil) }
   let(:other_tenant_connection) { instance_double(RSolr::Client, delete_by_id: nil, delete_by_query: nil, commit: nil) }

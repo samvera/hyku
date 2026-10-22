@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::IiifManifestPresenter::DisplayImagePresenter do
+RSpec.describe Hyrax::IiifManifestPresenter::DisplayImagePresenter, flexible: :either do
   let(:presenter) { described_class.new(work) }
   let(:work) { double(GenericWork) }
 

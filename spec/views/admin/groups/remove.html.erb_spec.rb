@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'admin/groups/remove', type: :view do
+RSpec.describe 'admin/groups/remove', type: :view, flexible: :either do
   include Warden::Test::Helpers
   include Devise::Test::ControllerHelpers
 

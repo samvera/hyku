@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true do
+RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true, flexible: :either do
   include Warden::Test::Helpers
 
   context 'as an admin user' do
@@ -43,6 +43,7 @@ RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true d
       expect(find("tr##{user.email.parameterize} td.site-roles")).to have_text(collection_manager_role.name.titlecase)
     end
 
+    # Potential duplicate: spec/features/manage_users_and_groups_spec.rb:55 (invites a user via the email form)
     it 'can visit Manage Users and invite users with the admin role' do
       expect(page).to have_content 'Add or Invite user via email'
       expect(

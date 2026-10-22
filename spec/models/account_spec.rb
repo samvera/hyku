@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Account, type: :model do
+RSpec.describe Account, type: :model, flexible: :either do
   subject(:account) { Account.new }
 
   let(:cache_enabled) { false }

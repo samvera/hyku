@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::Mods::MappingPath do
+RSpec.describe Hyku::Mods::MappingPath, flexible: :either do
   def steps_for(mapping)
     described_class.parse(mapping).steps.map(&:to_h)
   end

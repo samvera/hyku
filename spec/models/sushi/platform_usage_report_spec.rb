@@ -1,6 +1,6 @@
 # frozen_string_literal:true
 
-RSpec.describe Sushi::PlatformUsageReport do
+RSpec.describe Sushi::PlatformUsageReport, flexible: :either do
   let(:account) { double(Account, institution_name: 'Pitt', institution_id_data: {}, cname: "pitt.edu") }
   let(:created) { Time.zone.now }
   let(:required_parameters) do

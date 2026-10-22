@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/ModuleLength
 module Hyrax
-  RSpec.describe Group, type: :model, clean: true do
+  RSpec.describe Group, type: :model, clean: true, flexible: :either do
     describe '.new' do
       context 'when provided a string' do
         it 'instantiates with the string as the name' do

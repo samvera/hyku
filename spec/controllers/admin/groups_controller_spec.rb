@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Admin::GroupsController, singletenant: true do
+RSpec.describe Admin::GroupsController, singletenant: true, flexible: :either do
   context 'as an anonymous user' do
     describe 'GET #index' do
       subject { get :index }

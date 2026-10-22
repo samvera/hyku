@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "proprietor/accounts/edit", type: :view do
+RSpec.describe "proprietor/accounts/edit", type: :view, flexible: :either do
   before do
     assign(:account, account)
     render

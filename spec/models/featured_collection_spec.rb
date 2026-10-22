@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe FeaturedCollection do
+RSpec.describe FeaturedCollection, flexible: :either do
   describe '.feature_limit' do
     subject { described_class.feature_limit }
 

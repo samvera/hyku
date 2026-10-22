@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe AccountSignUpController, type: :controller do
+RSpec.describe AccountSignUpController, type: :controller, flexible: :either do
   let(:user) {}
 
   before do

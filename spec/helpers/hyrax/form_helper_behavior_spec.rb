@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::FormHelperBehavior, type: :helper do
+RSpec.describe Hyrax::FormHelperBehavior, type: :helper, flexible: :either do
   describe '#controlled_vocabulary_source_for' do
     context 'when flexible=false' do
       before do

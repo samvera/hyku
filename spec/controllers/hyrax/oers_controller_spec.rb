@@ -3,7 +3,7 @@
 #  `rails generate hyrax:work Oer`
 require 'rails_helper'
 
-RSpec.describe Hyrax::OersController do
+RSpec.describe Hyrax::OersController, flexible: :either do
   it "has tests" do
     skip "Add your tests here"
   end

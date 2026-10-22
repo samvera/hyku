@@ -1,6 +1,6 @@
 # frozen_string_literal:true
 
-RSpec.describe Sushi::PlatformReport do
+RSpec.describe Sushi::PlatformReport, flexible: :either do
   subject { described_class.new(params, created:, account:).to_hash }
 
   let(:account) { double(Account, institution_name: 'Pitt', institution_id_data: {}, cname: 'pitt.hyku.test') }

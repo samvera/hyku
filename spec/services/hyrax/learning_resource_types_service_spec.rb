@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-RSpec.describe Hyrax::LearningResourceTypesService do
+RSpec.describe Hyrax::LearningResourceTypesService, flexible: :either do
   describe "select_options" do
     subject { described_class.select_all_options }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe CreateAccountInlineJob do
+RSpec.describe CreateAccountInlineJob, flexible: :either do
   let(:account) { FactoryBot.create(:account) }
 
   describe '#perform' do

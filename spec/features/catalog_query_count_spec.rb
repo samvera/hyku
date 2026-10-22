@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Catalog query performance', type: :feature, clean: true, js: false do
+RSpec.describe 'Catalog query performance', type: :feature, clean: true, js: false, flexible: :either do
   def make_work(title)
     {
       'has_model_ssim' => 'GenericWork',

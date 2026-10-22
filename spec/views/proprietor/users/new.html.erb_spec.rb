@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe "proprietor/users/new", type: :view do
+RSpec.describe "proprietor/users/new", type: :view, flexible: :either do
   before do
     assign(:user, User.new(
                     email: "email@example.com",

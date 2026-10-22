@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe NilSolrEndpoint do
+RSpec.describe NilSolrEndpoint, flexible: :either do
   let(:instance) { described_class.new }
 
   describe "#ping" do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ControlledVocabularyTermLoad, clean: true do
+RSpec.describe ControlledVocabularyTermLoad, clean: true, flexible: :either do
   let(:vocabulary) { Qa::LocalAuthority.create!(name: "loader_#{SecureRandom.hex(4)}", label: 'Loader') }
   let(:entry) { ControlledVocabularyCatalog.find!(vocabulary.name) }
 

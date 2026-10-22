@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'User self-registration spam challenge', type: :request, singletenant: true do
+RSpec.describe 'User self-registration spam challenge', type: :request, singletenant: true, flexible: :either do
   let(:account) do
     Account.new do |a|
       a.build_solr_endpoint

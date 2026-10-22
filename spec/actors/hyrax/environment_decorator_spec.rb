@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::Actors::Environment, type: :decorator do
+RSpec.describe Hyrax::Actors::Environment, type: :decorator, flexible: :either do
   let(:curation_concern) { double('curation_concern') }
   let(:current_ability) { double('current_ability') }
   let(:attributes) { {} }

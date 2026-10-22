@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'controlled vocabulary label indexing' do
+RSpec.describe 'controlled vocabulary label indexing', flexible: :either do
   let(:vocabulary) do
     Qa::LocalAuthority.find_or_create_by!(name: 'plan_test_vocab') { |a| a.label = 'Plan Test Vocab' }
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::WorkThumbnailPathService, type: :decorator do
+RSpec.describe Hyrax::WorkThumbnailPathService, type: :decorator, flexible: :either do
   describe '.default_image' do
     context 'when the site has a default work image' do
       let(:image) { '/assets/site_default_work_image.png' }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'hyrax/my/works/_deposit_actions.html.erb', type: :view do
+RSpec.describe 'hyrax/my/works/_deposit_actions.html.erb', type: :view, flexible: :either do
   let(:create_work_presenter) { double('SelectTypeListPresenter', many?: false, first_model: GenericWorkResource) }
 
   before do

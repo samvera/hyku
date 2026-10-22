@@ -3,7 +3,7 @@
 require 'rake'
 load Rails.root.join('app', 'models', 'site.rb')
 
-RSpec.describe "Rake tasks" do
+RSpec.describe "Rake tasks", flexible: :either do
   before(:all) do
     Rails.application.load_tasks if Rake::Task.tasks.empty?
   end

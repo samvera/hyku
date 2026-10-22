@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::Transactions::WorkUpdateDecorator, type: :decorator do
+RSpec.describe Hyrax::Transactions::WorkUpdateDecorator, type: :decorator, flexible: :either do
   subject(:transaction) { Hyrax::Transactions::WorkUpdate.new }
 
   it 'uses the overridden DEFAULT_STEPS' do

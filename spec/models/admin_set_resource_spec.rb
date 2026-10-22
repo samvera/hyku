@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe AdminSetResource do
+RSpec.describe AdminSetResource, flexible: :either do
   subject(:admin_set) { FactoryBot.valkyrie_create(:hyku_admin_set) }
   let!(:resource) { FactoryBot.valkyrie_create(:generic_work_resource, admin_set_id: admin_set.id) }
 

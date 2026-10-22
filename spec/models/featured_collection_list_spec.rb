@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe FeaturedCollectionList, :clean_repo, type: :model do
+RSpec.describe FeaturedCollectionList, :clean_repo, type: :model, flexible: :either do
   subject { described_class.new }
 
   let(:user) { create(:user).tap { |u| u.add_role(:admin, Site.instance) } }

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RolesService, clean: true do
+RSpec.describe RolesService, clean: true, flexible: :either do
   subject(:roles_service) { described_class }
   let(:admin_group) { FactoryBot.create(:admin_group) }
   let(:default_role_count) { described_class::DEFAULT_ROLES.count }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'identity_providers/_form', type: :view do
+RSpec.describe 'identity_providers/_form', type: :view, flexible: :either do
   before do
     # stub omniauth providers since the form iterates over them
     allow(Devise).to receive(:omniauth_providers).and_return(%i[saml cas openid_connect])

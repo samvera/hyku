@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-RSpec.describe Hyrax::AudienceService do
+RSpec.describe Hyrax::AudienceService, flexible: :either do
   describe "select_options" do
     subject { described_class.select_all_options }
 

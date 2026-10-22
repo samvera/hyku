@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::FileSetMetadata do
+RSpec.describe Hyku::FileSetMetadata, flexible: :either do
   subject(:presenter) { Hyrax::IiifManifestPresenter.new(SolrDocument.new(id: 'w1', has_model_ssim: ['GenericWork'])) }
 
   let(:file_set) { SolrDocument.new(id: 'fs1', has_model_ssim: ['FileSet'], mime_type_ssi: 'image/jpeg') }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::Statistic do
+RSpec.describe Hyrax::Statistic, flexible: :either do
   let(:file) { double(id: 'file-1') } # rubocop:disable RSpec/VerifiedDoubles
 
   def advance(date)

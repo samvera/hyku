@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Qa::LocalAuthorityEntry, type: :model do
+RSpec.describe Qa::LocalAuthorityEntry, type: :model, flexible: :either do
   let(:authority) { Qa::LocalAuthority.create!(name: 'lab_names') }
 
   it "belongs to a local authority" do

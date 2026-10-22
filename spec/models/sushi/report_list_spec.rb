@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Sushi::ReportList do
+RSpec.describe Sushi::ReportList, flexible: :either do
   describe '#as_json' do
     subject { described_class.new.as_json }
 

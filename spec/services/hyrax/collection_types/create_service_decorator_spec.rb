@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::CollectionTypes::CreateService, type: :decorator do
+RSpec.describe Hyrax::CollectionTypes::CreateService, type: :decorator, flexible: :either do
   let(:added_participants) do
     {
       agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,

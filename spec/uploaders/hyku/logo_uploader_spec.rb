@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::LogoUploader do
+RSpec.describe Hyku::LogoUploader, flexible: :either do
   include ActiveSupport::Testing::TimeHelpers
 
   let(:account) { build(:account) }

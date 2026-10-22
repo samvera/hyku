@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Admin::AccountsController, type: :controller do
+RSpec.describe Admin::AccountsController, type: :controller, flexible: :either do
   let(:user) {}
 
   before do

@@ -5,7 +5,7 @@ require 'rails_helper'
 # The order rides on the sequence of the term_ids[] fields, so what gets saved is
 # whatever DOM the script leaves behind — nothing the server rendered can be checked
 # instead.
-RSpec.describe 'Reordering a vocabulary\'s terms', type: :feature, js: true, clean: true, ci: 'skip' do
+RSpec.describe 'Reordering a vocabulary\'s terms', type: :feature, js: true, clean: true, ci: 'skip', flexible: :either do
   let(:user) { FactoryBot.create(:admin) }
 
   # Named per-run rather than fixed: a create! here has to be the only claim on the

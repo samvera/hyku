@@ -5,7 +5,7 @@
 require 'rails_helper'
 require 'hyrax/specs/shared_specs/hydra_works'
 
-RSpec.describe GenericWorkResource do
+RSpec.describe GenericWorkResource, flexible: :either do
   subject(:work) { described_class.new }
 
   # TODO: Register a test adapter

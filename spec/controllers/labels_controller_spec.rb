@@ -18,7 +18,7 @@
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-RSpec.describe LabelsController, type: :controller do
+RSpec.describe LabelsController, type: :controller, flexible: :either do
   before do
     sign_in user
   end

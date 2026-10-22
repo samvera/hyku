@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PracticeResearchHelper, type: :helper do
+RSpec.describe PracticeResearchHelper, type: :helper, flexible: :either do
   describe '#pr_card_blurb' do
     it 'uses the description' do
       presenter = double('presenter', description: ['A commission for Dairy Primary School.'])

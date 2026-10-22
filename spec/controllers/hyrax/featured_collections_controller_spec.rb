@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::FeaturedCollectionsController, type: :controller do
+RSpec.describe Hyrax::FeaturedCollectionsController, type: :controller, flexible: :either do
   describe "#create" do
     before do
       sign_in create(:user)

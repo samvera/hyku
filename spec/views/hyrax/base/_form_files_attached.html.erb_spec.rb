@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'hyrax/base/_form_files_attached.html.erb', type: :view do
+RSpec.describe 'hyrax/base/_form_files_attached.html.erb', type: :view, flexible: :either do
   let(:work_form) { double('WorkForm') }
   let(:form) { double('FormBuilder', object: work_form) }
 

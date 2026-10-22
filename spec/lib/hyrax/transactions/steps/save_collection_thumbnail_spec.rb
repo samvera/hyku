@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Hyrax::Transactions::Steps::SaveCollectionThumbnail do
+RSpec.describe Hyrax::Transactions::Steps::SaveCollectionThumbnail, flexible: :either do
   subject(:step) { described_class.new }
 
   let(:collection_resource) { FactoryBot.valkyrie_create(:hyrax_collection) }

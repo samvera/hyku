@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Hyku reserved redirect prefixes', type: :request do
+RSpec.describe 'Hyku reserved redirect prefixes', type: :request, flexible: :either do
   # Hyku adds tenant-host routes to Hyrax.config.reserved_redirect_prefixes
   # in config/initializers/hyrax.rb so they cannot be claimed as redirect
   # aliases. This spec verifies those additions are present.

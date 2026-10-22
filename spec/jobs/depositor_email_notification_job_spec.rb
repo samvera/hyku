@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe DepositorEmailNotificationJob do
+RSpec.describe DepositorEmailNotificationJob, flexible: :either do
   let(:account) { create(:account_with_public_schema) }
   let(:receipt) { FactoryBot.create(:mailboxer_receipt, receiver: user) }
   let!(:message) { receipt.notification }

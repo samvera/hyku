@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Admin::UsersController, type: :controller do
+RSpec.describe Admin::UsersController, type: :controller, flexible: :either do
   context 'as an anonymous user' do
     let(:user) { FactoryBot.create(:user) }
 

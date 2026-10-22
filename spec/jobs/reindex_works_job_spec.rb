@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ReindexWorksJob do
+RSpec.describe ReindexWorksJob, flexible: :either do
   describe '#perform (bulk reindex)' do
     let(:work_classes) { [GenericWorkResource, ImageResource] }
 

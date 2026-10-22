@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe NilRedisEndpoint do
+RSpec.describe NilRedisEndpoint, flexible: :either do
   let(:instance) { described_class.new }
 
   describe "#ping" do

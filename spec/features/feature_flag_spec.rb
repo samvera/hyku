@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # These tests appear to fail because of concurrency; namely Flipflop features are being toggled on
 # and off.
-RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clean: true, cohort: 'bravo' do
+RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clean: true, cohort: 'bravo', flexible: :either do
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:account) { FactoryBot.create(:account) }
 
@@ -30,6 +30,7 @@ RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clea
 
   context 'as a repository admin' do
     skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/notch8/palni-palci/issues/933'
+    # Potential duplicate: spec/features/homepage_spec.rb:161 (featured/recent works on the homepage; xdescribe, CI-skipped)
     it 'has a setting for featured works' do
       login_as admin
       visit 'admin/features'
@@ -79,6 +80,7 @@ RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clea
 
   context 'when all home tabs and share work features are turned off' do
     skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/notch8/palni-palci/issues/933'
+    # Potential duplicate: spec/features/admin_settings_spec.rb:352 (toggles show-featured-researcher; xdescribe'd)
     it 'the page only shows the collections tab' do
       login_as admin
       visit 'admin/features'

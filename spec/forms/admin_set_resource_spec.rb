@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'valkyrie/specs/shared_specs'
 
-RSpec.describe AdminSetResourceForm do
+RSpec.describe AdminSetResourceForm, flexible: :either do
   let(:change_set) { described_class.new(resource) }
   let(:resource)   { AdminSetResource.new }
 

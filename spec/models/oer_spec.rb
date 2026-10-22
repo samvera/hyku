@@ -4,7 +4,7 @@
 require 'rails_helper'
 require 'order_already/spec_helper'
 
-RSpec.describe Oer do
+RSpec.describe Oer, flexible: :either do
   # include_examples('includes OrderMetadataValues')
 
   describe '#iiif_print_config#pdf_splitter_service' do

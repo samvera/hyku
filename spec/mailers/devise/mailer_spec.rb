@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Devise::Mailer, type: :mailer do
+RSpec.describe Devise::Mailer, type: :mailer, flexible: :either do
   let(:user) { build(:user) }
   let(:token) { '123456' }
 

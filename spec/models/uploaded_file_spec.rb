@@ -4,7 +4,7 @@
 # and simulating the AWS configuration that would be in production.
 
 # rubocop:disable Layout/LineLength
-RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
+RSpec.describe 'Hyrax::UploadedFile', flexible: :either do # rubocop:disable RSpec/DescribeClass
   let(:file) { File.open(file_fixture_path + '/images/world.png') }
   let(:upload) { Hyrax::UploadedFile.create(file:) }
   let(:config) { CarrierWave.configure { |c| c } }

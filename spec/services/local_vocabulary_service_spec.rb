@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe LocalVocabularyService do
+RSpec.describe LocalVocabularyService, flexible: :either do
   describe '.default_label' do
     it 'uses the label the vocabulary carries' do
       expect(described_class.default_label('oer_types', 'label' => 'OER Types')).to eq 'OER Types'

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe GroupAwareRoleChecker, clean: true do
+RSpec.describe GroupAwareRoleChecker, clean: true, flexible: :either do
   subject(:ability) { user.ability }
 
   let(:user) { FactoryBot.create(:user) }

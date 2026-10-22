@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Hyrax::ContactMailer, type: :mailer do
+RSpec.describe Hyrax::ContactMailer, type: :mailer, flexible: :either do
   let(:account) { FactoryBot.create(:account) }
   let(:contact_form) do
     Hyrax::ContactForm.new(

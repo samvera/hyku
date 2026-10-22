@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Qa::Authorities::LocalVocabulary do
+RSpec.describe Qa::Authorities::LocalVocabulary, flexible: :either do
   subject(:authority) { Qa::Authorities::Local.subauthority_for('audience') }
 
   let(:yml_terms) { YAML.load_file(Rails.root.join('config', 'authorities', 'audience.yml'))['terms'] }

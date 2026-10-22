@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'themes/neutral_repository/_featured_carousel.html.erb', type: :view do
+RSpec.describe 'themes/neutral_repository/_featured_carousel.html.erb', type: :view, flexible: :either do
   let(:work) do
     SolrDocument.new('id' => 'work1',
                      'has_model_ssim' => ['GenericWork'],

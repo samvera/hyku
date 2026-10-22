@@ -2,7 +2,7 @@
 
 # Pins the label rendering Hyku relies on Hyrax for, so a Hyku override cannot
 # quietly reclaim it.
-RSpec.describe 'controlled label rendering' do
+RSpec.describe 'controlled label rendering', flexible: :either do
   let(:labels) { { 'oer' => 'OER' } }
 
   def rendered(klass, field, values, options = {})

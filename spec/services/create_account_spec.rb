@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe CreateAccount, clean: true do
+RSpec.describe CreateAccount, clean: true, flexible: :either do
   subject { described_class.new(account) }
 
   let(:account) { FactoryBot.build(:sign_up_account) }

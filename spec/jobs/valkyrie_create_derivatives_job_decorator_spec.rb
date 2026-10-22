@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ValkyrieCreateDerivativesJobDecorator, type: :job do
+RSpec.describe ValkyrieCreateDerivativesJobDecorator, type: :job, flexible: :either do
   before { ActiveJob::Base.queue_adapter = :test }
   after  { clear_enqueued_jobs }
 

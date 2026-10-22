@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Editing a vocabulary in place', type: :feature, js: true, clean: true do
+RSpec.describe 'Editing a vocabulary in place', type: :feature, js: true, clean: true, flexible: :either do
   let(:account) { FactoryBot.create(:account_with_public_schema) }
   let(:admin) { FactoryBot.create(:admin) }
   let(:vocabulary_path) { '/dashboard/controlled_vocabularies/inline_edit_rooms' }

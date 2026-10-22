@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe HykuIndexing do
+RSpec.describe HykuIndexing, flexible: :either do
   # A parent work aggregates its child works' full text into `all_text_tsimv`.
   # The aggregation reads each child's already-indexed `all_text_tsimv` from
   # Solr rather than re-deriving every child file set's derivative from disk on

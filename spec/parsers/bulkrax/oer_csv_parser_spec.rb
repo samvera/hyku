@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 module Bulkrax
-  RSpec.describe OerCsvParser do
+  RSpec.describe OerCsvParser, flexible: :either do
     subject           { CsvParser.new(importer) }
 
     let(:importer)    { FactoryBot.create(:bulkrax_importer_oer_csv) }

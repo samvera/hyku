@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::AvatarUploader do
+RSpec.describe Hyku::AvatarUploader, flexible: :either do
   include ActiveSupport::Testing::TimeHelpers
 
   let(:account) { build(:account) }

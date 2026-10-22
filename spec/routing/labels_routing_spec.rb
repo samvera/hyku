@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe LabelsController, type: :routing do
+RSpec.describe LabelsController, type: :routing, flexible: :either do
   describe "routing" do
     it "routes to #edit" do
       expect(get: "/site/labels/edit").to route_to("labels#edit")

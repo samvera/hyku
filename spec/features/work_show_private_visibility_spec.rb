@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Users trying to access a Private Work's show page", type: :feature, clean: true, js: true do # rubocop:disable Layout/LineLength
+RSpec.describe "Users trying to access a Private Work's show page", type: :feature, clean: true, js: true, flexible: :either do # rubocop:disable Layout/LineLength
   let(:id) { SecureRandom.uuid }
   let(:visibility) { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE }
   let(:work) { double(GenericWork, id: id, visibility: visibility) }

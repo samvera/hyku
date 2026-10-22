@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Users trying to search for a Private Work', type: :feature, clean: true, js: true do
+RSpec.describe 'Users trying to search for a Private Work', type: :feature, clean: true, js: true, flexible: :either do
   let(:fake_solr_document) do
     {
       'has_model_ssim': ['GenericWork'],

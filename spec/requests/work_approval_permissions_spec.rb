@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Work approval permissions', type: :request, singletenant: true, clean: true do
+RSpec.describe 'Work approval permissions', type: :request, singletenant: true, clean: true, flexible: :either do
   include WorksHelper
 
   let(:user) { FactoryBot.create(:user) }

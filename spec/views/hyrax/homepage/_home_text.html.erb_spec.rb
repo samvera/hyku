@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "hyrax/homepage/_home_text.html.erb", type: :view do
+RSpec.describe "hyrax/homepage/_home_text.html.erb", type: :view, flexible: :either do
   subject { rendered }
 
   let(:groups) { [] }

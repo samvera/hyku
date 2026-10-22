@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ReindexCollectionsJob do
+RSpec.describe ReindexCollectionsJob, flexible: :either do
   describe '#perform' do
     let(:collection_classes) { [CollectionResource] }
 

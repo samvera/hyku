@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Groups', type: :feature, js: true, clean: true do
+RSpec.describe 'Groups', type: :feature, js: true, clean: true, flexible: :either do
   let!(:managers_group) { FactoryBot.create(:admin_group, roles: ['admin', 'dinosaur']) }
   let!(:user) { FactoryBot.create(:admin) }
   let!(:users_group) { FactoryBot.create(:group, name: 'users') }
@@ -21,6 +21,7 @@ RSpec.describe 'Groups', type: :feature, js: true, clean: true do
       end
     end
 
+    # Potential duplicate: spec/features/manage_users_and_groups_spec.rb:306 (removes a non-default group via Remove)
     it 'can destroy a non-default group' do
       visit "/admin/groups/#{users_group.id}/remove"
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Admin::RolesServiceController, type: :routing do
+RSpec.describe Admin::RolesServiceController, type: :routing, flexible: :either do
   describe "routing" do
     it "routes to #index" do
       expect(get: "/admin/roles_service").to route_to("admin/roles_service#index")

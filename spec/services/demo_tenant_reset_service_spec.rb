@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe DemoTenantResetService do
+RSpec.describe DemoTenantResetService, flexible: :either do
   let(:account) { FactoryBot.create(:demo_account) }
   let(:snapshot) do
     {

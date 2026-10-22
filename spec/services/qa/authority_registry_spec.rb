@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Asserts what the qa gem reports about itself, with no Hyku fixtures, so these
 # examples travel with the class if it is ever contributed upstream.
-RSpec.describe Qa::AuthorityRegistry do
+RSpec.describe Qa::AuthorityRegistry, flexible: :either do
   describe '.remote_services' do
     subject(:services) { described_class.remote_services }
 

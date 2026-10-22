@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::Statistics::Works::OverTime, type: :decorator do
+RSpec.describe Hyrax::Statistics::Works::OverTime, type: :decorator, flexible: :either do
   describe "#points" do
     let(:x_min) { Time.zone.parse("2026-03-01 00:00:00") }
     let(:x_max) { x_min + 1.day }

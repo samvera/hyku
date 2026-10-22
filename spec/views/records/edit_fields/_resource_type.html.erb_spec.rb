@@ -3,7 +3,7 @@
 # A term retired after a work stored it has no option of its own, so the browser posts
 # the select without it and the value is lost on the next save. These render the real
 # partial to confirm the option is both present and selected.
-RSpec.describe 'records/edit_fields/_resource_type', type: :view do
+RSpec.describe 'records/edit_fields/_resource_type', type: :view, flexible: :either do
   let(:work) { ImageResource.new }
   let(:form) { Hyrax::Forms::ResourceForm.for(resource: work) }
   let(:active_term) { Hyrax::ResourceTypesService.select_active_options.first.last }

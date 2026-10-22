@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Augment the v5.0.0 tests to account for Hyku specific scenarios
-RSpec.describe 'collection', type: :feature, js: true, clean: true do
+RSpec.describe 'collection', type: :feature, js: true, clean: true, flexible: :either do
   let(:user) { create(:user) }
   # OVERRIDE: new (non-hyrax) test cases below
 
@@ -81,6 +81,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
       context 'when the Repository Administrators group is given DEPOSIT access' do
         let(:access) { Hyrax::PermissionTemplateAccess::DEPOSIT }
 
+        # Potential duplicate: spec/features/collection_management_spec.rb:424 (enabled Remove buttons in sharing tables; ci: 'skip' there)
         it 'renders an enabled remove button' do
           depositors_row = find(:css, 'table.depositors-table td[data-agent="admin"]')
                            .find(:xpath, '..')

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::HomePageThemesBehavior do
+RSpec.describe Hyku::HomePageThemesBehavior, flexible: :either do
   describe '#inject_theme_views' do
     context 'Hyrax::ContactFormController' do
       it 'responds to #inject_theme_views' do

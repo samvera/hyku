@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Controlled vocabulary imports', type: :request, clean: true, multitenant: true do
+RSpec.describe 'Controlled vocabulary imports', type: :request, clean: true, multitenant: true, flexible: :either do
   let(:account) { create(:account) }
 
   # Users and roles are per-tenant, so an admin created outside the switch has no

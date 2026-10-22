@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe NilSite do
+RSpec.describe NilSite, flexible: :either do
   let(:instance) { described_class.instance }
 
   describe "#instance" do

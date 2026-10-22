@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::DepositWizard::Config do
+RSpec.describe Hyku::DepositWizard::Config, flexible: :either do
   describe 'defaults (bare Hyku)' do
     subject(:config) { described_class.new }
 
@@ -218,7 +218,7 @@ RSpec.describe Hyku::DepositWizard::Config do
   end
 end
 
-RSpec.describe Hyku::DepositWizard do
+RSpec.describe Hyku::DepositWizard, flexible: :either do
   after { described_class.reset_config! }
 
   it 'defaults to a flat Config instance' do

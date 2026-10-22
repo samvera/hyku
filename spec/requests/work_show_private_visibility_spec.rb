@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Users trying to access a Private Work's show page", type: :request, clean: true, multitenant: true do
+RSpec.describe "Users trying to access a Private Work's show page", type: :request, clean: true, multitenant: true, flexible: :either do
   let(:account) { create(:account) }
   let(:work) { create(:work, visibility: 'restricted') }
   let(:tenant_user_attributes) { attributes_for(:user) }

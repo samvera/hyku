@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Admin::RolesServiceController, type: :controller do
+RSpec.describe Admin::RolesServiceController, type: :controller, flexible: :either do
   context 'as an anonymous user' do
     describe 'GET #index' do
       subject { get :index }

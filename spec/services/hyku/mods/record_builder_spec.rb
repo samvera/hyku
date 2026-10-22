@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::Mods::RecordBuilder do
+RSpec.describe Hyku::Mods::RecordBuilder, flexible: :either do
   subject(:xml) { Nokogiri::XML(builder.to_xml) }
 
   let(:builder) { described_class.new(document, mappings:, item_url:, thumbnail_url: nil) }

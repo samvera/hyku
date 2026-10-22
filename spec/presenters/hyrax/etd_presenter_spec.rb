@@ -3,7 +3,7 @@
 #  `rails generate hyrax:work Etd`
 require 'rails_helper'
 
-RSpec.describe Hyrax::EtdPresenter do
+RSpec.describe Hyrax::EtdPresenter, flexible: :either do
   it "has tests" do
     skip "Add your tests here"
   end

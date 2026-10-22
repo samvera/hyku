@@ -3,7 +3,7 @@
 require 'cancan/matchers'
 
 # rubocop:disable RSpec/FilePath
-RSpec.describe Hyrax::Ability::UserAbility do
+RSpec.describe Hyrax::Ability::UserAbility, flexible: :either do
   # rubocop:enable RSpec/FilePath
   subject { ability }
 

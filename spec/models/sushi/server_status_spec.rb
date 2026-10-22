@@ -1,6 +1,6 @@
 # frozen_string_literal:true
 
-RSpec.describe Sushi::ServerStatus do
+RSpec.describe Sushi::ServerStatus, flexible: :either do
   describe '#server_status' do
     subject { described_class.new(account:).server_status }
 

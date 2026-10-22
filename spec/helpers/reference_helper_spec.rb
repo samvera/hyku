@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ReferenceHelper, type: :helper do
+RSpec.describe ReferenceHelper, type: :helper, flexible: :either do
   describe '#ref_creators' do
     it 'joins the names with semicolons, since a name may itself hold a comma' do
       object = double('object', creator: ['Wolcott, Marion Post', 'Hine, Lewis Wickes'])

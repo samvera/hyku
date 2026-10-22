@@ -3,7 +3,7 @@
 # Exercised against the real Hyrax::FlexibleCatalogBehavior rather than a
 # hand-built field config, since what the catalog does with a controlled property
 # is decided by the profile at load time.
-RSpec.describe 'catalog rendering of controlled vocabulary labels' do
+RSpec.describe 'catalog rendering of controlled vocabulary labels', flexible: :either do
   let(:catalog) do
     Class.new(CatalogController) do
       include Hyrax::FlexibleCatalogBehavior

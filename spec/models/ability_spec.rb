@@ -2,7 +2,7 @@
 
 require 'cancan/matchers'
 
-RSpec.describe Ability do
+RSpec.describe Ability, flexible: :either do
   subject { ability }
 
   let(:ability) { described_class.new(user) }

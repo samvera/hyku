@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'hyrax/base/relationships', type: :view do
+RSpec.describe 'hyrax/base/relationships', type: :view, flexible: :either do
   let(:user) { FactoryBot.create(:user) }
   let(:ability) { Ability.new(user) }
   let(:parent_works) { [] }

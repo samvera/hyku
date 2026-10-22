@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Hyrax::ModelRegistry do
+RSpec.describe Hyrax::ModelRegistry, flexible: :either do
   describe '.work_class_names' do
     subject { described_class.work_class_names }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe BlacklightRangeLimit::RangeFacetComponentDecorator do
+RSpec.describe BlacklightRangeLimit::RangeFacetComponentDecorator, flexible: :either do
   let(:controller) do
     Hyrax::HomepageController.new.tap do |c|
       c.request = ActionDispatch::TestRequest.create

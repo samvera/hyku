@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
+RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true, flexible: :either do
   routes { Hyrax::Engine.routes }
 
   describe "#index" do

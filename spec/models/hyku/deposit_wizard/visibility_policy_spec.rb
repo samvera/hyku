@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::DepositWizard::VisibilityPolicy do
+RSpec.describe Hyku::DepositWizard::VisibilityPolicy, flexible: :either do
   described = Hyku::DepositWizard::VisibilityPolicy
   open = described::OPEN
   authenticated = described::AUTHENTICATED

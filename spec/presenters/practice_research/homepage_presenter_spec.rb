@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo do
+RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo, flexible: :either do
   let(:ability) { ::Ability.new(nil) }
   let(:scope) do
     Struct.new(:blacklight_config, :current_ability, :params, :search_state_class)

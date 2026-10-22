@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Practice Research themes', type: :feature, js: true, clean: true do
+RSpec.describe 'Practice Research themes', type: :feature, js: true, clean: true, flexible: :either do
   let(:account) { FactoryBot.create(:account_with_public_schema) }
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
 

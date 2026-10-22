@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: If want to run spec in browser, you have to set "js: true"
-RSpec.describe 'Site labels configuration', type: :feature, clean: true do
+RSpec.describe 'Site labels configuration', type: :feature, clean: true, flexible: :either do
   context 'as an administrator' do
     let(:user) { FactoryBot.create(:admin) }
 
@@ -10,6 +10,7 @@ RSpec.describe 'Site labels configuration', type: :feature, clean: true do
     end
 
     describe 'application name' do
+      # Potential duplicate: spec/features/admin_settings_spec.rb:16 (saves the labels and shows them on the site)
       it 'updates the application name in the brand bar' do
         visit edit_site_labels_path
         fill_in 'Application name', with: 'Custom Name'

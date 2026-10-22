@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'hyrax/base/iiif_viewers/_ramp.html.erb', type: :view do
+RSpec.describe 'hyrax/base/iiif_viewers/_ramp.html.erb', type: :view, flexible: :either do
   let(:presenter) { double('WorkShowPresenter', iiif_viewer: :ramp) }
 
   before do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Home page', type: :request do
+RSpec.describe 'Home page', type: :request, flexible: :either do
   context 'with multitenancy', multitenant: true do
     describe 'GET /' do
       context 'on the primary host' do

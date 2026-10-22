@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, multitenant: true do
+RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, multitenant: true, flexible: :either do
   let(:account) { create(:account) }
   let(:account2) { create(:account) }
   let(:tenant_user_attributes) { attributes_for(:user) }

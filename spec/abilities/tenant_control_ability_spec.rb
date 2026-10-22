@@ -3,7 +3,7 @@
 require 'cancan/matchers'
 
 # rubocop:disable RSpec/FilePath
-RSpec.describe Hyrax::Ability::TenantControlAbility do
+RSpec.describe Hyrax::Ability::TenantControlAbility, flexible: :either do
   # rubocop:enable RSpec/FilePath
   subject { ability }
   let(:tenant_superadmin) { FactoryBot.create(:tenant_superadmin) }

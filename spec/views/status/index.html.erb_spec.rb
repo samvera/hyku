@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "status/index", type: :view do
+RSpec.describe "status/index", type: :view, flexible: :either do
   let(:account) { create(:account) }
 
   context "when Wings is enabled" do

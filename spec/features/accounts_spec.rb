@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: If want to run spec in browser, you have to set "js: true"
-RSpec.describe 'Accounts administration', multitenant: true do
+RSpec.describe 'Accounts administration', multitenant: true, flexible: :either do
   context 'as an superadmin' do
     let(:user) { FactoryBot.create(:superadmin) }
     let(:account) do
@@ -39,6 +39,7 @@ RSpec.describe 'Accounts administration', multitenant: true do
       expect(account.cname).to eq 'example.com'
     end
 
+    # Potential duplicate: spec/features/admin_tenant_management_spec.rb:264 (edit form saves endpoint URLs)
     it 'changes the account service endpoints' do
       visit edit_proprietor_account_path(account)
 

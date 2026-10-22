@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe CreateRedisNamespaceJob do
+RSpec.describe CreateRedisNamespaceJob, flexible: :either do
   let(:account) { FactoryBot.create(:account) }
 
   describe '#perform' do

@@ -94,6 +94,11 @@ module Hyrax
     # Added from Blacklight 6.23.0 to change url for facets on home page
     protected
 
+    # Short so cached HTML ages out soon after a deploy changes asset digests.
+    def cache_control
+      expires_in 5.minutes, public: true
+    end
+
     # Default route to the search action (used e.g. in global partials). Override this method
     # in a controller or in your ApplicationController to introduce custom logic for choosing
     # which action the search form should use

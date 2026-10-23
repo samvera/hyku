@@ -652,9 +652,6 @@ body.digital_collection_show.hyrax-collections-show {
       @include dc-badge(danger);
     }
 
-    .copy-permalink-button {
-      @include dc-button(small, $on: dark);
-    }
   }
 
   .dc-collection-title {
@@ -698,6 +695,31 @@ body.digital_collection_show.hyrax-collections-show {
       &:focus-visible {
         @include dc-focus-ring($on: dark);
       }
+    }
+  }
+
+  .dc-collection-meta .copy-permalink-button {
+    background: none;
+    border: 0;
+    border-radius: $dc-radius-text;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: $dc-underline-offset;
+    vertical-align: baseline;
+
+    &::before {
+      content: '\f0c1';
+      display: inline-block;
+      font-family: FontAwesome;
+      margin-right: $dc-space-1;
+      text-decoration: none;
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring($on: dark, $radius: $dc-radius-text);
     }
   }
 
@@ -766,8 +788,8 @@ body.digital_collection_show.hyrax-collections-show {
       }
     }
 
-    .copy-permalink-button {
-      @include dc-button(small);
+    .dc-collection-meta .copy-permalink-button:focus-visible {
+      @include dc-focus-ring($radius: $dc-radius-text);
     }
 
     .dc-collection-search-form .form-control:focus-visible,

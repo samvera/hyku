@@ -478,13 +478,14 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
       expect(featured.at_css('.dc-collection-actions a[data-behavior="unfeature"]')['class']).not_to include('collapse')
     end
 
-    it 'offers Copy link beside the badges when the feature is on' do
+    it 'offers Copy permalink at the end of the details line, not among the badges, when the feature is on' do
       allow(Flipflop).to receive(:enabled?).and_call_original
       allow(Flipflop).to receive(:enabled?).with(:copy_permalink_button).and_return(true)
 
       get "/collections/#{collection.id}"
 
-      expect(doc.at_css('.dc-collection-badges button.copy-permalink-button')).to be_present
+      expect(doc.at_css('p.dc-collection-meta > button.copy-permalink-button:last-child')).to be_present
+      expect(doc.at_css('.dc-collection-badges .copy-permalink-button')).to be_nil
     end
 
     it 'gives an editor one row of short, translated actions' do

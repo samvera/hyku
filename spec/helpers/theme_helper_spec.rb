@@ -153,6 +153,12 @@ RSpec.describe ThemeHelper, type: :helper do
 
       expect(helper.theme_type_label(object)).to eq('Generic Work')
     end
+
+    it 'translates the model name in the current language' do
+      document = SolrDocument.new(id: 'w1', has_model_ssim: ['ImageResource'])
+
+      expect(I18n.with_locale(:es) { helper.theme_type_label(document) }).to eq('Imagen')
+    end
   end
 
   describe '#theme_license_badge' do

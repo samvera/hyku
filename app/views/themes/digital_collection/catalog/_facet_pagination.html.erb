@@ -1,0 +1,20 @@
+<%# OVERRIDE Blacklight 7.43.0: "A to Z" and "Most results" sort choices as a joined toggle with the current one marked, and Previous and Next without the « and » marks %>
+<% facet_field = facet_field_presenter(@facet, @display_facet) %>
+<% paginator = facet_field.paginator %>
+<% if paginator %>
+  <% search = facet_field.search_state.to_h %>
+  <% page_param = paginator.class.request_keys[:page] %>
+  <div class="dc-facet-sort" role="group" aria-label="<%= t('digital_collection.search.results.facet_sort_label') %>">
+    <% [['index', t('digital_collection.homepage.browse.sort_asc')], ['count', t('digital_collection.search.results.facet_sort_count')]].each do |key, label| %>
+      <% current = paginator.sort == key %>
+      <%= link_to label, paginator.params_for_resort_url(key, search), class: "dc-control#{' active' if current}",
+                  'aria-current': (current ? 'true' : nil), data: { blacklight_modal: 'preserve' } %>
+    <% end %>
+  </div>
+  <% previous_label = t('digital_collection.search.results.previous') %>
+  <% next_label = t('digital_collection.search.results.next') %>
+  <nav class="dc-facet-pager" aria-label="<%= t('digital_collection.search.results.facet_pages_label') %>">
+    <%= link_to_previous_page(paginator, previous_label, params: search, param_name: page_param, class: 'dc-control', data: { blacklight_modal: 'preserve' }) { tag.span(previous_label, class: 'dc-control disabled', 'aria-disabled': 'true') } %>
+    <%= link_to_next_page(paginator, next_label, params: search, param_name: page_param, class: 'dc-control', data: { blacklight_modal: 'preserve' }) { tag.span(next_label, class: 'dc-control disabled', 'aria-disabled': 'true') } %>
+  </nav>
+<% end %>

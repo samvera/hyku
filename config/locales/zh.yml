@@ -188,6 +188,7 @@ zh:
     formats:
       long: "%Y年%-m月%-d日"
       pr_short: "%Y年%-m月%-d日"
+      short: "%Y年%-m月%-d日"
   errors:
     messages:
       valid_embed_url: 必须是有效的YouTube或Vimeo嵌入URL。
@@ -246,17 +247,6 @@ zh:
         sub: 将作品存缴至本仓储。
         button: 开始存缴
     show:
-      citation:
-        heading: "引用"
-        style: "引用格式"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "复制引用"
-        copied: "已复制"
-        endnote: "下载 EndNote 记录"
-        note: "仅供参考。请根据您所用的格式指南进行核对。"
       files:
         as_format: 为 %{name}
         heading: 文件
@@ -911,6 +901,9 @@ zh:
         roles:
           remove:
             confirmation: 您确定要从用户“%{user}”中删除角色“%{role}”吗？
+    users:
+      activity_log:
+        no_user_activity: "无用户活动"
   permissions:
     collections:
       cannot:
@@ -986,17 +979,8 @@ zh:
         one: 1 个条目
         other: "%{count} 个条目"
       relationships: 关联
-      cite: 引用
-      endnote: 下载 EndNote 格式
       permalink: 永久链接
       contributors: 贡献者
-      citation_style: 引用格式
-      citation_styles:
-        apa: APA（第7版）
-        mla: MLA（第9版）
-        chicago: 芝加哥格式
-      citation_copy: 复制
-      citation_copied: 已复制
   proprietor:
     accounts:
       edit:
@@ -1130,16 +1114,266 @@ zh:
         children: "子作品"
       part_of:
         heading: "所属"
-      citation:
-        heading: "引用"
-        style: "引用格式"
-        endnote: "导出到 EndNote"
-        copy: "复制"
-        copied: "已复制"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
+  digital_collection:
+    form:
+      required: "（必填）"
+    account:
+      sign_in:
+        title: "登录"
+        submit: "登录"
+      forgot_password:
+        title: "忘记密码？"
+        submit: "发送重置密码说明"
+      change_password:
+        title: "修改密码"
+        password: "新密码"
+        password_confirmation: "确认新密码"
+        minimum_length: "至少 %{count} 个字符"
+        submit: "修改我的密码"
+      sign_up:
+        title: "创建新帐号"
+        submit: "创建帐号"
+      single_signon:
+        title: "选择单点登录提供方"
+        redirecting: "正在为您跳转，请稍候…"
+    file_set:
+      actions:
+        delete: "删除此文件集"
+        edit: "编辑此文件集"
+      activity: "活动"
+      description: "描述"
+      details:
+        date_modified: "修改日期"
+        date_uploaded: "上传日期"
+        depositor: "提交者"
+        dimensions: "尺寸"
+        dimensions_value: "%{width} × %{height} 像素"
+        fixity: "完整性检查"
+        format: "文件格式"
+        heading: "文件详情"
+        size: "文件大小"
+      generate_link: "生成下载链接"
+      share:
+        email: "电子邮件"
+        facebook: "Facebook"
+        label: "分享"
+        x: "X"
+      technical:
+        alpha_channels: "Alpha 通道"
+        byte_order: "字节顺序"
+        capture_device: "采集设备"
+        color_map: "颜色映射"
+        color_space: "色彩空间"
+        compression: "压缩"
+        duration: "时长"
+        file_format: "文件格式"
+        file_size: "文件大小"
+        file_title: "文件标题"
+        filename: "文件名"
+        format_label: "格式标签"
+        gps_timestamp: "GPS 时间戳"
+        heading: "技术详情"
+        height: "高度"
+        image_producer: "图像制作者"
+        last_modified: "最后修改"
+        latitude: "纬度"
+        longitude: "经度"
+        mime_type: "MIME 类型"
+        orientation: "方向"
+        original_checksum: "原始校验和"
+        page_count: "页数"
+        profile_name: "配置文件名称"
+        profile_version: "配置文件版本"
+        sample_rate: "采样率"
+        scanning_software: "扫描软件"
+        well_formed: "格式正确"
+        width: "宽度"
+      user_activity: "用户活动"
+    work:
+      actions:
+        select: "选择此作品"
+        header: "作品操作"
+        feature: "在首页推荐"
+        unfeature: "从首页移除"
+      copy_citation: "复制引用"
+      part_of:
+        admin_set:
+          one: "管理集"
+          other: "管理集"
+        collection:
+          one: "收藏"
+          other: "收藏"
+        parent_work:
+          one: "上级作品"
+          other: "上级作品"
+    chrome:
+      account_label:
+        zero: "%{name}"
+        one: "%{name}，1 条未读通知"
+        other: "%{name}，%{count} 条未读通知"
+      announcement_label: "公告"
+      language: "语言"
+      masthead_label: "网站导航"
+      menu:
+        zero: "菜单"
+        one: "菜单，1 条未读通知"
+        other: "菜单，%{count} 条未读通知"
+      notifications:
+        zero: "通知"
+        one: "通知（1）"
+        other: "通知（%{count}）"
+      signed_in_as: "已登录为"
+      signed_in_as_name: "已登录为 %{name}"
+    homepage:
+      intro_label: "简介"
+      hero:
+        label: "精选馆藏"
+        headline: "探索馆藏"
+        featured_collection: "精选馆藏"
+        hold: "暂停"
+        resume: "播放"
+        segment: "第 %{number} 张：%{title}"
+        slide: "第 %{number} 张，共 %{total} 张"
+      featured_collections:
+        heading: "精选合集"
+        unfeature_confirm: "要将此合集从精选列表中移除吗？"
+        reorder_hint: "拖动以重新排列精选合集。"
+        save_order: "保存排序"
+        remove: "从精选馆藏中移除 %{title}"
+        empty_admin: "尚未推荐任何合集。打开一个合集并选择“在首页推荐”，即可在首页横幅中显示。最多可推荐 %{limit} 个。"
+      browse:
+        heading: "浏览馆藏"
+        grid: "网格"
+        list: "列表"
+        view_label: "馆藏显示选项"
+        sort: "排序"
+        sort_asc: "A 到 Z"
+        sort_desc: "Z 到 A"
+        sort_aria: "按标题排序，当前为%{direction}。激活以反转。"
+        previous: "上一页"
+        next: "下一页"
+        page: "第 %{number} 页"
+        pages_label: "馆藏页面"
+        status: "显示 %{total} 个馆藏中的 %{shown} 个，第 %{page} 页，共 %{pages} 页，%{view}视图，%{sort}排序。"
+        works_count:
+          one: "%{count} 件作品"
+          other: "%{count} 件作品"
+        empty: "尚未添加任何馆藏。"
+        all: "浏览全部馆藏"
+      featured:
+        heading: "精选作品"
+        unfeature_confirm: "要将此作品从精选列表中移除吗？"
+        reorder_hint: "拖动以重新排列精选作品。"
+        save_order: "保存顺序"
+        remove: "从精选作品中移除 %{title}"
+        empty_admin: "尚未推荐任何作品。打开一个作品并选择“在首页推荐”，即可在此处列出。最多可推荐 %{limit} 个。"
+      recent:
+        heading: "最近添加"
+        view_all: "查看全部最新作品"
+      about:
+        heading: "关于馆藏"
+      cta:
+        eyebrow: "贡献"
+        heading: "分享您的作品"
+        sub: "将材料存入资料库。"
+        button: "开始提交"
+      stats:
+        collections:
+          one: "馆藏"
+          other: "馆藏"
+        works:
+          one: "作品"
+          other: "作品"
+    search:
+      advanced: "高级搜索"
+      submit: "搜索"
+      results:
+        heading: "搜索结果"
+        summary:
+          zero: "没有结果"
+          one: "%{formatted} 条结果"
+          other: "%{formatted} 条结果"
+        summary_query:
+          zero: "没有“%{query}”的结果"
+          one: "“%{query}”的 %{formatted} 条结果"
+          other: "“%{query}”的 %{formatted} 条结果"
+        filter_heading: "筛选结果"
+        applied:
+          one: "已应用 %{count} 个筛选条件"
+          other: "已应用 %{count} 个筛选条件"
+        range_html: "第 <strong>%{first}–%{last}</strong> 条，共 <strong>%{total}</strong> 条"
+        sort_label: "排序方式"
+        per_page_label: "每页"
+        previous: "上一页"
+        next: "下一页"
+        more_html: "更多<span class=\"sr-only\">%{field_name}</span>"
+        range_from: "起"
+        range_to: "止"
+        range_larger: "在更大的窗口中选择日期"
+        range_missing: "未注明日期"
+        facet_sort_label: "排序选项"
+        facet_sort_count: "结果最多"
+        facet_pages_label: "选项分页"
+        query_label: "搜索"
+        collection: "馆藏"
+        no_results:
+          heading: "请尝试其他搜索"
+          tips:
+            - "检查搜索词的拼写。"
+            - "使用更少或更宽泛的词语。"
+            - "移除一个筛选条件以扩大搜索范围。"
+        clear_all: "清除搜索和筛选"
+        any_of: "以下任一"
+        remove_value: "移除 %{value}"
+        match_html: "匹配以下字段中的%{op}："
+        from: "来自："
+        fields:
+          creator: "创建者"
+          date: "日期"
+          part_of: "所属"
+          resource_type: "资源类型"
+          description: "描述"
+          works: "作品"
+    advanced:
+      match_html: "查找符合以下字段中 %{select_menu} 条件的条目"
+      match_label: "匹配全部或任一字段"
+      limits: "并且具有以下属性"
+      tips:
+        heading: "搜索提示"
+        items:
+          - "选择“全部”以要求匹配所有字段。"
+          - "选择“任一”以匹配至少一个字段。"
+          - "结合关键词和属性来查找特定条目。"
+          - "按日期搜索时请使用 YYYYMMDD、YYYYMM 或 YYYY 格式。不要使用“-”、“/”或其他特殊字符。"
+          - "使用引号搜索完整短语。"
+          - "在词语前加“+”表示必须包含该词。（否则结果可能只包含部分搜索词。）"
+          - "在词语或短语前加“-”以排除。"
+          - "使用“OR”、“AND”和“NOT”构建复杂的布尔逻辑，可在表达式中使用括号。"
+          - "不支持截词和通配符，系统会自动匹配词形变化。"
+    collection:
+      actions:
+        add_to_collection: "添加到收藏"
+        add_works: "添加作品"
+        feature: "在首页推荐"
+        unfeature: "从首页移除"
+      created_by: "创建者：%{creator}"
+      date_format: "%Y年%-m月%-d日"
+      details: "收藏详情"
+      items:
+        one: "%{count} 个项目"
+        other: "%{count} 个项目"
+      search_placeholder: "在此收藏中搜索"
+      updated: "最后更新：%{date}"
+      no_results: "此收藏中没有与“%{query}”匹配的内容。"
+      search_results: "搜索结果（%{number}）"
+      subcollections: "子收藏（%{number}）"
+      works: "此收藏中的作品（%{number}）"
+      logo: "%{title} 标志"
+    show:
+      breadcrumbs: "面包屑导航"
+      new_tab: "（在新标签页中打开）"
+      part_of:
+        heading: 所属
   screening_room:
     chrome:
       toggle_navigation: 切换导航
@@ -1182,17 +1416,6 @@ zh:
         unfeature_confirm: 从精选列表中移除此作品？
         view_work: 查看作品
     show:
-      citation:
-        copied: 已复制
-        copy_visible: 复制引用
-        endnote: 下载 EndNote 记录
-        heading: 引用
-        note: 仅供参考，请对照您常用的引用格式核对。
-        style: 引用格式
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 个项目

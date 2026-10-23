@@ -11,8 +11,10 @@ module Hyku
 
     def inject_show_theme_views
       if show_page_theme && show_page_theme != 'default_show'
-        Hyku::Application.theme_view_path_roots.each do |root|
-          prepend_view_path(File.join(root, 'app', 'views', 'themes', show_page_theme.to_s))
+        [Hyku::ChromeThemes.companion(show_page_theme), show_page_theme].compact.each do |theme|
+          Hyku::Application.theme_view_path_roots.reverse_each do |root|
+            prepend_view_path(File.join(root, 'app', 'views', 'themes', theme.to_s))
+          end
         end
       end
       yield

@@ -1,13 +1,13 @@
 <% citations = all_authors(presenter).any? ? theme_citations(presenter) : {} %>
 <section class="ref-panel ref-cite" aria-labelledby="ref-cite-label">
-  <h2 class="ref-panel-label" id="ref-cite-label"><%= t('reference.show.citation.heading') %></h2>
+  <h2 class="ref-panel-label" id="ref-cite-label"><%= t('hyrax.base.citations.header') %></h2>
 
   <% if citations.any? %>
     <div data-citation>
       <select class="ref-cite-picker" data-citation-picker
-              aria-label="<%= t('reference.show.citation.style') %>">
+              aria-label="<%= t('hyrax.base.citations.style') %>">
         <% citations.each_key do |style| %>
-          <option value="<%= style %>"><%= t("reference.show.citation.styles.#{style}") %></option>
+          <option value="<%= style %>"><%= t("hyrax.citations.work.#{style}") %></option>
         <% end %>
       </select>
 
@@ -17,15 +17,15 @@
       <% end %>
 
       <button type="button" class="ref-cite-copy" data-citation-copy>
-        <%= t('reference.show.citation.copy') %>
+        <%= t('hyrax.base.citations.copy') %>
       </button>
       <span class="ref-cite-copied" data-citation-copied aria-live="polite" hidden>
-        <%= t('reference.show.citation.copied') %>
+        <%= t('hyrax.base.citations.copied') %>
       </span>
     </div>
   <% end %>
 
-  <%= link_to t('reference.show.citation.endnote'),
+  <%= link_to t('hyrax.base.citations.endnote'),
               polymorphic_path([main_app, presenter], format: 'endnote'),
               class: 'ref-cite-export' %>
 </section>

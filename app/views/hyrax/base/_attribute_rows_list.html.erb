@@ -8,7 +8,7 @@
   <% render_field = conform_field(field, options) %>
   <%# A field with no reader (e.g. a compound with no entries, which is not indexed) is empty; skip it rather than log a missing-method warning %>
   <% next unless presenter.respond_to?(render_field) %>
-  <% view_options = conform_options(field, options) %>
+  <% view_options = conform_options(field, options.deep_dup.with_indifferent_access) %>
   <%# keeps admin_note behavior for backward compatibility... should be in metadata but may not be %>
   <% if field.to_sym == :admin_note %>
     <%= presenter.attribute_to_html(render_field, view_options) if presenter.editor? %>

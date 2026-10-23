@@ -67,12 +67,12 @@ RSpec.describe Hyrax::AnalyticsDecorator do
     end
   end
 
-  it "falls back to the app wide IDs for a tenant without its own" do
+  it "tracks with the app wide ID but reports from no shared property for a tenant without its own" do
     ENV['GOOGLE_ANALYTICS_PROPERTY_ID'] = '999999999'
     Apartment::Tenant.switch!(account_c.tenant)
 
     expect(Hyrax::Analytics.config.analytics_id).to eq(global_id)
-    expect(Hyrax::Analytics.config.property_id).to eq('999999999')
+    expect(Hyrax::Analytics.config.property_id).to be_blank
   end
 
   it "keeps the current tenant's settings after another tenant's account loads" do

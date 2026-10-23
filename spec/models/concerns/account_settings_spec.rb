@@ -187,9 +187,33 @@ RSpec.describe AccountSettings do
       context 'when analytics credentials are functionally available' do
         before do
           allow(account).to receive(:analytics_functionally_available?).and_return(true)
+          allow(account).to receive(:analytics_credentials_present?).and_return(true)
         end
 
         it 'enables analytics and analytics_reporting in Hyrax config' do
+          expect(config).to receive(:analytics=).with(true)
+          expect(config).to receive(:analytics_reporting=).with(true)
+
+          account.configure_hyrax_analytics_settings(config)
+        end
+      end
+
+      context 'when only the ENV property is available' do
+        before do
+          allow(account).to receive(:analytics_functionally_available?).and_return(true)
+          allow(account).to receive(:analytics_credentials_present?).and_return(false)
+        end
+
+        it 'keeps tracking but disables reporting on a multitenant install' do
+          allow(Hyku).to receive(:single_tenant?).and_return(false)
+          expect(config).to receive(:analytics=).with(true)
+          expect(config).to receive(:analytics_reporting=).with(false)
+
+          account.configure_hyrax_analytics_settings(config)
+        end
+
+        it 'enables reporting on a single-tenant install' do
+          allow(Hyku).to receive(:single_tenant?).and_return(true)
           expect(config).to receive(:analytics=).with(true)
           expect(config).to receive(:analytics_reporting=).with(true)
 
@@ -431,6 +455,7 @@ RSpec.describe AccountSettings do
   describe 'Hyrax::Analytics.config ids across tenants' do
     let(:analytics_config) { Hyrax::Analytics.config }
     let!(:original_ids) { [analytics_config.analytics_id, analytics_config.property_id] }
+    let!(:original_reporting) { Hyrax.config.analytics_reporting? }
 
     before do
       account
@@ -441,6 +466,7 @@ RSpec.describe AccountSettings do
     after do
       analytics_config.analytics_id = original_ids.first
       analytics_config.property_id = original_ids.last
+      Hyrax.config.analytics_reporting = original_reporting
     end
 
     it 'clears the previous tenant\'s ids when this tenant has no analytics' do
@@ -448,6 +474,50 @@ RSpec.describe AccountSettings do
 
       expect(analytics_config.analytics_id).to be_blank
       expect(analytics_config.property_id).to be_blank
+    end
+
+    context 'when only ENV has a property' do
+      before do
+        allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('G-SHARED')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('999999999')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+        allow(account).to receive(:google_analytics_id).and_return('')
+        allow(account).to receive(:google_analytics_property_id).and_return('')
+      end
+
+      it 'does not point a multitenant tenant\'s reports at the shared property' do
+        allow(Hyku).to receive(:single_tenant?).and_return(false)
+        account.send(:reload_hyrax_analytics)
+
+        expect(analytics_config.property_id).to be_blank
+        expect(Hyrax.config.analytics_reporting?).to be false
+      end
+
+      context 'when ENV also enables reports' do
+        before do
+          allow(Hyku).to receive(:single_tenant?).and_return(false)
+          allow(ENV).to receive(:[]).and_call_original
+          allow(ENV).to receive(:[]).with('GOOGLE_ACCOUNT_JSON').and_return('{}')
+          allow(ENV).to receive(:fetch).with('HYRAX_ANALYTICS_REPORTING', '').and_return('true')
+          allow(ENV).to receive(:fetch).with('HYRAX_ANALYTICS_REPORTING', false).and_return('true')
+          Hyku::PerThread.reset!
+        end
+
+        after { Hyku::PerThread.reset! }
+
+        it 'keeps reports off on a multitenant install' do
+          account.send(:reload_hyrax_analytics)
+
+          expect(Hyrax.config.analytics_reporting?).to be false
+        end
+      end
+
+      it 'uses the ENV property on a single-tenant install' do
+        allow(Hyku).to receive(:single_tenant?).and_return(true)
+        account.send(:reload_hyrax_analytics)
+
+        expect(analytics_config.property_id).to eq '999999999'
+      end
     end
 
     it 'leaves a provider config without id setters alone' do

@@ -10,7 +10,7 @@
                   data: { turbolinks: block_valkyrie_redirect? } %>
     </h3>
 
-    <% creator = Array(recent_document.creator).first %>
+    <% creator = theme_values(recent_document, :creator).first %>
     <% if creator.present? %>
       <p class="hrt-recent-sub"><%= creator %></p>
     <% end %>

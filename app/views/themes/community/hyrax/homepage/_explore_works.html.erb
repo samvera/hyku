@@ -10,8 +10,9 @@
     </h3>
   </div>
   <div class="featured-field">
-    <% if featured.resource_type.present? %>
-      <span class="featured-label"><%= markdown(featured.resource_type&.first) %></span>
+    <% resource_type = theme_values(featured, :resource_type).first %>
+    <% if resource_type.present? %>
+      <span class="featured-label"><%= markdown(resource_type) %></span>
     <% end %>
   </div>
   <% if Flipflop.home_page_recent_document_show_depositor? %>

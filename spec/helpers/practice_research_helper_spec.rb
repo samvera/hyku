@@ -88,6 +88,13 @@ RSpec.describe PracticeResearchHelper, type: :helper do
       expect(helper.pr_contributor_summary(doc)).to eq('Neal White')
     end
 
+    it "falls back to the creators' indexed labels" do
+      doc = SolrDocument.new('creator_tesim' => ['http://id.loc.gov/authorities/names/n79021164'],
+                             'creator_label_tesim' => ['Twain, Mark'])
+
+      expect(helper.pr_contributor_summary(doc)).to eq('Twain, Mark')
+    end
+
     it 'is nil when the work credits nobody, so the card drops the line' do
       expect(helper.pr_contributor_summary(document)).to be_nil
     end

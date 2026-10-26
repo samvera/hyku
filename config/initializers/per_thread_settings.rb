@@ -5,8 +5,5 @@
 Rails.application.config.to_prepare do
   Hyku::PerThread.attribute(Rails.application.routes.singleton_class, :default_url_options, copy: true)
   Hyku::PerThread.attribute(Hyrax::Engine.routes.singleton_class, :default_url_options, copy: true)
-end
-
-Rails.application.config.to_prepare do
   Hyku::PerThread.attribute(Devise.singleton_class, :mailer_sender)
 end

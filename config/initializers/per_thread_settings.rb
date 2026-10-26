@@ -5,9 +5,6 @@
 Rails.application.config.to_prepare do
   Hyku::PerThread.attribute(Rails.application.routes.singleton_class, :default_url_options, copy: true)
   Hyku::PerThread.attribute(Hyrax::Engine.routes.singleton_class, :default_url_options, copy: true)
-end
-
-Rails.application.config.to_prepare do
   {
     analytics: %i[analytics],
     analytics_reporting: %i[analytics_reporting],
@@ -22,4 +19,11 @@ Rails.application.config.to_prepare do
     analytics_reporting: %i[analytics_reporting?]
   }.each { |name, readers| Hyku::PerThread.attribute(Hyrax::Configuration, name, readers:, falsy_falls_back: true) }
   Hyku::PerThread.attribute(Hyrax::Configuration, :uploader, copy: true)
+  # Hyrax's reader memoizes with ||=, so a blank tenant value still falls back to ENV
+  Hyku::PerThread.attribute(Hyrax::Configuration, :redis_namespace, falsy_falls_back: true)
+  if defined?(Valkyrie::Indexing::RedisQueue::IndexingAdapter)
+    %i[index_queue_name delete_queue_name].each do |name|
+      Hyku::PerThread.attribute(Valkyrie::Indexing::RedisQueue::IndexingAdapter, name)
+    end
+  end
 end

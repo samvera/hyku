@@ -52,6 +52,12 @@ RSpec.describe CatalogController do
       expect(found).to include(by_creator)
     end
 
+    it "finds a work by its id in the identifier field" do
+      get :index, params: { q: by_title, search_field: 'identifier' }
+
+      expect(found).to eq [by_title]
+    end
+
     it "leaves out a work with the same words only in another field" do
       get :index, params: { q: 'John Doe', search_field: 'creator' }
 

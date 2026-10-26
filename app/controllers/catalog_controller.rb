@@ -347,7 +347,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('identifier') do |field|
       field.include_in_advanced_search = false
-      solr_name = 'id_tesim'
+      solr_name = 'id'
       field.solr_parameters = {
         qf: solr_name,
         pf: solr_name

@@ -2,9 +2,14 @@
 
 # Per-tenant values that Account#switch! and AccountSettings#reload_library_config write into
 # shared gem config. Each is kept per thread; see Hyku::PerThread.
-Rails.application.config.to_prepare do
+Rails.application.config.to_prepare do # rubocop:disable Metrics/BlockLength
   Hyku::PerThread.attribute(Rails.application.routes.singleton_class, :default_url_options, copy: true)
   Hyku::PerThread.attribute(Hyrax::Engine.routes.singleton_class, :default_url_options, copy: true)
+  Hyku::PerThread.attribute(Bulkrax::Configuration, :guided_import_enabled)
+  Hyku::PerThread.attribute(Qa::Authorities::Geonames.singleton_class, :username)
+  if File.exist?(Rails.root.join('config', 'discogs-genres.yml')) && File.exist?(Rails.root.join('config', 'discogs-formats.yml'))
+    Hyku::PerThread.attribute(Qa::Authorities::Discogs::GenericAuthority.singleton_class, :discogs_user_token)
+  end
   {
     analytics: %i[analytics],
     analytics_reporting: %i[analytics_reporting],

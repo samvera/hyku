@@ -8,6 +8,7 @@ Rails.application.config.to_prepare do
   %i[_storage aws_bucket aws_acl permissions directory_permissions].each do |name|
     next unless CarrierWave::Uploader::Base.respond_to?(name)
     Hyku::PerThread.attribute(CarrierWave::Uploader::Base.singleton_class, name)
+  end
   # Hyrax's reader memoizes with ||=, so a blank tenant value still falls back to ENV
   Hyku::PerThread.attribute(Hyrax::Configuration, :redis_namespace, falsy_falls_back: true)
   if defined?(Valkyrie::Indexing::RedisQueue::IndexingAdapter)

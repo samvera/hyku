@@ -5,10 +5,11 @@
 Rails.application.config.to_prepare do
   Hyku::PerThread.attribute(Rails.application.routes.singleton_class, :default_url_options, copy: true)
   Hyku::PerThread.attribute(Hyrax::Engine.routes.singleton_class, :default_url_options, copy: true)
+  %i[_storage aws_bucket aws_acl permissions directory_permissions].each do |name|
+    next unless CarrierWave::Uploader::Base.respond_to?(name)
+    Hyku::PerThread.attribute(CarrierWave::Uploader::Base.singleton_class, name)
+  end
   Hyku::PerThread.attribute(Devise.singleton_class, :mailer_sender)
-end
-
-Rails.application.config.to_prepare do
   # Hyrax's reader memoizes with ||=, so a blank tenant value still falls back to ENV
   Hyku::PerThread.attribute(Hyrax::Configuration, :redis_namespace, falsy_falls_back: true)
   if defined?(Valkyrie::Indexing::RedisQueue::IndexingAdapter)

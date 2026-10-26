@@ -1,0 +1,34 @@
+<%# OVERRIDE Blacklight Advanced Search v7.0.0 to list only the facets the catalog sidebar shows and advanced search includes, with option text from each facet's display helper %>
+<%# alternate version of facets on form that renders using multi-select.
+    Has to copy and paste more code from blacklight than default, making
+    it somewhat more fragile.
+
+    Logic taken from facets_helper_behavior.rb, #render_facet_partials and
+    #render_facet_limit.
+%>
+
+<%# OVERRIDE: facet_field_names_for_advanced_search, and skip facets the sidebar would not render %>
+<% facets_from_request(facet_field_names_for_advanced_search).each do |display_facet| %>
+    <% facet_config = facet_configuration_for_field(display_facet.name) %>
+    <% if display_facet.items.present? && should_render_field?(facet_config, display_facet) %>
+        <div class="form-group advanced-search-facet">
+            <%= label_tag display_facet.name.parameterize, :class => "col-sm-3 control-label" do %>
+                <%= facet_field_label(display_facet.name) %>
+            <% end %>
+
+            <div class="col-sm-9">
+                <%= content_tag(:select, :multiple => true,
+                    :name   => "f_inclusive[#{display_facet.name}][]",
+                    :id     => display_facet.name.parameterize,
+                    :class  => "form-control advanced-search-facet-select") do %>
+                    <% display_facet.items.each do |facet_item| %>
+                        <%= content_tag :option, :value => facet_item.value, :selected => facet_value_checked?(display_facet.name, facet_item.value) do %>
+                            <%# OVERRIDE: label through the facet's display helper %>
+                            <%= facet_item_presenter(facet_config, facet_item, display_facet.name).label %>&nbsp;&nbsp;(<%= number_with_delimiter facet_item.hits %>)
+                        <% end %>
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+    <% end %>
+<% end %>

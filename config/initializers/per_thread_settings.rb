@@ -2,12 +2,14 @@
 
 # Per-tenant values that Account#switch! and AccountSettings#reload_library_config write into
 # shared gem config. Each is kept per thread; see Hyku::PerThread.
-Rails.application.config.to_prepare do
+Rails.application.config.to_prepare do # rubocop:disable Metrics/BlockLength
   Hyku::PerThread.attribute(Rails.application.routes.singleton_class, :default_url_options, copy: true)
   Hyku::PerThread.attribute(Hyrax::Engine.routes.singleton_class, :default_url_options, copy: true)
-end
-
-Rails.application.config.to_prepare do
+  Hyku::PerThread.attribute(Bulkrax::Configuration, :guided_import_enabled)
+  Hyku::PerThread.attribute(Qa::Authorities::Geonames.singleton_class, :username)
+  if File.exist?(Rails.root.join('config', 'discogs-genres.yml')) && File.exist?(Rails.root.join('config', 'discogs-formats.yml'))
+    Hyku::PerThread.attribute(Qa::Authorities::Discogs::GenericAuthority.singleton_class, :discogs_user_token)
+  end
   {
     analytics: %i[analytics],
     analytics_reporting: %i[analytics_reporting analytics_reporting?],
@@ -19,4 +21,20 @@ Rails.application.config.to_prepare do
   # This reader memoizes with ||=, so a false tenant value still falls back to ENV
   Hyku::PerThread.attribute(Hyrax::Configuration, :analytics, readers: %i[analytics?], falsy_falls_back: true)
   Hyku::PerThread.attribute(Hyrax::Configuration, :uploader, copy: true)
+  Hyku::PerThread.attribute(Rails.singleton_class, :cache)
+  Hyku::PerThread.attribute(Rails.application.config.singleton_class, :cache_store)
+  Hyku::PerThread.attribute(ActionController::Base.singleton_class, :perform_caching)
+  Hyku::PerThread.attribute(ActionController::Base, :perform_caching, owner: ActionController::Base)
+  %i[_storage aws_bucket aws_acl permissions directory_permissions].each do |name|
+    next unless CarrierWave::Uploader::Base.respond_to?(name)
+    Hyku::PerThread.attribute(CarrierWave::Uploader::Base.singleton_class, name)
+  end
+  Hyku::PerThread.attribute(Devise.singleton_class, :mailer_sender)
+  # Hyrax's reader memoizes with ||=, so a blank tenant value still falls back to ENV
+  Hyku::PerThread.attribute(Hyrax::Configuration, :redis_namespace, falsy_falls_back: true)
+  if defined?(Valkyrie::Indexing::RedisQueue::IndexingAdapter)
+    %i[index_queue_name delete_queue_name].each do |name|
+      Hyku::PerThread.attribute(Valkyrie::Indexing::RedisQueue::IndexingAdapter, name)
+    end
+  end
 end

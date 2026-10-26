@@ -9,6 +9,7 @@ Rails.application.config.to_prepare do
     next unless CarrierWave::Uploader::Base.respond_to?(name)
     Hyku::PerThread.attribute(CarrierWave::Uploader::Base.singleton_class, name)
   end
+  Hyku::PerThread.attribute(Devise.singleton_class, :mailer_sender)
   # Hyrax's reader memoizes with ||=, so a blank tenant value still falls back to ENV
   Hyku::PerThread.attribute(Hyrax::Configuration, :redis_namespace, falsy_falls_back: true)
   if defined?(Valkyrie::Indexing::RedisQueue::IndexingAdapter)

@@ -7,3 +7,13 @@ Rails.application.config.to_prepare do
   Hyku::PerThread.attribute(Hyrax::Engine.routes.singleton_class, :default_url_options, copy: true)
   Hyku::PerThread.attribute(Devise.singleton_class, :mailer_sender)
 end
+
+Rails.application.config.to_prepare do
+  # Hyrax's reader memoizes with ||=, so a blank tenant value still falls back to ENV
+  Hyku::PerThread.attribute(Hyrax::Configuration, :redis_namespace, falsy_falls_back: true)
+  if defined?(Valkyrie::Indexing::RedisQueue::IndexingAdapter)
+    %i[index_queue_name delete_queue_name].each do |name|
+      Hyku::PerThread.attribute(Valkyrie::Indexing::RedisQueue::IndexingAdapter, name)
+    end
+  end
+end

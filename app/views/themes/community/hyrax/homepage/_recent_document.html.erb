@@ -9,8 +9,9 @@
     </h3>
 
     <div class="recent-field">
-      <% if recent_document.resource_type.present? %>
-        <span class="recent-label"><%= markdown(recent_document.resource_type&.first) %></span>
+      <% resource_type = theme_values(recent_document, :resource_type).first %>
+      <% if resource_type.present? %>
+        <span class="recent-label"><%= markdown(resource_type) %></span>
       <% end %>
     </div>
 

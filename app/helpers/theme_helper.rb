@@ -80,7 +80,17 @@ module ThemeHelper
   end
 
   def theme_type_label(object)
-    Array(object.resource_type).first.presence || object.human_readable_type
+    theme_values(object, :resource_type).first.presence || object.human_readable_type
+  end
+
+  def theme_values(object, field)
+    return Array(object.display_values_for(field)) if object.respond_to?(:display_values_for)
+
+    stored = Array(object.try(field))
+    labels = Array(object.try(:[], Hyrax::ControlledVocabularyFieldValues.label_key("#{field}_tesim")))
+    return stored unless labels.size == stored.size
+
+    stored.zip(labels).map { |value, label| label.presence || value }
   end
 
   def theme_license_badge(presenter)

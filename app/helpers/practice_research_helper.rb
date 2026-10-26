@@ -123,7 +123,7 @@ module PracticeResearchHelper
            end
     names = Array(rows).filter_map { |row| row['name'] if row.is_a?(Hash) }.compact_blank
 
-    names.presence || Array(document['creator_tesim']).compact_blank
+    names.presence || theme_values(document, :creator).compact_blank
   end
 
   def pr_rows

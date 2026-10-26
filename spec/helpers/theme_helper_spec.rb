@@ -153,6 +153,42 @@ RSpec.describe ThemeHelper, type: :helper do
 
       expect(helper.theme_type_label(object)).to eq('Generic Work')
     end
+
+    it "shows a controlled resource type's indexed label" do
+      document = SolrDocument.new('has_model_ssim' => ['GenericWork'],
+                                  'resource_type_tesim' => ['notoer'], 'resource_type_label_tesim' => ['NOT Oer'])
+
+      expect(helper.theme_type_label(document)).to eq('NOT Oer')
+    end
+  end
+
+  describe '#theme_values' do
+    let(:uri) { 'http://id.loc.gov/authorities/names/n79021164' }
+
+    it "shows a document's indexed label for each stored value" do
+      document = SolrDocument.new('creator_tesim' => [uri, 'Ada Lovelace'], 'creator_label_tesim' => ['Twain, Mark', 'Ada Lovelace'])
+
+      expect(helper.theme_values(document, :creator)).to eq ['Twain, Mark', 'Ada Lovelace']
+    end
+
+    it 'falls back to the stored value, a URI included, when no label is indexed' do
+      document = SolrDocument.new('creator_tesim' => [uri])
+
+      expect(helper.theme_values(document, :creator)).to eq [uri]
+    end
+
+    it "falls back to a term's stored value when its indexed label is blank" do
+      document = SolrDocument.new('creator_tesim' => [uri], 'creator_label_tesim' => [''])
+
+      expect(helper.theme_values(document, :creator)).to eq [uri]
+    end
+
+    it "uses a presenter's show page values" do
+      presenter = instance_double(Hyrax::WorkShowPresenter, display_values_for: ['Twain, Mark'])
+
+      expect(helper.theme_values(presenter, :creator)).to eq ['Twain, Mark']
+      expect(presenter).to have_received(:display_values_for).with(:creator)
+    end
   end
 
   describe '#theme_license_badge' do

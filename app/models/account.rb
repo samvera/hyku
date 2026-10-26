@@ -104,6 +104,7 @@ class Account < ApplicationRecord
 
   # Make all the account specific connections active
   def switch!
+    Hyku::PerThread.reset!
     solr_endpoint.switch!
     fcrepo_endpoint.switch! unless Hyrax.config.disable_wings
     redis_endpoint.switch!

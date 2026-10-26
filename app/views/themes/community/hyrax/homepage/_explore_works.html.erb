@@ -22,7 +22,7 @@
   <% end %>
   <% if Flipflop.home_page_recent_document_show_keyword? %>
     <div class="featured-field featured-item-keywords">
-      <span class="featured-label"><%= t('hyrax.homepage.featured_works.document.keyword_label') %>:</span> <%= link_to_facet_list(featured.keyword, 'keyword', t('hyrax.homepage.featured_works.document.keyword_missing')) %>
+      <span class="featured-label"><%= t('hyrax.homepage.featured_works.document.keyword_label') %>:</span> <%= theme_facet_list(featured, :keyword, t('hyrax.homepage.featured_works.document.keyword_missing')) %>
     </div>
   <% end %>
   <div class="featured-field">

@@ -266,7 +266,9 @@ module AccountSettings
   def initialize_settings
     return true unless self.class.column_names.include?('settings')
     set_smtp_settings
-    reload_library_config
+    # Multitenant loads it in #switch! instead, so loading another tenant's account (e.g.
+    # shared search) can't overwrite the current tenant's process-wide settings
+    reload_library_config unless Hyku.multitenant?
   end
 
   def set_smtp_settings

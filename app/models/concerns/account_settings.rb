@@ -206,10 +206,10 @@ module AccountSettings
     config.analytics_reporting = analytics_enabled && reports_from_own_property?
   end
 
-  # A property shared through ENV holds every tenant's traffic, so on a multitenant
+  # A property or site shared through ENV holds every tenant's traffic, so on a multitenant
   # install only a tenant with its own property gets reports. Tracking is unaffected.
   def reports_from_own_property?
-    Hyku.single_tenant? || ENV.fetch('HYRAX_ANALYTICS_PROVIDER', 'ga4') == 'matomo' || analytics_credentials_present?
+    Hyku.single_tenant? || analytics_credentials_present?
   end
 
   def tenant_specific_analytics_setting?(name)

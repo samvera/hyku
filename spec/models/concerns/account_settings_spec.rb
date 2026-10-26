@@ -212,6 +212,15 @@ RSpec.describe AccountSettings do
           account.configure_hyrax_analytics_settings(config)
         end
 
+        it 'disables reporting from a shared Matomo site on a multitenant install' do
+          allow(Hyku).to receive(:single_tenant?).and_return(false)
+          allow(ENV).to receive(:fetch).with('HYRAX_ANALYTICS_PROVIDER', 'ga4').and_return('matomo')
+          expect(config).to receive(:analytics=).with(true)
+          expect(config).to receive(:analytics_reporting=).with(false)
+
+          account.configure_hyrax_analytics_settings(config)
+        end
+
         it 'enables reporting on a single-tenant install' do
           allow(Hyku).to receive(:single_tenant?).and_return(true)
           expect(config).to receive(:analytics=).with(true)

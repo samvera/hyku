@@ -4,7 +4,6 @@
 #   - change `&amp;` to `&` in the Universal Viewer
 #   - never unescape scrubbed manifest strings, so escaped markup never becomes a tag
 #     (Hyrax's deep_sanitize, IiifPrint's canvas labels in sanitize_v3)
-#   - mark v3 manifests as paged
 
 module Hyrax
   module ManifestBuilderServiceDecorator
@@ -40,8 +39,6 @@ module Hyrax
       returning_hash['items']&.each do |canvas|
         canvas['label']['none'] = labels[canvas['id']].map { |text| loof(text) } if canvas.dig('label', 'none')
       end
-      # OVERRIDE
-      returning_hash['viewingHint'] = 'paged'
       returning_hash
     end
   end
@@ -60,11 +57,23 @@ module Hyrax
       return super unless Flipflop.iiif_ranges?
 
       manifest = manifest_factory.new(presenter).to_h
-      hash = deep_sanitize(JSON.parse(manifest.to_json))
-      hash['viewingHint'] = 'paged'
-      hash
+      deep_sanitize(JSON.parse(manifest.to_json))
     end
   end
 end
 
 Hyrax::ManifestBuilderService.prepend(Hyrax::ManifestBuilderServiceRangesDecorator)
+
+# OVERRIDE tell the presenter which IIIF version this builder's factory writes, so Hyku::ViewingHint gives a v3
+# manifest's behavior as a list; a works controller picks the factory per work (Hyrax's manifest_factory_for_work)
+module Hyrax
+  module ManifestBuilderServiceIiifVersionDecorator
+    def manifest_for(presenter:)
+      v3 = manifest_factory.try(:ancestors)&.include?(::IIIFManifest::V3::ManifestFactory)
+      presenter.try(:iiif_version=, v3 ? 3 : 2)
+      super
+    end
+  end
+end
+
+Hyrax::ManifestBuilderService.prepend(Hyrax::ManifestBuilderServiceIiifVersionDecorator)

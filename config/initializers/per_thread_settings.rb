@@ -10,6 +10,10 @@ Rails.application.config.to_prepare do
   if File.exist?(Rails.root.join('config', 'discogs-genres.yml')) && File.exist?(Rails.root.join('config', 'discogs-formats.yml'))
     Hyku::PerThread.attribute(Qa::Authorities::Discogs::GenericAuthority.singleton_class, :discogs_user_token)
   end
+  Hyku::PerThread.attribute(Rails.singleton_class, :cache)
+  Hyku::PerThread.attribute(Rails.application.config.singleton_class, :cache_store)
+  Hyku::PerThread.attribute(ActionController::Base.singleton_class, :perform_caching)
+  Hyku::PerThread.attribute(ActionController::Base, :perform_caching, owner: ActionController::Base)
   %i[_storage aws_bucket aws_acl permissions directory_permissions].each do |name|
     next unless CarrierWave::Uploader::Base.respond_to?(name)
     Hyku::PerThread.attribute(CarrierWave::Uploader::Base.singleton_class, name)

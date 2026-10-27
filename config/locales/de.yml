@@ -904,6 +904,7 @@ de:
         manage_discovery: Sie haben keine Berechtigung, die Erkennungseinstellung dieser Sammlung zu ändern
   practice_research:
     homepage:
+      intro_label: Repository-Überblick
       hero:
         title: Praxisforschung, zusammen bewahrt
         lede: Kunstwerke, Dokumentation und Texte, hinterlegt als ganze Projekte, in der von ihren Urhebern vorgesehenen Reihenfolge.

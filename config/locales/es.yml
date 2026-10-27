@@ -901,6 +901,7 @@ es:
         manage_discovery: No tienes permiso para cambiar la configuración de descubrimiento de esta colección
   practice_research:
     homepage:
+      intro_label: Resumen del repositorio
       hero:
         title: Investigación práctica, conservada unida
         lede: Obras de arte, documentación y escritos, depositados como proyectos completos, en el orden previsto por sus creadores.

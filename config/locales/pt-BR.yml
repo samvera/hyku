@@ -784,6 +784,7 @@ pt-BR:
         manage_discovery: Você não tem permissão para alterar a configuração de descoberta desta coleção
   practice_research:
     homepage:
+      intro_label: Visão geral do repositório
       hero:
         title: Pesquisa prática, mantida reunida
         lede: Obras de arte, documentação e textos, depositados como projetos completos, na ordem pretendida por seus criadores.

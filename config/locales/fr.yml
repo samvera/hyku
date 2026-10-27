@@ -906,6 +906,7 @@ fr:
         manage_discovery: Vous n'êtes pas autorisé à modifier le paramètre de découverte de cette collection
   practice_research:
     homepage:
+      intro_label: Aperçu du dépôt
       hero:
         title: La recherche par la pratique, réunie
         lede: Œuvres, documentation et écrits, déposés comme des projets complets, dans l'ordre voulu par leurs auteurs.

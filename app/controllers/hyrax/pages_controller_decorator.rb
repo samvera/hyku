@@ -41,7 +41,6 @@ module Hyrax
       @featured_work_list = FeaturedWorkList.new
       @featured_collection_list = FeaturedCollectionList.new
       @announcement_text = ContentBlock.for(:announcement)
-      ir_counts if home_page_theme == 'institutional_repository'
     end
 
     private
@@ -55,11 +54,6 @@ module Hyrax
       end
     rescue Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest
       []
-    end
-
-    # OVERRIDE: Hyrax v5.0.1 to add facet counts for resource types for IR theme
-    def ir_counts
-      @ir_counts = search_service.facet_field_response('resource_type_sim', "f.resource_type_sim.facet.limit" => "-1")
     end
   end
 end

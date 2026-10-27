@@ -114,9 +114,9 @@ module ThemeHelper
     return 'CC0 1.0' if license.include?('creativecommons.org/publicdomain/zero/1.0')
 
     match = license.match(%r{creativecommons\.org/licenses/([a-z-]+)/(\d+\.\d+)})
-    return unless match
+    return "CC #{match[1].upcase} #{match[2]}" if match
 
-    "CC #{match[1].upcase} #{match[2]}"
+    theme_values(presenter, :license).first
   end
 
   private

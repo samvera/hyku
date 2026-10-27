@@ -13,7 +13,7 @@
             end
           else
             plain = %i[description creator license subject keyword date_created related_url resource_type alt_text].filter_map do |field|
-              values = Array(@presenter.try(field)).compact_blank
+              values = theme_values(@presenter, field).compact_blank
               next if values.empty?
 
               safe_join([tag.dt(t("blacklight.search.fields.show.#{field}_tesim", default: field.to_s.humanize)),

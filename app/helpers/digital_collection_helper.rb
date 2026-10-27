@@ -395,9 +395,9 @@ module DigitalCollectionHelper
 
   def dc_creator_names(record)
     if record.is_a?(Blacklight::Document)
-      dc_result_field_shown?(record, 'creator_tesim') ? Array(record['creator_tesim']).compact_blank : []
+      dc_result_field_shown?(record, 'creator_tesim') ? theme_values(record, :creator).compact_blank : []
     else
-      dc_profile_shows?(record, :creator) ? Array(record.creator).compact_blank.uniq : []
+      dc_profile_shows?(record, :creator) ? theme_values(record, :creator).compact_blank.uniq : []
     end
   end
 
@@ -550,10 +550,10 @@ module DigitalCollectionHelper
   end
 
   def dc_work_result_values(document)
-    { creator: Array(document['creator_tesim']).join('; '),
+    { creator: theme_values(document, :creator).join('; '),
       date: dc_result_date(document),
       part_of: dc_part_of_links(document),
-      resource_type: Array(document['resource_type_tesim']).join(', '),
+      resource_type: theme_values(document, :resource_type).join(', '),
       description: theme_blurb(Array(document['description_tesim']).first, length: 300) }
   end
 

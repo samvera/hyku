@@ -383,6 +383,25 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
     it "reads a search result's summary" do
       expect(helper.dc_summary(document)).to eq(['A short summary.'])
     end
+
+    context 'with a controlled creator' do
+      let(:document) do
+        SolrDocument.new('id' => 'w1', 'has_model_ssim' => ['GenericWork'], 'creator_tesim' => ['http://id.loc.gov/authorities/names/n79021164'],
+                         'creator_label_tesim' => ['Twain, Mark'])
+      end
+
+      it "names a search result's creator by the term's label" do
+        allow(helper).to receive(:dc_result_field_shown?).with(document, 'creator_tesim').and_return(true)
+
+        expect(helper.dc_creator_names(document)).to eq(['Twain, Mark'])
+      end
+
+      it "names a work page's creator by the term's label" do
+        allow(helper).to receive(:dc_profile_shows?).and_return(true)
+
+        expect(helper.dc_creator_names(presenter)).to eq(['Twain, Mark'])
+      end
+    end
   end
 
   describe '#dc_external_links_in_new_tab' do
@@ -533,6 +552,18 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
 
       it 'puts the creator and date on a card' do
         expect(helper.dc_card_meta(document)).to eq('Allen & Ginter · 1887')
+      end
+
+      context 'with controlled values' do
+        let(:document) do
+          SolrDocument.new('id' => 'w1', 'has_model_ssim' => ['GenericWork'], 'creator_tesim' => ['twain'], 'creator_label_tesim' => ['Twain, Mark'],
+                           'resource_type_tesim' => ['still'], 'resource_type_label_tesim' => ['Still image'])
+        end
+
+        it "shows each term's label" do
+          expect(rows[:creator]).to have_css('dd', text: 'Twain, Mark')
+          expect(rows[:resource_type]).to have_css('dd', text: 'Still image')
+        end
       end
     end
   end

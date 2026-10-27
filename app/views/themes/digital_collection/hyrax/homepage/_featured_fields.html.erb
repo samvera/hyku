@@ -7,6 +7,6 @@
            locals: { url:, link_data:, title: document.title_or_label, thumb_class: dc_thumb_placeholder_class(document),
                      meta: [dc_creator_names(featured).first, (document['date_created_tesim']&.first.presence || document['date_issued_tesim']&.first)].compact_blank,
                      description: dc_summary(featured).first,
-                     badge: document['resource_type_tesim']&.first } do %>
+                     badge: theme_values(document, :resource_type).first } do %>
   <%= render_thumbnail_tag(featured, { alt: '' }, { suppress_link: true }) %>
 <% end %>

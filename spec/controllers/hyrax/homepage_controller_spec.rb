@@ -147,6 +147,41 @@ RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
           expect(response).to be_successful
           expect(assigns(:ir_counts)['facet_counts']['facet_fields']['resource_type_sim']).to include('Article', 1)
         end
+
+        context 'when the catalog does not facet resource type' do
+          let(:config) do
+            ::CatalogController.blacklight_config.deep_dup.tap do |dup|
+              dup.facet_fields.delete('resource_type_sim')
+              dup.facet_fields.delete('resource_type_label_sim')
+            end
+          end
+
+          before do
+            allow_any_instance_of(::CatalogController).to receive(:blacklight_config).and_return(config)
+          end
+
+          it 'shows the homepage without the stats' do
+            get :index
+            expect(response).to be_successful
+            expect(assigns(:ir_counts)).to be_nil
+          end
+        end
+
+        context 'when the catalog hides the resource type facet' do
+          let(:config) do
+            ::CatalogController.blacklight_config.deep_dup.tap { |dup| dup.facet_fields['resource_type_sim'].if = false }
+          end
+
+          before do
+            allow_any_instance_of(::CatalogController).to receive(:blacklight_config).and_return(config)
+          end
+
+          it 'shows the homepage without the stats, as the sidebar shows nothing' do
+            get :index
+            expect(response).to be_successful
+            expect(assigns(:ir_counts)).to be_nil
+          end
+        end
       end
 
       context 'with the practice_research theme', :clean_repo do

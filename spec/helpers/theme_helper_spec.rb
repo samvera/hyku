@@ -159,6 +159,13 @@ RSpec.describe ThemeHelper, type: :helper do
 
       expect(I18n.with_locale(:es) { helper.theme_type_label(document) }).to eq('Imagen')
     end
+
+    it "shows a controlled resource type's indexed label" do
+      document = SolrDocument.new('has_model_ssim' => ['GenericWork'],
+                                  'resource_type_tesim' => ['notoer'], 'resource_type_label_tesim' => ['NOT Oer'])
+
+      expect(helper.theme_type_label(document)).to eq('NOT Oer')
+    end
   end
 
   describe '#theme_license_badge' do
@@ -178,8 +185,22 @@ RSpec.describe ThemeHelper, type: :helper do
       expect(badge_for('http://creativecommons.org/publicdomain/zero/1.0/')).to eq('CC0 1.0')
     end
 
-    it 'is nil for anything else, so the badge is not rendered' do
-      expect(badge_for('http://www.europeana.eu/portal/rights/rr-r.html')).to be_nil
+    it "shows the label of a license with no short form" do
+      document = SolrDocument.new('license_tesim' => ['http://www.europeana.eu/portal/rights/rr-r.html'],
+                                  'license_label_tesim' => ['All rights reserved'])
+
+      expect(helper.theme_license_badge(document)).to eq('All rights reserved')
+    end
+
+    it "uses a presenter's show page value for a license with no short form" do
+      presenter = double('presenter', license: ['http://creativecommons.org/publicdomain/mark/1.0/'],
+                                      display_values_for: ['Public Domain Mark 1.0'])
+
+      expect(helper.theme_license_badge(presenter)).to eq('Public Domain Mark 1.0')
+    end
+
+    it 'shows the stored value of a license with no label' do
+      expect(badge_for('http://www.europeana.eu/portal/rights/rr-r.html')).to eq('http://www.europeana.eu/portal/rights/rr-r.html')
     end
 
     it 'is nil with no license at all' do

@@ -3,6 +3,7 @@
 # Presentation helpers shared by the Hyku themes.
 module ThemeHelper
   include ThemeColorHelper
+  include ThemeLabelHelper
 
   MEMBER_ROWS = 10
   MAX_MEMBER_PAGE = 10_000
@@ -80,7 +81,7 @@ module ThemeHelper
   end
 
   def theme_type_label(object)
-    Array(object.resource_type).first.presence || theme_model_label(object)
+    theme_values(object, :resource_type).first.presence || theme_model_label(object)
   end
 
   def theme_model_label(object)
@@ -95,9 +96,9 @@ module ThemeHelper
     return 'CC0 1.0' if license.include?('creativecommons.org/publicdomain/zero/1.0')
 
     match = license.match(%r{creativecommons\.org/licenses/([a-z-]+)/(\d+\.\d+)})
-    return unless match
+    return "CC #{match[1].upcase} #{match[2]}" if match
 
-    "CC #{match[1].upcase} #{match[2]}"
+    theme_values(presenter, :license).first
   end
 
   private

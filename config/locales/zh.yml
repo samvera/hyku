@@ -910,6 +910,7 @@ zh:
         manage_discovery: 您无权更改此收藏集的发现设置
   practice_research:
     homepage:
+      intro_label: 存储库概览
       hero:
         title: 实践研究，完整保存
         lede: 艺术作品、文档与文字，以完整项目的形式存缴，并保持创作者设定的顺序。

@@ -189,9 +189,7 @@ module Hyku # rubocop:disable Metrics/ModuleLength
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    autoload_lib_ignores = %w[assets tasks middleware rubocop]
-    autoload_lib_ignores << 'wings' if ENV["HYRAX_SKIP_WINGS"] == "true"
-    config.autoload_lib(ignore: autoload_lib_ignores)
+    config.autoload_lib(ignore: %w[assets tasks middleware rubocop wings])
     config.add_autoload_paths_to_load_path = true
 
     ##

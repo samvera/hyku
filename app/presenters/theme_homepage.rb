@@ -38,13 +38,27 @@ module ThemeHomepage
     Hyrax::CollectionPresenter.new(document, @current_ability).total_viewable_works
   end
 
+  def self.facet_field(config, field)
+    label = Hyrax::ControlledVocabularyFieldValues.label_key(field)
+    config.facet_fields.key?(label) ? label : field
+  end
+
+  def self.facet_visible?(facet, scope)
+    Blacklight::Configuration::Context.new(scope).evaluate_if_unless_configuration(facet)
+  end
+
   private
+
+  def facet_field(field)
+    ThemeHomepage.facet_field(@search_service.blacklight_config, field)
+  end
 
   # A tenant can remove any facet from the catalog config, and Blacklight
   # raises rather than returning nothing when asked to facet on a field it
   # does not know, so a theme cannot assume a facet exists.
   def facet_items(field, extra_params = {})
-    return [] unless @search_service.blacklight_config.facet_fields.key?(field)
+    facet = @search_service.blacklight_config.facet_fields[field]
+    return [] unless facet && ThemeHomepage.facet_visible?(facet, @search_service.context[:scope])
 
     @search_service.facet_field_response(field, { 'facet.mincount' => '1' }.merge(extra_params))
                    .aggregations[field]&.items.to_a

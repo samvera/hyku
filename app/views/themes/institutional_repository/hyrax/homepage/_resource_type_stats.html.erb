@@ -1,12 +1,11 @@
 <div class="ir-stats">
-  <% resource_types.each.with_index do |(k,v), i| %>
-    <% next if v[0].zero? %>
+  <% tiles.each do |tile| %>
     <div class="col">
       <div class="text-center">
-        <%= link_to "/catalog?f[resource_type_sim][]=#{k}", style: "color: inherit;" do %>
-          <i class='<%= "#{v[1]}" %>' aria-hidden="true"></i>
-          <h5><%= k %></h5>
-          <p><%= v[0] %></p>
+        <%= link_to tile[:path], style: "color: inherit;" do %>
+          <i class="fa-pals fa fa-2x <%= tile[:icon] %>" aria-hidden="true"></i>
+          <h5><%= tile[:label] %></h5>
+          <p><%= tile[:count] %></p>
         <% end %>
       </div>
     </div>

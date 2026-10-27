@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module InstitutionalRepositoryHelper
+  # Includes default resource types + oer types
   IR_RESOURCE_TYPE_ICONS = {
     "Article" => "fa-file-text-o",
     "Audio" => "fa-headphones",
@@ -35,6 +36,8 @@ module InstitutionalRepositoryHelper
   IR_DEFAULT_RESOURCE_TYPE_ICON = "fa-file-o"
 
   def ir_resource_type_tiles(response, field)
+    return [] if response.nil?
+
     known = IR_RESOURCE_TYPE_ICONS.keys
     items = response.aggregations[field]&.items.to_a.select { |item| item.hits.positive? }
     items.each_with_index.sort_by { |item, i| [known.index(item.value) || known.size, i] }.map do |item, _i|

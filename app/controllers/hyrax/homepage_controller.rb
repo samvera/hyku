@@ -151,8 +151,12 @@ module Hyrax
     end
 
     def ir_counts
-      @ir_counts_field = ThemeHomepage.facet_field(search_service.blacklight_config, 'resource_type_sim')
-      @ir_counts = search_service.facet_field_response(@ir_counts_field, "f.#{@ir_counts_field}.facet.limit" => "-1")
+      service = search_service
+      @ir_counts_field = ThemeHomepage.facet_field(service.blacklight_config, 'resource_type_sim')
+      facet = service.blacklight_config.facet_fields[@ir_counts_field]
+      return unless facet && ThemeHomepage.facet_visible?(facet, self)
+
+      @ir_counts = service.facet_field_response(@ir_counts_field, "f.#{@ir_counts_field}.facet.limit" => "-1")
     end
 
     # COPIED from Hyrax::HomepageController

@@ -3,13 +3,14 @@
 RSpec.describe "themes/institutional_repository/hyrax/homepage/_ir_homepage_stats.html.erb", type: :view do
   let(:field) { 'resource_type_label_sim' }
   let(:counts) { ['Pink Pajamas', 4, 'Article', 2, 'Audio', 0] }
+  let(:ir_counts) { Blacklight::Solr::Response.new({ 'facet_counts' => { 'facet_fields' => { field => counts } } }, {}) }
   let(:page) { Capybara.string(rendered) }
 
   before do
     view.lookup_context.prefixes.prepend('themes/institutional_repository/hyrax/homepage')
     allow(view).to receive(:main_app).and_return(main_app)
     assign(:ir_counts_field, field)
-    assign(:ir_counts, Blacklight::Solr::Response.new({ 'facet_counts' => { 'facet_fields' => { field => counts } } }, {}))
+    assign(:ir_counts, ir_counts)
     render
   end
 
@@ -42,6 +43,14 @@ RSpec.describe "themes/institutional_repository/hyrax/homepage/_ir_homepage_stat
 
   context 'when no resource type has works' do
     let(:counts) { ['Audio', 0] }
+
+    it 'shows nothing' do
+      expect(rendered.strip).to be_empty
+    end
+  end
+
+  context 'when the controller counted no resource types' do
+    let(:ir_counts) { nil }
 
     it 'shows nothing' do
       expect(rendered.strip).to be_empty

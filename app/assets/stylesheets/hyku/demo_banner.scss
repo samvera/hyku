@@ -1,5 +1,7 @@
+// Full-width bar above the masthead; Hyrax gives every .alert a 20px margin.
 .demo-banner {
   border-radius: 0;
-  margin-bottom: 0;
+  border-width: 0 0 1px;
+  margin: 0;
   text-align: center;
 }

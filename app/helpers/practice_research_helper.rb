@@ -113,17 +113,24 @@ module PracticeResearchHelper
     names.select { |field| presenter.respond_to?(field) && presenter.public_send(field).present? }
   end
 
+  def pr_compound_rows(document, field, schema: nil)
+    rows = Array(document.try(field)).select { |row| row.is_a?(Hash) }
+    return rows if rows.empty?
+
+    specs = (schema || Hyrax::CompoundSchema.for_solr_document(document)).definition_for(field)&.dig(:subproperties) || {}
+    rows.map { |row| row.to_h { |key, value| [key, pr_subproperty_value(specs[key.to_s], value)] } }
+  end
+
   private
 
-  def pr_contributor_names(document)
-    rows = begin
-             JSON.parse(Array(document['participants_json_ss']).first.to_s)
-           rescue JSON::ParserError
-             []
-           end
-    names = Array(rows).filter_map { |row| row['name'] if row.is_a?(Hash) }.compact_blank
+  def pr_subproperty_value(spec, value)
+    spec&.dig(:type).to_s == 'controlled' ? Hyrax::CompoundSubpropertyLabeler.label_for(spec, value) : value
+  end
 
-    names.presence || Array(document['creator_tesim']).compact_blank
+  def pr_contributor_names(document)
+    names = pr_compound_rows(document, :participants).filter_map { |row| row['name'] }.compact_blank
+
+    names.presence || theme_values(document, :creator).compact_blank
   end
 
   def pr_rows

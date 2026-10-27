@@ -893,6 +893,7 @@ it:
         manage_discovery: Non disponi dell'autorizzazione per modificare l'impostazione di rilevamento di questa raccolta
   practice_research:
     homepage:
+      intro_label: Panoramica del repository
       hero:
         title: La ricerca pratica, custodita insieme
         lede: Opere, documentazione e scritti, depositati come progetti completi, nell'ordine voluto dai loro autori.

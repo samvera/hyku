@@ -6,9 +6,8 @@ module Riiif
     attr_reader :id
     include ActiveSupport::Benchmarkable
 
-    def initialize(input_path, tempfile = nil, id:)
+    def initialize(input_path, tempfile = nil, id: nil)
       super(input_path, tempfile)
-      raise(ArgumentError, "must specify id") if id.blank?
       @id = id
     end
 

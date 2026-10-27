@@ -228,6 +228,21 @@ RSpec.describe DemoTenantResetService do
       expect(pending_count).to eq 0
     end
 
+    context 'once the import has started' do
+      subject(:service) { draining.tap { |s| s.instance_variable_set(:@import_started_at, 1.minute.ago) } }
+
+      it 'ignores a job left over from before the import, such as one a dead worker never finished' do
+        enqueue(created_at: 5.days.ago, performed_at: 5.days.ago, queue_name: 'auxiliary',
+                job_class: 'ValkyrieCreateLargeDerivativesJob')
+        expect { service.send(:drain_good_job_queue!) }.not_to raise_error
+      end
+
+      it 'still waits on the jobs the import created' do
+        enqueue
+        expect(service.send(:pending_good_jobs)).to eq 1
+      end
+    end
+
     # The production failure was the loop, not the count: it spun for the whole
     # import_timeout because the count could never reach zero.
     it 'returns instead of spinning when only its own row remains' do

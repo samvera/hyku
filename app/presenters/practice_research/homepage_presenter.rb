@@ -16,13 +16,18 @@ module PracticeResearch
         if models.any?
           { field: 'has_model_ssim', items: models }
         else
-          { field: 'resource_type_sim', items: resource_type_counts }
+          field = facet_field('resource_type_sim')
+          { field:, items: resource_type_counts(field) }
         end
       end
     end
 
     def subjects
-      @subjects ||= facet_items('subject_sim', "f.subject_sim.facet.limit" => SUBJECT_LIMIT.to_s)
+      @subjects ||= facet_items(subject_field, "f.#{subject_field}.facet.limit" => SUBJECT_LIMIT.to_s)
+    end
+
+    def subject_field
+      @subject_field ||= facet_field('subject_sim')
     end
 
     private
@@ -41,8 +46,8 @@ module PracticeResearch
 
     # Solr caps this one, so a repository with a long resource type list costs
     # the same query as a short one.
-    def resource_type_counts
-      facet_items('resource_type_sim', 'f.resource_type_sim.facet.limit' => TYPE_LIMIT.to_s)
+    def resource_type_counts(field)
+      facet_items(field, "f.#{field}.facet.limit" => TYPE_LIMIT.to_s)
         .to_h { |item| [item.value, item.hits] }
     end
   end

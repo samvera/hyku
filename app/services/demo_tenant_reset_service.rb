@@ -267,6 +267,7 @@ class DemoTenantResetService
     raise ImportFailed, "seed csv not found at #{seed_csv_path}" unless File.exist?(seed_csv_path)
 
     ensure_default_groups!
+    @import_started_at = Time.current
     importer = create_importer!
     log "running Bulkrax importer ##{importer.id} for #{seed_csv_path}"
     Bulkrax::ImporterJob.perform_now(importer.id)
@@ -353,9 +354,13 @@ class DemoTenantResetService
 
   # good_jobs is an Apartment excluded model, so one table holds every tenant's
   # rows and both queries below have to say which tenant they mean.
+  #
+  # Only jobs this import created: a row orphaned by a worker that died mid-job
+  # stays unfinished and due for good, and would fail every reset after it.
   def unfinished_jobs_for_tenant
-    GoodJob::Job.where(finished_at: nil)
-                .where("serialized_params->>'tenant' = ?", account.tenant)
+    scope = GoodJob::Job.where(finished_at: nil)
+                        .where("serialized_params->>'tenant' = ?", account.tenant)
+    @import_started_at ? scope.where('created_at >= ?', @import_started_at) : scope
   end
 
   # Every reset row for the tenant, not only this one: its own is unfinished and

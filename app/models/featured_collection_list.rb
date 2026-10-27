@@ -20,10 +20,7 @@ class FeaturedCollectionList
     return @collections if @collections
     @collections = FeaturedCollection.all
     add_solr_document_to_collections
-    @collections = @collections.reject do |collection|
-      collection.destroy if collection.presenter.blank?
-      collection.presenter.blank?
-    end
+    @collections = @collections.select { |collection| collection.presenter.present? }
     sort_by_title! unless manually_ordered?
     @collections
   end

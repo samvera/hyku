@@ -1116,6 +1116,8 @@ zh:
       part_of:
         heading: "所属"
   digital_collection:
+    copy:
+      copied: "已复制"
     form:
       required: "（必填）"
     account:

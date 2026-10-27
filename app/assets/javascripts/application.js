@@ -59,6 +59,7 @@
 //= require themes/digital_collection_catalog
 
 //= require citation_picker
+//= require themes/digital_collection_copy
 
 //= require codemirror
 //= require codemirror/modes/css

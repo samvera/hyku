@@ -1099,6 +1099,8 @@ es:
       part_of:
         heading: "Forma parte de"
   digital_collection:
+    copy:
+      copied: "Copiado"
     form:
       required: "(obligatorio)"
     account:

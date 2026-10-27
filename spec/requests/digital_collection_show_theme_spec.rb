@@ -123,7 +123,7 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
       expect(card.css('.dc-cite-picker option').map { |o| o['value'] }).to eq(%w[apa mla chicago])
       expect(card.css('[data-citation-text]').size).to eq(3)
       expect(card.css('[data-citation-text]:not([hidden])').size).to eq(1)
-      expect(card.at_css('button.dc-cite-copy[data-citation-copy]')).to be_present
+      expect(card.at_css('button.dc-copy[data-citation-copy] ~ span.dc-copied[data-citation-copied]')).to be_present
       expect(card.at_css('.dc-cite-export')['href']).to include('endnote')
     end
 
@@ -162,7 +162,7 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
 
       card = Nokogiri::HTML(response.body).at_css('section.dc-cite')
       expect(card.at_css("label[for='dc-cite-picker']").text).to eq('Citation style')
-      expect(card.at_css('button.dc-cite-copy').text.strip).to eq('Copy citation')
+      expect(card.at_css('button.dc-copy').text.strip).to eq('Copy citation')
     end
 
     it 'shows editors the administrative set under Part of' do
@@ -484,8 +484,10 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
 
       get "/collections/#{collection.id}"
 
-      expect(doc.at_css('p.dc-collection-meta > button.copy-permalink-button:last-child')).to be_present
-      expect(doc.at_css('.dc-collection-badges .copy-permalink-button')).to be_nil
+      button = doc.at_css('p.dc-collection-meta > button.dc-copy')
+      expect(button['data-dc-copy-text']).to end_with("/collections/#{collection.id}")
+      expect(doc.at_css('p.dc-collection-meta > button.dc-copy + span.dc-copied:last-child')).to be_present
+      expect(doc.at_css('.dc-collection-badges .dc-copy')).to be_nil
     end
 
     it 'gives an editor one row of short, translated actions' do

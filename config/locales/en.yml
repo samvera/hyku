@@ -962,6 +962,8 @@ en:
       part_of:
         heading: "Part of"
   digital_collection:
+    copy:
+      copied: "Copied"
     form:
       required: "(required)"
     account:

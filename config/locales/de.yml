@@ -1102,6 +1102,8 @@ de:
       part_of:
         heading: "Gehört zu"
   digital_collection:
+    copy:
+      copied: "Kopiert"
     form:
       required: "(erforderlich)"
     account:

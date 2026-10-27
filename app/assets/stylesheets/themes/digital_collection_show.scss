@@ -15,6 +15,21 @@ body.digital_collection_show.hyrax-collections-show {
     @include dc-inset-alert;
   }
 
+  .dc-copy {
+    @include dc-button(small);
+  }
+
+  .dc-copied {
+    color: $dc-ink;
+    font-size: $dc-text-sm;
+    font-weight: $dc-weight-strong;
+    margin-left: $dc-space-2;
+  }
+
+  .dc-copied:empty {
+    margin-left: 0;
+  }
+
   .dc-secondary-header {
     background: $dc-surface-alt;
     border-bottom: $dc-border solid $dc-hairline;
@@ -402,16 +417,6 @@ body.digital_collection_show.works-show {
     gap: $dc-space-3 $dc-space-4;
   }
 
-  .dc-cite-copy {
-    @include dc-button(small);
-  }
-
-  .dc-cite-copied {
-    color: $dc-ink;
-    font-size: $dc-text-sm;
-    font-weight: $dc-weight-strong;
-  }
-
   .dc-cite-export {
     @include dc-link;
   }
@@ -698,28 +703,13 @@ body.digital_collection_show.hyrax-collections-show {
     }
   }
 
-  .dc-collection-meta .copy-permalink-button {
-    background: none;
-    border: 0;
-    border-radius: $dc-radius-text;
-    color: inherit;
-    cursor: pointer;
-    font: inherit;
-    padding: 0;
-    text-decoration: underline;
-    text-underline-offset: $dc-underline-offset;
-    vertical-align: baseline;
-
-    &::before {
-      content: '\f0c1';
-      display: inline-block;
-      font-family: FontAwesome;
-      margin-right: $dc-space-1;
-      text-decoration: none;
+  .dc-collection-banner:not(.dc-collection-banner-plain) .dc-collection-meta {
+    .dc-copy {
+      @include dc-button(small, $on: dark);
     }
 
-    &:focus-visible {
-      @include dc-focus-ring($on: dark, $radius: $dc-radius-text);
+    .dc-copied {
+      color: $dc-overlay-text;
     }
   }
 
@@ -786,10 +776,6 @@ body.digital_collection_show.hyrax-collections-show {
       strong {
         color: var(--dc-ink-heading, #{$dc-ink-heading});
       }
-    }
-
-    .dc-collection-meta .copy-permalink-button:focus-visible {
-      @include dc-focus-ring($radius: $dc-radius-text);
     }
 
     .dc-collection-search-form .form-control:focus-visible,

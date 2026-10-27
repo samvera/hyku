@@ -982,6 +982,8 @@ pt-BR:
       part_of:
         heading: "Faz parte de"
   digital_collection:
+    copy:
+      copied: "Copiado"
     form:
       required: "(obrigatório)"
     account:

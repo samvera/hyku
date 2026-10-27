@@ -220,12 +220,6 @@ RSpec.describe 'shared/_appearance_styles.html.erb', type: :view do
       expect(variable('button-edge')).to eq('#cccccc')
     end
 
-    it 'keeps the copy permalink button in the collection details line a text link over the admin button colors' do
-      rule = rendered[/\.dc-collection-meta \.copy-permalink-button:active \{([^}]*)\}/, 1]
-
-      expect(rule).to include('background-color: transparent !important;', 'border-color: transparent !important;', 'color: inherit !important;')
-    end
-
     context 'with a link color under 4.5:1 on white' do
       let(:link_color) { '#4f7cac' }
 

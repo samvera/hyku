@@ -1099,6 +1099,8 @@ it:
       part_of:
         heading: "Fa parte di"
   digital_collection:
+    copy:
+      copied: "Copiato"
     form:
       required: "(obbligatorio)"
     account:

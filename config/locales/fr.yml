@@ -1104,6 +1104,8 @@ fr:
       part_of:
         heading: "Fait partie de"
   digital_collection:
+    copy:
+      copied: "Copié"
     form:
       required: "(obligatoire)"
     account:

@@ -11,15 +11,12 @@
     </a>
     <div class="resource-wrapper">
       <div class="resource-row">
-        <% resource_types.each do |resource_type, value| %>
-          <% resource_count = value[0] %>
-          <% resource_icon = value[1] %>
-          <% next if resource_count.zero? %>
+        <% tiles.each do |tile| %>
           <div class="resource-item">
-            <%= link_to "/catalog?f[resource_type_sim][]=#{resource_type}", style: "color: inherit;" do %>
-              <i class='<%= "#{resource_icon}" %>' aria-hidden="true"></i>
-              <h6><%= resource_type %></h6>
-              <p><%= resource_count %></p>
+            <%= link_to tile[:path], style: "color: inherit;" do %>
+              <i class="fa-pals fa fa-2x <%= tile[:icon] %>" aria-hidden="true"></i>
+              <h6><%= tile[:label] %></h6>
+              <p><%= tile[:count] %></p>
             <% end %>
           </div>
         <% end %>

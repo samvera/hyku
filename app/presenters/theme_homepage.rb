@@ -43,6 +43,10 @@ module ThemeHomepage
     config.facet_fields.key?(label) ? label : field
   end
 
+  def self.facet_visible?(facet, scope)
+    Blacklight::Configuration::Context.new(scope).evaluate_if_unless_configuration(facet)
+  end
+
   private
 
   def facet_field(field)
@@ -54,14 +58,10 @@ module ThemeHomepage
   # does not know, so a theme cannot assume a facet exists.
   def facet_items(field, extra_params = {})
     facet = @search_service.blacklight_config.facet_fields[field]
-    return [] unless facet && facet_visible?(facet)
+    return [] unless facet && ThemeHomepage.facet_visible?(facet, @search_service.context[:scope])
 
     @search_service.facet_field_response(field, { 'facet.mincount' => '1' }.merge(extra_params))
                    .aggregations[field]&.items.to_a
-  end
-
-  def facet_visible?(facet)
-    Blacklight::Configuration::Context.new(@search_service.context[:scope]).evaluate_if_unless_configuration(facet)
   end
 
   # FeaturedWorkList and FeaturedCollectionList build their presenters with

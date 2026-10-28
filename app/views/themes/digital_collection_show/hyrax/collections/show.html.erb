@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax 5.3.0: a banner with one plate (badges, title, collection search, a translated meta line ending in Copy permalink, and logos), the editor actions row, Collection details, subcollection cards and the works listed with the search page's toolbar, views and pager, whose links and the collection search return the reader to the works %>
+<%# OVERRIDE Hyrax 5.3.0: a banner with one plate (badges, title, collection search, a translated meta line, Copy permalink on its own line, and logos), the editor actions row, Collection details, subcollection cards and the works listed with the search page's toolbar, views and pager, whose links and the collection search return the reader to the works %>
 <% provide :page_title, construct_page_title(@presenter.title) %>
 <% content_for :canonical_url do %>
   <link rel="canonical" href="<%= canonical_url_for(@presenter) %>" />
@@ -26,7 +26,10 @@
         <div class="dc-collection-search">
           <%= render 'search_form', presenter: @presenter, url: hyrax.collection_path(@presenter.id, anchor: 'dc-collection-works') %>
         </div>
-        <p class="dc-collection-meta"><%= dc_collection_meta(@presenter) %><% if copy_permalink_enabled? %> · <%= render 'hyrax/shared/copy_permalink', presenter: @presenter %><% end %></p>
+        <p class="dc-collection-meta"><%= dc_collection_meta(@presenter) %></p>
+        <% if copy_permalink_enabled? %>
+          <p class="dc-collection-permalink"><%= render 'hyrax/shared/copy_permalink', presenter: @presenter %></p>
+        <% end %>
         <% if logos.any? %>
           <ul class="dc-collection-logos">
             <% logos.each do |logo| %>

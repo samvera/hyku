@@ -123,7 +123,10 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
       expect(card.css('.dc-cite-picker option').map { |o| o['value'] }).to eq(%w[apa mla chicago])
       expect(card.css('[data-citation-text]').size).to eq(3)
       expect(card.css('[data-citation-text]:not([hidden])').size).to eq(1)
-      expect(card.at_css('button.dc-copy[data-citation-copy] ~ span.dc-copied[data-citation-copied]')).to be_present
+      status = card.at_css('button.dc-copy[data-citation-copy] ~ span.dc-copied[data-citation-copied][aria-live="polite"]')
+      expect(status['data-citation-copied-text']).to eq('Copied')
+      expect(status['hidden']).to be_nil
+      expect(status.text).to be_empty
       expect(card.at_css('.dc-cite-export')['href']).to include('endnote')
     end
 
@@ -382,6 +385,26 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
       expect(doc.at_css('.dc-activity th').text).to eq('Benutzeraktivität')
       expect(doc.at_css('relative-time')).to be_nil
     end
+
+    it 'redraws the download link rows with the theme copy button and keeps Delete' do
+      link = SingleUseLink.create!(item_id: file_set.id.to_s, path: "/downloads/#{file_set.id}")
+      get "/single_use_link/generated/#{file_set.id}"
+      button = doc.at_css('button.dc-copy[data-dc-copy-text]')
+
+      expect(button['data-dc-copy-text']).to include("/single_use_link/download/#{link.download_key}")
+      expect(button.next_element.matches?('span.dc-copied[aria-live="polite"]')).to be(true)
+      expect(doc.at_css("a.delete-single-use-link[href*='/delete/#{link.download_key}']")).to be_present
+      expect(doc.at_css('.copy-single-use-link')).to be_nil
+    end
+
+    it "redraws the download link rows with Hyrax's copy button under the default show theme" do
+      allow_any_instance_of(ApplicationController).to receive(:show_page_theme).and_return('default_show')
+      SingleUseLink.create!(item_id: file_set.id.to_s, path: "/downloads/#{file_set.id}")
+      get "/single_use_link/generated/#{file_set.id}"
+
+      expect(doc.at_css('.copy-single-use-link')).to be_present
+      expect(doc.at_css('.dc-copy')).to be_nil
+    end
   end
 
   describe 'the collection page' do
@@ -486,7 +509,7 @@ RSpec.describe 'digital_collection_show theme', type: :request, singletenant: tr
 
       button = doc.at_css('.dc-collection-meta + p.dc-collection-permalink > button.dc-copy:first-child')
       expect(button['data-dc-copy-text']).to end_with("/collections/#{collection.id}")
-      expect(button.next_element).to match('span.dc-copied:last-child')
+      expect(button.next_element.matches?('span.dc-copied:last-child')).to be(true)
       expect(doc.at_css('.dc-collection-meta .dc-copy')).to be_nil
       expect(doc.at_css('.dc-collection-badges .dc-copy')).to be_nil
     end

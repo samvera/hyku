@@ -2,19 +2,10 @@
 
 @import 'themes/digital_collection/shell';
 
-// ---- secondary header: breadcrumbs + site search (collection, work and file set pages) ----
+// ---- copy buttons: permalink, citation and download link (collection, work and file set pages) ----
 body.digital_collection_show.works-show,
 body.digital_collection_show.hyrax-file_sets-show,
 body.digital_collection_show.hyrax-collections-show {
-  #content-wrapper {
-    max-width: none;
-    padding: 0;
-  }
-
-  #content-wrapper > .alert {
-    @include dc-inset-alert;
-  }
-
   .dc-copy {
     @include dc-button(small);
   }
@@ -28,6 +19,20 @@ body.digital_collection_show.hyrax-collections-show {
 
   .dc-copied:empty {
     margin-left: 0;
+  }
+}
+
+// ---- secondary header: breadcrumbs + site search (collection, work and file set pages) ----
+body.digital_collection_show.works-show,
+body.digital_collection_show.hyrax-file_sets-show,
+body.digital_collection_show.hyrax-collections-show {
+  #content-wrapper {
+    max-width: none;
+    padding: 0;
+  }
+
+  #content-wrapper > .alert {
+    @include dc-inset-alert;
   }
 
   .dc-secondary-header {

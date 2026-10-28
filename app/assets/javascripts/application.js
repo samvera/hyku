@@ -58,6 +58,7 @@
 //= require themes/digital_collection_home
 //= require themes/digital_collection_catalog
 
+//= require copy_text
 //= require citation_picker
 //= require themes/digital_collection_copy
 

@@ -11,13 +11,7 @@ module Hyrax
     include Hyku::ShowThemesBehavior
 
     prepended do
-      around_action :inject_link_rows_theme_views, only: :index
-    end
-
-    def inject_link_rows_theme_views(&block)
-      return yield unless Hyku::ChromeThemes.show?(show_page_theme)
-
-      inject_show_theme_views(&block)
+      around_action :inject_chrome_theme_views, only: :index
     end
   end
 end

@@ -29,16 +29,16 @@
 
       var copy = root.querySelector('[data-citation-copy]');
       if (!copy) return;
-      if (!navigator.clipboard) {
-        copy.hidden = true;
-        return;
-      }
 
       var flag = root.querySelector('[data-citation-copied]');
       var timer = null;
 
       function setCopied(on) {
-        if (flag) flag.hidden = !on;
+        if (flag && flag.hasAttribute('data-citation-copied-text')) {
+          flag.textContent = on ? flag.getAttribute('data-citation-copied-text') : '';
+        } else if (flag) {
+          flag.hidden = !on;
+        }
         copy.classList.toggle('is-copied', on);
       }
 
@@ -48,11 +48,11 @@
       }
 
       copy.addEventListener('click', function () {
-        setCopied(true);
-        clear();
-        timer = window.setTimeout(function () { setCopied(false); }, 1500);
-
-        navigator.clipboard.writeText(visibleText(root)).catch(function () {
+        window.hykuCopyText(visibleText(root), copy).then(function () {
+          clear();
+          setCopied(true);
+          timer = window.setTimeout(function () { setCopied(false); }, 1500);
+        }, function () {
           clear();
           setCopied(false);
         });

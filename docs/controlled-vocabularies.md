@@ -677,6 +677,20 @@ case.
 2. Add the authority mapping to the `remote_authorities` method in `config/initializers/hyrax_controlled_vocabularies.rb`
 3. Use the authority name in your metadata profile's `sources` array
 
+## Faceting and Searching by Label
+
+Hyku facets and searches a controlled property by its terms' labels, not by the ids it stores, and shows the labels everywhere.
+
+- **Where it is decided.** Hyku sets `Hyrax.config.controlled_vocabulary_label_service`, so the indexer writes each controlled property's labels to `<property>_label_sim` and `<property>_label_tesim`. When the label service can resolve a property's vocabulary, Hyrax's `FlexibleCatalogConfigBuilder` facets the property on `<property>_label_sim` and keeps `<property>_sim` configured but hidden, so a saved search on the id facet still resolves. The catalog sidebar, its result rows and advanced search use that label facet.
+- **Pages that copy the catalog's config.** The work, collection, file set and single-use link pages copy `CatalogController`'s config when their classes load, before any metadata profile is applied. `Hyku::CatalogConfigCopyDecorator` (`app/controllers/hyku/catalog_config_copy_decorator.rb`) gives each of their requests the catalog's facet, index and search fields, so the fields they show, and the links Blacklight builds from those fields, match the catalog's. A collection page also lists its members with the catalog's search result fields (`Hyku::BlacklightHelperBehavior#document_presenter_class`). A collection's own metadata is rendered by Hyrax's `records/show_fields` partials, which build their links without this config.
+- **Theme pages.** The homepage browse widgets and term links ask the catalog which facet a property uses (`ThemeHomepage.facet_field`, `ThemeHelper#theme_facet_list`), and link the label through a label facet or the stored id through an id facet.
+
+To facet and search by stored id while still showing labels, the builder changes in three places, and the pages that follow the catalog's config follow it there too:
+
+1. `FlexibleCatalogConfigBuilder#swap_facet_to_labels?` returns false, so the builder keeps each controlled property's id facet visible.
+2. `FlexibleCatalogConfigBuilder#facet_name_for` returns `<property>_sim` for a controlled property, so result rows link to the id facet.
+3. Each such id facet gets a `helper_method:` that maps a stored id to its label through `Hyrax.config.controlled_vocabulary_label_service`, so the sidebar, advanced search options and constraint chips show labels for id values.
+
 ## Technical Implementation
 
 The flexible metadata system processes controlled vocabularies as follows:

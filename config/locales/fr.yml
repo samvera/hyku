@@ -1247,8 +1247,8 @@ fr:
         pages_label: "Pages des collections"
         status: "Affichage de %{shown} collections sur %{total}, page %{page} sur %{pages}, affichage %{view}, tri %{sort}."
         works_count:
-          one: "%{count} document"
-          other: "%{count} documents"
+          one: "%{formatted} document"
+          other: "%{formatted} documents"
         empty: "Aucune collection n'a encore été ajoutée."
         all: "Parcourir toutes les collections"
       featured:

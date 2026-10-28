@@ -1126,7 +1126,7 @@ pt-BR:
         status: "Exibindo %{shown} de %{total} acervos, página %{page} de %{pages}, visualização %{view}, ordenados %{sort}."
         works_count:
           one: "1 obra"
-          other: "%{count} obras"
+          other: "%{formatted} obras"
         empty: "Nenhum acervo foi adicionado ainda."
         all: "Explorar todos os acervos"
       featured:

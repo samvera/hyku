@@ -1246,7 +1246,7 @@ de:
         status: "%{shown} von %{total} Sammlungen, Seite %{page} von %{pages}, Ansicht %{view}, sortiert %{sort}."
         works_count:
           one: "1 Werk"
-          other: "%{count} Werke"
+          other: "%{formatted} Werke"
         empty: "Es wurden noch keine Sammlungen hinzugefügt."
         all: "Alle Sammlungen durchstöbern"
       featured:

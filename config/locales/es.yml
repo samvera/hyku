@@ -1243,7 +1243,7 @@ es:
         status: "Mostrando %{shown} de %{total} colecciones, página %{page} de %{pages}, vista %{view}, ordenadas %{sort}."
         works_count:
           one: "1 obra"
-          other: "%{count} obras"
+          other: "%{formatted} obras"
         empty: "Aún no se han añadido colecciones."
         all: "Explorar todas las colecciones"
       featured:

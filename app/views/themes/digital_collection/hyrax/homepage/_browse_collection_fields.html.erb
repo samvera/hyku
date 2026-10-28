@@ -21,7 +21,7 @@
     <p class="dc-collection-description"><%= theme_blurb(dc_summary(document).first, length: 320) %></p>
 
     <p class="dc-collection-count">
-      <%= t('digital_collection.homepage.browse.works_count', count: dc_home.browse_works_count(document)) %>
+      <%= dc_works_count(dc_home.browse_works_count(document)) %>
     </p>
   </div>
 </article>

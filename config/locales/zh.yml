@@ -1259,8 +1259,8 @@ zh:
         pages_label: "馆藏页面"
         status: "显示 %{total} 个馆藏中的 %{shown} 个，第 %{page} 页，共 %{pages} 页，%{view}视图，%{sort}排序。"
         works_count:
-          one: "%{count} 件作品"
-          other: "%{count} 件作品"
+          one: "%{formatted} 件作品"
+          other: "%{formatted} 件作品"
         empty: "尚未添加任何馆藏。"
         all: "浏览全部馆藏"
       featured:

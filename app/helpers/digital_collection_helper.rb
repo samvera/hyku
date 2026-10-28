@@ -203,6 +203,10 @@ module DigitalCollectionHelper
     t('digital_collection.search.results.summary_query', count: total, formatted:, query:)
   end
 
+  def dc_works_count(count)
+    t('digital_collection.homepage.browse.works_count', count:, formatted: number_with_delimiter(count))
+  end
+
   def dc_results_range(response)
     return if response.total.zero?
 
@@ -563,7 +567,7 @@ module DigitalCollectionHelper
   end
 
   def dc_works_count_label(document)
-    t('digital_collection.homepage.browse.works_count', count: Hyrax::CollectionPresenter.new(document, current_ability).total_viewable_works)
+    dc_works_count(Hyrax::CollectionPresenter.new(document, current_ability).total_viewable_works)
   end
 
   def dc_result_date(document)

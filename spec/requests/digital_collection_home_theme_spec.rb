@@ -218,7 +218,7 @@ RSpec.describe 'the digital collection home page', type: :request, singletenant:
         get root_path
 
         collections = Nokogiri::HTML(response.body).at_css("section[aria-labelledby='dc-fc-heading'] form")
-        expect(collections.at_css('.dc-featured-row').text).to include(I18n.t('digital_collection.homepage.browse.works_count', count: 0))
+        expect(collections.at_css('.dc-featured-row').text).to include('0 works')
       end
     end
   end

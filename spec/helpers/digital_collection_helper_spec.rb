@@ -476,6 +476,17 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
     end
   end
 
+  describe '#dc_works_count' do
+    it 'groups the digits the way the hero stats do' do
+      expect(helper.dc_works_count(12_345)).to eq('12,345 works')
+      expect(helper.dc_works_count(1_000)).to eq('1,000 works')
+    end
+
+    it 'keeps the singular form for one work' do
+      expect(helper.dc_works_count(1)).to eq('1 work')
+    end
+  end
+
   describe '#dc_collection_meta' do
     let(:presenter) { double(creator: ['Hudson River Museum'], total_viewable_items: 24, modified_date: '2026-09-03') }
 

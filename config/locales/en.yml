@@ -1106,7 +1106,7 @@ en:
         status: "Showing %{shown} of %{total} collections, page %{page} of %{pages}, %{view} view, sorted %{sort}."
         works_count:
           one: "1 work"
-          other: "%{count} works"
+          other: "%{formatted} works"
         empty: "No collections have been added yet."
         all: "Browse all collections"
       featured:

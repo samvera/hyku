@@ -2,7 +2,11 @@
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
-ENV['HYRAX_FLEXIBLE'] = 'false'
+# The suite runs without flexible metadata by default, independent of any HYRAX_FLEXIBLE
+# value set for development. Opt in to a flexible-metadata run with HYKU_TEST_FLEXIBLE_METADATA=true
+# (e.g. `HYKU_TEST_FLEXIBLE_METADATA=true bundle exec rspec`). This must be decided before Rails
+# boots: config/initializers/1flexible.rb reads HYRAX_FLEXIBLE to pick the flexible classes.
+ENV['HYRAX_FLEXIBLE'] = ENV.fetch('HYKU_TEST_FLEXIBLE_METADATA', 'false')
 # In test most, unset some variables that can cause trouble
 # before booting up Rails
 ENV['HYKU_ADMIN_HOST'] = 'test.host'
@@ -207,6 +211,33 @@ RSpec.configure do |config|
       DatabaseCleaner.start
     end
   end
+
+  # In a flexible-metadata run, Valkyrie resources read their schema from the
+  # Hyrax::FlexibleSchema table every time they are loaded, and the cleaner empties that
+  # table between examples. Re-seed the default (m3) profile before each example so
+  # factories and pages have a schema. create_default_schema is a no-op if one exists.
+  config.before do
+    Hyrax::FlexibleSchema.create_default_schema if Hyrax.config.flexible?
+  end
+
+  # A spec that only works in one metadata mode is tagged `flexible: true` or `flexible: false`;
+  # untagged specs run in both. By default, run the examples that apply to this mode.
+  # HYKU_TEST_ONLY_FLEXIBLE_TAG=true|false|untagged keeps only those examples (CI runs one per node;
+  # see bin/ci_rspec). This is one exclusion filter rather than --tag options: a filter value of `true`
+  # matches any truthy tag, and a command-line exclusion on a key drops any inclusion on the same key.
+  # RSpec skips a filter for examples without its key, so untagged examples get `flexible: :untagged`.
+  config.define_derived_metadata { |metadata| metadata[:flexible] = :untagged if metadata[:flexible].nil? }
+  only_flexible_tag = ENV['HYKU_TEST_ONLY_FLEXIBLE_TAG'].presence
+  config.filter_run_excluding flexible: lambda { |value|
+    next value.to_s != only_flexible_tag if only_flexible_tag
+    value == !Hyrax.config.flexible? # flexible on: drop `false`; flexible off: drop `true`
+  }
+
+  # Hyrax.config.flexible memoizes with `||=`, so while it is false it re-reads HYRAX_FLEXIBLE on
+  # every call; a spec that sets that ENV var to 'true' can flip the whole process into flexible
+  # mode. Restore this run's mode after every example.
+  flexible_mode = Hyrax.config.flexible?
+  config.after { Hyrax.config.flexible = flexible_mode }
 
   config.after(:each, type: :feature) do |example|
     # rubocop:disable Lint/Debugger

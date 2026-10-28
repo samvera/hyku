@@ -82,6 +82,95 @@ Start off by setting up a local development environment where you can experiment
     docker compose down
     ```
 
+### Running the Tests
+
+Run the specs inside the `web` container:
+
+```bash
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && RAILS_ENV=test bundle exec rspec'
+```
+
+#### Flexible and non-flexible metadata runs
+
+The suite runs **without** flexible metadata by default, regardless of any `HYRAX_FLEXIBLE` value
+set for development. To run it **with** flexible metadata, set `HYKU_TEST_FLEXIBLE_METADATA=true`:
+
+```bash
+docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && HYKU_TEST_FLEXIBLE_METADATA=true RAILS_ENV=test bundle exec rspec'
+```
+
+Most specs are untagged and run in both modes. Tag a spec only when it works in just one mode:
+`flexible: true` (flexible mode only) or `flexible: false` (non-flexible mode only).
+
+Every test run answers two separate questions, each with its own setting:
+
+1. **Which way does the app start up?** Set `HYKU_TEST_FLEXIBLE_METADATA`.
+   - `true` starts the app with flexible metadata on.
+   - `false`, or leaving it unset, starts it with flexible metadata off.
+
+   This changes the app itself.
+2. **Which tests do you want to run?** Set `HYKU_TEST_ONLY_FLEXIBLE_TAG`.
+   - Set it to `true` or `false` to run only the specs with that `flexible:` tag, or to `untagged`
+     to run only the specs with no tag.
+   - Leave it unset to run every spec that makes sense for the way the app started:
+     untagged and `false` specs with flexible metadata off, untagged and `true` specs with it on.
+
+   This doesn't change the app. It only picks tests.
+
+Examples (run inside the `web` container, as above):
+
+- **Everything, flexible metadata off:**
+  ```bash
+  RAILS_ENV=test bundle exec rspec
+  ```
+- **Everything, flexible metadata on:**
+  ```bash
+  HYKU_TEST_FLEXIBLE_METADATA=true RAILS_ENV=test bundle exec rspec
+  ```
+- **Just the untagged specs, flexible metadata on:**
+  ```bash
+  HYKU_TEST_FLEXIBLE_METADATA=true HYKU_TEST_ONLY_FLEXIBLE_TAG=untagged RAILS_ENV=test bundle exec rspec
+  ```
+
+Run the suite with flexible metadata off and on to cover both modes.
+
+**Why two settings?** Untagged specs are supposed to work whichever way the app starts, so CI
+sometimes runs them with flexible metadata on and sometimes with it off. One setting says "start the app
+this way", the other says "run these tests", and for untagged specs the two answers don't line up.
+
+Day to day you'll mostly use only `HYKU_TEST_FLEXIBLE_METADATA`. The second setting is mainly for CI, and
+for rerunning exactly what a CI node ran: the node's log prints the full command (see `spec/rails_helper.rb`
+for how the filter works).
+
+This format is intended to be extensible to other configurations that Hyku is able to enable.
+
+#### CI
+
+By default, the main `test` job runs the whole suite on three nodes with flexible metadata off.
+
+When the repository Actions variable `HYKU_CI_FLEXIBLE_SPLIT` is set to `true` (Settings → Secrets and
+variables → Actions → Variables), the job runs on six nodes instead, split by the `flexible:` tag
+(see `bin/ci_rspec`):
+
+| Node | Examples | Flexible metadata |
+|---|---|---|
+| 0 | `flexible: true` | on |
+| 1 | `flexible: false` | off |
+| 2–5 | untagged, split across the four nodes | on or off, chosen at random per node |
+
+Each node prints its mode at the top of its log, with the command to rerun it locally. To force the
+random nodes into one mode, set `CI_FLEXIBLE=true` or `CI_FLEXIBLE=false`. Because those nodes pick a
+mode at random, an untagged spec that fails only in one mode fails on about half of the runs; rerun it
+locally in the mode the log shows.
+
+#### Watching browser (JavaScript) specs
+
+Specs tagged `js: true` run in a real Chrome browser in the `chrome` container, which you can
+watch live from your own browser at
+[https://chrome-hyku.localhost.direct](https://chrome-hyku.localhost.direct)
+(`https://chrome-${APP_NAME}.localhost.direct`). The VNC password is `secret`. Specs without
+`js: true` do not use a browser, so the window stays idle while they run.
+
 ### Additional Docker Options
 
 #### Configuration

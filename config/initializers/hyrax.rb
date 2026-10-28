@@ -333,6 +333,9 @@ Rails.application.config.to_prepare do
   # Without a timeout hydra-derivatives waits on a hung ffmpeg forever, holding a
   # worker. Not LibreOffice: its cleanup reruns a timed-out conversion.
   ffmpeg_timeout = ENV.fetch('HYKU_FFMPEG_TIMEOUT', 4.hours.to_i).to_i
+  # An escaped filename runs the command through sh, which the timeout would kill
+  # instead of ffmpeg; exec makes ffmpeg the process it kills.
+  Hydra::Derivatives.ffmpeg_path = 'exec ffmpeg'
   [Hydra::Derivatives::Processors::Video::Processor, Hydra::Derivatives::Processors::Audio].each do |processor|
     processor.timeout = ffmpeg_timeout
   end

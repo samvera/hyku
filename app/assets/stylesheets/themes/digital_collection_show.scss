@@ -1148,6 +1148,16 @@ body.digital_collection_show.hyrax-file_sets-show {
         gap: $dc-space-2;
         margin-top: $dc-space-2;
       }
+
+      .dc-copied {
+        flex-basis: 100%;
+        margin-left: 0;
+        order: 1;
+      }
+
+      .dc-copied:empty {
+        flex-basis: 0;
+      }
     }
 
     .dc-action {

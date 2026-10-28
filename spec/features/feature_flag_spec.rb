@@ -80,6 +80,7 @@ RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clea
 
   context 'when all home tabs and share work features are turned off' do
     skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/notch8/palni-palci/issues/933'
+    # Potential duplicate: spec/features/admin_settings_spec.rb:353 (toggles show-featured-researcher; xdescribe'd)
     it 'the page only shows the collections tab' do
       login_as admin
       visit 'admin/features'

@@ -30,6 +30,7 @@ RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clea
 
   context 'as a repository admin' do
     skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/notch8/palni-palci/issues/933'
+    # Potential duplicate: spec/features/homepage_spec.rb:161 (featured/recent works on the homepage; xdescribe, CI-skipped)
     it 'has a setting for featured works' do
       login_as admin
       visit 'admin/features'

@@ -47,6 +47,7 @@ RSpec.describe 'Creating a new Work', type: :feature, clean: true do
                agent_id: user.user_key)
       end
 
+      # Potential duplicate: spec/features/dashboard_my_works_spec.rb:36 (Add New Work button on my works)
       it 'can see the add new work button' do
         visit '/dashboard/my/works'
         expect(page).to have_link "Add New Work"

@@ -628,7 +628,7 @@ body.digital_collection_show.hyrax-collections-show {
     }
   }
 
-  .dc-toolbar-menu .dropdown-menu {
+  .dc-toolbar-menu .dropdown-menu:not(.dc-masthead-dropdown) {
     @include dc-menu;
 
     .dropdown-item {

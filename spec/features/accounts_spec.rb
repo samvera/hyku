@@ -39,6 +39,7 @@ RSpec.describe 'Accounts administration', multitenant: true do
       expect(account.cname).to eq 'example.com'
     end
 
+    # Potential duplicate: spec/features/admin_tenant_management_spec.rb:273 (edit form saves endpoint URLs)
     it 'changes the account service endpoints' do
       visit edit_proprietor_account_path(account)
 

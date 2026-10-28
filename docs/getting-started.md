@@ -100,7 +100,13 @@ docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && HYKU_TEST_FLEX
 ```
 
 Most specs are untagged and run in both modes. Tag a spec only when it works in just one mode:
-`flexible: true` (flexible mode only) or `flexible: false` (non-flexible mode only).
+`flexible: true` (flexible mode only) or `flexible: false` (non-flexible mode only). A tag can go on a
+whole file's `describe` or on a single `describe`, `context` or `it`, for example
+`it 'shows the custom Etd labels', flexible: false do`.
+
+A `flexible: false` tag with a "Fails in flexible mode … behavior gap" comment above it marks a spec
+that passes today only with flexible metadata off. It isn't meant to be non-flexible: the comment
+names the failure, which may point to behavior missing from flexible mode.
 
 Every test run answers two separate questions, each with its own setting:
 

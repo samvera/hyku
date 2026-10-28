@@ -28,6 +28,7 @@ RSpec.describe 'Assign workflow to group', type: :feature, js: true, clean: true
     let!(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
     let!(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
 
+    # Potential duplicate: spec/features/workflow_permissions_spec.rb:110 (assigns a workflow role to a user; CI-skipped)
     it 'admin assigns an approving workflow role to a user' do
       login_as admin
       visit '/admin/workflow_roles'

@@ -208,8 +208,8 @@ RSpec.describe DemoTenantResetService do
       expect(pending_count).to eq 1
     end
 
-    it 'ignores jobs scheduled into the future, such as the recurring cron' do
-      enqueue(scheduled_at: 1.hour.from_now, job_class: 'EmbargoAutoExpiryJob')
+    it 'ignores Bulkrax jobs scheduled into the future, which the drain pulls forward instead' do
+      enqueue(scheduled_at: 1.hour.from_now)
       expect(pending_count).to eq 0
     end
 

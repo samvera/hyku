@@ -71,7 +71,7 @@ class DemoTenantResetService
   # @param import_user_email [String, nil] owner of the seed import; defaults to the first tenant admin
   # @param health_check [#call, nil] called with the account after restore; a falsey return fails the reset
   # @param logger [Logger]
-  # @param import_timeout [Integer] seconds to wait for background jobs to drain after the import
+  # @param import_timeout [Integer] seconds to wait for the import's Bulkrax jobs to drain
   # @param poll_interval [Integer] seconds between job-queue polls while draining
   # rubocop:disable Metrics/ParameterLists
   def initialize(account:, seed_csv_path: nil, keep_emails: [], import_user_email: nil,

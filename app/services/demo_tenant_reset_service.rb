@@ -61,9 +61,6 @@ class DemoTenantResetService
   # its own mappings up.
   PARSER_KLASS = 'Bulkrax::CsvParser'
 
-  # The service runs inside it, so its row is in the queue it waits on.
-  RESET_JOB_CLASS = 'DemoTenantResetJob'
-
   attr_reader :account, :seed_csv_path, :keep_emails, :import_user_email,
               :health_check, :logger, :import_timeout, :poll_interval
 
@@ -363,12 +360,12 @@ class DemoTenantResetService
     @import_started_at ? scope.where('created_at >= ?', @import_started_at) : scope
   end
 
-  # Every reset row for the tenant, not only this one: its own is unfinished and
-  # due for as long as the drain runs, so counting it would wait on itself.
+  # Only the import's Bulkrax jobs: restoring featured works needs the records,
+  # not their derivatives, and a video transcode can outlast import_timeout.
   def pending_good_jobs
     unfinished_jobs_for_tenant
       .where('scheduled_at IS NULL OR scheduled_at <= ?', Time.current)
-      .where.not(job_class: RESET_JOB_CLASS)
+      .where('job_class LIKE ?', 'Bulkrax::%')
       .count
   end
 

@@ -1513,3 +1513,12 @@ body.digital_collection.advanced-index {
     padding-left: $dc-space-4;
   }
 }
+
+// ---- masthead on the dashboard ----
+body.dashboard.dc-dashboard {
+  @include dc-masthead-chrome;
+
+  .dc-masthead {
+    @include dc-sans;
+  }
+}

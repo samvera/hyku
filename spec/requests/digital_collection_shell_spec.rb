@@ -63,6 +63,11 @@ RSpec.describe 'the digital collection header and footer', type: :request, singl
       expect(section.css('a.nav-link').map(&:text)).to include('Dashboard', 'Notifications', I18n.t('hyrax.toolbar.profile.logout'))
     end
 
+    it 'leaves the account menu unmarked off the dashboard' do
+      expect(doc.at_css('#dc-account-trigger')['aria-current']).to be_nil
+      expect(doc.css('.dc-masthead-section a[aria-current="page"]')).to be_empty
+    end
+
     context 'with unread notifications' do
       let(:unread) { 3 }
 
@@ -79,6 +84,57 @@ RSpec.describe 'the digital collection header and footer', type: :request, singl
 
         expect(button['aria-label']).to eq('Menu, 3 unread notifications')
         expect(button.at_css(".dc-unread-count[aria-hidden='true']").text).to eq('3')
+      end
+    end
+  end
+
+  describe 'on the dashboard' do
+    let(:user) { FactoryBot.create(:user, display_name: 'M. Rivera') }
+
+    before do
+      allow_any_instance_of(UserMailbox).to receive(:unread_count).and_return(0)
+      sign_in user
+      get '/dashboard'
+    end
+
+    it 'uses the digital collection masthead, public links included' do
+      expect(doc.at_css('body')['class'].split).to eq(%w[dashboard dc-dashboard])
+      expect(doc.at_css('header.dc-masthead #masthead')['class'].split).to include('fixed-top')
+      expect(doc.css('.dc-masthead-nav > li > a.nav-link').map(&:text)).to eq(%w[Home About Help Contact])
+    end
+
+    it 'marks the account menu as the section the reader is in, and Dashboard as the current page' do
+      expect(doc.at_css('#dc-account-trigger')['aria-current']).to eq('true')
+      expect(doc.css('.dc-masthead-section a[aria-current="page"]').map(&:text)).to eq(['Dashboard'])
+      expect(doc.css('.dc-masthead-nav a[aria-current]')).to be_empty
+    end
+
+    it 'marks the collapsed account link for the page the reader is on' do
+      get '/notifications'
+
+      expect(doc.at_css('#dc-account-trigger')['aria-current']).to eq('true')
+      expect(doc.css('.dc-masthead-section a[aria-current="page"]').map(&:text)).to eq(['Notifications'])
+    end
+
+    context 'with a home theme whose chrome does not cover the dashboard' do
+      let(:home_theme) { 'heritage' }
+
+      it 'keeps the default masthead' do
+        expect(doc.at_css('body')['class']).to eq('dashboard')
+        expect(doc.at_css('.dc-masthead')).to be_nil
+        expect(doc.at_css('header.top-header #masthead')).to be_present
+      end
+    end
+
+    context 'on the proprietor admin host' do
+      before do
+        allow_any_instance_of(ApplicationController).to receive(:admin_host?).and_return(true)
+        get '/dashboard'
+      end
+
+      it 'keeps the default masthead' do
+        expect(doc.at_css('body')['class']).to eq('dashboard')
+        expect(doc.at_css('.dc-masthead')).to be_nil
       end
     end
   end

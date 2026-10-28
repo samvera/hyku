@@ -23,7 +23,7 @@
         <li class="nav-item">
           <%= link_to t(:'hyrax.controls.contact'), hyrax.contact_path, class: 'nav-link', aria: { current: ('page' if controller_name == 'contact_form') } %></li>
       </ul>
-      <%= render 'themes/digital_collection/dc_masthead_utilities', unread: %>
+      <%= render 'themes/digital_collection/dc_masthead_utilities', unread:, account_current: local_assigns[:account_current] %>
     </div>
   </nav>
 </header>

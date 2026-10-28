@@ -20,6 +20,12 @@ module Hyku
       ACCOUNT.include?(theme.to_s)
     end
 
+    DASHBOARD = %w[digital_collection].freeze
+
+    def self.dashboard?(theme)
+      DASHBOARD.include?(theme.to_s)
+    end
+
     COMPANIONS = { 'digital_collection_show' => 'digital_collection' }.freeze
 
     def self.show?(theme)

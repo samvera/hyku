@@ -31,7 +31,7 @@
   <% if signed_in %>
     <div class="dropdown dc-masthead-menu">
       <button type="button" class="dc-masthead-trigger dropdown-toggle" id="dc-account-trigger" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false"
+              aria-haspopup="true" aria-expanded="false" <%= tag.attributes(aria: { current: ('true' if local_assigns[:account_current]) }) %>
               aria-label="<%= t('digital_collection.chrome.account_label', name: current_user.name, count: unread) %>">
         <% if unread.positive? %>
           <span class="dc-masthead-bell" aria-hidden="true">
@@ -39,7 +39,7 @@
             <span class="notify-number"><span class="count dc-unread-count"><%= unread %></span></span>
           </span>
         <% end %>
-        <span><%= current_user.name %></span>
+        <span class="dc-masthead-name"><%= current_user.name %></span>
         <span class="fa fa-chevron-down dc-masthead-chevron" aria-hidden="true"></span>
       </button>
       <div class="dropdown-menu dropdown-menu-right dc-masthead-dropdown" aria-labelledby="dc-account-trigger">
@@ -71,7 +71,7 @@
       <p class="dc-masthead-section-label"><%= t('digital_collection.chrome.signed_in_as_name', name: current_user.name) %></p>
       <ul class="nav navbar-nav">
         <% (account_links + [logout_link].compact).each do |label, url| %>
-          <li class="nav-item"><%= link_to label, url, class: 'nav-link' %></li>
+          <li class="nav-item"><%= link_to label, url, class: 'nav-link', aria: { current: ('page' if URI(url).path == request.path) } %></li>
         <% end %>
       </ul>
     <% else %>

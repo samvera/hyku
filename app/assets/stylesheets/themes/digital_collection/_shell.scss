@@ -15,51 +15,8 @@ body.digital_collection_show {
   }
 }
 
-body.digital_collection.public-facing,
-body.digital_collection_show.public-facing {
-  a:has(> .dc-external-end) {
-    overflow-wrap: anywhere;
-  }
-
-  .dc-external-end {
-    white-space: nowrap;
-  }
-
-  .dc-external-icon {
-    display: inline-block;
-    font-size: 0.75em;
-    margin-left: $dc-space-1;
-    text-decoration: none;
-  }
-
-  color: $dc-ink;
-
-  .btn,
-  .badge,
-  .alert,
-  .card,
-  .dropdown-menu,
-  .custom-select {
-    border-radius: var(--dc-radius, #{$dc-radius});
-  }
-
-  .dropdown-menu:not(.dc-masthead-dropdown) {
-    @include dc-menu;
-  }
-
-  .btn.dropdown-toggle {
-    @include dc-select-chevron;
-
-    &::after {
-      display: none;
-    }
-
-    &:focus:not(:focus-visible) {
-      box-shadow: none;
-    }
-  }
-
-  // ---- masthead ----
+// ---- masthead ----
+@mixin dc-masthead-chrome {
   .dc-masthead {
     background: var(--dc-chrome, #{$dc-chrome});
 
@@ -239,7 +196,8 @@ body.digital_collection_show.public-facing {
       }
     }
 
-    .dc-masthead-login[aria-current='page'] {
+    .dc-masthead-login[aria-current='page'],
+    .dc-masthead-trigger[aria-current='true'] .dc-masthead-name {
       @include dc-nav-current;
     }
 
@@ -404,6 +362,53 @@ body.digital_collection_show.public-facing {
       }
     }
   }
+}
+
+body.digital_collection.public-facing,
+body.digital_collection_show.public-facing {
+  a:has(> .dc-external-end) {
+    overflow-wrap: anywhere;
+  }
+
+  .dc-external-end {
+    white-space: nowrap;
+  }
+
+  .dc-external-icon {
+    display: inline-block;
+    font-size: 0.75em;
+    margin-left: $dc-space-1;
+    text-decoration: none;
+  }
+
+  color: $dc-ink;
+
+  .btn,
+  .badge,
+  .alert,
+  .card,
+  .dropdown-menu,
+  .custom-select {
+    border-radius: var(--dc-radius, #{$dc-radius});
+  }
+
+  .dropdown-menu:not(.dc-masthead-dropdown) {
+    @include dc-menu;
+  }
+
+  .btn.dropdown-toggle {
+    @include dc-select-chevron;
+
+    &::after {
+      display: none;
+    }
+
+    &:focus:not(:focus-visible) {
+      box-shadow: none;
+    }
+  }
+
+  @include dc-masthead-chrome;
 
   // ---- search row ----
   .dc-searchbar {

@@ -23,6 +23,9 @@ RSpec.describe 'Etd show page', type: :feature, js: true, clean: true, cohort: '
   end
 
   describe 'attribute labels' do
+    # Failed in local run: passes alone, but fails ("Date created" shown instead of the
+    # custom "Date" label) when spec/services/controlled_vocabularies_spec.rb runs first in
+    # the same process (e.g. `rspec --seed 28645`), so that spec appears to leak state.
     it 'displays the custom Etd labels' do
       visit "/concern/etds/#{etd.id}"
       metadata = find('dl.work-show.etd')

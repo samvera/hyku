@@ -534,6 +534,7 @@ body.digital_collection_show.works-show {
     font-size: $dc-text-sm;
     line-height: $dc-leading-snug;
     margin: 0;
+    overflow-wrap: anywhere;
   }
 
   .dc-panel-pager {

@@ -1,0 +1,19 @@
+<%# OVERRIDE Hyrax 5.3.0: badges, the title as the page h1 and a creator · date byline, each shown only when the metadata profile shows that field %>
+<div class="work-title-wrapper dc-show-head">
+  <p class="dc-show-badges">
+    <%= dc_badge(dc_profile_shows?(presenter, :resource_type) ? theme_type_label(presenter) : theme_model_label(presenter)) %>
+    <% if presenter.visibility != 'open' %><%= presenter.permission_badge %><% end %>
+    <%= presenter.workflow.badge %>
+  </p>
+
+  <% presenter.title.each do |title| %>
+    <h1 class="dc-show-title" itemprop="name"><%= dc_inline_markdown(title) %></h1>
+  <% end %>
+
+  <% date = (Array(presenter.date_created).first if dc_profile_shows?(presenter, :date_created)).presence ||
+            (Array(presenter.try(:date_issued)).first if dc_profile_shows?(presenter, :date_issued)) %>
+  <% byline = [dc_creator_names(presenter).first, date].compact_blank %>
+  <% if byline.any? %>
+    <p class="dc-show-byline"><%= safe_join(byline, ' · ') %></p>
+  <% end %>
+</div>

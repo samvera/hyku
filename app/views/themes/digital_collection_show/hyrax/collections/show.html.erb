@@ -1,0 +1,118 @@
+<%# OVERRIDE Hyrax 5.3.0: a banner with one plate (badges, title, collection search, a translated meta line, Copy permalink on its own line, and logos), the editor actions row, Collection details, subcollection cards and the works listed with the search page's toolbar, views and pager, whose links and the collection search return the reader to the works %>
+<% provide :page_title, construct_page_title(@presenter.title) %>
+<% content_for :canonical_url do %>
+  <link rel="canonical" href="<%= canonical_url_for(@presenter) %>" />
+<% end %>
+<div class="dc-collection-page" itemscope itemtype="http://schema.org/CollectionPage">
+  <% banner_branding = dc_banner_branding(@presenter.id) %>
+  <% banner = banner_branding&.then { |branding| dc_branding_path(branding) } %>
+  <% tall_banner = dc_tall_banner?(banner_branding) %>
+  <% logos = dc_collection_branding(@presenter.id, 'logo') %>
+  <%= tag.section class: token_list('dc-collection-banner', 'dc-collection-banner-plain' => !banner, 'dc-collection-banner-tall' => tall_banner),
+                  style: ("background-image: url('#{banner}')" if banner),
+                  aria: { labelledby: 'dc-collection-title' } do %>
+    <% if tall_banner %>
+      <%= tag.img src: banner, alt: '', class: 'dc-collection-banner-backdrop' %>
+      <span class="dc-collection-banner-scrim"></span>
+      <%= tag.img src: banner, alt: '', class: 'dc-collection-banner-figure' %>
+    <% end %>
+    <div class="dc-collection-banner-inner">
+      <div class="dc-collection-plate">
+        <div class="dc-collection-badges">
+          <%= dc_badge(dc_collection_type_label(@presenter.collection_type)) %>
+          <%= @presenter.permission_badge %>
+        </div>
+        <h1 id="dc-collection-title" class="dc-collection-title"><%= dc_inline_markdown(@presenter.title.first) %></h1>
+        <div class="dc-collection-search">
+          <%= render 'search_form', presenter: @presenter, url: hyrax.collection_path(@presenter.id, anchor: 'dc-collection-works') %>
+        </div>
+        <p class="dc-collection-meta"><%= dc_collection_meta(@presenter) %></p>
+        <% if copy_permalink_enabled? %>
+          <p class="dc-collection-permalink"><%= render 'hyrax/shared/copy_permalink', presenter: @presenter %></p>
+        <% end %>
+        <% if logos.any? %>
+          <ul class="dc-collection-logos">
+            <% logos.each do |logo| %>
+              <% alt = logo.alt_text.presence || (t('digital_collection.collection.logo', title: @presenter.to_s) if logo.target_url.present?) %>
+              <% image = image_tag(dc_branding_path(logo), alt: alt.to_s, loading: 'lazy') %>
+              <li><%= logo.target_url.present? ? link_to(image, logo.target_url) : image %></li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% id = @presenter.id %>
+  <section class="collection-title-row-wrapper dc-collection-actions"
+           data-source="show"
+           data-id="<%= id %>"
+           data-colls-hash="<%= available_parent_collections_data(collection: @presenter) %>"
+           data-post-url="<%= hyrax.dashboard_create_nest_collection_within_path(id) %>"
+           data-post-delete-url="<%= hyrax.dashboard_collection_path(id) %>">
+    <div class="collection-title-row-content dc-collection-actions-inner">
+      <%= render 'hyrax/dashboard/collections/show_actions', presenter: @presenter %>
+    </div>
+  </section>
+
+  <section class="dc-collection-details" aria-labelledby="dc-collection-details-heading">
+    <div class="dc-collection-details-inner">
+      <div class="dc-collection-thumb">
+        <%= render 'hyrax/collections/media_display', presenter: @presenter %>
+      </div>
+      <div class="dc-collection-details-body">
+        <%= dc_section_head t('digital_collection.collection.details'), id: 'dc-collection-details-heading' %>
+        <% if dc_profile_shows?(@presenter, :description) %>
+          <div class="dc-collection-description">
+            <%= dc_external_links_in_new_tab(render('collection_description', presenter: @presenter)) %>
+          </div>
+        <% end %>
+        <% unless collection_search_parameters? %>
+          <%= render 'show_descriptions' %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <%= dc_external_links_in_new_tab(render_compound_cards(@presenter)) %>
+
+  <% if @presenter.collection_type_is_nestable? && @subcollection_count.positive? %>
+    <section class="dc-collection-section dc-collection-subcollections" aria-labelledby="dc-subcollections-heading">
+      <div class="dc-collection-section-inner">
+        <%= dc_section_head t('digital_collection.collection.subcollections', number: number_with_delimiter(@subcollection_count)), id: 'dc-subcollections-heading' %>
+        <ul class="dc-cards dc-cards-gallery list-unstyled">
+          <% @subcollection_docs.each do |document| %>
+            <%= render 'catalog/dc_card', document:, variant: 'gallery' %>
+          <% end %>
+        </ul>
+        <%= render 'hyrax/collections/paginate', solr_response: @subcollection_solr_response, page_param_name: :sub_collection_page %>
+      </div>
+    </section>
+  <% end %>
+
+  <% if @members_count.positive? || collection_search_parameters? %>
+    <% number = number_with_delimiter(@members_count) %>
+    <section id="dc-collection-works" class="dc-collection-section dc-collection-works" aria-labelledby="dc-works-heading">
+      <div class="dc-collection-section-inner">
+        <%= dc_section_head(collection_search_parameters? ? t('digital_collection.collection.search_results', number:) : t('digital_collection.collection.works', number:),
+                            id: 'dc-works-heading') do %>
+          <%= render 'catalog/sort_and_per_page', anchor: 'dc-collection-works' %>
+        <% end %>
+        <% if @members_count.positive? %>
+          <%= render "catalog/document_#{document_index_view_type}", documents: @member_docs %>
+          <% if show_pagination? && @response.total_pages > 1 %>
+            <div class="row record-padding">
+              <div class="col-md-12">
+                <%= render Blacklight::Response::PaginationComponent.new(response: @response, params: { anchor: 'dc-collection-works' }) %>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="dc-collection-no-results"><%= t('digital_collection.collection.no_results', query: params[:cq]) %></p>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+</div>
+
+<span class='hide analytics-event' data-category="collection" data-action="collection-page-view" data-name="<%= @presenter.id %>" >

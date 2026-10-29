@@ -229,17 +229,6 @@ de:
         sub: Hinterlegen Sie Werke im Repositorium.
         button: Einreichung starten
     show:
-      citation:
-        heading: "Zitieren"
-        style: "Zitierstil"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "Zitat kopieren"
-        copied: "Kopiert"
-        endnote: "EndNote-Datensatz herunterladen"
-        note: "Nur als Vorschlag gedacht. Bitte anhand des von Ihnen verwendeten Zitierstils prüfen."
       files:
         as_format: als %{name}
         heading: Dateien
@@ -898,6 +887,9 @@ de:
         roles:
           remove:
             confirmation: Sind Sie sicher, dass Sie die Rolle „%{role}“ vom Benutzer „%{user}“ entfernen möchten?
+    users:
+      activity_log:
+        no_user_activity: "Keine Benutzeraktivität"
   permissions:
     collections:
       cannot:
@@ -974,17 +966,8 @@ de:
         one: 1 Objekt
         other: "%{count} Objekte"
       relationships: Beziehungen
-      cite: Zitieren
-      endnote: Für EndNote herunterladen
       permalink: Permalink
       contributors: Mitwirkende
-      citation_style: Zitierstil
-      citation_styles:
-        apa: APA (7. Aufl.)
-        mla: MLA (9. Aufl.)
-        chicago: Chicago
-      citation_copy: Kopieren
-      citation_copied: Kopiert
   proprietor:
     accounts:
       edit:
@@ -1118,16 +1101,268 @@ de:
         children: "Untergeordnete Werke"
       part_of:
         heading: "Gehört zu"
-      citation:
-        heading: "Zitation"
-        style: "Zitierstil"
-        endnote: "Nach EndNote exportieren"
-        copy: "Kopieren"
-        copied: "Kopiert"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
+  digital_collection:
+    copy:
+      copied: "Kopiert"
+    form:
+      required: "(erforderlich)"
+    account:
+      sign_in:
+        title: "Anmelden"
+        submit: "Anmelden"
+      forgot_password:
+        title: "Passwort vergessen?"
+        submit: "Anweisungen zum Zurücksetzen meines Passworts senden"
+      change_password:
+        title: "Ihr Passwort ändern"
+        password: "Neues Passwort"
+        password_confirmation: "Neues Passwort bestätigen"
+        minimum_length: "Mindestens %{count} Zeichen"
+        submit: "Mein Passwort ändern"
+      sign_up:
+        title: "Ein neues Konto erstellen"
+        submit: "Benutzerkonto anlegen"
+      single_signon:
+        title: "Single-Sign-On-Anbieter auswählen"
+        redirecting: "Bitte warten Sie, während wir Sie weiterleiten …"
+    file_set:
+      actions:
+        delete: "Diesen Dateisatz löschen"
+        edit: "Diesen Dateisatz bearbeiten"
+      activity: "Aktivität"
+      description: "Beschreibung"
+      details:
+        date_modified: "Geändert am"
+        date_uploaded: "Hochgeladen am"
+        depositor: "Einreicher"
+        dimensions: "Abmessungen"
+        dimensions_value: "%{width} × %{height} px"
+        fixity: "Integritätsprüfung"
+        format: "Dateiformat"
+        heading: "Dateidetails"
+        size: "Dateigröße"
+      generate_link: "Download-Link erzeugen"
+      share:
+        email: "E-Mail"
+        facebook: "Facebook"
+        label: "Teilen"
+        x: "X"
+      technical:
+        alpha_channels: "Alphakanäle"
+        byte_order: "Byte-Reihenfolge"
+        capture_device: "Aufnahmegerät"
+        color_map: "Farbtabelle"
+        color_space: "Farbraum"
+        compression: "Komprimierung"
+        duration: "Dauer"
+        file_format: "Dateiformat"
+        file_size: "Dateigröße"
+        file_title: "Dateititel"
+        filename: "Dateiname"
+        format_label: "Formatbezeichnung"
+        gps_timestamp: "GPS-Zeitstempel"
+        heading: "Technische Details"
+        height: "Höhe"
+        image_producer: "Bildersteller"
+        last_modified: "Zuletzt geändert"
+        latitude: "Breitengrad"
+        longitude: "Längengrad"
+        mime_type: "MIME-Typ"
+        orientation: "Ausrichtung"
+        original_checksum: "Ursprüngliche Prüfsumme"
+        page_count: "Seitenanzahl"
+        profile_name: "Profilname"
+        profile_version: "Profilversion"
+        sample_rate: "Abtastrate"
+        scanning_software: "Scansoftware"
+        well_formed: "Wohlgeformt"
+        width: "Breite"
+      user_activity: "Benutzeraktivität"
+    work:
+      actions:
+        select: "Dieses Werk auswählen"
+        header: "Aktionen für das Werk"
+        feature: "Auf der Startseite zeigen"
+        unfeature: "Von der Startseite entfernen"
+      copy_citation: "Zitat kopieren"
+      part_of:
+        admin_set:
+          one: "Verwaltungsset"
+          other: "Verwaltungssets"
+        collection:
+          one: "Sammlung"
+          other: "Sammlungen"
+        parent_work:
+          one: "Übergeordnetes Werk"
+          other: "Übergeordnete Werke"
+    chrome:
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 ungelesene Benachrichtigung"
+        other: "%{name}, %{count} ungelesene Benachrichtigungen"
+      announcement_label: "Ankündigung"
+      language: "Sprache"
+      masthead_label: "Website-Navigation"
+      menu:
+        zero: "Menü"
+        one: "Menü, 1 ungelesene Benachrichtigung"
+        other: "Menü, %{count} ungelesene Benachrichtigungen"
+      notifications:
+        zero: "Benachrichtigungen"
+        one: "Benachrichtigungen (1)"
+        other: "Benachrichtigungen (%{count})"
+      signed_in_as: "Angemeldet als"
+      signed_in_as_name: "Angemeldet als %{name}"
+    homepage:
+      intro_label: "Einführung"
+      hero:
+        label: "Ausgewählte Sammlungen"
+        headline: "Entdecken Sie die Sammlungen"
+        featured_collection: "Ausgewählte Sammlung"
+        hold: "Pause"
+        resume: "Abspielen"
+        segment: "Folie %{number}: %{title}"
+        slide: "Folie %{number} von %{total}"
+      featured_collections:
+        heading: "Ausgewählte Sammlungen"
+        unfeature_confirm: "Diese Sammlung aus der Auswahl entfernen?"
+        reorder_hint: "Ziehen, um die Reihenfolge der Sammlungen zu ändern."
+        save_order: "Reihenfolge speichern"
+        remove: "%{title} aus den hervorgehobenen Sammlungen entfernen"
+        empty_admin: "Es sind noch keine Sammlungen hervorgehoben. Öffnen Sie eine Sammlung und wählen Sie „Auf der Startseite zeigen“, um sie im Banner der Startseite zu zeigen. Sie können bis zu %{limit} hervorheben."
+      browse:
+        heading: "Sammlungen durchstöbern"
+        grid: "Raster"
+        list: "Liste"
+        view_label: "Anzeigeoptionen der Sammlungen"
+        sort: "Sortieren"
+        sort_asc: "A bis Z"
+        sort_desc: "Z bis A"
+        sort_aria: "Nach Titel sortieren, derzeit %{direction}. Aktivieren zum Umkehren."
+        previous: "Zurück"
+        next: "Weiter"
+        page: "Seite %{number}"
+        pages_label: "Seiten der Sammlungen"
+        status: "%{shown} von %{total} Sammlungen, Seite %{page} von %{pages}, Ansicht %{view}, sortiert %{sort}."
+        works_count:
+          one: "1 Werk"
+          other: "%{formatted} Werke"
+        empty: "Es wurden noch keine Sammlungen hinzugefügt."
+        all: "Alle Sammlungen durchstöbern"
+      featured:
+        heading: "Ausgewählte Werke"
+        unfeature_confirm: "Dieses Werk aus der Auswahl entfernen?"
+        reorder_hint: "Ziehen, um die Reihenfolge zu ändern."
+        save_order: "Reihenfolge speichern"
+        remove: "%{title} aus den hervorgehobenen Werken entfernen"
+        empty_admin: "Es sind noch keine Werke hervorgehoben. Öffnen Sie ein Werk und wählen Sie „Auf der Startseite zeigen“, um es hier aufzulisten. Sie können bis zu %{limit} hervorheben."
+      recent:
+        heading: "Kürzlich hinzugefügt"
+        view_all: "Alle neuen Werke anzeigen"
+      about:
+        heading: "Über die Sammlungen"
+      cta:
+        eyebrow: "Beitragen"
+        heading: "Teilen Sie Ihr Werk"
+        sub: "Materialien in das Repositorium einreichen."
+        button: "Einreichung starten"
+      stats:
+        collections:
+          one: "Sammlung"
+          other: "Sammlungen"
+        works:
+          one: "Werk"
+          other: "Werke"
+    search:
+      advanced: "Erweiterte Suche"
+      submit: "Suchen"
+      results:
+        heading: "Suchergebnisse"
+        summary:
+          zero: "Keine Ergebnisse"
+          one: "%{formatted} Ergebnis"
+          other: "%{formatted} Ergebnisse"
+        summary_query:
+          zero: "Keine Ergebnisse für „%{query}“"
+          one: "%{formatted} Ergebnis für „%{query}“"
+          other: "%{formatted} Ergebnisse für „%{query}“"
+        filter_heading: "Ergebnisse filtern"
+        applied:
+          one: "%{count} Filter angewendet"
+          other: "%{count} Filter angewendet"
+        range_html: "<strong>%{first}–%{last}</strong> von <strong>%{total}</strong>"
+        sort_label: "Sortieren nach"
+        per_page_label: "Pro Seite"
+        previous: "Zurück"
+        next: "Weiter"
+        more_html: "Mehr <span class=\"sr-only\">%{field_name}</span>"
+        range_from: "Von"
+        range_to: "Bis"
+        range_larger: "Zeitraum in einem größeren Fenster wählen"
+        range_missing: "Datum nicht angegeben"
+        facet_sort_label: "Werte sortieren"
+        facet_sort_count: "Meiste Treffer"
+        facet_pages_label: "Seiten der Werte"
+        query_label: "Suche"
+        collection: "Sammlung"
+        no_results:
+          heading: "Versuchen Sie eine andere Suche"
+          tips:
+            - "Prüfen Sie die Schreibweise Ihrer Suchbegriffe."
+            - "Verwenden Sie weniger oder allgemeinere Begriffe."
+            - "Entfernen Sie einen Filter, um die Suche zu erweitern."
+        clear_all: "Suche und Filter zurücksetzen"
+        any_of: "Eines davon"
+        remove_value: "%{value} entfernen"
+        match_html: "Treffer für %{op} dieser Felder:"
+        from: "Von:"
+        fields:
+          creator: "Urheber"
+          date: "Datum"
+          part_of: "Teil von"
+          resource_type: "Ressourcentyp"
+          description: "Beschreibung"
+          works: "Werke"
+    advanced:
+      match_html: "Objekte finden, die %{select_menu} dieser Felder entsprechen"
+      match_label: "Allen oder beliebigen Feldern entsprechen"
+      limits: "Und diese Merkmale haben"
+      tips:
+        heading: "Suchtipps"
+        items:
+          - "Wählen Sie „alle“, um alle Felder zu verlangen."
+          - "Wählen Sie „beliebige“, um mindestens ein Feld zu treffen."
+          - "Kombinieren Sie Stichwörter und Merkmale, um bestimmte Objekte zu finden."
+          - "Suchen Sie nach Datum im Format JJJJMMTT, JJJJMM oder JJJJ. Verwenden Sie kein „-“, „/“ oder andere Sonderzeichen."
+          - "Verwenden Sie Anführungszeichen, um nach einer Wortgruppe zu suchen."
+          - "Setzen Sie „+“ vor einen Begriff, um ihn zu verlangen. (Sonst können auch Treffer erscheinen, die nur einige Ihrer Begriffe enthalten.)"
+          - "Setzen Sie „-“ vor ein Wort oder eine Wortgruppe, um sie auszuschließen."
+          - "Verwenden Sie „OR“, „AND“ und „NOT“ für komplexe boolesche Suchen. Sie können dabei Klammern verwenden."
+          - "Platzhalter und Trunkierung werden nicht unterstützt – Wortformen werden automatisch berücksichtigt."
+    collection:
+      actions:
+        add_to_collection: "Zu einer Sammlung hinzufügen"
+        add_works: "Werke hinzufügen"
+        feature: "Auf der Startseite zeigen"
+        unfeature: "Von der Startseite entfernen"
+      created_by: "Erstellt von %{creator}"
+      date_format: "%-d. %B %Y"
+      details: "Sammlungsdetails"
+      items:
+        one: "%{count} Objekt"
+        other: "%{count} Objekte"
+      search_placeholder: "In dieser Sammlung suchen"
+      updated: "Zuletzt aktualisiert am %{date}"
+      no_results: "Nichts in dieser Sammlung passt zu „%{query}“."
+      search_results: "Suchergebnisse (%{number})"
+      subcollections: "Untersammlungen (%{number})"
+      works: "Werke in dieser Sammlung (%{number})"
+      logo: "Logo von %{title}"
+    show:
+      breadcrumbs: "Brotkrümelnavigation"
+      new_tab: "(öffnet in einem neuen Tab)"
+      part_of:
+        heading: Teil von
   screening_room:
     chrome:
       toggle_navigation: Navigation umschalten
@@ -1170,17 +1405,6 @@ de:
         unfeature_confirm: 'Dieses Werk aus der Auswahl entfernen?'
         view_work: Werk ansehen
     show:
-      citation:
-        copied: Kopiert
-        copy_visible: Zitat kopieren
-        endnote: EndNote-Datensatz herunterladen
-        heading: Zitieren
-        note: Nur als Vorschlag. Bitte mit dem gewünschten Zitierstil abgleichen.
-        style: Zitierstil
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 Element
@@ -1195,3 +1419,8 @@ de:
     service:
       down: Down
       ok: OK
+  blacklight_gallery:
+    catalog:
+      slideshow:
+        pause: "Diashow anhalten"
+        start: "Diashow starten"

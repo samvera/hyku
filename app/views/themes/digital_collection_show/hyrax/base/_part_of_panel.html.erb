@@ -1,0 +1,16 @@
+<% groups = dc_part_of_groups(presenter) %>
+<% if groups.any? %>
+  <%= render layout: 'hyrax/base/dc_panel',
+             locals: { modifier: 'dc-part-of', label_id: 'dc-part-of-label', label: t('digital_collection.show.part_of.heading') } do %>
+    <dl class="dc-panel-body dc-part-of-groups">
+      <% groups.each do |label, links| %>
+        <div>
+          <dt><%= label %></dt>
+          <% links.each do |title, path| %>
+            <dd><%= link_to title, path %></dd>
+          <% end %>
+        </div>
+      <% end %>
+    </dl>
+  <% end %>
+<% end %>

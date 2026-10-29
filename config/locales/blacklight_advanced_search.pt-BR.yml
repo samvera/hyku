@@ -1,0 +1,12 @@
+"pt-BR":
+  blacklight_advanced_search:
+    all: "todos"
+    any: "qualquer"
+    form:
+      title: "Mais opções de pesquisa"
+      search_context: "Dentro da pesquisa"
+      limit_criteria_heading_html: "<strong>E</strong> que tenham estes atributos"
+      query_criteria_heading_html: "Encontrar itens que correspondam a %{select_menu} de"
+      sort_label: "Ordenar resultados por"
+      start_over: "Recomeçar"
+      search_btn: "Pesquisar"

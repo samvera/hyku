@@ -1,0 +1,45 @@
+<%# OVERRIDE Blacklight 7.43.0: result range, labeled Sort by and Per page menus and the view toggle in one toolbar, left out when nothing matches; an optional anchor keeps the reader at the results after a change %>
+<% anchor = local_assigns[:anchor] %>
+<% unless @response.empty? %>
+<div id="sortAndPerPage" class="dc-toolbar" role="navigation" aria-label="<%= t('blacklight.search.per_page.aria_label') %>">
+  <p class="dc-toolbar-range"><%= dc_results_range(@response) %></p>
+
+  <% if show_sort_and_per_page? %>
+    <div class="dc-toolbar-tools">
+      <% if active_sort_fields.many? %>
+        <div class="dc-toolbar-menu dropdown">
+          <span class="dc-toolbar-label" id="dc-sort-label"><%= t('digital_collection.search.results.sort_label') %></span>
+          <button type="button" class="dc-toolbar-trigger dropdown-toggle" id="dc-sort-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-labelledby="dc-sort-label dc-sort-button">
+            <%= sort_field_label(current_sort_field.key) %>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <% active_sort_fields.each_value do |field| %>
+              <% current = field.key == current_sort_field.key %>
+              <%= link_to dc_toolbar_path(sort: field.key, anchor:), class: "dropdown-item#{' active' if current}", 'aria-current': (current ? 'true' : nil) do %>
+                <%= sort_field_label(field.key) %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if blacklight_config.per_page.many? %>
+        <div class="dc-toolbar-menu dropdown">
+          <span class="dc-toolbar-label" id="dc-per-page-label"><%= t('digital_collection.search.results.per_page_label') %></span>
+          <button type="button" class="dc-toolbar-trigger dropdown-toggle" id="dc-per-page-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-labelledby="dc-per-page-label dc-per-page-button">
+            <%= current_per_page %>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <% blacklight_config.per_page.each do |count| %>
+              <% current = count == current_per_page %>
+              <%= link_to count, dc_toolbar_path(per_page: count, anchor:), class: "dropdown-item#{' active' if current}", 'aria-current': (current ? 'true' : nil) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <%= render 'catalog/view_type_group', anchor: %>
+    </div>
+  <% end %>
+</div>
+<% end %>

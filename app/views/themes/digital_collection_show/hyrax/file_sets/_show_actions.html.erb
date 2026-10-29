@@ -1,0 +1,17 @@
+<%# OVERRIDE Hyrax 5.3.0: share links first, then Analytics, Edit and Delete as full-width theme buttons with sentence-case labels %>
+<%= render 'dc_share', presenter: %>
+<% if Hyrax.config.analytics_reporting? || (presenter.editor? && !workflow_restriction?(presenter)) %>
+  <div class="dc-file-actions">
+    <% if Hyrax.config.analytics_reporting? %>
+      <%= link_to t('hyrax.file_sets.show_actions.analytics'), presenter.stats_path, id: 'stats',
+                  class: 'btn btn-secondary dc-action', data: { turbolinks: false } %>
+    <% end %>
+    <% if presenter.editor? && !workflow_restriction?(presenter) %>
+      <%= link_to t('digital_collection.file_set.actions.edit'),
+                  edit_polymorphic_path([main_app, presenter]), class: 'btn btn-secondary dc-action' %>
+      <%= link_to t('digital_collection.file_set.actions.delete'), [main_app, presenter],
+                  class: 'btn dc-action-danger', method: :delete,
+                  data: { confirm: t('hyrax.file_sets.show_actions.confirm_delete_this', type: presenter.human_readable_type) } %>
+    <% end %>
+  </div>
+<% end %>

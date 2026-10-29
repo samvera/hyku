@@ -112,17 +112,6 @@ pt-BR:
         sub: Deposite obras no repositório.
         button: Iniciar um depósito
     show:
-      citation:
-        heading: "Como citar"
-        style: "Estilo de citação"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "Copiar citação"
-        copied: "Copiado"
-        endnote: "Baixar registro do EndNote"
-        note: "Fornecida apenas como sugestão. Confira com o seu guia de estilo preferido."
       files:
         as_format: como %{name}
         heading: Arquivos
@@ -778,6 +767,9 @@ pt-BR:
         roles:
           remove:
             confirmation: Tem certeza de que deseja remover a função "%{role}" do usuário "%{user}"?
+    users:
+      activity_log:
+        no_user_activity: "Nenhuma atividade do usuário"
   permissions:
     collections:
       cannot:
@@ -854,17 +846,8 @@ pt-BR:
         one: 1 item
         other: "%{count} itens"
       relationships: Relações
-      cite: Citar
-      endnote: Baixar para EndNote
       permalink: Link permanente
       contributors: Colaboradores
-      citation_style: Estilo de citação
-      citation_styles:
-        apa: APA (7ª ed.)
-        mla: MLA (9ª ed.)
-        chicago: Chicago
-      citation_copy: Copiar
-      citation_copied: Copiado
   proprietor:
     accounts:
       edit:
@@ -998,16 +981,268 @@ pt-BR:
         children: "Obras vinculadas"
       part_of:
         heading: "Faz parte de"
-      citation:
-        heading: "Citação"
-        style: "Estilo de citação"
-        endnote: "Exportar para o EndNote"
-        copy: "Copiar"
-        copied: "Copiado"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
+  digital_collection:
+    copy:
+      copied: "Copiado"
+    form:
+      required: "(obrigatório)"
+    account:
+      sign_in:
+        title: "Entrar"
+        submit: "Entrar"
+      forgot_password:
+        title: "Esqueceu sua senha?"
+        submit: "Enviar instruções para redefinir a senha"
+      change_password:
+        title: "Alterar sua senha"
+        password: "Nova senha"
+        password_confirmation: "Confirme sua nova senha"
+        minimum_length: "Mínimo de %{count} caracteres"
+        submit: "Alterar minha senha"
+      sign_up:
+        title: "Criar uma nova conta"
+        submit: "Criar conta"
+      single_signon:
+        title: "Selecione um provedor de login único"
+        redirecting: "Aguarde enquanto redirecionamos você…"
+    file_set:
+      actions:
+        delete: "Excluir este conjunto de arquivos"
+        edit: "Editar este conjunto de arquivos"
+      activity: "Atividade"
+      description: "Descrição"
+      details:
+        date_modified: "Data de modificação"
+        date_uploaded: "Data de envio"
+        depositor: "Depositante"
+        dimensions: "Dimensões"
+        dimensions_value: "%{width} × %{height} px"
+        fixity: "Verificação de integridade"
+        format: "Formato do arquivo"
+        heading: "Detalhes do arquivo"
+        size: "Tamanho do arquivo"
+      generate_link: "Gerar link de download"
+      share:
+        email: "E-mail"
+        facebook: "Facebook"
+        label: "Compartilhar"
+        x: "X"
+      technical:
+        alpha_channels: "Canais alfa"
+        byte_order: "Ordem dos bytes"
+        capture_device: "Dispositivo de captura"
+        color_map: "Mapa de cores"
+        color_space: "Espaço de cor"
+        compression: "Compressão"
+        duration: "Duração"
+        file_format: "Formato do arquivo"
+        file_size: "Tamanho do arquivo"
+        file_title: "Título do arquivo"
+        filename: "Nome do arquivo"
+        format_label: "Rótulo do formato"
+        gps_timestamp: "Data e hora GPS"
+        heading: "Detalhes técnicos"
+        height: "Altura"
+        image_producer: "Produtor da imagem"
+        last_modified: "Última modificação"
+        latitude: "Latitude"
+        longitude: "Longitude"
+        mime_type: "Tipo MIME"
+        orientation: "Orientação"
+        original_checksum: "Soma de verificação original"
+        page_count: "Número de páginas"
+        profile_name: "Nome do perfil"
+        profile_version: "Versão do perfil"
+        sample_rate: "Taxa de amostragem"
+        scanning_software: "Software de digitalização"
+        well_formed: "Bem formado"
+        width: "Largura"
+      user_activity: "Atividade do usuário"
+    work:
+      actions:
+        select: "Selecionar esta obra"
+        header: "Ações da obra"
+        feature: "Destacar na página inicial"
+        unfeature: "Remover da página inicial"
+      copy_citation: "Copiar citação"
+      part_of:
+        admin_set:
+          one: "Conjunto administrativo"
+          other: "Conjuntos administrativos"
+        collection:
+          one: "Coleção"
+          other: "Coleções"
+        parent_work:
+          one: "Obra principal"
+          other: "Obras principais"
+    chrome:
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 notificação não lida"
+        other: "%{name}, %{count} notificações não lidas"
+      announcement_label: "Anúncio"
+      language: "Idioma"
+      masthead_label: "Navegação do site"
+      menu:
+        zero: "Menu"
+        one: "Menu, 1 notificação não lida"
+        other: "Menu, %{count} notificações não lidas"
+      notifications:
+        zero: "Notificações"
+        one: "Notificações (1)"
+        other: "Notificações (%{count})"
+      signed_in_as: "Conectado como"
+      signed_in_as_name: "Conectado como %{name}"
+    homepage:
+      intro_label: "Introdução"
+      hero:
+        label: "Acervos em destaque"
+        headline: "Explore os acervos"
+        featured_collection: "Acervo em destaque"
+        hold: "Pausar"
+        resume: "Reproduzir"
+        segment: "Slide %{number}: %{title}"
+        slide: "Slide %{number} de %{total}"
+      featured_collections:
+        heading: "Coleções em destaque"
+        unfeature_confirm: "Remover esta coleção da lista de destaques?"
+        reorder_hint: "Arraste para reordenar as coleções em destaque."
+        save_order: "Salvar ordem"
+        remove: "Remover %{title} das coleções em destaque"
+        empty_admin: "Ainda não há coleções em destaque. Abra uma coleção e escolha “Destacar na página inicial” para mostrá-la no banner da página inicial. Você pode destacar até %{limit}."
+      browse:
+        heading: "Explorar acervos"
+        grid: "Grade"
+        list: "Lista"
+        view_label: "Opções de exibição dos acervos"
+        sort: "Ordenar"
+        sort_asc: "De A a Z"
+        sort_desc: "De Z a A"
+        sort_aria: "Ordenar por título, atualmente %{direction}. Ative para inverter."
+        previous: "Anterior"
+        next: "Próxima"
+        page: "Página %{number}"
+        pages_label: "Páginas dos acervos"
+        status: "Exibindo %{shown} de %{total} acervos, página %{page} de %{pages}, visualização %{view}, ordenados %{sort}."
+        works_count:
+          one: "1 obra"
+          other: "%{formatted} obras"
+        empty: "Nenhum acervo foi adicionado ainda."
+        all: "Explorar todos os acervos"
+      featured:
+        heading: "Obras em destaque"
+        unfeature_confirm: "Remover esta obra da lista de destaques?"
+        reorder_hint: "Arraste para reordenar as obras em destaque."
+        save_order: "Salvar ordem"
+        remove: "Remover %{title} das obras em destaque"
+        empty_admin: "Ainda não há obras em destaque. Abra uma obra e escolha “Destacar na página inicial” para listá-la aqui. Você pode destacar até %{limit}."
+      recent:
+        heading: "Adicionados recentemente"
+        view_all: "Ver todas as obras recentes"
+      about:
+        heading: "Sobre as coleções"
+      cta:
+        eyebrow: "Contribuir"
+        heading: "Compartilhe seu trabalho"
+        sub: "Deposite materiais no repositório."
+        button: "Iniciar um depósito"
+      stats:
+        collections:
+          one: "Acervo"
+          other: "Acervos"
+        works:
+          one: "Obra"
+          other: "Obras"
+    search:
+      advanced: "Pesquisa avançada"
+      submit: "Pesquisar"
+      results:
+        heading: "Resultados da pesquisa"
+        summary:
+          zero: "Nenhum resultado"
+          one: "%{formatted} resultado"
+          other: "%{formatted} resultados"
+        summary_query:
+          zero: "Nenhum resultado para “%{query}”"
+          one: "%{formatted} resultado para “%{query}”"
+          other: "%{formatted} resultados para “%{query}”"
+        filter_heading: "Filtrar resultados"
+        applied:
+          one: "%{count} filtro aplicado"
+          other: "%{count} filtros aplicados"
+        range_html: "<strong>%{first}–%{last}</strong> de <strong>%{total}</strong>"
+        sort_label: "Ordenar por"
+        per_page_label: "Por página"
+        previous: "Anterior"
+        next: "Próxima"
+        more_html: "Mais <span class=\"sr-only\">%{field_name}</span>"
+        range_from: "De"
+        range_to: "Até"
+        range_larger: "Escolher datas em uma janela maior"
+        range_missing: "Data não especificada"
+        facet_sort_label: "Ordenar valores"
+        facet_sort_count: "Mais resultados"
+        facet_pages_label: "Páginas de valores"
+        query_label: "Pesquisa"
+        collection: "Coleção"
+        no_results:
+          heading: "Tente uma pesquisa diferente"
+          tips:
+            - "Verifique a ortografia das palavras pesquisadas."
+            - "Use menos palavras ou palavras mais amplas."
+            - "Remova um filtro para ampliar a pesquisa."
+        clear_all: "Limpar pesquisa e filtros"
+        any_of: "Qualquer um destes"
+        remove_value: "Remover %{value}"
+        match_html: "Correspondendo a %{op} estes campos:"
+        from: "De:"
+        fields:
+          creator: "Criador"
+          date: "Data"
+          part_of: "Parte de"
+          resource_type: "Tipo de recurso"
+          description: "Descrição"
+          works: "Obras"
+    advanced:
+      match_html: "Encontrar itens que correspondam a %{select_menu} destes campos"
+      match_label: "Corresponder a todos ou a qualquer campo"
+      limits: "E que tenham estes atributos"
+      tips:
+        heading: "Dicas de pesquisa"
+        items:
+          - "Selecione “todos” para exigir todos os campos."
+          - "Selecione “qualquer” para encontrar pelo menos um campo."
+          - "Combine palavras-chave e atributos para encontrar itens específicos."
+          - "Pesquise por data no formato AAAAMMDD, AAAAMM ou AAAA. Não use “-”, “/” ou outros caracteres especiais."
+          - "Use aspas para pesquisar uma frase exata."
+          - "Use “+” antes de um termo para torná-lo obrigatório. (Caso contrário, podem aparecer resultados com apenas alguns dos seus termos.)"
+          - "Use “-” antes de uma palavra ou frase para excluí-la."
+          - "Use “OR”, “AND” e “NOT” para criar pesquisas booleanas complexas. Você pode usar parênteses nas expressões."
+          - "Truncamento e curingas não são suportados; as variações das palavras são pesquisadas automaticamente."
+    collection:
+      actions:
+        add_to_collection: "Adicionar a uma coleção"
+        add_works: "Adicionar obras"
+        feature: "Destacar na página inicial"
+        unfeature: "Remover da página inicial"
+      created_by: "Criado por %{creator}"
+      date_format: "%-d de %B de %Y"
+      details: "Detalhes da coleção"
+      items:
+        one: "%{count} item"
+        other: "%{count} itens"
+      search_placeholder: "Pesquisar nesta coleção"
+      updated: "Última atualização: %{date}"
+      no_results: "Nada nesta coleção corresponde a “%{query}”."
+      search_results: "Resultados da pesquisa (%{number})"
+      subcollections: "Subcoleções (%{number})"
+      works: "Obras nesta coleção (%{number})"
+      logo: "Logotipo de %{title}"
+    show:
+      breadcrumbs: "Trilha de navegação"
+      new_tab: "(abre em uma nova aba)"
+      part_of:
+        heading: Parte de
   screening_room:
     chrome:
       toggle_navigation: Alternar navegação
@@ -1050,17 +1285,6 @@ pt-BR:
         unfeature_confirm: 'Remover esta obra da lista de destaques?'
         view_work: Ver a obra
     show:
-      citation:
-        copied: Copiado
-        copy_visible: Copiar a citação
-        endnote: Baixar registro EndNote
-        heading: Como citar
-        note: Fornecido apenas como sugestão. Confira com seu guia de estilo.
-        style: Estilo de citação
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 item

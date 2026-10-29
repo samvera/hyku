@@ -1,0 +1,12 @@
+es:
+  blacklight_advanced_search:
+    all: "todos"
+    any: "cualquiera"
+    form:
+      title: "Más opciones de búsqueda"
+      search_context: "Dentro de la búsqueda"
+      limit_criteria_heading_html: "<strong>Y</strong> que tengan estos atributos"
+      query_criteria_heading_html: "Buscar elementos que coincidan con %{select_menu} de"
+      sort_label: "Ordenar resultados por"
+      start_over: "Empezar de nuevo"
+      search_btn: "Buscar"

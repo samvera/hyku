@@ -1,0 +1,17 @@
+<%# OVERRIDE Hyrax v5.3.0 to link each value through the facet the catalog uses for it, with its schema.org microdata %>
+<%# TEMPORARY: delete when samvera/hyrax#7724 is in the bundled Hyrax %>
+<% property = Hyrax::Microdata.fetch("#{key}.property") %>
+<% itemtype = Hyrax::Microdata.fetch("#{key}.type") %>
+<% record.value_label_pairs(key).each do |value, label| %>
+  <% link = link_to_value_facet(value, label, "#{key}_sim") %>
+  <% if itemtype %>
+    <span itemprop="<%= property %>" itemscope itemtype="<%= itemtype %>">
+      <span itemprop="<%= Hyrax::Microdata.fetch("#{key}.value", default: 'name') %>"><%= link %></span>
+    </span>
+  <% elsif property %>
+    <span itemprop="<%= property %>"><%= link %></span>
+  <% else %>
+    <%= link %>
+  <% end %>
+  <br />
+<% end %>

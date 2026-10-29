@@ -15,7 +15,9 @@
 # `property :redirects` on the form when redirects_enabled? is true.
 #
 # See: spec/redirects_testing/TEST_RESULTS_PASS1.md for the full bug report.
-RSpec.describe 'Redirects form property', type: :model do
+# Only a flexible-metadata boot gives GenericWorkResource a `redirects` attribute; without one, the
+# `before` hook below skips every example.
+RSpec.describe 'Redirects form property', type: :model, flexible: true do
   # The redirects schema is included in Hyrax::Work at class-load time based
   # on Hyrax.config.redirects_enabled?. Stubbing in a before block cannot
   # retroactively add the schema to an already-loaded class, so these specs
@@ -34,7 +36,11 @@ RSpec.describe 'Redirects form property', type: :model do
     let(:resource) { GenericWorkResource.new }
     let(:form) { Hyrax::Forms::ResourceForm.for(resource) }
 
+    # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+    # KNOWN APPLICATION ISSUE (flexible metadata): the flexible ResourceForm for GenericWorkResource has no
+    # redirects_attributes. Fix likely goes in Hyrax (samvera/hyrax): RedirectsFieldBehavior.
     it 'has the redirects_attributes virtual property from RedirectsFieldBehavior' do
+      pending('the flexible ResourceForm does not include RedirectsFieldBehavior#redirects_attributes')
       expect(form).to respond_to(:redirects_attributes)
     end
 

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 5.2.0 to add custom sort fields and a Work Type facet while
-# in the dashboard for works
+# OVERRIDE Hyrax 5.2.0
+# - add custom sort fields and a Work Type facet while in the dashboard for works,
+# - use the catalog's default facet limit for the Collections facet
 
 module Hyrax
   module My
@@ -20,6 +21,8 @@ module Hyrax
           config.add_sort_field "depositor_ssi desc, title_ssi desc", label: "depositor (Z-A)"
           config.add_sort_field "creator_ssi asc, title_ssi asc", label: "creator (A-Z)"
           config.add_sort_field "creator_ssi desc, title_ssi desc", label: "creator (Z-A)"
+
+          config.facet_fields['member_of_collections_ssim'].limit = true
 
           # A "Work Type" dropdown in the dashboard filter row (the row renders
           # every configured facet). Guarded in case this config already copied

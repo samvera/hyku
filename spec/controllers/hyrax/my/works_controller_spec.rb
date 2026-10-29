@@ -22,5 +22,14 @@ RSpec.describe Hyrax::My::WorksController, type: :controller do
     it "configures the custom sort fields" do
       expect(subject).to match_array(expected_sort_fields)
     end
+
+    [described_class, Hyrax::Dashboard::WorksController].each do |works_controller|
+      it "lists the catalog's default number of collections on #{works_controller}" do
+        search_builder = works_controller.blacklight_config.search_builder_class.new(works_controller.new)
+
+        expect(search_builder.facet_limit_for('member_of_collections_ssim'))
+          .to eq(::CatalogController.blacklight_config.default_facet_limit)
+      end
+    end
   end
 end

@@ -102,7 +102,7 @@ module ThemeHelper
     return empty_message if pairs.empty?
 
     id_facet = "#{field}_sim"
-    facet = ThemeHomepage.facet_field(blacklight_config, id_facet)
+    facet = Hyku::LabelFacet.for(blacklight_config, id_facet)
     links = pairs.map do |stored, shown|
       link_to(shown, main_app.search_catalog_path(search_state.add_facet_params_and_redirect(facet, facet == id_facet ? stored : shown)))
     end

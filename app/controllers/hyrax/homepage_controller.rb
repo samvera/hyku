@@ -152,7 +152,7 @@ module Hyrax
 
     def ir_counts
       service = search_service
-      @ir_counts_field = ThemeHomepage.facet_field(service.blacklight_config, 'resource_type_sim')
+      @ir_counts_field = Hyku::LabelFacet.for(service.blacklight_config, 'resource_type_sim')
       facet = service.blacklight_config.facet_fields[@ir_counts_field]
       return unless facet && ThemeHomepage.facet_visible?(facet, self)
 

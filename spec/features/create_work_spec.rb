@@ -13,6 +13,7 @@ RSpec.describe 'Creating a new Work', type: :feature, clean: true do
     login_as user, scope: :user
   end
 
+  # Potential duplicate: spec/features/homepage_spec.rb:128 (logged-in Share Your Work reaches the work form)
   # Note: this passes without the click doing anything; the homepage already renders the work-type
   # modal (with its "Create work" button), so the assertion holds before "Share Your Work" is clicked.
   it 'creates the work' do

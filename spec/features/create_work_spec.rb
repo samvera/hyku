@@ -13,6 +13,8 @@ RSpec.describe 'Creating a new Work', type: :feature, clean: true do
     login_as user, scope: :user
   end
 
+  # Note: this passes without the click doing anything; the homepage already renders the work-type
+  # modal (with its "Create work" button), so the assertion holds before "Share Your Work" is clicked.
   it 'creates the work' do
     visit '/'
     click_link "Share Your Work"

@@ -86,10 +86,18 @@ ActiveRecord::Migration.maintain_test_schema!
 # Uses faster rack_test driver when JavaScript support not needed
 Capybara.default_max_wait_time = 8
 Capybara.default_driver = :rack_test
+# Turn off CSS transitions and jQuery animations in pages served to the browser, so a click never lands while
+# an element is still moving (e.g. a Bootstrap collapse panel expanding above the next radio button).
+Capybara.disable_animation = true
 
 ENV['WEB_HOST'] ||= `hostname -s`.strip
 
 if ENV['CHROME_HOSTNAME'].present?
+  REMOTE_FILE_DETECTOR = lambda do |args|
+    str = args.first.to_s
+    str if File.exist?(str)
+  end
+
   options = Selenium::WebDriver::Options.chrome(args: ["disable-gpu",
                                                        "no-sandbox",
                                                        "whitelisted-ips",
@@ -101,10 +109,7 @@ if ENV['CHROME_HOSTNAME'].present?
                                        capabilities: options,
                                        url: "http://#{ENV['CHROME_HOSTNAME']}:4444/wd/hub")
     # Fix for capybara vs remote files. Selenium handles this for us
-    d.browser.file_detector = lambda do |args|
-      str = args.first.to_s
-      str if File.exist?(str)
-    end
+    d.browser.file_detector = REMOTE_FILE_DETECTOR
     d
   end
   Capybara.server_host = '0.0.0.0'
@@ -238,6 +243,33 @@ RSpec.configure do |config|
   # mode. Restore this run's mode after every example.
   flexible_mode = Hyrax.config.flexible?
   config.after { Hyrax.config.flexible = flexible_mode }
+
+  # The remote Selenium grid ends a browser session after SE_NODE_SESSION_TIMEOUT (300s)
+  # without commands, so a long run of non-JS examples kills it and every later JS example
+  # fails with InvalidSessionIdError. Start a fresh session when the old one is gone.
+  if ENV['CHROME_HOSTNAME'].present?
+    config.before(:each, js: true) do
+      page.driver.browser.window_handles
+    rescue Selenium::WebDriver::Error::WebDriverError # e.g. InvalidSessionIdError, or 404 once the grid forgets it
+      page.driver.quit
+      page.driver.browser.file_detector = REMOTE_FILE_DETECTOR
+    end
+  end
+
+  # Hyrax sets I18n.locale from params[:locale] without restoring it, and rack_test requests
+  # run in the test thread, so a request with ?locale=es would leak Spanish into later examples.
+  config.after { I18n.locale = I18n.default_locale }
+
+  # A `login_as` whose example never makes a request stays queued in Warden and signs in the
+  # NEXT example's first request (e.g. a sign-in page then redirects). Clear it after every
+  # example, not just feature specs.
+  config.after { Warden.test_reset! }
+
+  # `Flipflop::FeatureSet.current.test!` (used by some specs) swaps in a test strategy for the
+  # whole process and never restores it, which breaks later specs that use the real strategies
+  # (e.g. the admin Features page). Put the configured strategies back after every example.
+  flipflop_strategies = Flipflop::FeatureSet.current.instance_variable_get(:@strategies)
+  config.after { Flipflop::FeatureSet.current.instance_variable_set(:@strategies, flipflop_strategies) }
 
   config.after(:each, type: :feature) do |example|
     # rubocop:disable Lint/Debugger

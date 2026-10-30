@@ -9,6 +9,7 @@ class SolrDocument
 
   # Adds Hyrax behaviors to the SolrDocument.
   include Hyrax::SolrDocumentBehavior
+  include OrientedDimensions
 
   # self.unique_key = 'id'
 

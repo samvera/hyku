@@ -41,6 +41,14 @@ RSpec.describe Site, type: :model do
 
       expect(Hyrax::Current.flexible_schema).to be_nil
     end
+
+    it "clears the memoized earlier profiles, since profile ids are per tenant" do
+      Hyrax::Current.flexible_schema_profiles = { '1' => 'Tenant A profile' }
+
+      described_class.reset!
+
+      expect(Hyrax::Current.flexible_schema_profiles).to be_nil
+    end
   end
 
   describe ".instance" do

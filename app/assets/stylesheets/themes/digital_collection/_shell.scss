@@ -415,8 +415,10 @@ body.digital_collection_show.public-facing {
     background: $dc-surface;
     border-bottom: $dc-border solid $dc-hairline;
     display: flex;
-    padding: $dc-space-4 max(#{$dc-gutter}, calc(50% - #{$dc-content-max * 0.5 - $dc-gutter})) ($dc-space-4 - $dc-border);
-    position: relative;
+    padding-bottom: $dc-space-4 - $dc-border;
+    padding-left: unquote("MAX(#{$dc-gutter}, calc((100% - #{$dc-content-max}) / 2 + #{$dc-gutter}))");
+    padding-right: unquote("MAX(#{$dc-gutter}, calc((100% - #{$dc-content-max}) / 2 + #{$dc-gutter}))");
+    padding-top: $dc-space-4;
 
     @media (max-width: $dc-mobile-max) {
       padding-left: $dc-gutter-mobile;

@@ -412,24 +412,15 @@ body.digital_collection_show.public-facing {
 
   // ---- search row ----
   .dc-searchbar {
-    @include dc-gutter;
-    @include dc-column;
     background: $dc-surface;
-    border-bottom: 0;
+    border-bottom: $dc-border solid $dc-hairline;
     display: flex;
-    padding-bottom: $dc-space-4;
-    padding-top: $dc-space-4;
+    padding: $dc-space-4 max(#{$dc-gutter}, calc(50% - #{$dc-content-max * 0.5 - $dc-gutter})) ($dc-space-4 - $dc-border);
     position: relative;
 
-    &::after {
-      background: $dc-hairline;
-      bottom: 0;
-      content: '';
-      height: $dc-border;
-      left: 50%;
-      position: absolute;
-      transform: translateX(-50%);
-      width: 100vw;
+    @media (max-width: $dc-mobile-max) {
+      padding-left: $dc-gutter-mobile;
+      padding-right: $dc-gutter-mobile;
     }
 
     @include dc-search-form;

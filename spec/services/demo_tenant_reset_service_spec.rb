@@ -189,7 +189,7 @@ RSpec.describe DemoTenantResetService do
     subject(:pending_count) { described_class.new(account:).send(:pending_good_jobs) }
 
     let(:due) do
-      { queue_name: 'default', scheduled_at: 1.minute.ago, job_class: 'ValkyrieCharacterizationJob',
+      { queue_name: 'default', scheduled_at: 1.minute.ago, job_class: 'Bulkrax::ImportWorkJob',
         serialized_params: { 'tenant' => account.tenant } }
     end
 
@@ -208,8 +208,8 @@ RSpec.describe DemoTenantResetService do
       expect(pending_count).to eq 1
     end
 
-    it 'ignores jobs scheduled into the future, such as the recurring cron' do
-      enqueue(scheduled_at: 1.hour.from_now, job_class: 'EmbargoAutoExpiryJob')
+    it 'ignores Bulkrax jobs scheduled into the future, which the drain pulls forward instead' do
+      enqueue(scheduled_at: 1.hour.from_now)
       expect(pending_count).to eq 0
     end
 
@@ -219,7 +219,12 @@ RSpec.describe DemoTenantResetService do
     end
 
     it 'ignores its own row, which is unfinished for as long as it runs' do
-      enqueue(job_class: described_class::RESET_JOB_CLASS)
+      enqueue(job_class: DemoTenantResetJob.name)
+      expect(pending_count).to eq 0
+    end
+
+    it 'ignores derivatives, which can run for hours after the records exist' do
+      enqueue(job_class: 'ValkyrieCreateLargeDerivativesJob')
       expect(pending_count).to eq 0
     end
 
@@ -232,8 +237,7 @@ RSpec.describe DemoTenantResetService do
       subject(:service) { draining.tap { |s| s.instance_variable_set(:@import_started_at, 1.minute.ago) } }
 
       it 'ignores a job left over from before the import, such as one a dead worker never finished' do
-        enqueue(created_at: 5.days.ago, performed_at: 5.days.ago, queue_name: 'auxiliary',
-                job_class: 'ValkyrieCreateLargeDerivativesJob')
+        enqueue(created_at: 5.days.ago, performed_at: 5.days.ago)
         expect { service.send(:drain_good_job_queue!) }.not_to raise_error
       end
 
@@ -246,7 +250,7 @@ RSpec.describe DemoTenantResetService do
     # The production failure was the loop, not the count: it spun for the whole
     # import_timeout because the count could never reach zero.
     it 'returns instead of spinning when only its own row remains' do
-      enqueue(job_class: described_class::RESET_JOB_CLASS)
+      enqueue(job_class: DemoTenantResetJob.name)
       expect { draining.send(:drain_good_job_queue!) }.not_to raise_error
     end
 
@@ -287,12 +291,6 @@ RSpec.describe DemoTenantResetService do
       enqueue(scheduled_at: 10.minutes.from_now, finished_at: Time.current,
               job_class: 'Bulkrax::CreateRelationshipsJob')
       expect(draining.send(:pull_relationship_jobs_forward!)).to eq 0
-    end
-
-    # The constant is a string, so a rename of the job would silently stop the
-    # drain excluding its own row and the hang would return with a green suite.
-    it 'names a job class that exists' do
-      expect(described_class::RESET_JOB_CLASS).to eq DemoTenantResetJob.name
     end
   end
 

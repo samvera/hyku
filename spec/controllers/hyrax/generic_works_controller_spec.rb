@@ -61,6 +61,15 @@ RSpec.describe Hyrax::GenericWorksController do
 
         expect(response.headers['ETag']).not_to eq etag
       end
+
+      it "answers a browser revalidating its copy with 304 rather than rendering the manifest again" do
+        request.headers['If-None-Match'] = response.headers['ETag']
+        get :manifest, params: { id: solr_document.id }, format: :json
+
+        expect(response).to have_http_status(:not_modified)
+        expect(response.body).to be_empty
+        expect(response.headers['Vary']).to include('Cookie')
+      end
     end
 
     context "for a signed-in user and a work anyone may read" do
@@ -80,6 +89,27 @@ RSpec.describe Hyrax::GenericWorksController do
         expect(response.headers['Cache-Control']).to include('no-store')
         expect(response.headers['ETag']).to be_blank
       end
+    end
+  end
+
+  describe "#show cache headers" do
+    let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, :public, depositor: user.user_key) }
+
+    before do
+      allow(Rails.env).to receive(:test?).and_return(false)
+      # Account.global_tenant? is false in tests only because of Rails.env.test?, which is stubbed above
+      allow(Account).to receive(:global_tenant?).and_return(false)
+      allow(controller).to receive(:load_curation_concern).and_return(work)
+      get :show, params: { id: work.id }, format: :json
+    end
+
+    it "answers a browser revalidating its JSON copy with 304 rather than rendering it again" do
+      expect(response).to have_http_status(:ok)
+
+      request.headers['If-None-Match'] = response.headers['ETag']
+      get :show, params: { id: work.id }, format: :json
+
+      expect(response).to have_http_status(:not_modified)
     end
   end
 

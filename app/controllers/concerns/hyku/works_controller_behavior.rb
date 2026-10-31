@@ -32,9 +32,6 @@ module Hyku
       class_attribute :iiif_file_set_metadata, default: false
       class_attribute :iiif_viewing_hint, default: Hyku::ViewingHint.default_viewing_hint
 
-      # These cache wrapper methods need to be in the top level so that they override other modules.
-      # fresh_when has already answered 304 when the browser's copy is current, and Hyrax renders
-      # explicitly, so super must not run then.
       def show
         return super if Rails.env.test?
         fresh_when presenter

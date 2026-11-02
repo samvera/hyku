@@ -17,7 +17,45 @@
 #   DEMO_IMPORT_USER    email of the user that owns the seed import (optional)
 #   DEMO_HEALTH_CHECK   name of a class responding to .call(account) run
 #                       after each reset (optional)
+#   DEMO_RESET_TIME     local time of the nightly reset as "HH:MM", optionally
+#                       followed by a time zone name, e.g.
+#                       "03:00 America/Los_Angeles" (optional; defaults to
+#                       midnight application time, UTC unless configured)
 class DemoTenantResetJob < ApplicationJob
+  RESET_TIME_FORMAT = /\A(?<hour>[01]?\d|2[0-3]):(?<minute>[0-5]\d)(?:\s+(?<zone>.+))?\z/
+
+  # Without DEMO_RESET_TIME the first run stays immediate, as it was before
+  # the setting existed.
+  def self.schedule_first_run
+    reset_time ? set(wait_until: next_run_at).perform_later : perform_later
+  end
+
+  def self.next_run_at(now = Time.current)
+    hour, minute, zone = reset_time
+    return Date.tomorrow.midnight unless zone
+
+    today = now.in_time_zone(zone).to_date
+    run_at = zone.local(today.year, today.month, today.day, hour, minute)
+    return run_at if run_at > now
+
+    tomorrow = today.tomorrow
+    zone.local(tomorrow.year, tomorrow.month, tomorrow.day, hour, minute)
+  end
+
+  # Falls back to midnight with a warning rather than raising: raising after
+  # a successful reset would make retry_on run the whole reset again.
+  def self.reset_time
+    value = ENV['DEMO_RESET_TIME'].presence
+    return unless value
+
+    match = RESET_TIME_FORMAT.match(value.strip)
+    zone = match && (match[:zone] ? ActiveSupport::TimeZone[match[:zone]] : Time.zone)
+    return [match[:hour].to_i, match[:minute].to_i, zone] if zone
+
+    Rails.logger.warn("[DemoTenantReset] ignoring invalid DEMO_RESET_TIME=#{value.inspect}; using midnight")
+    nil
+  end
+
   # ApplicationJob's retry_on swallows the final exception silently; a
   # permanently failing nightly reset must be loud instead. On permanent
   # failure the tomorrow chain is deliberately not re-enqueued: the daily
@@ -39,7 +77,7 @@ class DemoTenantResetJob < ApplicationJob
     end
 
     DemoTenantResetService.new(account:, **service_options).reset!
-    self.class.set(wait_until: Date.tomorrow.midnight).perform_later
+    self.class.set(wait_until: self.class.next_run_at).perform_later
   end
 
   private

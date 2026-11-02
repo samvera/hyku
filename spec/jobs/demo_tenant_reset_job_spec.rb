@@ -157,6 +157,15 @@ RSpec.describe DemoTenantResetJob do
           .to have_enqueued_job(described_class).at(pacific.local(2026, 11, 3, 3, 0))
       end
 
+      context 'when DEMO_RESET_TIME is invalid' do
+        let(:reset_time) { '25:00' }
+
+        it 'waits for the midnight fallback instead of running right away' do
+          expect { described_class.schedule_first_run }
+            .to have_enqueued_job(described_class).at(Date.tomorrow.midnight)
+        end
+      end
+
       context 'when DEMO_RESET_TIME is unset' do
         let(:reset_time) { nil }
 

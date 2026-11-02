@@ -25,9 +25,9 @@ class DemoTenantResetJob < ApplicationJob
   RESET_TIME_FORMAT = /\A(?<hour>[01]?\d|2[0-3]):(?<minute>[0-5]\d)(?:\s+(?<zone>.+))?\z/
 
   # Without DEMO_RESET_TIME the first run stays immediate, as it was before
-  # the setting existed.
+  # the setting existed. An invalid value waits for the midnight fallback.
   def self.schedule_first_run
-    reset_time ? set(wait_until: next_run_at).perform_later : perform_later
+    ENV['DEMO_RESET_TIME'].present? ? set(wait_until: next_run_at).perform_later : perform_later
   end
 
   def self.next_run_at(now = Time.current)

@@ -25,7 +25,15 @@ RSpec.describe UserStatCollectionJob, type: :job do
 
       it 'enqueues UserStatCollectionJob after perform' do
         switch!(account)
+        allow(Hyrax.config).to receive(:analytics_reporting?).and_return(true)
         expect { UserStatCollectionJob.perform_now }.to have_enqueued_job(UserStatCollectionJob)
+      end
+
+      it 'neither imports nor reschedules when the tenant has no reports' do
+        switch!(account)
+        allow(Hyrax.config).to receive(:analytics_reporting?).and_return(false)
+        expect(Hyrax::UserStatImporter).not_to receive(:new)
+        expect { UserStatCollectionJob.perform_now }.not_to have_enqueued_job(UserStatCollectionJob)
       end
     end
   end

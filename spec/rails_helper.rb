@@ -260,10 +260,6 @@ RSpec.configure do |config|
     end
   end
 
-  # Hyrax sets I18n.locale from params[:locale] without restoring it, and rack_test requests
-  # run in the test thread, so a request with ?locale=es would leak Spanish into later examples.
-  config.after { I18n.locale = I18n.default_locale }
-
   # A `login_as` whose example never makes a request stays queued in Warden and signs in the
   # NEXT example's first request (e.g. a sign-in page then redirects). Clear it after every
   # example, not just feature specs.

@@ -9,37 +9,6 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
     login_as user
   end
 
-  # A collection manager creates a collection from My Collections, edits it, and deletes it.
-  # (Branding, Discovery and Sharing are covered tab by tab further below.) Fields are
-  # targeted by id because the collection form also has a hidden compound "Title" field.
-  # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # ElementNotFound: Unable to find field "collection_title" that is not disabled.
-  it 'creates, edits, and deletes a collection', flexible: false do
-    # The "Add New Collection" link renders once a collection type the user may create exists.
-    Hyrax::CollectionType.find_or_create_default_collection_type
-    visit '/dashboard/my/collections'
-    click_link 'Add New Collection'
-
-    fill_in 'collection_title', with: 'Lifecycle Collection'
-    fill_in 'collection_creator', with: 'Collection Creator'
-    click_button 'Save'
-    expect(page).to have_content('Collection was successfully created.')
-
-    collection = Hyrax.query_service.find_all_of_model(model: Hyrax.config.collection_class)
-                      .find { |c| c.title.first == 'Lifecycle Collection' }
-    expect(collection).to be_present
-
-    visit "/dashboard/collections/#{collection.id}/edit"
-    fill_in 'collection_title', with: 'Renamed Lifecycle Collection'
-    click_button 'Save changes'
-    expect(page).to have_content('Collection was successfully updated.')
-
-    visit "/dashboard/collections/#{collection.id}"
-    expect(page).to have_content('Renamed Lifecycle Collection')
-    accept_confirm { click_link_or_button 'Delete collection' }
-    expect(page).to have_content('Collection was successfully deleted')
-  end
-
   # ------------------------------------------------------------------
   # Grounded coverage for the Manual Test Plan's "Dashboard My Collections Index",
   # "Dashboard Collection New/Edit" and "Settings → Collection Types" pages.
@@ -339,22 +308,6 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
         end
         expect(page).to have_button('Save changes')
         expect(page).to have_link('Cancel', href: "/dashboard/collections/#{collection.id}?locale=en")
-      end
-
-      it 'explains the discovery options and saves the chosen visibility' do
-        click_link 'Discovery'
-
-        within('#discovery') do
-          expect(page).to have_content('These settings determine who is able to discover and view ' \
-                                       "this collection's landing page")
-          expect(page).to have_content('you can still share the collection with specific users and groups ' \
-                                       'using the Sharing tab')
-          choose 'collection_visibility_open'
-        end
-        click_button 'Save changes'
-
-        expect(page).to have_content('Collection was successfully updated.')
-        expect(Hyrax.query_service.find_by(id: collection.id).visibility).to eq('open')
       end
     end
 

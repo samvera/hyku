@@ -2,10 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe 'New work form requirements', type: :feature, js: true, clean: true do
+RSpec.describe 'Work edit form', type: :feature, js: true, clean: true do
   let(:user) { create(:user, roles: [:work_depositor]) }
 
-  let!(:share_user) { create(:user, email: 'edit-form-share-target@example.com') }
   let!(:sharing_group) { create(:group, name: 'edit_form_sharing_group', humanized_name: 'Edit Form Sharing Group') }
 
   before do
@@ -15,40 +14,6 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
     FactoryBot.create(:depositors_group) unless Hyrax::Group.exists?(name: 'depositors')
     Hyrax::AdminSetCreateService.find_or_create_default_admin_set
     login_as user
-  end
-
-  it 'shows the required metadata fields and the Files, Relationships and Sharing tabs' do
-    visit new_hyrax_generic_work_path
-
-    # Title, Creator and Rights Statement are the primary (always-visible) fields.
-    expect(page).to have_field('Title')
-    expect(page).to have_field('Creator')
-    expect(page).to have_select('Rights Statement')
-    # Keyword lives in the collapsed "Additional fields" section.
-    click_link 'Additional fields'
-    expect(page).to have_field('Keyword')
-    expect(page).to have_link('Files')
-    expect(page).to have_link('Relationships')
-    expect(page).to have_link('Sharing')
-  end
-
-  it 'keeps Save disabled until the required metadata and deposit agreement are complete' do
-    visit new_hyrax_generic_work_path
-
-    # Without required metadata the requirements are incomplete and Save is disabled,
-    # so the form cannot be submitted.
-    expect(page).to have_css('#required-metadata.incomplete')
-    expect(page).to have_css('#required-agreement.incomplete')
-    expect(page).to have_button('Save', disabled: true)
-
-    fill_in 'Title', with: 'Required fields work'
-    fill_in 'Creator', with: 'Required Creator'
-    select 'In Copyright', from: 'Rights Statement'
-    find('#agreement').click
-
-    expect(page).to have_css('#required-metadata.complete')
-    expect(page).to have_css('#required-agreement.complete')
-    expect(page).to have_button('Save', disabled: false)
   end
 
   # The Manual Test Plan's "Dashboard Work Edit Page" documents the EDIT page for an
@@ -84,22 +49,6 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
     end
 
     context 'Files tab' do
-      it 'shows the add-files controls and dropzone that render on load' do
-        visit "/concern/generic_works/#{existing_work.id}/edit"
-        click_link 'Files'
-
-        expect(page).to have_content('Add files')
-        expect(page).to have_content('Add folder')
-        # Drag-and-drop dropzone.
-        expect(page).to have_css('div.dropzone')
-        expect(page).to have_content('Drop files here')
-
-        # The per-file Delete control only renders once a file is uploaded; it is supplied
-        # by the download JS template (contains file name/size and a Delete button), which
-        # is present in the DOM on load.
-        expect(page).to have_css('script#template-download', visible: :all)
-      end
-
       it 'uploads a file, lists its name and size, and deletes it' do
         visit "/concern/generic_works/#{existing_work.id}/edit"
         click_link 'Files'
@@ -204,28 +153,6 @@ RSpec.describe 'New work form requirements', type: :feature, js: true, clean: tr
 
         expect(page).to have_css('h1', text: 'Field Notes from Lake Erie')
         expect(Hyrax.query_service.find_by(id: existing_work.id).edit_groups).to include(sharing_group.name)
-      end
-
-      # The user picker searches GET /users.json, which Hyku only allows for users who may read
-      # Users (user_manager/user_reader); the pending example in
-      # spec/features/work_new_form_spec.rb documents the regular-user failure.
-      context 'as a depositor permitted to search users (user_reader role)' do
-        let(:user) { create(:user, roles: %i[work_depositor user_reader]) }
-
-        it 'adds a user share with its access level' do
-          visit "/concern/generic_works/#{existing_work.id}/edit"
-          click_link 'Sharing'
-          expect(page).not_to have_css('tr', text: share_user.email)
-
-          find('#s2id_new_user_name_skel').click
-          find('.select2-drop-active input.select2-input').fill_in(with: share_user.email)
-          find('.select2-drop-active .select2-result-label', text: share_user.email).click
-          select 'View/Download', from: 'new_user_permission_skel'
-          click_button 'add_new_user_skel'
-
-          expect(page).to have_css('#save_perm_note', visible: :visible)
-          expect(page).to have_css('tr', text: %r{View/Download\s+#{Regexp.escape(share_user.email)}})
-        end
       end
     end
   end

@@ -57,7 +57,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
       FactoryBot.valkyrie_create(:hyku_collection, user:, title: ['Managed Collection Alpha'])
     end
 
-    it 'shows the Add New Collection control, count, and a search bar' do
+    it 'shows the controls, column headers and a manageable collection with its row actions' do
       visit '/dashboard/my/collections'
 
       expect(page).to have_selector('#add-new-collection-button', text: 'Add New Collection')
@@ -66,12 +66,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
       # search bar (hyrax/my/_search_form)
       expect(page).to have_selector('input#search-field-header')
       expect(page).to have_selector('button#search-submit-header')
-    end
 
-    it 'renders the managed collections table with the expected column headers' do
-      visit '/dashboard/my/collections'
-
-      expect(page).to have_selector('table#collections-list-table')
       within('table#collections-list-table thead') do
         expect(page).to have_content('Title')
         expect(page).to have_content('Type')
@@ -80,12 +75,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
         expect(page).to have_content('Visibility')
         expect(page).to have_content('Actions')
       end
-    end
-
-    it 'lists a manageable collection with View/Edit/Delete/Add to collection actions' do
-      visit '/dashboard/my/collections'
-
-      within('table#collections-list-table') do
+      within('table#collections-list-table tbody') do
         expect(page).to have_content('Managed Collection Alpha')
       end
 
@@ -124,7 +114,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
       all('table#collections-list-table tbody tr').map { |row| row[:id] }
     end
 
-    it "shows each collection's type, last modified date, item count and visibility in its row" do
+    it "shows each collection's row values and narrows the list with the Visibility filter" do
       FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member,
                                  member_of_collection_ids: [public_exhibit.id], title: ['Exhibit member work'],
                                  visibility_setting: 'open')
@@ -144,11 +134,6 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
         expect(page).to have_css('td.date + td', exact_text: '0')
         expect(page).to have_css('td.date + td + td', exact_text: 'Private')
       end
-    end
-
-    it 'narrows the list with the Visibility filter' do
-      visit '/dashboard/my/collections'
-      expect(listed_collection_ids).to contain_exactly("document_#{private_collection.id}", "document_#{public_exhibit.id}")
 
       within('#visibility_ssi-dropdown-options') { click_link 'Public' }
 

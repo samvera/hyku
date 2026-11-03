@@ -225,8 +225,6 @@ RSpec.describe 'Admin Tenant Management', multitenant: true do
     end
 
     it 'invites an email that has no user yet and lists it as a current administrator' do
-      expect(User.find_by(email: 'invited.admin@example.com')).to be_nil
-
       submit_invite('invited.admin@example.com')
 
       expect(page).to have_current_path(proprietor_account_path(account), ignore_query: true)

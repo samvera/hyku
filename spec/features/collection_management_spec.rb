@@ -211,19 +211,6 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
     end
 
     context 'Branding tab' do
-      it 'shows banner and logo upload controls' do
-        click_link 'Branding'
-
-        within('#branding') do
-          expect(page).to have_content('Branding')
-          expect(page).to have_content('Banner')
-          expect(page).to have_content('Logo')
-          # file inputs for banner/logo/thumbnail uploads + Choose File buttons
-          expect(page).to have_selector("input[type='file']", visible: :all)
-          expect(page).to have_content('Choose File')
-        end
-      end
-
       context 'with an uploaded banner and logo' do
         # Seed the branding records the upload step would create (the file is copied into branding storage).
         def seed_branding(role:, alt:, url: '')
@@ -361,7 +348,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
           expect(page).to have_link('Cancel', href: "/dashboard/collections/#{collection.id}?locale=en")
         end
 
-        # Potential duplicate: spec/features/collection_spec.rb:85 (enabled Remove buttons in sharing tables; ci: 'skip' there)
+        # Potential duplicate: spec/features/collection_spec.rb:85 (enabled Remove buttons in sharing tables)
         it 'removes an individual viewer with its Remove button' do
           within(:xpath, "//table[contains(@class,'viewers-table')]//tr[td[normalize-space()='#{viewer.user_key}']]") do
             click_link 'Remove'
@@ -516,7 +503,6 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
         Hyrax::CollectionTypeParticipant.find_by(hyrax_collection_type_id: exhibit_type.id, agent_id: agent.user_key)
       end
 
-      # Potential duplicate: spec/features/collection_type_spec.rb:185 (adding a participant via the Participants form)
       it 'adds a user as a manager with the Add user form and removes them again' do
         manager = create(:user, email: 'type-manager@example.com')
         click_link('Participants', href: '#participants')

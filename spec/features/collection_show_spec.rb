@@ -195,7 +195,10 @@ end
 # Owner-facing DASHBOARD collection show page (`/dashboard/collections/:id`).
 #
 # Owner controls from the manual test plan that only render on the dashboard show page.
-# Adding, removing and deleting are exercised in collection_manager_role_spec.rb.
+# Adding/removing works and deleting are exercised in collection_manager_role_spec.rb.
+# The collection_manager role is needed for "Create new collection as subcollection":
+# with HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS set (as in test), the User Collection
+# type grants create only to admins and the collection_manager/collection_editor roles.
 RSpec.describe 'Dashboard collection show page (owner controls)', type: :feature, clean: true do
   let(:user) { create(:user, roles: [:collection_manager]) }
   let!(:collection) do
@@ -263,9 +266,11 @@ RSpec.describe 'Dashboard collection show page (owner controls)', type: :feature
     expect(page).not_to have_css("tr#document_#{member_work.id}")
   end
 
-  it 'shows an empty subcollections list' do
+  it 'lists subcollections with buttons to add and create subcollections' do
     expect(page).to have_content('Subcollections (0)')
     expect(page).to have_content('There are no visible subcollections.')
+    expect(page).to have_button('Add a subcollection')
+    expect(page).to have_link('Create new collection as subcollection')
   end
 
   it 'lists the member works' do

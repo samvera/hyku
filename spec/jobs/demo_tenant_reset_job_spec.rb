@@ -94,14 +94,19 @@ RSpec.describe DemoTenantResetJob do
     context 'with a time and zone' do
       let(:reset_time) { '03:00 America/Los_Angeles' }
 
-      it 'is later today when the time has not passed yet' do
-        now = pacific.local(2026, 11, 2, 1, 0)
-        expect(described_class.next_run_at(now)).to eq(pacific.local(2026, 11, 2, 3, 0))
+      context 'when the time has not passed yet' do
+        it 'is later today' do
+          now = pacific.local(2026, 11, 2, 1, 0)
+          expect(described_class.next_run_at(now)).to eq(pacific.local(2026, 11, 2, 3, 0))
+        end
       end
 
-      it 'uses the local date when it differs from the UTC date' do
-        ENV['DEMO_RESET_TIME'] = '21:00 America/Los_Angeles'
-        expect(described_class.next_run_at(Time.utc(2026, 11, 3, 4, 0))).to eq(pacific.local(2026, 11, 2, 21, 0))
+      context 'when the local date differs from the UTC date' do
+        let(:reset_time) { '21:00 America/Los_Angeles' }
+
+        it 'uses the local date' do
+          expect(described_class.next_run_at(Time.utc(2026, 11, 3, 4, 0))).to eq(pacific.local(2026, 11, 2, 21, 0))
+        end
       end
 
       it 'stays at 03:00 local across the fall-back DST change' do

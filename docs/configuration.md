@@ -126,6 +126,18 @@ In single tenant mode, both the application root (eg. localhost, or hyku.test) a
 
 To change from single- to multi-tenant mode, change the multitenancy/enabled flag to true and restart the application. Change the 'single' tenant account cname in the Accounts edit interface to the correct hostname.
 
+## Public Demo Tenants
+
+Tenants flagged as public demos are wiped and re-seeded every night by `DemoTenantResetJob`. These environment variables configure the reset; all are optional.
+
+| Name               | Description |
+| ------------------ | ----------- |
+| DEMO_SEED_CSV_PATH | Path to the Bulkrax seed CSV re-imported after the wipe. A `%{tenant}` placeholder expands to the account name. Without it the reset leaves an empty but branded tenant. |
+| DEMO_KEEP_USERS    | Comma-separated emails that survive resets, in addition to superadmins. |
+| DEMO_IMPORT_USER   | Email of the user that owns the seed import. |
+| DEMO_HEALTH_CHECK  | Name of a class responding to `.call(account)`, run after each reset. |
+| DEMO_RESET_TIME    | Local time of the nightly reset as `HH:MM`, optionally followed by a time zone name, e.g. `03:00 America/Los_Angeles`. Defaults to midnight in the application time zone (UTC unless configured). An invalid value logs a warning and falls back to midnight. |
+
 ## Flexible Metadata
 
 Hyku v6.2 and later includes flexible metadata functionality that allows administrators to configure metadata schemas through the UI using M3 (Machine-readable Metadata Modeling) profiles. This feature is **disabled by default** and must be explicitly enabled.

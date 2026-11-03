@@ -5,22 +5,7 @@
 # creation, application boot, and the daily TenantMaintenanceJob pass all
 # keep the chain alive without any external scheduler.
 #
-# Configuration comes from the environment so deployments wire it without
-# code changes:
-#
-#   DEMO_SEED_CSV_PATH  path to the Bulkrax seed CSV to re-import after the
-#                       wipe; a %{tenant} placeholder expands to the account
-#                       name (optional; without it the reset restores an
-#                       empty but branded tenant)
-#   DEMO_KEEP_USERS     comma-separated emails that survive resets in
-#                       addition to superadmins (optional)
-#   DEMO_IMPORT_USER    email of the user that owns the seed import (optional)
-#   DEMO_HEALTH_CHECK   name of a class responding to .call(account) run
-#                       after each reset (optional)
-#   DEMO_RESET_TIME     local time of the nightly reset as "HH:MM", optionally
-#                       followed by a time zone name, e.g.
-#                       "03:00 America/Los_Angeles" (optional; defaults to
-#                       midnight application time, UTC unless configured)
+# Configured through DEMO_* environment variables; see docs/configuration.md.
 class DemoTenantResetJob < ApplicationJob
   RESET_TIME_FORMAT = /\A(?<hour>[01]?\d|2[0-3]):(?<minute>[0-5]\d)(?:\s+(?<zone>.+))?\z/
 

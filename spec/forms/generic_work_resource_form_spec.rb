@@ -18,14 +18,14 @@ RSpec.describe GenericWorkResourceForm do
     end
 
     # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-    # the form is invalid because the flexible profile requires Rights statement, which this example doesn't set.
+    # the form is invalid because the flexible profile requires Rights statement, which this example doesn't set (issue #3515).
     context 'with an empty video embed', flexible: false do
       let(:attributes) { { video_embed: "" } }
 
       it { is_expected.to be_valid }
     end
     # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-    # the form is invalid because the flexible profile requires Rights statement, which this example doesn't set.
+    # the form is invalid because the flexible profile requires Rights statement, which this example doesn't set (issue #3515).
     context 'with an acceptable video embed URL', flexible: false do
       let(:attributes) { { video_embed: "https://player.vimeo.com/embed/some-where" } }
 

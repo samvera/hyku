@@ -71,7 +71,7 @@ RSpec.describe Heritage::HomepagePresenter, :clean_repo do
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # Hyrax::PcdmCollection has no schema_version.
+  # Hyrax::PcdmCollection has no schema_version (issue #3507).
   describe '#featured_collections', flexible: false do
     let(:featured) { indexed_collection('Harbor Photographs') }
     let(:collections) { [double(id: featured.id.to_s)] }
@@ -92,7 +92,7 @@ RSpec.describe Heritage::HomepagePresenter, :clean_repo do
 
   describe '#collections' do
     # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-    # Hyrax::PcdmCollection has no schema_version.
+    # Hyrax::PcdmCollection has no schema_version (issue #3507).
     context 'with collections featured', flexible: false do
       let(:featured) { indexed_collection('Harbor Photographs') }
       let(:collections) { [double(id: featured.id.to_s), double(id: 'not-featured')] }

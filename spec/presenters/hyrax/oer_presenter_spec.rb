@@ -122,7 +122,7 @@ RSpec.describe Hyrax::OerPresenter do
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # NoMethodError: undefined method `depositor=' for an instance of Hyrax::Test::SimpleWork.
+  # NoMethodError: undefined method `depositor=' for an instance of Hyrax::Test::SimpleWork (issue #3510).
   describe "#work_presenters", flexible: false do
     let(:obj) { valkyrie_create(:oer_resource, :with_file_and_work, depositor: 'somebody') }
     let(:attributes) { obj.to_solr }

@@ -607,7 +607,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-        # expected a redirect, got 200 OK.
+        # expected a redirect, got 200 OK (issue #3508).
         it 'persists valid metadata and advances', flexible: false do
           patch deposit_wizard_advance_path(step: 'details'),
                 params: { param_key => { title: ['A guided deposit work'], creator: ['Ada Lovelace'] } }
@@ -694,7 +694,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # expected a redirect, got 200 OK.
+      # expected a redirect, got 200 OK (issue #3508).
       it 'advancing details goes straight to review when there are no files', flexible: false do
         patch deposit_wizard_advance_path(step: 'details'),
               params: { param_key => { title: ['No files here'], creator: ['Ada'] } }
@@ -708,7 +708,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         before { patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] } }
 
         # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-        # expected a redirect, got 200 OK.
+        # expected a redirect, got 200 OK (issue #3508).
         it 'advancing details goes to file_meta when files exist', flexible: false do
           patch deposit_wizard_advance_path(step: 'details'),
                 params: { param_key => { title: ['Has a file'], creator: ['Ada'] } }
@@ -1145,7 +1145,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-        # expected a redirect, got 200 OK.
+        # expected a redirect, got 200 OK (issue #3508).
         it 'commits when the agreement checkbox is accepted', flexible: false do
           fill_in_wizard
 
@@ -1191,7 +1191,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # expected the work count to change by 1, but it changed by 0.
+      # expected the work count to change by 1, but it changed by 0 (issue #3508).
       it 'commits the work and lands on the done screen', flexible: false do
         fill_in_wizard
         resource_class = Hyrax::ModelRegistry.work_classes
@@ -1214,7 +1214,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # expected a redirect, got 200 OK.
+      # expected a redirect, got 200 OK (issue #3508).
       it 'applies a per-file embargo that differs from the work embargo', flexible: false do
         work_date = 30.days.from_now.to_date
         file_date = 60.days.from_now.to_date
@@ -1247,7 +1247,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # NoMethodError: undefined method `id' for nil.
+      # NoMethodError: undefined method `id' for nil (issue #3508).
       it 'gives the file only its own lease when the work is embargoed', flexible: false do
         work_date = 30.days.from_now.to_date
         file_date = 60.days.from_now.to_date
@@ -1279,7 +1279,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # expected a redirect, got 200 OK.
+      # expected a redirect, got 200 OK (issue #3508).
       it 'commits a work under lease with an inheriting file without error', flexible: false do
         upload = FactoryBot.create(:uploaded_file, user: admin)
         patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
@@ -1299,7 +1299,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # NoMethodError: undefined method `id' for nil.
+      # NoMethodError: undefined method `id' for nil (issue #3508).
       it 'applies a per-file visibility that differs from the work', flexible: false do
         upload = FactoryBot.create(:uploaded_file, user: admin)
         # Walk the wizard with a file, the work set open, and the file set private.
@@ -1328,7 +1328,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # NoMethodError: undefined method `id' for nil.
+      # NoMethodError: undefined method `id' for nil (issue #3508).
       it 'applies each file its own visibility when two files differ', flexible: false do
         release_date = 30.days.from_now.to_date
         private_upload = FactoryBot.create(:uploaded_file, user: admin)
@@ -1375,7 +1375,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # NoMethodError: undefined method `id' for nil.
+      # NoMethodError: undefined method `id' for nil (issue #3508).
       it "indexes a file's own lease when the work is leased with a different date", flexible: false do
         work_date = 30.days.from_now.to_date
         file_date = 60.days.from_now.to_date
@@ -1409,7 +1409,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # expected 1, got 0.
+      # expected 1, got 0 (issue #3508).
       it 'runs the configured post-commit hook with the persisted work', flexible: false do
         captured = []
         Hyku::DepositWizard.config.post_commit = ->(work, _state) { captured << work }
@@ -1437,7 +1437,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         after { Hyku::DepositWizard.reset_config! }
 
         # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-        # expected a redirect, got 200 OK.
+        # expected a redirect, got 200 OK (issue #3508).
         context 'collection connect', flexible: false do
           it 'adds the work to the chosen collection' do
             collection = FactoryBot.create(:hyku_collection, user: admin)
@@ -1453,7 +1453,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-        # NoMethodError: undefined method `member_of_collection_ids' for nil.
+        # NoMethodError: undefined method `member_of_collection_ids' for nil (issue #3508).
         context 'when collection connect is disabled', flexible: false do
           before { Hyku::DepositWizard.config.collection_connect = false }
 
@@ -1470,7 +1470,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-        # NoMethodError: undefined method `id' for nil; expected a redirect, got 200 OK.
+        # NoMethodError: undefined method `id' for nil; expected a redirect, got 200 OK (issue #3508).
         context 'parent connect', flexible: false do
           it 'nests the work under the chosen parent work' do
             parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Parent work'], depositor: admin.user_key)
@@ -1520,7 +1520,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-        # expected a redirect, got 200 OK.
+        # expected a redirect, got 200 OK (issue #3508).
         context 'sharing', flexible: false do
           it 'grants a user the access chosen on the review step' do
             grantee = FactoryBot.create(:user)
@@ -1538,7 +1538,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-        # NoMethodError: undefined method `permission_manager' for nil.
+        # NoMethodError: undefined method `permission_manager' for nil (issue #3508).
         context 'when sharing is disabled', flexible: false do
           before { Hyku::DepositWizard.config.depositor_sharing = false }
 
@@ -1564,7 +1564,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         # wizard's capture behavior, gated by the capability. reset_state is
         # stubbed so the captured session is observable after commit.
         # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-        # expected a redirect, got 200 OK.
+        # expected a redirect, got 200 OK (issue #3508).
         context 'redirects', flexible: false do
           before do
             allow(Hyrax.config).to receive(:redirects_active?).and_return(true)

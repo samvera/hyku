@@ -48,7 +48,7 @@ RSpec.describe 'heritage_show theme', type: :request, singletenant: true, clean_
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # Hyrax::PcdmCollection has no schema_version.
+  # Hyrax::PcdmCollection has no schema_version (issue #3507).
   it 'lists what the work belongs to in the rail rather than the metadata table', flexible: false do
     collection = indexed_with_visibility(Hyrax::PcdmCollection.new(title: ['Photograph Collections']), 'open')
     filed = indexed_with_visibility(

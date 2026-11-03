@@ -127,7 +127,7 @@ RSpec.describe 'screening room home theme', type: :request, singletenant: true, 
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # Hyrax::PcdmCollection has no schema_version.
+  # Hyrax::PcdmCollection has no schema_version (issue #3507).
   context 'as a user who can reorder the featured collections', flexible: false do
     let(:admin) { FactoryBot.create(:admin) }
     let(:collection) { indexed(Hyrax::PcdmCollection.new(title: ['Newsreels'])) }

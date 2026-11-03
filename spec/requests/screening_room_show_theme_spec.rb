@@ -26,7 +26,7 @@ RSpec.describe 'screening_room_show theme', type: :request, singletenant: true, 
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # Hyrax::PcdmCollection has no schema_version.
+  # Hyrax::PcdmCollection has no schema_version (issue #3507).
   it 'offers a visitor no actions but keeps the citation hook citation managers read', flexible: false do
     get "/concern/generic_works/#{work.id}"
 
@@ -36,7 +36,7 @@ RSpec.describe 'screening_room_show theme', type: :request, singletenant: true, 
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # Hyrax::PcdmCollection has no schema_version.
+  # Hyrax::PcdmCollection has no schema_version (issue #3507).
   context 'as an editor', flexible: false do
     include Devise::Test::IntegrationHelpers
 
@@ -66,7 +66,7 @@ RSpec.describe 'screening_room_show theme', type: :request, singletenant: true, 
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # Hyrax::PcdmCollection has no schema_version.
+  # Hyrax::PcdmCollection has no schema_version (issue #3507).
   it 'opens with the title block over the description', flexible: false do
     get "/concern/generic_works/#{work.id}"
 
@@ -101,7 +101,7 @@ RSpec.describe 'screening_room_show theme', type: :request, singletenant: true, 
     end
 
     # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-    # Hyrax::PcdmCollection has no schema_version.
+    # Hyrax::PcdmCollection has no schema_version (issue #3507).
     it 'leaves the panel empty-handed when the work has no members', flexible: false do
       get "/concern/generic_works/#{work.id}"
 
@@ -112,7 +112,7 @@ RSpec.describe 'screening_room_show theme', type: :request, singletenant: true, 
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # Hyrax::PcdmCollection has no schema_version.
+  # Hyrax::PcdmCollection has no schema_version (issue #3507).
   it 'carries the breadcrumb trail in the search band', flexible: false do
     get "/concern/generic_works/#{work.id}"
 
@@ -129,7 +129,7 @@ RSpec.describe 'screening_room_show theme', type: :request, singletenant: true, 
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # Hyrax::PcdmCollection has no schema_version.
+  # Hyrax::PcdmCollection has no schema_version (issue #3507).
   it 'names the collection only when the visitor may read it', flexible: false do
     hidden = Hyrax.persister.save(resource: Hyrax::PcdmCollection.new(title: ['Restricted Reels']))
     Hyrax::VisibilityWriter.new(resource: hidden).assign_access_for(visibility: 'restricted')

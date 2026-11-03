@@ -9,7 +9,7 @@ RSpec.describe Hyrax::ImagesController do
   let(:image_resource) { FactoryBot.valkyrie_create(:image_resource, :with_one_file_set, depositor: 'somebody') }
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # TypeError: no implicit conversion of ActiveSupport::TimeWithZone into String.
+  # TypeError: no implicit conversion of ActiveSupport::TimeWithZone into String (issue #3509).
   describe "#presenter", flexible: false do
     subject { controller.send :presenter }
 

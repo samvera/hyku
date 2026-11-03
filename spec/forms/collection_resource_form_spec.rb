@@ -50,28 +50,28 @@ RSpec.describe CollectionResourceForm do
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # expected true, got "1".
+      # expected true, got "1" (issue #3506).
       it 'converts string "1" to true (checkbox checked)', flexible: false do
         change_set.hide_from_catalog_search = "1"
         expect(change_set.hide_from_catalog_search).to eq(true)
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # expected false, got "0".
+      # expected false, got "0" (issue #3506).
       it 'converts string "0" to false (checkbox unchecked)', flexible: false do
         change_set.hide_from_catalog_search = "0"
         expect(change_set.hide_from_catalog_search).to eq(false)
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # expected true, got "true".
+      # expected true, got "true" (issue #3506).
       it 'converts string "true" to true (checkbox checked)', flexible: false do
         change_set.hide_from_catalog_search = "true"
         expect(change_set.hide_from_catalog_search).to eq(true)
       end
 
       # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-      # expected false, got "false".
+      # expected false, got "false" (issue #3506).
       it 'converts string "false" to false (checkbox unchecked)', flexible: false do
         change_set.hide_from_catalog_search = "false"
         expect(change_set.hide_from_catalog_search).to eq(false)

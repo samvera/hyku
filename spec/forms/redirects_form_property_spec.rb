@@ -1,20 +1,5 @@
 # frozen_string_literal: true
 
-# This spec verifies that the ResourceForm exposes a `redirects` property
-# when the redirects feature is enabled. The form partial
-# `_form_redirects.html.erb` calls `f.object.redirects` (line 21), so
-# the form MUST have this property — not just `redirects_attributes`.
-#
-# Context: In HYRAX_FLEXIBLE=false mode (the default in this test suite),
-# Hyrax::Schema(:redirects) adds the attribute to the model but
-# RedirectsFieldBehavior only adds `redirects_attributes` (virtual) to
-# the form. The form crashes with NoMethodError when the Aliases tab
-# tries to render.
-#
-# Upstream bug: RedirectsFieldBehavior.included needs to also define
-# `property :redirects` on the form when redirects_enabled? is true.
-#
-# See: spec/redirects_testing/TEST_RESULTS_PASS1.md for the full bug report.
 # Only a flexible-metadata boot gives GenericWorkResource a `redirects` attribute; without one, the
 # `before` hook below skips every example.
 RSpec.describe 'Redirects form property', type: :model, flexible: true do
@@ -36,7 +21,7 @@ RSpec.describe 'Redirects form property', type: :model, flexible: true do
     let(:resource) { GenericWorkResource.new }
     let(:form) { Hyrax::Forms::ResourceForm.for(resource) }
 
-    # Remove this comment and the `pending` call to re-enable this test when issue #xxxx is fixed.
+    # Remove this comment and the `pending` call to re-enable this test when issue #3516 is fixed.
     # KNOWN APPLICATION ISSUE (flexible metadata): the flexible ResourceForm for GenericWorkResource has no
     # redirects_attributes. Fix likely goes in Hyrax (samvera/hyrax): RedirectsFieldBehavior.
     it 'has the redirects_attributes virtual property from RedirectsFieldBehavior' do

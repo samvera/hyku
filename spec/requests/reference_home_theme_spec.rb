@@ -61,7 +61,7 @@ RSpec.describe 'reference home theme', type: :request, singletenant: true, clean
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # Hyrax::PcdmCollection has no schema_version.
+  # Hyrax::PcdmCollection has no schema_version (issue #3507).
   describe 'featured collections', flexible: false do
     let!(:collection) { indexed(Hyrax::PcdmCollection.new(title: ['Coastal Surveys'])) }
 
@@ -110,7 +110,7 @@ RSpec.describe 'reference home theme', type: :request, singletenant: true, clean
     end
 
     # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-    # expected ["Subject", "Publisher"] not to include "Subject".
+    # expected ["Subject", "Publisher"] not to include "Subject" (issue #3513).
     it 'drops a column whose facet the tenant removed rather than raising', flexible: false do
       indexed_work('Single survey', 'open', subject: ['Estuaries'], publisher: ['Coast Survey Office'])
       hide_facets('subject_sim')
@@ -124,7 +124,7 @@ RSpec.describe 'reference home theme', type: :request, singletenant: true, clean
     end
 
     # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-    # expected no section, but the page rendered one.
+    # expected no section, but the page rendered one (issue #3513).
     it 'hides the band when the tenant removed every axis it browses', flexible: false do
       indexed_work('Single survey', 'open', subject: ['Estuaries'])
       hide_facets('subject_sim', 'creator_sim', 'member_of_collections_ssim', 'publisher_sim')

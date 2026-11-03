@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-# expected to find css "li.attribute-table_of_contents" but there were no matches.
+# expected to find css "li.attribute-table_of_contents" but there were no matches (issue #3511).
 RSpec.describe 'hyrax/oers/_attributes.html.erb', flexible: false do
   let(:creator)     { 'Bilbo' }
   let(:contributor) { 'Frodo' }

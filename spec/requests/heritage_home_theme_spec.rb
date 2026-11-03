@@ -31,7 +31,7 @@ RSpec.describe 'heritage home theme', type: :request, singletenant: true, clean_
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # Hyrax::PcdmCollection has no schema_version.
+  # Hyrax::PcdmCollection has no schema_version (issue #3507).
   it 'renders a featured collection card', flexible: false do
     collection = Hyrax.persister.save(resource: Hyrax::PcdmCollection.new(title: ['Harbor Photographs']))
     Hyrax::VisibilityWriter.new(resource: collection).assign_access_for(visibility: 'open')

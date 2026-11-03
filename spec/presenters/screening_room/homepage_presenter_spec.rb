@@ -125,7 +125,7 @@ RSpec.describe ScreeningRoom::HomepagePresenter, :clean_repo do
   end
 
   # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
-  # Hyrax::PcdmCollection has no schema_version.
+  # Hyrax::PcdmCollection has no schema_version (issue #3507).
   describe '#collection_works_count', flexible: false do
     it 'counts only the works the visitor can read' do
       collection = indexed_collection('Mission Audio')

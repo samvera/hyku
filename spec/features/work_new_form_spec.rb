@@ -56,6 +56,23 @@ RSpec.describe 'New work form', type: :feature, js: true, clean: true do
       end
     end
 
+    it 'keeps Save disabled until the required metadata and deposit agreement are complete' do
+      visit new_hyrax_generic_work_path
+
+      expect(page).to have_css('#required-metadata.incomplete')
+      expect(page).to have_css('#required-agreement.incomplete')
+      expect(page).to have_button('Save', disabled: true)
+
+      fill_in 'Title', with: 'Required fields work'
+      fill_in 'Creator', with: 'Required Creator'
+      select 'In Copyright', from: 'Rights Statement'
+      find('#agreement').click
+
+      expect(page).to have_css('#required-metadata.complete')
+      expect(page).to have_css('#required-agreement.complete')
+      expect(page).to have_button('Save', disabled: false)
+    end
+
     it 'shows an "Add files" requirement that completes once a file is uploaded, when files are required' do
       allow(Hyrax.config).to receive(:work_requires_files?).and_return(true)
       visit new_hyrax_generic_work_path

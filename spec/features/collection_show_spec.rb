@@ -297,17 +297,16 @@ end
 # The "Deposit new work through this collection" control only renders for a user
 # who can actually create works. That requires the :work_depositor role plus
 # deposit access to an admin set (and a workflow), mirroring the verified setup in
-# spec/features/create_generic_work_spec.rb. The owner still gets the
-# collection-level abilities via `create_access: true`.
+# spec/features/create_generic_work_spec.rb. Creating the collection gives the owner
+# manage access to it.
 RSpec.describe 'Dashboard collection show page: creating a work through the collection',
                type: :feature, clean: true do
   let(:user) { create(:user, roles: [:work_depositor]) }
   let!(:collection) do
-    create(:collection,
-           user:,
-           create_access: true,
-           title: ['Deposit-through collection'],
-           description: ['Deposit-through description'])
+    FactoryBot.valkyrie_create(:hyku_collection,
+                               user:,
+                               title: ['Deposit-through collection'],
+                               description: ['Deposit-through description'])
   end
   let(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
   let(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }

@@ -58,13 +58,15 @@ RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true do
       expect(page).to have_css('td.depositor-name', text: recipient.user_key)
 
       click_link 'Delete Proxy'
-      # The page removes the row optimistically before the AJAX DELETE finishes, so wait
-      # for the server-side deletion itself (bounded), then reload to confirm it persisted.
-      Timeout.timeout(Capybara.default_max_wait_time) do
-        sleep 0.1 while user.reload.can_receive_deposits_from.include?(recipient)
+      # The row is removed before the AJAX DELETE finishes, so wait for the request itself.
+      expect(page).not_to have_css('td.depositor-name')
+      page.document.synchronize do
+        raise Capybara::ExpectationNotMet, 'proxy DELETE still pending' if page.evaluate_script('jQuery.active').positive?
       end
       visit '/proxies'
+      expect(page).to have_css('.proxy-rights')
       expect(page).not_to have_css('td.depositor-name', text: recipient.user_key)
+      expect(user.reload.can_receive_deposits_from).not_to include(recipient)
     end
   end
 

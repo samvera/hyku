@@ -134,9 +134,9 @@ Examples (run inside the `web` container, as above):
 
 Run the suite with flexible metadata off and on to cover both modes.
 
-**Why two settings?** Untagged specs are supposed to work whichever way the app starts, so CI
-sometimes runs them with flexible metadata on and sometimes with it off. One setting says "start the app
-this way", the other says "run these tests", and for untagged specs the two answers don't line up.
+**Why two settings?** Untagged specs are supposed to work whichever way the app starts, so CI runs
+them twice, once with flexible metadata on and once with it off. One setting says "start the app this
+way", the other says "run these tests", and for untagged specs the two answers don't line up.
 
 Day to day you'll mostly use only `HYKU_TEST_FLEXIBLE_METADATA`. The second setting is mainly for CI, and
 for rerunning exactly what a CI node ran: the node's log prints the full command (see `spec/rails_helper.rb`
@@ -146,22 +146,18 @@ This format is intended to be extensible to other configurations that Hyku is ab
 
 #### CI
 
-By default, the main `test` job runs the whole suite on three nodes with flexible metadata off.
-
-When the repository Actions variable `HYKU_CI_FLEXIBLE_SPLIT` is set to `true` (Settings → Secrets and
-variables → Actions → Variables), the job runs on six nodes instead, split by the `flexible:` tag
-(see `bin/ci_rspec`):
+The main `test` job runs on six nodes, split by the `flexible:` tag (see `bin/ci_rspec`):
 
 | Node | Examples | Flexible metadata |
 |---|---|---|
 | 0 | `flexible: true` | on |
 | 1 | `flexible: false` | off |
-| 2–5 | untagged, split across the four nodes | on or off, chosen at random per node |
+| 2-3 | untagged, split across the pair | on |
+| 4-5 | untagged, split across the pair | off |
 
-Each node prints its mode at the top of its log, with the command to rerun it locally. To force the
-random nodes into one mode, set `CI_FLEXIBLE=true` or `CI_FLEXIBLE=false`. Because those nodes pick a
-mode at random, an untagged spec that fails only in one mode fails on about half of the runs; rerun it
-locally in the mode the log shows.
+Each node prints its mode at the top of its log, with the command to rerun it locally. To fall back to
+three nodes with flexible metadata off, set the repository Actions variable `HYKU_CI_FLEXIBLE_SPLIT` to
+`false` (Settings → Secrets and variables → Actions → Variables).
 
 #### Watching browser (JavaScript) specs
 

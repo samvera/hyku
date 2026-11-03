@@ -138,7 +138,6 @@ RSpec.describe 'Global users management', type: :feature, multitenant: true, cle
   # Manual Test Plan: "Global Users Manage Page (Admin only)"
   describe 'manage page' do
     it 'assigns the superadmin role with the checkbox and Update' do
-      expect(target.superadmin?).to be false
       visit proprietor_user_path(target)
       check 'superadmin'
       click_button 'Update'

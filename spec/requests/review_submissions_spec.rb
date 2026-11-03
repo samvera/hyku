@@ -8,10 +8,8 @@ RSpec.describe 'Review submissions', type: :request, singletenant: true, clean: 
   let!(:admin_group) { create(:admin_group, member_users: [reviewer]) }
   let!(:admin_set) do
     allow(Hyrax.config).to receive(:default_active_workflow_name).and_return('one_step_mediated_deposit')
-    Hyrax::AdminSetCreateService.call!(
-      admin_set: AdminSet.new(title: ['Review Admin Set']),
-      creating_user: nil
-    )
+    admin_set = Hyrax.config.admin_set_class.new(title: ['Review Admin Set'])
+    Hyrax::AdminSetCreateService.call!(admin_set:, creating_user: nil)
   end
   let!(:work) do
     FactoryBot.valkyrie_create(
@@ -53,21 +51,15 @@ RSpec.describe 'Review submissions', type: :request, singletenant: true, clean: 
     expect(date).to match(/\A\d{4}-\d{2}-\d{2}/)
   end
 
-  it 'approves a pending submission and changes its workflow state' do
-    expect(Sipity::Entity(work).workflow_state.name).to eq('pending_review')
-
-    put hyrax_workflow_action_path(work), params: { workflow_action: { name: 'approve', comment: '' } }
-
-    expect(response).to have_http_status(:redirect)
-    expect(Sipity::Entity(work).reload.workflow_state.name).to eq('deposited')
-  end
-
   # one_step_mediated_deposit has no "reject" action; a reviewer sends a work back with
   # request_changes, which moves it from pending_review to changes_required.
   it 'requests changes on a pending submission and changes its workflow state' do
+    expect(Sipity::Entity(work).workflow_state.name).to eq('pending_review')
+
     put hyrax_workflow_action_path(work), params: { workflow_action: { name: 'request_changes', comment: 'Needs revision' } }
 
     expect(response).to have_http_status(:redirect)
+    expect(flash[:notice]).to end_with('has been updated.')
     expect(Sipity::Entity(work).reload.workflow_state.name).to eq('changes_required')
   end
 

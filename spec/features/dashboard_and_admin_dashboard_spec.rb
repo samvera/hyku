@@ -14,17 +14,6 @@ RSpec.describe 'Dashboard and Admin Dashboard', type: :feature, clean: true do
     FactoryBot.create(:registered_group) unless Hyrax::Group.exists?(name: 'registered')
   end
 
-  it 'shows user dashboard with activity, notifications, proxies, and transfers' do
-    login_as user
-    visit '/dashboard'
-    expect(page).to have_content('User Activity')
-    expect(page).to have_content('User Notifications')
-    expect(page).to have_content('Current Proxies')
-    expect(page).to have_content('Transfers of Ownership')
-    expect(page).to have_content('Transfers Sent')
-    expect(page).to have_content('Transfers Received')
-  end
-
   # Seeds one record of each kind the user dashboard (hyrax/dashboard/show_user) summarizes.
   it "shows the user's own recent activity, notifications, proxies and transfers" do
     proxy = create(:user, display_name: 'Dashboard Proxy Person')
@@ -71,7 +60,7 @@ RSpec.describe 'Dashboard and Admin Dashboard', type: :feature, clean: true do
     # "Visibility" header (the hyrax.dashboard.show_admin.repository_objects "Repository Objects"
     # title is no longer used), backed by an sr-only table of published/unpublished counts.
     expect(page).to have_css('#dashboard-repository-objects')
-    published_row = find('#dashboard-repository-objects ~ table tbody tr', text: 'Published')
+    published_row = find('#dashboard-repository-objects ~ table td', exact_text: 'Published').ancestor('tr')
     expect(published_row.all('td').map(&:text)).to eq(%w[Published 2])
 
     # Recent activity on Administrative Sets (hyrax/dashboard/_tabs + _admin_sets).
@@ -82,26 +71,6 @@ RSpec.describe 'Dashboard and Admin Dashboard', type: :feature, clean: true do
       row = find('tbody tr', text: 'Dashboard Activity Set')
       expect(row.all('td').map(&:text)).to eq(['Dashboard Activity Set', '2', '0'])
     end
-
-    within '.sidebar' do
-      expect(page).to have_link('Repository Activity')
-      expect(page).to have_link('System Status')
-      # Tasks
-      expect(page).to have_link('Review Submissions')
-      expect(page).to have_link('Manage Users')
-      expect(page).to have_link('Manage Groups')
-      expect(page).to have_link('Manage Embargoes')
-      expect(page).to have_link('Manage Leases')
-      # Configuration
-      expect(page).to have_link('Settings')
-    end
-  end
-
-  it 'shows stats on the number of users and visitors' do
-    skip("Rendered by Hyku's hyrax/dashboard/_user_activity override only when " \
-         'current_account.analytics is enabled, and it queries a live analytics provider ' \
-         '(Hyrax::Analytics.new_visitors/returning_visitors/total_visitors via Google ' \
-         'Analytics or Matomo), which is not available to the test suite.')
   end
 
   it 'shows Workflow Roles under Configuration only when that menu item is enabled' do
@@ -142,26 +111,11 @@ RSpec.describe 'Dashboard and Admin Dashboard', type: :feature, clean: true do
     end
   end
 
-  it 'shows the admin Repository Activity and Configuration > Settings submenu links' do
+  # Everything else in the admin sidebar is covered by spec/features/admin_dashboard_spec.rb.
+  it 'shows the admin an Accounts link under Configuration > Settings' do
     login_as admin_user
     visit '/dashboard'
-    within '.sidebar' do
-      # Activity > Repository Activity (admin also sees System Status and Reports)
-      expect(page).to have_link('Activity Summary')
-      expect(page).to have_link('System Status')
-      expect(page).to have_link('Reports')
-
-      # Configuration > Settings (a collapsed sub-menu; its links are in the DOM)
-      expect(page).to have_link('Settings')
-      expect(page).to have_link('Accounts')
-      expect(page).to have_link('Labels')
-      expect(page).to have_link('Appearance')
-      expect(page).to have_link('Collection Types')
-      expect(page).to have_link('Pages')
-      expect(page).to have_link('Content Blocks')
-      expect(page).to have_link('Features')
-      expect(page).to have_link('Available Work Types')
-    end
+    within('.sidebar') { expect(page).to have_link('Accounts') }
   end
 
   # Bulkrax adds these via hyrax/dashboard/sidebar/_bulkrax_sidebar_additions, gated on

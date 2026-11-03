@@ -12,17 +12,14 @@ Rails.application.config.to_prepare do # rubocop:disable Metrics/BlockLength
   end
   {
     analytics: %i[analytics],
-    analytics_reporting: %i[analytics_reporting],
+    analytics_reporting: %i[analytics_reporting analytics_reporting?],
     contact_email: %i[contact_email],
     display_media_download_link: %i[display_media_download_link?],
     solr_max_results: %i[solr_max_results],
     solr_rows_per_request: %i[solr_rows_per_request]
   }.each { |name, readers| Hyku::PerThread.attribute(Hyrax::Configuration, name, readers:) }
-  # These readers memoize with ||=, so a false tenant value still falls back to ENV
-  {
-    analytics: %i[analytics?],
-    analytics_reporting: %i[analytics_reporting?]
-  }.each { |name, readers| Hyku::PerThread.attribute(Hyrax::Configuration, name, readers:, falsy_falls_back: true) }
+  # This reader memoizes with ||=, so a false tenant value still falls back to ENV
+  Hyku::PerThread.attribute(Hyrax::Configuration, :analytics, readers: %i[analytics?], falsy_falls_back: true)
   Hyku::PerThread.attribute(Hyrax::Configuration, :uploader, copy: true)
   Hyku::PerThread.attribute(Rails.singleton_class, :cache)
   Hyku::PerThread.attribute(Rails.application.config.singleton_class, :cache_store)

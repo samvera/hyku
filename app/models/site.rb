@@ -61,6 +61,7 @@ class Site < ApplicationRecord
       RequestStore.store.except!(:site_instance, :content_blocks, :qa_local_authorities, :hyrax_analytics_config)
       Hyrax.config.controlled_vocabulary_label_service.try(:reset!)
       Hyrax::Current.flexible_schema = nil
+      Hyrax::Current.flexible_schema_profiles = nil
     end
   end
 

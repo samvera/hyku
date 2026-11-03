@@ -1,10 +1,15 @@
 <%# OVERRIDE Hyrax 5.3.0 to add catalog/sort_widget %>
 <%= render 'catalog/did_you_mean' %>
 
-<%= render 'facets' %>
-<%= render 'constraints' %>
+<% filters = capture do %>
+  <%= render 'facets' %>
+  <%= render 'constraints' %>
+<% end %>
+<% if filters.present? %>
+  <div class="list-filters"><%= filters %></div>
+<% end %>
 
-<div class="row">
+<div class="row align-items-center">
   <div class="col-sm-5">
     <%= render 'hyrax/my/sort_and_per_page' %>
     <%= render 'catalog/sort_widget' %>

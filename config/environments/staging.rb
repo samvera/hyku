@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require Rails.root.join('lib', 'middleware', 'no_cache_middleware')
+require Rails.root.join('lib', 'middleware', 'viewer_cache_middleware')
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
@@ -22,9 +23,11 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
   config.public_file_server.headers = {
-    'Cache-Control' => 'public, s-maxage=31536000, maxage=15552000',
+    'Cache-Control' => 'public, s-maxage=31536000, max-age=15552000',
     'Expires' => 1.year.from_now.to_formatted_s(:rfc822).to_s
   }
+  # ActionDispatch::Static answers public/ files itself, so this has to wrap it.
+  config.middleware.insert_before ActionDispatch::Static, ViewerCacheMiddleware if config.public_file_server.enabled
   config.middleware.use NoCacheMiddleware, [/dashboard\/collections\/.*\/edit/, /uploaded_collection_thumbnails/]
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :terser

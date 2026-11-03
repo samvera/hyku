@@ -205,6 +205,16 @@
     padding: 6px 14px 0;
   }
 
+  // blacklight_range_limit's chart bleeds into a card padding these facets drop
+  .limit_content.range_limit {
+    padding: 0 14px;
+
+    .chart_js {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
   // the clear control is an icon, so the link underline reads as a stray mark
   a.remove {
     text-decoration: none;

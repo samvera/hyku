@@ -4,6 +4,10 @@
 # - Add collection methods to collection presenter and override to return
 #   full banner_file data, rather than only download path to file.
 # - Alter permissions-related behavior.
+# - Read a flexible collection's profile properties (Hyku::CollectionProfileReaders) through [].
+# - Let an app replace a collection page's terms, not an admin set's, with Hyrax.config.collection_terms.
+#   Both are TEMPORARY: re-evaluate and remove the parts marked below when samvera/hyrax#7732
+#   is in the bundled Hyrax.
 # Terms is the list of fields displayed by app/views/collections/_show_descriptions.html.erb
 module Hyrax
   module CollectionPresenterDecorator
@@ -22,6 +26,21 @@ module Hyrax
 
     delegate :collection_subtitle, to: :solr_document
 
+    # TEMPORARY: see the header
+    def terms
+      listed_terms&.dup || super
+    end
+
+    # TEMPORARY: see the header
+    def terms_with_values
+      terms.select { |t| (listed_terms.nil? || readable_term?(t)) && self[t].present? }
+    end
+
+    # TEMPORARY: see the header
+    def listed_terms
+      Hyrax.config.collection_terms unless is_a?(Hyrax::AdminSetPresenter)
+    end
+
     # Add new method to check if a user has permissions to create any works.
     # This is used to restrict who can deposit new works through collections.
     #
@@ -33,14 +52,14 @@ module Hyrax
     # OVERRIDE Hyrax - remove size
     # Delegate everything except :total_items to Hyrax's `#[]`, which guards a
     # declared-but-empty compound term (no `<name>_json_ss` reader on the doc)
-    # instead of raising. `:size` never reaches here — Hyku removes it from
-    # `terms` (see the class-method override above).
+    # instead of raising. Hyku removes `:size` from its default `terms` (see the
+    # class-method override above).
     def [](key)
       case key
       when :total_items
         total_items
       else
-        super
+        profile_reader?(key) ? public_send(key) : super # TEMPORARY: see the header
       end
     end
 
@@ -136,3 +155,4 @@ module Hyrax
 end
 
 Hyrax::CollectionPresenter.prepend(Hyrax::CollectionPresenterDecorator)
+Hyrax::CollectionPresenter.prepend(Hyku::CollectionProfileReaders) # TEMPORARY: see the header

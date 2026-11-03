@@ -38,11 +38,6 @@ module ThemeHomepage
     Hyrax::CollectionPresenter.new(document, @current_ability).total_viewable_works
   end
 
-  def self.facet_field(config, field)
-    label = Hyrax::ControlledVocabularyFieldValues.label_key(field)
-    config.facet_fields.key?(label) ? label : field
-  end
-
   def self.facet_visible?(facet, scope)
     Blacklight::Configuration::Context.new(scope).evaluate_if_unless_configuration(facet)
   end
@@ -50,7 +45,7 @@ module ThemeHomepage
   private
 
   def facet_field(field)
-    ThemeHomepage.facet_field(@search_service.blacklight_config, field)
+    Hyku::LabelFacet.for(@search_service.blacklight_config, field)
   end
 
   # A tenant can remove any facet from the catalog config, and Blacklight

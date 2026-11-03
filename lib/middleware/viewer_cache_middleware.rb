@@ -3,7 +3,7 @@
 # Viewer files copied into public/ keep their names across releases, so the year-long cache
 # meant for fingerprinted assets would keep serving an old viewer after a deploy.
 class ViewerCacheMiddleware
-  VIEWER_PATHS = %r{\A/(uv|clover|ramp)/}
+  VIEWER_PATHS = %r{\A/(uv|clover|ramp|pdf\.js)/}
 
   def initialize(app)
     @app = app

@@ -15,7 +15,10 @@ RSpec.describe ViewerCacheMiddleware do
     middleware.call(Rack::MockRequest.env_for(path))[1].transform_keys(&:downcase)
   end
 
-  %w[/clover/clover.html /clover/clover.js /uv/uv.html /uv/uv-config.json /ramp/ramp.html].each do |path|
+  %w[
+    /clover/clover.html /clover/clover.js /uv/uv.html /uv/uv-config.json /ramp/ramp.html
+    /pdf.js/viewer.html /pdf.js/pdf.worker.js
+  ].each do |path|
     it "has browsers and CDNs revalidate #{path} instead of keeping it for a year" do
       headers = headers_for(path)
 

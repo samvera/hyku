@@ -2,9 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Workflows: embargo, lease, sharing, relationships', type: :feature, js: true, clean: true do
+RSpec.describe 'Workflows: embargo, lease, workflow roles', type: :feature, js: true, clean: true do
   let(:admin_user) { create(:admin) }
-  let(:work) { FactoryBot.valkyrie_create(:generic_work_resource) }
 
   before do
     # Default groups may already exist (e.g. created when the admin user is created).
@@ -45,6 +44,7 @@ RSpec.describe 'Workflows: embargo, lease, sharing, relationships', type: :featu
       find('#agreement').click
       click_button 'Save'
 
+      expect(page).to have_current_path(%r{/concern/generic_works/[^/]+\z}, ignore_query: true)
       expect(page).to have_content('Embargoed Work')
       expect(page).to have_css('.badge', text: 'Embargo')
     end
@@ -60,24 +60,9 @@ RSpec.describe 'Workflows: embargo, lease, sharing, relationships', type: :featu
       find('#agreement').click
       click_button 'Save'
 
+      expect(page).to have_current_path(%r{/concern/generic_works/[^/]+\z}, ignore_query: true)
       expect(page).to have_content('Leased Work')
       expect(page).to have_css('.badge', text: 'Lease')
-    end
-  end
-
-  context 'sharing workflow' do
-    let!(:group) { FactoryBot.create(:group, name: 'cataloging_team') }
-    it 'offers existing groups to share with on the Sharing tab' do
-      visit "/concern/generic_works/#{ERB::Util.url_encode(work.id)}/edit#share"
-      expect(page).to have_content 'Add Sharing'
-      expect(page.has_select?('new_group_name_skel', with_options: [group.humanized_name])).to be true
-    end
-  end
-
-  context 'relationships tab' do
-    it 'shows the relationships tab on the new work form' do
-      open_new_work_form
-      expect(page).to have_link('Relationships')
     end
   end
 

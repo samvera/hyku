@@ -182,10 +182,6 @@ RSpec.describe 'Global authentication pages', type: :feature, multitenant: true,
 
       expect(page).to have_current_path(new_user_password_path, ignore_query: true)
     end
-
-    it 'links Administrator login in the footer to the Log in form' do
-      skip('No footer here: app/views/layouts/hyrax.html.erb renders shared/_footer only for splash and homepage')
-    end
   end
 
   # Manual Test Plan: "Global Forgot your Password? Page"
@@ -242,10 +238,6 @@ RSpec.describe 'Global authentication pages', type: :feature, multitenant: true,
 
       expect(page).to have_current_path(new_user_session_path, ignore_query: true)
     end
-
-    it 'links Administrator login in the footer to the Log in form' do
-      skip('No footer here: app/views/layouts/hyrax.html.erb renders shared/_footer only for splash and homepage')
-    end
   end
 
   # Manual Test Plan: "Change your password page"
@@ -301,10 +293,6 @@ RSpec.describe 'Global authentication pages', type: :feature, multitenant: true,
       click_link 'Log in'
 
       expect(page).to have_current_path(new_user_session_path, ignore_query: true)
-    end
-
-    it 'links Administrator login in the footer to the Log in form' do
-      skip('No footer here: app/views/layouts/hyrax.html.erb renders shared/_footer only for splash and homepage')
     end
   end
 end

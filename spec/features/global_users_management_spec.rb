@@ -64,11 +64,6 @@ RSpec.describe 'Global users management', type: :feature, multitenant: true, cle
       expect(page).to have_css('h1', text: 'Create a new user')
     end
 
-    it 'offers Become to sign in as another user' do
-      skip('Not implemented in base Hyku: app/views/proprietor/users/index.html.erb has no Become link, ' \
-           'although Proprietor::UsersController#become and its POST route exist.')
-    end
-
     context 'with javascript', js: true do
       # Potential duplicate: spec/controllers/proprietor/users_controller_spec.rb:154 (DELETE #destroy removes the user)
       it 'deletes a user after confirming' do

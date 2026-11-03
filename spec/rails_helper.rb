@@ -234,10 +234,14 @@ RSpec.configure do |config|
   }
 
   # Hyrax.config.flexible memoizes with `||=`, so while it is false it re-reads HYRAX_FLEXIBLE on
-  # every call; a spec that sets that ENV var to 'true' can flip the whole process into flexible
-  # mode. Restore this run's mode after every example.
+  # every call. Restore both after every example so a spec that changes either can't leak into
+  # later ones.
   flexible_mode = Hyrax.config.flexible?
-  config.after { Hyrax.config.flexible = flexible_mode }
+  flexible_env = ENV['HYRAX_FLEXIBLE']
+  config.after do
+    ENV['HYRAX_FLEXIBLE'] = flexible_env
+    Hyrax.config.flexible = flexible_mode
+  end
 
   config.after(:each, type: :feature) do |example|
     # rubocop:disable Lint/Debugger

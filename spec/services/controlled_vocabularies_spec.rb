@@ -248,14 +248,7 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service, flexible: 
       end
     end
 
-    context 'when HYRAX_FLEXIBLE is false' do
-      around do |example|
-        original_env = ENV['HYRAX_FLEXIBLE']
-        ENV['HYRAX_FLEXIBLE'] = 'false'
-        example.run
-        ENV['HYRAX_FLEXIBLE'] = original_env
-      end
-
+    context 'when HYRAX_FLEXIBLE is false', flexible: false do
       it 'still has access to controlled vocabulary configurations' do
         expect(Hyrax::ControlledVocabularies.services).to be_present
         expect(Hyrax::ControlledVocabularies.remote_authorities).to be_present

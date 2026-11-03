@@ -124,7 +124,6 @@ RSpec.describe 'Homepage', type: :feature, clean: true do
       expect(page).to have_field('Email')
     end
 
-    # Potential duplicate: spec/features/create_work_spec.rb:19 (logged-in Share Your Work reaches the work form)
     it 'directs a logged-in depositor to the work creation form', js: true do
       FactoryBot.create(:admin_group) unless Hyrax::Group.exists?(name: 'admin')
       FactoryBot.create(:registered_group) unless Hyrax::Group.exists?(name: 'registered')
@@ -157,7 +156,6 @@ RSpec.describe 'Homepage', type: :feature, clean: true do
       ContentBlock.featured_researcher = '<p>Dr. Ada Featurington studies owls.</p>'
     end
 
-    # Potential duplicate: spec/features/feature_flag_spec.rb:34 (featured/recent works on the homepage; xdescribe, CI-skipped)
     it 'shows featured works, recent public uploads, featured collections and the featured researcher' do
       visit '/'
 

@@ -194,16 +194,8 @@ end
 
 # Owner-facing DASHBOARD collection show page (`/dashboard/collections/:id`).
 #
-# These examples exercise the owner controls the manual test plan enumerates,
-# which only render on the dashboard show page (not the public `hyrax.collection_path`
-# view covered above). The owner creates the Valkyrie collection, which gives them a
-# permission template with manage access (the :deposit and :manage_items_in_collection
-# abilities the nesting/add-items controls need).
-#
-# The owner holds the collection_manager role: the "Create new collection as subcollection"
-# link requires :create_collection_of_type, and when HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS
-# is set (as in the dev/test environment) the default User Collection type grants create only
-# to admins and the collection_manager/collection_editor roles, not to all registered users.
+# Owner controls from the manual test plan that only render on the dashboard show page.
+# Adding, removing and deleting are exercised in collection_manager_role_spec.rb.
 RSpec.describe 'Dashboard collection show page (owner controls)', type: :feature, clean: true do
   let(:user) { create(:user, roles: [:collection_manager]) }
   let!(:collection) do
@@ -239,10 +231,9 @@ RSpec.describe 'Dashboard collection show page (owner controls)', type: :feature
     end
   end
 
-  it 'shows Edit, Add-to, and Delete collection buttons' do
+  it 'shows Edit and Add-to collection buttons' do
     expect(page).to have_link('Edit collection')
     expect(page).to have_button('Add to collection')
-    expect(page).to have_link('Delete collection')
   end
 
   it "shows the collection's representative media" do
@@ -272,25 +263,14 @@ RSpec.describe 'Dashboard collection show page (owner controls)', type: :feature
     expect(page).not_to have_css("tr#document_#{member_work.id}")
   end
 
-  it 'lists subcollections with buttons to add and create subcollections' do
+  it 'shows an empty subcollections list' do
     expect(page).to have_content('Subcollections (0)')
-    # No subcollections have been added yet
     expect(page).to have_content('There are no visible subcollections.')
-    # Add an existing collection as a subcollection (opens a modal via JS)
-    expect(page).to have_button('Add a subcollection')
-    # Create a brand-new collection as a subcollection
-    expect(page).to have_link('Create new collection as subcollection')
   end
 
-  it 'lists works with controls to add an existing work and remove a work' do
+  it 'lists the member works' do
     expect(page).to have_content('Works (1)')
-    expect(page).to have_content('Owner dashboard work')
-    # Add an existing work to the collection (navigates to My Works)
-    expect(page).to have_link('Add existing works to this collection')
-    # Remove an individual work from the collection
-    within("tr#document_#{member_work.id}") do
-      expect(page).to have_button('Remove')
-    end
+    expect(page).to have_css("tr#document_#{member_work.id}", text: 'Owner dashboard work')
   end
 end
 

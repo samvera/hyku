@@ -209,11 +209,11 @@ jobs:
     uses: notch8/actions/.github/workflows/test.yaml@v1.0.6
     with:
       confdir: "/app/samvera/hyrax-webapp/solr/conf"
-      # Runs on six nodes split by the `flexible:` tag (see bin/ci_rspec). Set the repository Actions
-      # variable HYKU_CI_FLEXIBLE_SPLIT to 'false' to fall back to three nodes with flexible metadata off.
-      node_index: ${{ vars.HYKU_CI_FLEXIBLE_SPLIT != 'false' && '[0, 1, 2, 3, 4, 5]' || '[0, 1, 2]' }}
-      node_total: ${{ vars.HYKU_CI_FLEXIBLE_SPLIT != 'false' && '[6]' || '[3]' }}
-      rspec_cmd: ${{ vars.HYKU_CI_FLEXIBLE_SPLIT != 'false' && 'bin/ci_rspec $CI_NODE_INDEX' || 'gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL' }}
+      # With the repository Actions variable HYKU_CI_FLEXIBLE_SPLIT set to 'true', runs on six nodes split
+      # by the `flexible:` tag (see bin/ci_rspec). Otherwise three nodes with flexible metadata off.
+      node_index: ${{ vars.HYKU_CI_FLEXIBLE_SPLIT == 'true' && '[0, 1, 2, 3, 4, 5]' || '[0, 1, 2]' }}
+      node_total: ${{ vars.HYKU_CI_FLEXIBLE_SPLIT == 'true' && '[6]' || '[3]' }}
+      rspec_cmd: ${{ vars.HYKU_CI_FLEXIBLE_SPLIT == 'true' && 'bin/ci_rspec $CI_NODE_INDEX' || 'gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL' }}
       tag: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) && github.event.pull_request.head.sha || github.sha }}
 
   single-tenant-test:

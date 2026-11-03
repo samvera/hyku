@@ -146,7 +146,9 @@ This format is intended to be extensible to other configurations that Hyku is ab
 
 #### CI
 
-The main `test` job runs on six nodes, split by the `flexible:` tag (see `bin/ci_rspec`):
+With the repository Actions variable `HYKU_CI_FLEXIBLE_SPLIT` set to `true` (Settings → Secrets and
+variables → Actions → Variables), the main `test` job runs on six nodes, split by the `flexible:` tag
+(see `bin/ci_rspec`):
 
 | Node | Examples | Flexible metadata |
 |---|---|---|
@@ -155,9 +157,8 @@ The main `test` job runs on six nodes, split by the `flexible:` tag (see `bin/ci
 | 2-3 | untagged, split across the pair | on |
 | 4-5 | untagged, split across the pair | off |
 
-Each node prints its mode at the top of its log, with the command to rerun it locally. To fall back to
-three nodes with flexible metadata off, set the repository Actions variable `HYKU_CI_FLEXIBLE_SPLIT` to
-`false` (Settings → Secrets and variables → Actions → Variables).
+Each node prints its mode at the top of its log, with the command to rerun it locally. Without the
+variable, CI runs three nodes with flexible metadata off.
 
 #### Watching browser (JavaScript) specs
 

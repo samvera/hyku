@@ -272,10 +272,7 @@ RSpec.describe 'Dashboard collection show page (owner controls)', type: :feature
     expect(page).not_to have_css("tr#document_#{member_work.id}")
   end
 
-  # Remove this comment and change `xit` back to `it` when issue #3426 is fixed.
-  # KNOWN INTERMITTENT FAILURE (CI only, non-flexible mode): Solr dashboard occassionally crashes 
-  # with a 500 server errror
-  xit 'lists subcollections with buttons to add and create subcollections' do
+  it 'lists subcollections with buttons to add and create subcollections' do
     expect(page).to have_content('Subcollections (0)')
     # No subcollections have been added yet
     expect(page).to have_content('There are no visible subcollections.')

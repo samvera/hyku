@@ -73,7 +73,6 @@ RSpec.describe 'Manage embargoes and leases', type: :feature, clean: true do
       let!(:deactivated_work) { deactivated_embargoed_work('Deactivated Embargo Work') }
       let!(:unrestricted_work) { work_with('Never Embargoed Work') }
 
-      # Potential duplicate: spec/requests/admin_dashboard_spec.rb:103 (GET /embargoes renders for an admin)
       it 'lists every enforced embargo (works and file sets) under All Active Embargoes' do
         visit '/embargoes'
 
@@ -327,7 +326,6 @@ RSpec.describe 'Manage embargoes and leases', type: :feature, clean: true do
       let!(:deactivated_work) { deactivated_leased_work('Deactivated Lease Work') }
       let!(:unrestricted_work) { work_with('Never Leased Work') }
 
-      # Potential duplicate: spec/requests/admin_dashboard_spec.rb:109 (GET /leases renders for an admin)
       it 'lists every enforced lease (works and file sets) under All Active Leases' do
         visit '/leases'
 

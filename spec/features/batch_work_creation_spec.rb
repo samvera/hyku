@@ -47,11 +47,13 @@ RSpec.describe 'Batch Work Creation', type: :feature, js: true, clean: true do
     expect(page).to have_css("input[type='radio'][value='embargo']")
     expect(page).to have_css("input[type='radio'][value='lease']")
     expect(page).to have_css("input[type='radio'][value='restricted']")
-    expect(page).to have_content('Public')
-    expect(page).to have_content('Test Institution')
-    expect(page).to have_content('Embargo')
-    expect(page).to have_content('Lease')
-    expect(page).to have_content('Private')
+    within('.set-access-controls') do
+      expect(page).to have_css('label', text: 'Public')
+      expect(page).to have_css('label', text: 'Test Institution')
+      expect(page).to have_css('label', text: 'Embargo')
+      expect(page).to have_css('label', text: 'Lease')
+      expect(page).to have_css('label', text: 'Private')
+    end
 
     # Files tab
     click_link 'Files'

@@ -1339,7 +1339,7 @@ bundle exec rspec --dry-run -f doc spec/features/global_index_spec.rb
 
 **Spec coverage**
 
-- [admin_settings_spec.rb](../../spec/features/admin_settings_spec.rb)
+- [labels_spec.rb](../../spec/features/labels_spec.rb)
 
 ## Settings → Appearance Page
 [Back to TOC](#table-of-contents)

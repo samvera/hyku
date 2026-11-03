@@ -10,11 +10,11 @@ RSpec.describe 'Site labels configuration', type: :feature, clean: true do
     end
 
     describe 'application name' do
-      # Potential duplicate: spec/features/admin_settings_spec.rb:16 (saves the labels and shows them on the site)
       it 'updates the application name in the brand bar' do
         visit edit_site_labels_path
         fill_in 'Application name', with: 'Custom Name'
         click_on 'Save'
+        expect(Site.instance.reload.application_name).to eq('Custom Name')
         expect(page).to have_css '.navbar-brand', text: 'Custom Name'
       end
 
@@ -39,6 +39,7 @@ RSpec.describe 'Site labels configuration', type: :feature, clean: true do
         visit edit_site_labels_path
         fill_in 'Institution name', with: 'Custom Inst Name'
         click_on 'Save'
+        expect(Site.instance.reload.institution_name).to eq('Custom Inst Name')
 
         visit hyrax.agreement_path
         expect(page).to have_content('fullname (Custom Inst Name) requires')
@@ -57,6 +58,7 @@ RSpec.describe 'Site labels configuration', type: :feature, clean: true do
         visit edit_site_labels_path
         fill_in 'Full institution name', with: 'Custom Full Inst Name'
         click_on 'Save'
+        expect(Site.instance.reload.institution_name_full).to eq('Custom Full Inst Name')
 
         visit hyrax.agreement_path
         expect(page).to have_content('Custom Full Inst Name (name) requires')

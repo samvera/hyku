@@ -2,40 +2,13 @@
 
 require 'rails_helper'
 
-# Manual Test Plan: "Settings → Labels Page", "Settings → Appearance Page", "Settings → Pages Page",
+# Manual Test Plan: "Settings → Appearance Page", "Settings → Pages Page",
 # "Settings → Content Block", and "Settings → Features Page".
 RSpec.describe 'Admin settings pages', type: :feature, clean: true do
   let(:admin) { create(:admin) }
   let(:image_path) { Rails.root.join('spec', 'fixtures', 'images', 'world.png') }
 
   before { login_as admin }
-
-  # Manual Test Plan: "Settings → Labels Page"
-  describe 'Labels' do
-    # Potential duplicate: spec/features/labels_spec.rb:14 (saves the labels and shows them on the site)
-    it 'saves the application name, institution name, and full institution name' do
-      visit '/site/labels/edit'
-      expect(page).to have_css('.card-title', text: 'General Repository Labels')
-
-      fill_in 'Application name', with: 'Quokka Repository'
-      fill_in 'Institution name', with: 'QU'
-      fill_in 'Full institution name', with: 'Quokka University'
-      click_button 'Save changes'
-
-      site = Site.instance.reload
-      expect(site.application_name).to eq('Quokka Repository')
-      expect(site.institution_name).to eq('QU')
-      expect(site.institution_name_full).to eq('Quokka University')
-
-      expect(page).to have_content('Labels were successfully updated.')
-      expect(page).to have_field('Application name', with: 'Quokka Repository')
-      expect(page).to have_field('Institution name', with: 'QU')
-      expect(page).to have_field('Full institution name', with: 'Quokka University')
-
-      visit '/agreement'
-      expect(page).to have_content('Quokka University (QU) requires')
-    end
-  end
 
   # Manual Test Plan: "Settings → Appearance Page"
   describe 'Appearance' do

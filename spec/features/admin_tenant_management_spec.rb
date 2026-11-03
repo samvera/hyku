@@ -263,7 +263,6 @@ RSpec.describe 'Admin Tenant Management', multitenant: true do
 
   # Manual Test Plan: "Global Tenant Account Edit Page (Admin only)"
   # The single Tenant CNAME input became a read-only "Primary Domain Name" plus editable Domain Names.
-  # Potential duplicate: spec/features/accounts_spec.rb:43 (edit form saves endpoint URLs)
   # Remove this comment and the `pending` call to re-enable this test when issue #3422 is fixed.
   # KNOWN APPLICATION ISSUE: saving the edit form raises NoMethodError when an array setting such
   # as email_format has values: the inputs are not array-named, so a String is posted. Fix goes in

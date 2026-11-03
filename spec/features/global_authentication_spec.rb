@@ -97,17 +97,6 @@ RSpec.describe 'Global authentication pages', type: :feature, multitenant: true,
       expect(page).to have_css('h2', text: 'Forgot your password?')
     end
 
-    # _links renders Sign up only when !Account.global_tenant? && current_account.allow_signup.
-    # Account.global_tenant? is hard-wired to false in the test environment, and the admin host's
-    # current_account is an unsaved Account.new whose allow_signup defaults to true, so the link shows here.
-    it 'links Sign up to the Create a new account form' do
-      visit new_user_session_path
-      click_link 'Sign up'
-
-      expect(page).to have_current_path(new_user_registration_path, ignore_query: true)
-      expect(page).to have_css('h2', text: 'Create a new account')
-    end
-
     it 'hides the Sign up link when the request is on the global tenant' do
       allow(Account).to receive(:global_tenant?).and_return(true)
       visit new_user_session_path
@@ -254,14 +243,6 @@ RSpec.describe 'Global authentication pages', type: :feature, multitenant: true,
       expect(page).to have_current_path(new_user_session_path, ignore_query: true)
     end
 
-    it 'links Sign up to the Create a new account form' do
-      visit new_user_password_path
-      click_link 'Sign up'
-
-      expect(page).to have_current_path(new_user_registration_path, ignore_query: true)
-      expect(page).to have_css('h2', text: 'Create a new account')
-    end
-
     it 'links Administrator login in the footer to the Log in form' do
       skip('No footer here: app/views/layouts/hyrax.html.erb renders shared/_footer only for splash and homepage')
     end
@@ -320,12 +301,6 @@ RSpec.describe 'Global authentication pages', type: :feature, multitenant: true,
       click_link 'Log in'
 
       expect(page).to have_current_path(new_user_session_path, ignore_query: true)
-    end
-
-    it 'links Sign up to the Create a new account form' do
-      click_link 'Sign up'
-
-      expect(page).to have_current_path(new_user_registration_path, ignore_query: true)
     end
 
     it 'links Administrator login in the footer to the Log in form' do

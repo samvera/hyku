@@ -25,6 +25,10 @@ Hyrax.config do |config|
   # Injected via `rails g hyrax:collection_resource CollectionResource`
   config.collection_model = 'CollectionResource'
 
+  # Which fields should a collection page list, and in what order?
+  # The default is nil, which lists Hyrax::CollectionPresenter.terms.
+  # config.collection_terms = [:abstract, :creator, :subject]
+
   # Identify the model class name that will be used for Admin Sets in your app
   # (i.e. AdminSet for ActiveFedora, Hyrax::AdministrativeSet for Valkyrie)
   # config.admin_set_model = 'AdminSet'

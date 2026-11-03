@@ -204,6 +204,35 @@ The choice is made per record, the same way Hyrax picks the profile or the YAML:
 
 Compound fields follow the same rules. With flexible metadata off, the compounds in `config/metadata/compound_metadata.yaml` (`participants`, `identifiers`, `relationships`) display only because each `field_order` names them; a new compound needs a `field_order` entry too. A compound with `view: { display: card }`, such as `relationships`, is left out of the metadata list and rendered as its own card by `render_compound_cards`, which every show page and show theme calls.
 
+#### Which fields a collection page lists
+
+Hyku carries this behavior as overrides marked TEMPORARY until samvera/hyrax#7732 is in the bundled Hyrax.
+
+Collection pages, the public page in each theme and the dashboard's, list `Hyrax::CollectionPresenter.terms` followed by the collection's inline compound fields, as in Hyrax: the presenter's `terms_with_values`, in that order, with Hyrax's labels and rendering. Each page lists `collection_terms_with_values(presenter)` (`Hyrax::CollectionsHelperDecorator`), which skips fields with no value; `collection_terms_for(presenter)` returns the same list before that step.
+
+The description is not in `CollectionPresenter.terms`: collection and admin set pages show it in its own block above the rows (`hyrax/collections/_collection_description`), so listing `:description` in `collection_terms`, or giving it a `view:` block when asking for the profile's properties (`dynamic: true`), shows it twice.
+
+For a collection saved under the m3 profile, this list leaves out:
+
+- properties marked `view: { collection_page: false }`, so a compound field, which is appended to the list, can be kept off collection pages (admin set pages included);
+- properties the profile restricts with `admin_only` or `editor_only` in `indexing:`, from viewers who are not admins or editors of the collection.
+
+A term on this list shows whether or not its property has a `view:` block, as in Hyrax.
+
+Card compounds (`view: { display: card }`) render as their own cards below the rows on every collection page; `collection_page: false` and the `admin_only` and `editor_only` flags do not apply to them.
+
+```yaml
+view:
+  html_dl: true
+  collection_page: false
+```
+
+**An app's own list.** Setting `config.collection_terms = %i[abstract creators subject]` in a `Hyrax.config` block replaces the list on every collection page with those fields, in that order. Admin set pages keep Hyrax's terms. A listed field shows only if the collection presenter reads it from the collection's Solr document, its profile or its compound fields (`total_items` and `size` always can). So a presenter-only method such as `total_viewable_items` is skipped, and so is a Solr field the presenter has no reader for, such as `abstract` on a collection saved without the profile. Set it in an initializer that loads after `config/initializers/collection_terms.rb`, such as Hyku's `config/initializers/hyrax.rb` or a knapsack's initializer. For a collection saved under the m3 profile, a listed field shows only if its property has a `view:` block; it is left out if it is a card compound, is marked `collection_page: false` or `show_page: false`, or its `admin_only` or `editor_only` indexing flag excludes the viewer; and it takes its label and rendering (`render_as`) from the profile.
+
+**The profile's properties (`dynamic: true`).** A theme or app can ask for the profile's own list with `collection_terms_with_values(presenter, dynamic: true)`, or `collection_terms_for(presenter, dynamic: true)` for the list before empty fields are skipped: every property the profile gives a `view:` block for the collection's class, in profile order, under the same rules as an app's list but with Hyrax's labels and rendering. An app's list, when set, takes precedence. Hyrax's own templates and Hyku's default collection pages do not use this option.
+
+`collection_terms_with_values` skips fields with no value in every case. A flexible collection's presenter reads every profile property by its `name`, so a property the profile declares under another key, such as `rights_statement_optional` with `name: rights_statement`, is listed as `rights_statement`. Collection and admin set pages read the profile version the collection was saved with, and only its entries available on the collection's class. A context is set on an admin set for its works, so collection and admin set pages ignore a property limited to a context.
+
 #### Searching and faceting compound fields
 
 Compound sub-properties are indexed into Solr in both modes, but they are not searchable or facetable until they are registered in `CatalogController`.

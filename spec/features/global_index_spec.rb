@@ -46,6 +46,7 @@ RSpec.describe 'Global institution index', type: :feature, multitenant: true, cl
 
     it 'logs out and hides the admin links' do
       visit '/'
+      expect(page).to have_link('Accounts')
       within('#user_utility_links') { click_link 'Logout' }
 
       expect(page).to have_current_path('/', ignore_query: true)

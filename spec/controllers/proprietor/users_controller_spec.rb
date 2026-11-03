@@ -90,7 +90,6 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
           }
         end
 
-        # Potential duplicate: spec/features/global_users_management_spec.rb:199 (PUT #update saves attributes)
         it "updates the requested user" do
           allow(Apartment::Tenant).to receive(:switch).with(account.tenant) do |&block|
             block.call
@@ -150,7 +149,6 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
     end
 
     describe "DELETE #destroy" do
-      # Potential duplicate: spec/features/global_users_management_spec.rb:74 (DELETE #destroy removes the user)
       it "destroys the user and redirects to the users list" do
         expect_any_instance_of(User).to receive(:destroy).and_return(true)
         delete :destroy, params: { id: user.to_param }

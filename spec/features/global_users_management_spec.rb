@@ -65,7 +65,6 @@ RSpec.describe 'Global users management', type: :feature, multitenant: true, cle
     end
 
     context 'with javascript', js: true do
-      # Potential duplicate: spec/controllers/proprietor/users_controller_spec.rb:154 (DELETE #destroy removes the user)
       it 'deletes a user after confirming' do
         visit '/proprietor/users'
         expect(page).to have_css('table.datatable tbody tr', text: 'pat.target@example.com')
@@ -189,7 +188,6 @@ RSpec.describe 'Global users management', type: :feature, multitenant: true, cle
       expect(page).to have_field('Department', with: 'Zoology Dept')
     end
 
-    # Potential duplicate: spec/controllers/proprietor/users_controller_spec.rb:94 (PUT #update saves attributes)
     it 'saves changes and returns to the users list' do
       visit edit_proprietor_user_path(target)
       fill_in 'Display Name', with: 'Patricia Renamed'

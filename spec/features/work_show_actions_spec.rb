@@ -72,14 +72,10 @@ RSpec.describe 'Work show actions', type: :feature, clean: true do
       it 'shows the title, visibility, metadata, relationships and citation affordances' do
         visit "/concern/generic_works/#{work.id}"
 
-        # Title + permission badge ("Public" for an open work).
-        expect(page).to have_content('Coastal Erosion Survey 2019')
-        expect(page).to have_content('Public')
-        # Descriptive metadata list.
-        expect(page).to have_css('dl')
-        expect(page).to have_content('shoreline monitoring')
-        # Relations card (its title renders as "Relations").
-        expect(page).to have_content('Relations')
+        expect(page).to have_css('.title-with-badges h1', text: 'Coastal Erosion Survey 2019')
+        expect(page).to have_css('.title-with-badges .badge', text: 'Public')
+        expect(page).to have_css('dl', text: 'shoreline monitoring')
+        expect(page).to have_css('.card-title', text: 'Relations')
         # Citations: the COinS span (read by Zotero/Mendeley) lives in _show_actions.html.erb.
         expect(page).to have_content('Citation')
         expect(page).to have_css('span.Z3988', visible: :all)

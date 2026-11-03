@@ -33,14 +33,15 @@ RSpec.describe 'Catalog controls', type: :feature, clean: true do
   end
 
   it 'customizes the search results by selecting different filters (Sort by, number of records per page, layout)' do
-    # One more page of works than fits, plus the work created above.
-    create_page_works(per_page + 2)
+    # One more page of works than fits, plus the work created above. Created in reverse so
+    # the Title sort (SortTitle zero-pads numbers) differs from creation order.
+    (per_page + 1).downto(0) { |index| public_work(title: "Catalog page #{index}") }
     visit '/catalog?search_field=all_fields&q=catalog'
     expect(page).to have_css('.search-result-title a', count: per_page)
 
     within('#sort-dropdown') { click_link 'Title' }
-    titles = page.all('.search-result-title a').map(&:text)
-    expect(titles).to eq(titles.sort)
+    expected = ['Catalog control work'] + Array.new(per_page - 1) { |index| "Catalog page #{index}" }
+    expect(page.all('.search-result-title a').map(&:text)).to eq(expected)
 
     within('#per_page-dropdown') { click_link '20' }
     expect(page).to have_css('.search-result-title a', count: per_page + 3)

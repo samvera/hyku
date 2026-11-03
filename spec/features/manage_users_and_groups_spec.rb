@@ -104,7 +104,7 @@ RSpec.describe 'Manage Users and Groups', type: :feature, clean: true do
     it 'shows the total number of groups' do
       visit '/admin/groups'
 
-      expect(find('.group-listing .card-header')).to have_text("There are #{Hyrax::Group.count} groups in this repository.")
+      expect(find('.group-listing .card-header')).to have_text("There are 4 groups in this repository.")
     end
 
     # Potential duplicate: spec/views/admin/groups/index.html.erb_spec.rb:27 (group name, user count, created date)

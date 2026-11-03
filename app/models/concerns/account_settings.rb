@@ -203,7 +203,13 @@ module AccountSettings
 
   def set_hyrax_analytics_config(config, analytics_enabled)
     config.analytics = analytics_enabled
-    config.analytics_reporting = analytics_enabled
+    config.analytics_reporting = analytics_enabled && reports_from_own_property?
+  end
+
+  # A property or site shared through ENV holds every tenant's traffic, so on a multitenant
+  # install only a tenant with its own property gets reports. Tracking is unaffected.
+  def reports_from_own_property?
+    Hyku.single_tenant? || analytics_credentials_present?
   end
 
   def tenant_specific_analytics_setting?(name)
@@ -374,7 +380,8 @@ module AccountSettings
       case provider
       when 'ga4', 'google'
         analytics_id = google_analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID', '')
-        property_id = google_analytics_property_id.presence || ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
+        property_id = google_analytics_property_id.presence
+        property_id ||= Hyku.single_tenant? ? ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '') : ''
 
         Hyrax::Analytics.config.analytics_id = analytics_id
         Hyrax::Analytics.config.property_id = property_id

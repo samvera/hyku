@@ -25,6 +25,10 @@ Hyrax.config do |config|
   # Injected via `rails g hyrax:collection_resource CollectionResource`
   config.collection_model = 'CollectionResource'
 
+  # Which fields should a collection page list, and in what order?
+  # The default is nil, which lists Hyrax::CollectionPresenter.terms.
+  # config.collection_terms = [:abstract, :creator, :subject]
+
   # Identify the model class name that will be used for Admin Sets in your app
   # (i.e. AdminSet for ActiveFedora, Hyrax::AdministrativeSet for Valkyrie)
   # config.admin_set_model = 'AdminSet'
@@ -330,6 +334,15 @@ Rails.application.config.to_prepare do
 
   require 'hydra/derivatives'
   Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
+  # Without a timeout hydra-derivatives waits on a hung ffmpeg forever, holding a
+  # worker. Not LibreOffice: its cleanup reruns a timed-out conversion.
+  ffmpeg_timeout = ENV.fetch('HYKU_FFMPEG_TIMEOUT', 4.hours.to_i).to_i
+  # An escaped filename runs the command through sh, which the timeout would kill
+  # instead of ffmpeg; exec makes ffmpeg the process it kills.
+  Hydra::Derivatives.ffmpeg_path = 'exec ffmpeg'
+  [Hydra::Derivatives::Processors::Video::Processor, Hydra::Derivatives::Processors::Audio].each do |processor|
+    processor.timeout = ffmpeg_timeout
+  end
 
   Hyku::ListenerSubscription.replace(HyraxListener.new)
 

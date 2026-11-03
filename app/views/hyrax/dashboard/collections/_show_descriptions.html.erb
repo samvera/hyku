@@ -1,0 +1,11 @@
+<%# OVERRIDE Hyrax v5.3.0 to choose the collection's fields through collection_terms_with_values, so an app's own list and the profile apply %>
+<%# TEMPORARY: re-evaluate and remove when samvera/hyrax#7732 is in the bundled Hyrax %>
+<h2 class="sr-only"><%= t('.descriptions') %></h2>
+<dl class="metadata-collections">
+  <% collection_terms_with_values(@presenter).each do |field_name| %>
+    <div class="row">
+      <dt class="col-5 text-right"><%= collection_metadata_label(@presenter, field_name) %></dt>
+      <dd class="col-7"><%= collection_metadata_value(@presenter, field_name) %></dd>
+    </div>
+  <% end %>
+</dl>

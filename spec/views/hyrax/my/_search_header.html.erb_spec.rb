@@ -25,6 +25,28 @@ RSpec.describe 'hyrax/my/_search_header.html.erb', type: :view do
       expect(rendered).to have_selector('button', text: 'Add to collection')
       expect(rendered).to have_selector('input[value="Edit Selected"]')
     end
+
+    it 'leaves out the filter panel when there is nothing to filter by' do
+      expect(rendered).to have_no_selector('.list-filters')
+    end
+  end
+
+  context 'with filters to show' do
+    before do
+      stub_template 'hyrax/my/_facets.html.erb' => '<div id="facets"></div>'
+      stub_template 'hyrax/my/_constraints.html.erb' => '<div id="appliedParams"></div>'
+      stub_template 'catalog/_sort_widget.html.erb' => '<div id="sort-widget"></div>'
+      view.lookup_context.prefixes.push 'hyrax/my/works'
+      render 'hyrax/my/search_header', current_tab: 'works'
+    end
+
+    it 'groups the facets and applied filters in one panel' do
+      expect(rendered).to have_selector('.list-filters > #facets + #appliedParams')
+    end
+
+    it 'keeps the sort widget beside the per-page control' do
+      expect(rendered).to have_selector('.row.align-items-center .col-sm-5 #sort-widget')
+    end
   end
 
   context 'on my collections page' do

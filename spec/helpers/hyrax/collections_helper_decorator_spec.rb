@@ -160,7 +160,7 @@ RSpec.describe Hyrax::CollectionsHelper, type: :helper do
         before do
           properties['based_near'] = { 'available_on' => on_collections, 'indexing' => ['based_near_tesim'],
                                        'display_label' => { 'default' => 'Place of creation' },
-                                       'view' => { 'html_dl' => true, 'render_term' => 'based_near_label' } }
+                                       'view' => { 'html_dl' => true, 'render_term' => 'based_near_place' } }
         end
 
         it 'renders the value as Hyrax does' do

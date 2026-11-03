@@ -289,7 +289,6 @@ RSpec.describe 'Admin settings pages', type: :feature, clean: true do
       expect(ContentBlock.for(:announcement).value).not_to eq('<p>Discarded announcement</p>')
     end
 
-    # Potential duplicate: spec/views/hyrax/content_blocks/edit.html.erb_spec.rb:8 (renders each content block form)
     it "shows a WYSIWYG editor to change the content for each of the site's content blocks", js: true do
       visit '/content_blocks/edit'
 
@@ -322,7 +321,6 @@ RSpec.describe 'Admin settings pages', type: :feature, clean: true do
       expect(feature_row('show-featured-researcher')).to have_css('td.name', text: 'Show featured researcher')
     end
 
-    # Potential duplicate: spec/features/feature_flag_spec.rb:84 (toggles show-featured-researcher; xdescribe'd)
     it 'turns a feature off and on, changing the site behavior' do
       visit '/'
       expect(page).to have_link('Featured Researcher', href: '#tab-col2-second')

@@ -92,7 +92,7 @@ RSpec.describe 'Workflows: embargo, lease, workflow roles', type: :feature, js: 
       find('table.user-workflow-roles-table').ancestor('.dataTables_wrapper').find("input[type='search']")
     end
 
-    # Potential duplicate: spec/features/assign_workflow_to_group_spec.rb:32 (assigns a workflow role to a user; CI-skipped)
+    # Potential duplicate: spec/features/assign_workflow_to_group_spec.rb:32 (assigns a workflow role to a user)
     it 'assigns an existing user a specific workflow role with the form' do
       expect(find('tr#betty-example-com td:nth-child(3)')).to have_text(/\ANo roles\z/)
 

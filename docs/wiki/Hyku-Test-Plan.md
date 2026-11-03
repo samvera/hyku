@@ -971,7 +971,7 @@ bundle exec rspec --dry-run -f doc spec/features/global_index_spec.rb
 **Spec coverage**
 
 - [work_new_form_spec.rb](../../spec/features/work_new_form_spec.rb)
-- [work_form_requirements_spec.rb](../../spec/features/work_form_requirements_spec.rb)
+- [work_edit_form_spec.rb](../../spec/features/work_edit_form_spec.rb)
 - [workflow_permissions_spec.rb](../../spec/features/workflow_permissions_spec.rb)
 
 ## Dashboard Work Edit Page
@@ -1036,7 +1036,7 @@ bundle exec rspec --dry-run -f doc spec/features/global_index_spec.rb
 
 **Spec coverage**
 
-- [work_form_requirements_spec.rb](../../spec/features/work_form_requirements_spec.rb)
+- [work_edit_form_spec.rb](../../spec/features/work_edit_form_spec.rb)
 - [workflow_permissions_spec.rb](../../spec/features/workflow_permissions_spec.rb)
 
 ## Review Submissions Page
@@ -1070,7 +1070,7 @@ bundle exec rspec --dry-run -f doc spec/features/global_index_spec.rb
 
 **Spec coverage**
 
-- [review_submissions_spec.rb](../../spec/features/review_submissions_spec.rb)
+- [review_submissions_spec.rb](../../spec/requests/review_submissions_spec.rb)
 
 ## Manage Users Page
 [Back to TOC](#table-of-contents)

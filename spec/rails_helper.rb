@@ -255,7 +255,11 @@ RSpec.configure do |config|
     config.before(:each, js: true) do
       page.driver.browser.window_handles
     rescue Selenium::WebDriver::Error::WebDriverError, Selenium::WebDriver::Error::ServerError # InvalidSessionIdError, or a 404 once the grid forgets it
-      page.driver.quit
+      begin
+        page.driver.quit
+      rescue Selenium::WebDriver::Error::ServerError
+        nil # the grid 404s the DELETE too; quit has already dropped the dead browser
+      end
       page.driver.browser.file_detector = REMOTE_FILE_DETECTOR
     end
   end

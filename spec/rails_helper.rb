@@ -262,6 +262,13 @@ RSpec.configure do |config|
       end
       page.driver.browser.file_detector = REMOTE_FILE_DETECTOR
     end
+
+    # Headless Chrome on the grid occasionally crashes mid-example ("not connected to DevTools").
+    # Retry once; the hook above starts a fresh session for the second try.
+    config.verbose_retry = true
+    config.display_try_failure_messages = true
+    config.exceptions_to_retry = [Selenium::WebDriver::Error::WebDriverError, Selenium::WebDriver::Error::ServerError]
+    config.around(:each, js: true) { |example| example.run_with_retry retry: 2 }
   end
 
   # A `login_as` whose example never makes a request stays queued in Warden and signs in the

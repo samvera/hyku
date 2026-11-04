@@ -283,15 +283,11 @@ module DigitalCollectionHelper
   end
 
   def dc_collection_metadata_rows(presenter)
-    return dc_collection_term_rows(presenter) unless Hyrax.config.flexible?
+    return dc_collection_term_rows(presenter) unless Hyrax.config.flexible? && presenter.solr_document.try(:flexible?)
 
-    dc_collection_view_definitions(presenter).filter_map do |field, options|
-      next if DC_COLLECTION_SHOWN_ELSEWHERE.include?(field.to_sym) || compound_card_field?(presenter, field)
-
-      view_options = conform_options(field, options.deep_dup.with_indifferent_access)
-      next unless field_visible?(view_options, presenter)
-
-      dc_collection_metadata_row(presenter, conform_field(field, options), view_options)
+    definitions = collection_view_options(presenter)
+    (collection_terms_with_values(presenter, dynamic: true) - DC_COLLECTION_SHOWN_ELSEWHERE).filter_map do |term|
+      dc_collection_metadata_row(presenter, term, definitions[term])
     end
   end
 
@@ -472,17 +468,13 @@ module DigitalCollectionHelper
     filters.empty? ? params.except(:f_inclusive) : params.merge(f_inclusive: filters)
   end
 
-  def dc_collection_view_definitions(presenter)
-    dc_profile_view_definitions(presenter.solr_document)
-  end
+  def dc_collection_metadata_row(presenter, term, options)
+    field = conform_field(term, options)
+    view_options = conform_options(term, options.deep_dup.with_indifferent_access)
+    return presenter.attribute_to_html(field, view_options).presence if presenter.respond_to?(field) && !presenter.try(:compound_term?, field)
 
-  def dc_collection_metadata_row(presenter, field, view_options)
-    if presenter.respond_to?(:compound_term?) && presenter.compound_term?(field)
-      value = collection_metadata_value(presenter, field)
-      safe_join([tag.dt(view_options[:label]), tag.dd(value)]) if value.present?
-    elsif presenter.solr_document.respond_to?(field)
-      presenter.attribute_to_html(field, view_options).presence
-    end
+    value = collection_metadata_value(presenter, term)
+    safe_join([tag.dt(view_options[:label]), tag.dd(value)]) if value.present?
   end
 
   def dc_collection_term_rows(presenter)

@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax 5.3.0: ruled term and value rows that follow the flexible metadata profile's view settings (render_as, labels, visibility), leaving out what the banner and description already show, plus a Part of row linking the parent collections; links to other sites open in a new tab %>
+<%# OVERRIDE Hyrax 5.3.0: ruled term and value rows for the terms collection_terms_with_values picks (an app's list, else the flexible metadata profile's), each with the profile's view settings (render_as, labels), leaving out what the banner and description already show, plus a Part of row linking the parent collections; links to other sites open in a new tab %>
 <% rows = dc_collection_metadata_rows(@presenter) %>
 <% parents = @presenter.collection_type_is_nestable? && @presenter.total_parent_collections.positive? ? @presenter.parent_collections.documents : [] %>
 <% if rows.any? || parents.any? %>

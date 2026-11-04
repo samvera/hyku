@@ -306,28 +306,103 @@ RSpec.describe DigitalCollectionHelper, type: :helper do
 
   describe '#dc_collection_metadata_rows' do
     let(:document) do
-      SolrDocument.new('id' => 'c1', 'has_model_ssim' => ['Collection'], 'title_tesim' => ['Harbor Records'],
-                       'creator_tesim' => ['Harbor Museum'], 'resource_type_tesim' => ['Map'])
+      SolrDocument.new('id' => 'c1', 'has_model_ssim' => ['CollectionResource'], 'schema_version_ssi' => '1', 'title_tesim' => ['Harbor Records'],
+                       'creator_tesim' => ['Harbor Museum'], 'resource_type_tesim' => ['Map'], 'call_number_tesim' => ['MS.0951'],
+                       'rights_notes_tesim' => ['Ask first'], 'resource_link_tesim' => ['https://example.com/harbor'],
+                       'admin_note_tesim' => ['Shelved offsite'])
     end
     let(:presenter) { Hyrax::CollectionPresenter.new(document, Ability.new(nil), nil) }
-    let(:definitions) do
-      { title: { 'html_dl' => true }, creator: { 'render_as' => 'linked', 'html_dl' => true },
-        resource_type: { 'render_as' => 'faceted', 'html_dl' => true }, keyword: { 'render_as' => 'linked', 'html_dl' => true },
-        rights_notes: { 'html_dl' => true, 'show_page' => false } }
+    let(:on_collections) { { 'class' => ['CollectionResource'] } }
+    let(:properties) do
+      { 'title' => { 'available_on' => on_collections, 'indexing' => ['title_tesim'], 'view' => { 'html_dl' => true } },
+        'call_number' => { 'available_on' => on_collections, 'indexing' => ['call_number_tesim'], 'view' => { 'html_dl' => true } },
+        'creator' => { 'available_on' => on_collections, 'indexing' => ['creator_tesim'], 'view' => { 'render_as' => 'linked', 'html_dl' => true } },
+        'resource_type' => { 'available_on' => on_collections, 'indexing' => ['resource_type_tesim'], 'view' => { 'render_as' => 'faceted', 'html_dl' => true } },
+        'keyword' => { 'available_on' => on_collections, 'indexing' => ['keyword_tesim'], 'view' => { 'render_as' => 'linked', 'html_dl' => true } },
+        'rights_notes' => { 'available_on' => on_collections, 'indexing' => ['rights_notes_tesim'], 'view' => { 'html_dl' => true, 'show_page' => false } },
+        'resource_link' => { 'available_on' => on_collections, 'indexing' => ['resource_link_tesim'], 'view' => { 'html_dl' => true, 'collection_page' => false } },
+        'admin_note' => { 'available_on' => on_collections, 'indexing' => %w[admin_note_tesim admin_only], 'view' => { 'html_dl' => true } } }
+    end
+
+    def row_labels
+      Capybara.string(helper.safe_join(helper.dc_collection_metadata_rows(presenter))).all('dt').map(&:text)
     end
 
     before do
       allow(Hyrax.config).to receive(:flexible?).and_return(true)
-      allow(helper).to receive(:dc_collection_view_definitions).and_return(definitions)
+      allow(Hyrax::FlexibleSchema).to receive_messages(current_version: { 'properties' => properties }, current_schema_id: 1)
+      allow(helper).to receive(:compound_card_field?).and_return(false)
+      allow(presenter).to receive(:editor?).and_return(false)
+      without_partial_double_verification { allow(helper).to receive(:current_user).and_return(nil) }
     end
 
-    it "renders each field with the profile's render_as, leaving out the title and empty or hidden fields" do
+    after do
+      Hyku::CollectionProfileReaders.readers.each do |reader|
+        Hyrax::CollectionPresenter.send(:remove_method, reader) if Hyrax::CollectionPresenter.method_defined?(reader, false)
+      end
+      Hyku::CollectionProfileReaders.readers.clear
+    end
+
+    it "renders each field with the profile's render_as, leaving out the title" do
       rows = Capybara.string(helper.safe_join(helper.dc_collection_metadata_rows(presenter)))
 
-      expect(rows).to have_css('dt', count: 2)
-      expect(rows).to have_no_css('dt', text: 'Title')
       expect(rows.find('a', text: 'Harbor Museum')['href']).to include('search_field=creator')
       expect(CGI.unescape(rows.find('a', text: 'Map')['href'])).to include('f[resource_type_sim][]=Map')
+      expect(rows).to have_no_css('dt', text: 'Title')
+    end
+
+    it "lists the profile's properties in profile order, leaving out those kept off collection pages, the show page or limited to admins" do
+      expect(row_labels).to eq ['Call number', 'Creator', 'Resource Type']
+    end
+
+    it 'shows an admin the fields limited to admins' do
+      without_partial_double_verification { allow(helper).to receive(:current_user).and_return(instance_double(::User, admin?: true)) }
+
+      expect(row_labels).to include('Admin Note')
+    end
+
+    it 'hides a field limited to editors from a viewer who does not edit the collection' do
+      properties['keyword']['indexing'] = %w[keyword_tesim editor_only]
+      document_with_keyword = SolrDocument.new(document.to_h.merge('keyword_tesim' => ['maps']))
+      editors = Hyrax::CollectionPresenter.new(document_with_keyword, Ability.new(nil), nil)
+      allow(editors).to receive(:editor?).and_return(false)
+
+      expect(Capybara.string(helper.safe_join(helper.dc_collection_metadata_rows(editors)))).to have_no_css('dt', text: 'Keyword')
+    end
+
+    it 'lists an aliased property under its name, not its profile key' do
+      properties['rights_statement_optional'] = { 'name' => 'rights_statement', 'available_on' => on_collections, 'indexing' => ['rights_statement_tesim'],
+                                                  'view' => { 'html_dl' => true } }
+      aliased = Hyrax::CollectionPresenter.new(SolrDocument.new(document.to_h.merge('rights_statement_tesim' => ['In copyright'])), Ability.new(nil), nil)
+      allow(aliased).to receive(:editor?).and_return(false)
+
+      expect(Capybara.string(helper.safe_join(helper.dc_collection_metadata_rows(aliased)))).to have_css('dt', exact_text: 'Rights Statement')
+    end
+
+    it 'renders a property whose render term the presenter cannot read as Hyrax does, under the profile label' do
+      properties['based_near'] = { 'available_on' => on_collections, 'indexing' => ['based_near_tesim'], 'display_label' => { 'default' => 'Place of creation' },
+                                   'view' => { 'html_dl' => true, 'render_term' => 'based_near_place' } }
+      located = Hyrax::CollectionPresenter.new(SolrDocument.new(document.to_h.merge('based_near_tesim' => ['Knoxville'])), Ability.new(nil), nil)
+      allow(located).to receive(:editor?).and_return(false)
+      helper.define_singleton_method(:search_state) { Blacklight::SearchState.new({}, CatalogController.blacklight_config) }
+
+      rows = Capybara.string(helper.safe_join(helper.dc_collection_metadata_rows(located)))
+      expect(rows).to have_css('dt', text: 'Place of creation')
+      expect(rows).to have_css('dd', text: 'Knoxville')
+    end
+
+    it "lists a collection saved without the profile by the presenter's terms" do
+      plain = Hyrax::CollectionPresenter.new(SolrDocument.new('id' => 'c2', 'has_model_ssim' => ['CollectionResource'], 'title_tesim' => ['Harbor Records'],
+                                                              'date_created_tesim' => ['1925']), Ability.new(nil), nil)
+      rows = Capybara.string(helper.safe_join(helper.dc_collection_metadata_rows(plain)))
+
+      expect(rows).to have_css('dd', text: '1925')
+    end
+
+    it "lists the app's own terms in its order" do
+      allow(Hyrax.config).to receive(:collection_terms).and_return(%i[resource_type creator])
+
+      expect(row_labels).to eq ['Resource Type', 'Creator']
     end
   end
 

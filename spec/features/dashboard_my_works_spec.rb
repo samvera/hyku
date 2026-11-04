@@ -138,7 +138,7 @@ RSpec.describe 'Dashboard My Works index', type: :feature, clean: true do
       expect(page).not_to have_content('Arctic Survey Notes')
     end
 
-    it 'changes how many works are shown from the per-page dropdown', js: true do
+    it 'changes how many works are shown from the per-page dropdown' do
       per_page = Hyrax::My::WorksController.blacklight_config.default_per_page
       total = per_page + 1
       total.times { |i| make_work(format('Paged Work %02d', i + 1)) }
@@ -147,8 +147,7 @@ RSpec.describe 'Dashboard My Works index', type: :feature, clean: true do
       expect(page).to have_css('.count-display', exact_text: "#{total} works you own in the repository")
       expect(page).to have_css('table.works-list tbody tr', count: per_page)
 
-      # Hyrax's select_submit.js submits the per_page form on change.
-      select '20', from: 'per_page'
+      within('#per_page-dropdown') { click_link '20' }
 
       expect(page).to have_current_path(/per_page=20/)
       expect(page).to have_css('table.works-list tbody tr', count: total)

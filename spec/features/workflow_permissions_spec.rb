@@ -37,11 +37,12 @@ RSpec.describe 'Workflows: embargo, lease, workflow roles', type: :feature, js: 
     it 'allows setting an embargo during work creation' do
       open_new_work_form
       fill_in_required_metadata('Embargoed Work')
+      # Agree first: the embargo panel opening above the checkbox moves it mid-click.
+      find('#agreement').click
 
       # Visibility is the radio group in the form sidebar; choosing Embargo reveals its date.
       find("input[type='radio'][value='embargo']").click
       fill_in 'generic_work_embargo_release_date', with: Date.current + 1.year
-      find('#agreement').click
       click_button 'Save'
 
       expect(page).to have_current_path(%r{/concern/generic_works/[^/]+\z}, ignore_query: true)
@@ -54,10 +55,10 @@ RSpec.describe 'Workflows: embargo, lease, workflow roles', type: :feature, js: 
     it 'allows setting a lease during work creation' do
       open_new_work_form
       fill_in_required_metadata('Leased Work')
+      find('#agreement').click
 
       find("input[type='radio'][value='lease']").click
       fill_in 'generic_work_lease_expiration_date', with: Date.current + 6.months
-      find('#agreement').click
       click_button 'Save'
 
       expect(page).to have_current_path(%r{/concern/generic_works/[^/]+\z}, ignore_query: true)

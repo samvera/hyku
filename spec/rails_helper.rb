@@ -265,6 +265,7 @@ RSpec.configure do |config|
 
     # Headless Chrome on the grid occasionally crashes mid-example ("not connected to DevTools").
     # Retry once; the hook above starts a fresh session for the second try.
+    require 'selenium/webdriver/remote' # defines Error::ServerError, otherwise autoloaded later
     config.verbose_retry = true
     config.display_try_failure_messages = true
     config.exceptions_to_retry = [Selenium::WebDriver::Error::WebDriverError, Selenium::WebDriver::Error::ServerError]

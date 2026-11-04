@@ -254,7 +254,7 @@ RSpec.configure do |config|
   if ENV['CHROME_HOSTNAME'].present?
     config.before(:each, js: true) do
       page.driver.browser.window_handles
-    rescue Selenium::WebDriver::Error::WebDriverError # e.g. InvalidSessionIdError, or 404 once the grid forgets it
+    rescue Selenium::WebDriver::Error::WebDriverError, Selenium::WebDriver::Error::ServerError # InvalidSessionIdError, or a 404 once the grid forgets it
       page.driver.quit
       page.driver.browser.file_detector = REMOTE_FILE_DETECTOR
     end

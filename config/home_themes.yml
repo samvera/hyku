@@ -74,3 +74,10 @@ reference:
   marketing_text: true
   name: Reference
   notes: A search-led theme for an institutional repository whose visitors arrive with a citation, an author or a subject already in mind. The home page opens with a full width search field and the repository's counts over the banner image, taking its headline from the marketing text and the band below it from the home page text, then offers four columns of real metadata — subject, creator, collection and publisher — for the visitor who would rather browse than query. Recent deposits are listed the way scholarship is listed, as citation rows carrying provenance and a license rather than a grid of pictures, and featured collections, featured works, a featured researcher and an about band close the page. Each browse column names a facet the tenant still has in the catalog config and drops when it does not, so the band survives a repository that has turned any of them off. Links and the browse columns carry the link color, the search button the primary button color, the deposit buttons the secondary button color, and the hero derives from the header and footer background color, falling back to the theme default when that color is too light to carry the white text over it.
+digital_collection:
+  banner_image: true
+  featured_researcher: false
+  home_page_text: true
+  marketing_text: true
+  name: Digital Collection
+  notes: A light theme for a library's digitized collections. A rotating hero shows the featured collections on their own banner images with the site search, an advanced search link and the holdings counts on a plate over the picture, falling back to the banner image when nothing is featured. The home page text follows as a short band, then a browse band lists every public collection as cards or rows with a sort control and a pager, featured works and recently added works follow as rows, and an about band and a deposit band close the page. Buttons ride the primary and secondary button colors, links the link color, the footer the header and footer background, and the accent that underlines the active nav item and tints the badges derives from the link color.

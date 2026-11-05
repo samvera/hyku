@@ -1,0 +1,31 @@
+<%# OVERRIDE Hyku 7.1.0: one row of short, translated actions for the public collection page (Edit, Add works, Add to a collection, Feature or Unfeature, Delete) with the theme's button classes, keeping Hyrax's nesting modal, feature toggles and delete confirmation %>
+<% doc = presenter.solr_document %>
+<h2 class="sr-only"><%= t('hyrax.collection.actions.header') %></h2>
+<% if can? :edit, doc %>
+  <%= link_to t('hyrax.collection.actions.edit.label'), hyrax.edit_dashboard_collection_path(presenter),
+              class: 'btn btn-primary dc-action-primary' %>
+<% end %>
+<% if can?(:deposit, doc) || can?(:manage_items_in_collection, doc) %>
+  <%= link_to t('digital_collection.collection.actions.add_works'),
+              hyrax.my_works_path(add_works_to_collection: presenter.id, add_works_to_collection_label: presenter.title),
+              class: 'btn btn-secondary dc-action' %>
+<% end %>
+<% if presenter.collection_type_is_nestable? && presenter.user_can_nest_collection? %>
+  <%= render 'hyrax/my/collections/modal_add_to_collection', source: 'show' %>
+  <%= button_tag t('digital_collection.collection.actions.add_to_collection'), type: 'button',
+                 class: 'btn btn-secondary dc-action add-to-collection',
+                 data: { nestable: presenter.collection_type_is_nestable?, hasaccess: true } %>
+<% end %>
+<% if presenter.collection_featurable? %>
+  <%= link_to t('digital_collection.collection.actions.feature'), main_app.featured_collection_path(presenter, format: :json),
+              data: { behavior: 'feature' },
+              class: token_list('btn btn-secondary dc-action', presenter.display_feature_collection_link? ? 'feature' : 'collapse') %>
+  <%= link_to t('digital_collection.collection.actions.unfeature'), main_app.featured_collection_path(presenter, format: :json),
+              data: { behavior: 'unfeature' },
+              class: token_list('btn btn-secondary dc-action', 'collapse' => !presenter.display_unfeature_collection_link?) %>
+<% end %>
+<% if can? :destroy, doc %>
+  <%= link_to t('hyrax.collection.actions.delete.label'), hyrax.dashboard_collection_path(presenter),
+              class: 'btn dc-action-danger',
+              data: { confirm: t('hyrax.collection.actions.delete.confirmation'), method: :delete } %>
+<% end %>

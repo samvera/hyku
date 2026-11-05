@@ -1,0 +1,19 @@
+<%# OVERRIDE Blacklight 7.43.0: add mobile-only gaps before the current and last pages, so the mobile pager shows just the first, current and last pages %>
+<%= paginator.render do -%>
+  <ul class="pagination">
+    <%= prev_page_tag %>
+    <%= next_page_tag  %>
+    <% each_relevant_page do |page| -%>
+      <% if page.left_outer? || page.right_outer? || page.inside_window? -%>
+        <% if (page.current? && page.to_i > 2) || (page.last? && page.to_i - current_page.to_i > 1) -%>
+          <li class="page-item disabled gap dc-page-compact">
+            <span class="page-link"><%= raw(t 'views.pagination.truncate') %></span>
+          </li>
+        <% end -%>
+        <%= page_tag page %>
+      <% elsif !page.was_truncated? -%>
+        <%= gap_tag %>
+      <% end -%>
+    <% end -%>
+  </ul>
+<% end -%>

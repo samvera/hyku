@@ -64,6 +64,8 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
+  config.i18n.fallbacks = true
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 

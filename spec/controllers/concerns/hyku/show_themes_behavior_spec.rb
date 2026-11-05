@@ -35,6 +35,39 @@ RSpec.describe Hyku::ShowThemesBehavior do
       expect(theme_paths(Hyrax::CollectionsController._view_paths)).to eq 0
     end
 
+    it "puts a show theme's companion home theme behind it, so the show theme's own views win" do
+      allow(controller).to receive(:show_page_theme).and_return('digital_collection_show')
+      order = nil
+
+      controller.inject_show_theme_views do
+        paths = controller.view_paths.map { |resolver| resolver.to_path.to_s }
+        order = [paths.index { |path| path.end_with?('themes/digital_collection_show') }, paths.index { |path| path.end_with?('themes/digital_collection') }]
+      end
+
+      expect(order.compact.size).to eq 2
+      expect(order.first).to be < order.last
+    end
+
+    it "puts a knapsack's theme views ahead of Hyku's, so a knapsack override wins" do
+      allow(controller).to receive(:show_page_theme).and_return('screening_room_show')
+      allow(Hyku::Application).to receive(:theme_view_path_roots).and_return(['/knapsack', Rails.root.to_s])
+      paths = nil
+
+      controller.inject_show_theme_views { paths = controller.view_paths.map { |resolver| resolver.to_path.to_s } }
+
+      expect(paths.index('/knapsack/app/views/themes/screening_room_show'))
+        .to be < paths.index(Rails.root.join('app', 'views', 'themes', 'screening_room_show').to_s)
+    end
+
+    it 'adds no companion for a show theme without one' do
+      allow(controller).to receive(:show_page_theme).and_return('screening_room_show')
+      paths = nil
+
+      controller.inject_show_theme_views { paths = controller.view_paths.map { |resolver| resolver.to_path.to_s } }
+
+      expect(paths).to all(satisfy { |path| !path.end_with?('themes/screening_room') })
+    end
+
     it 'leaves the paths alone for a theme whose chrome does not cover these pages' do
       allow(controller).to receive(:show_page_theme).and_return('cultural_show')
       during = nil

@@ -1,0 +1,12 @@
+de:
+  blacklight_advanced_search:
+    all: "alle"
+    any: "beliebige"
+    form:
+      title: "Erweiterte Suche"
+      search_context: "Innerhalb der Suche"
+      limit_criteria_heading_html: "<strong>UND</strong> diese Merkmale haben"
+      query_criteria_heading_html: "Objekte finden, die %{select_menu} entsprechen von"
+      sort_label: "Ergebnisse sortieren nach"
+      start_over: "Neu beginnen"
+      search_btn: "Suchen"

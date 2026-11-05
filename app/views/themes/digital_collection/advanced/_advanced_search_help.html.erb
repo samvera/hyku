@@ -1,0 +1,9 @@
+<%# OVERRIDE Hyku 7.1.0: search tips as a translated side panel, keeping Hyku's wording and its date-format tip %>
+<aside class="dc-advanced-tips" aria-labelledby="dc-advanced-tips-heading">
+  <h2 class="dc-advanced-tips-heading" id="dc-advanced-tips-heading"><%= t('digital_collection.advanced.tips.heading') %></h2>
+  <ul class="dc-advanced-tips-list">
+    <% t('digital_collection.advanced.tips.items').each do |tip| %>
+      <li><%= tip %></li>
+    <% end %>
+  </ul>
+</aside>

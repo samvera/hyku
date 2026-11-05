@@ -13,7 +13,7 @@ RSpec.describe 'the catalog under each home theme', type: :request, singletenant
   # assertion names what should be there rather than what should be missing
   let(:theme_markers) do
     { 'practice_research' => '.pr-nav', 'heritage' => '.hrt-nav', 'screening_room' => '.scr-searchbar',
-      'reference' => '.ref-nav' }
+      'reference' => '.ref-nav', 'digital_collection' => '.dc-masthead' }
   end
 
   it 'injects theme views only for the themes whose chrome covers these pages' do

@@ -1,0 +1,13 @@
+<%# OVERRIDE Blacklight 7.43.0: bordered facet box whose whole head is the toggle, with a chevron and a correct aria-controls %>
+<% presenter = facet_field_presenter(facet_field, nil) %>
+<% id = "facet-#{facet_field.key.parameterize}" %>
+<div class="dc-facet facet-limit blacklight-<%= facet_field.key %><%= ' facet-limit-active' if presenter.active? %>">
+  <h3 class="dc-facet-heading" id="<%= id %>-header">
+    <button type="button" class="dc-facet-toggle<%= ' collapsed' if presenter.collapsed? %>" data-toggle="collapse" data-target="#<%= id %>" aria-expanded="<%= !presenter.collapsed? %>" aria-controls="<%= id %>">
+      <%= facet_field_label(facet_field.key) %>
+    </button>
+  </h3>
+  <div id="<%= id %>" role="region" aria-labelledby="<%= id %>-header" class="dc-facet-body collapse<%= ' show' unless presenter.collapsed? %>">
+    <%= yield %>
+  </div>
+</div>

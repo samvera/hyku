@@ -1,0 +1,12 @@
+zh:
+  blacklight_advanced_search:
+    all: "全部"
+    any: "任一"
+    form:
+      title: "更多搜索选项"
+      search_context: "在搜索范围内"
+      limit_criteria_heading_html: "<strong>并且</strong>具有以下属性"
+      query_criteria_heading_html: "查找符合 %{select_menu} 条件的条目"
+      sort_label: "结果排序方式"
+      start_over: "重新开始"
+      search_btn: "搜索"

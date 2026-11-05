@@ -1,0 +1,32 @@
+<%# OVERRIDE Devise 5.0.4: the contact page's serif title and stacked fields, with translated copy %>
+<% provide :page_title, t('digital_collection.account.change_password.title') %>
+<% content_for(:extra_body_classes, 'dc-account-page ') %>
+
+<div class="dc-account">
+  <h1 class="dc-account-title"><%= t('digital_collection.account.change_password.title') %></h1>
+
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'dc-account-form' }) do |f| %>
+    <%= render 'devise/shared/error_messages', resource: %>
+    <%= f.hidden_field :reset_password_token %>
+
+    <div class="dc-field">
+      <%= f.label :password, t('digital_collection.account.change_password.password') %>
+      <%= f.password_field :password, autofocus: true, autocomplete: 'new-password', class: 'form-control',
+                           aria: { describedby: ('dc-password-minimum' if @minimum_password_length) } %>
+      <% if @minimum_password_length %>
+        <p class="dc-field-hint" id="dc-password-minimum"><%= t('digital_collection.account.change_password.minimum_length', count: @minimum_password_length) %></p>
+      <% end %>
+    </div>
+
+    <div class="dc-field">
+      <%= f.label :password_confirmation, t('digital_collection.account.change_password.password_confirmation') %>
+      <%= f.password_field :password_confirmation, autocomplete: 'new-password', class: 'form-control' %>
+    </div>
+
+    <%= f.submit t('digital_collection.account.change_password.submit'), class: 'btn btn-primary dc-account-submit' %>
+  <% end %>
+
+  <div class="dc-account-links">
+    <%= render 'devise/shared/links' %>
+  </div>
+</div>

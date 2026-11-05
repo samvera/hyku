@@ -1,0 +1,38 @@
+<%# OVERRIDE Blacklight Advanced Search 7.0.0: sort and buttons above the fields, fields and attributes as labeled fieldsets, translated theme wording, "all" listed first in every language %>
+<% unless (search_context_str = render_search_to_s(advanced_search_context)).blank? %>
+  <div class="constraints search_history dc-advanced-context">
+    <h2 class="dc-advanced-context-heading"><%= t('blacklight_advanced_search.form.search_context') %></h2>
+    <%= search_context_str %>
+  </div>
+<% end %>
+
+<%= form_tag search_catalog_path, class: 'advanced dc-advanced-form', method: :get do %>
+  <%= render_hash_as_hidden_fields(advanced_search_context) %>
+
+  <div class="dc-advanced-submit">
+    <%= render 'advanced_search_submit_btns' %>
+  </div>
+
+  <fieldset class="dc-advanced-criteria">
+    <legend class="dc-advanced-criteria-heading">
+      <% match_menu = select_tag(:op, options_for_select([[t('blacklight_advanced_search.all'), 'AND'], [t('blacklight_advanced_search.any'), 'OR']], params[:op]),
+                                 class: 'dc-advanced-op', 'aria-label': t('digital_collection.advanced.match_label')) %>
+      <%= t('digital_collection.advanced.match_html', select_menu: match_menu) %>
+    </legend>
+    <div id="advanced_search">
+      <%= render 'advanced/advanced_search_fields' %>
+    </div>
+  </fieldset>
+
+  <fieldset class="dc-advanced-criteria">
+    <legend class="dc-advanced-criteria-heading"><%= t('digital_collection.advanced.limits') %></legend>
+    <div id="advanced_search_facets" class="limit_input">
+      <% if blacklight_config.try(:advanced_search).try { |h| h[:form_facet_partial] } %>
+        <%= render blacklight_config.advanced_search[:form_facet_partial] %>
+      <% else %>
+        <%= render 'advanced_search_facets' %>
+      <% end %>
+    </div>
+  </fieldset>
+
+<% end %>

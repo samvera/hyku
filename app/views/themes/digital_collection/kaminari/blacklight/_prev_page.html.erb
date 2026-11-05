@@ -1,0 +1,10 @@
+<%# OVERRIDE Blacklight 7.43.0: "Previous" without the « mark %>
+<% if current_page.first? %>
+  <li class="page-item disabled">
+    <%= link_to t('digital_collection.search.results.previous'), '#', rel: 'prev', onclick: 'return false;', class: 'page-link', aria: { label: t('views.pagination.aria.go_to_previous_page') } %>
+  </li>
+<% else %>
+  <li class="page-item">
+    <%= link_to t('digital_collection.search.results.previous'), url, rel: 'prev', remote:, class: 'page-link', aria: { label: t('views.pagination.aria.go_to_previous_page') } %>
+  </li>
+<% end %>

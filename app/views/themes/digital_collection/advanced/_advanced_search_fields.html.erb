@@ -1,0 +1,9 @@
+<%# OVERRIDE Blacklight Advanced Search 7.0.0: translated labels above full-width inputs in a two-column grid instead of the horizontal form %>
+<div class="dc-advanced-fields">
+  <% search_fields_for_advanced_search.each do |key, field_def| %>
+    <div class="dc-advanced-field">
+      <%= label_tag key, field_def.display_label('search') %>
+      <%= text_field_tag key, label_tag_default_for(key), class: 'form-control' %>
+    </div>
+  <% end %>
+</div>

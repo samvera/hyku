@@ -1,0 +1,31 @@
+<%# OVERRIDE Hyrax 5.3.0: "File details" as ruled rows of plain facts (depositor, dates, fixity, format, size and dimensions), with the full characterization list in a closed Technical details section under a subheading %>
+<section class="dc-file-section" aria-labelledby="dc-file-details-label">
+  <%= dc_section_head t('digital_collection.file_set.details.heading'), id: 'dc-file-details-label' %>
+  <dl class="dc-meta-rows">
+    <% dc_file_detail_rows(@presenter).each do |label, value| %>
+      <div><dt><%= label %></dt><dd><%= value %></dd></div>
+    <% end %>
+    <% unless @presenter.characterized? %>
+      <div><dt><%= t('digital_collection.file_set.technical.heading') %></dt><dd><%= t('hyrax.file_sets.show_details.not_yet_characterized') %></dd></div>
+    <% end %>
+  </dl>
+  <% if @presenter.characterized? %>
+    <details class="dc-file-technical">
+      <summary><h3 class="dc-file-technical-title"><%= t('digital_collection.file_set.technical.heading') %></h3></summary>
+      <dl class="dc-meta-rows">
+        <% @presenter.characterization_metadata.keys.each do |term| %>
+          <% values = @presenter.primary_characterization_values(term) %>
+          <% next if values.blank? %>
+          <div>
+            <dt><%= dc_technical_label(@presenter, term) %></dt>
+            <dd>
+              <%= sanitize values.join('<br />') %>
+              <% additional = @presenter.secondary_characterization_values(term) %>
+              <%= render 'hyrax/file_sets/extra_fields_modal', name: term, values: additional if additional.present? %>
+            </dd>
+          </div>
+        <% end %>
+      </dl>
+    </details>
+  <% end %>
+</section>

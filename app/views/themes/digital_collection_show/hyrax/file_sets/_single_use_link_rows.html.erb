@@ -1,0 +1,15 @@
+<%# OVERRIDE Hyrax 5.3.0: the copy button is the theme's small copy button that says Copied beside itself, in place of a Bootstrap tooltip %>
+<% single_use_links.each do |presenter| %>
+  <tr>
+    <td>
+      <%= t('hyrax.single_use_links.expiration_message', link: presenter.short_key,
+                                                         time: presenter.human_readable_expiration) %>
+    </td>
+    <td>
+      <button type="button" class="dc-copy" data-dc-copy-text="<%= hyrax.send(presenter.url_helper, presenter.download_key) %>"><%= t('hyrax.single_use_links.copy.button') %></button><span class="dc-copied" data-dc-copied="<%= t('digital_collection.copy.copied') %>" aria-live="polite"></span>
+      <%= link_to t('hyrax.single_use_links.delete'),
+                  hyrax.delete_single_use_link_path(params[:id], presenter),
+                  class: 'btn btn-sm btn-danger delete-single-use-link' %>
+    </td>
+  </tr>
+<% end %>

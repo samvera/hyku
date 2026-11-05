@@ -1,0 +1,10 @@
+<%# OVERRIDE Blacklight 7.43.0: mark pages other than the first, current and last so mobile can hide them %>
+<% page_display = number_with_delimiter(page.to_s) %>
+
+<li class="<%= class_names('page-item', active: page.current?, 'dc-page-full': !(page.first? || page.current? || page.last?)) %>">
+  <% if page.current? %>
+    <span class="page-link" aria-current="page"><%= page_display %><span class="sr-only visually-hidden"> <%= t('views.pagination.aria.current_page', page: page_display) %></span></span>
+  <% else %>
+    <%= link_to page_display, url, :remote => remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil, class: 'page-link', aria: { label: t('views.pagination.aria.go_to_page', page: page_display) } %>
+  <% end %>
+</li>

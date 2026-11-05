@@ -1,14 +1,14 @@
 <section class="pr-card">
-  <h2 class="pr-card-head"><%= t('practice_research.show.cite') %></h2>
+  <h2 class="pr-card-head"><%= t('hyrax.base.citations.header') %></h2>
   <div class="pr-card-body">
     <% if all_authors(presenter).any? %>
       <% citations = theme_citations(presenter) %>
       <% if citations.any? %>
         <div class="pr-cite" data-citation>
           <select class="form-control form-control-sm pr-cite-picker" data-citation-picker
-                  aria-label="<%= t('practice_research.show.citation_style') %>">
+                  aria-label="<%= t('hyrax.base.citations.style') %>">
             <% citations.each_key do |style| %>
-              <option value="<%= style %>"><%= t("practice_research.show.citation_styles.#{style}") %></option>
+              <option value="<%= style %>"><%= t("hyrax.citations.work.#{style}") %></option>
             <% end %>
           </select>
 
@@ -19,16 +19,16 @@
 
           <div class="d-flex align-items-center">
             <button type="button" class="pr-cite-copy" data-citation-copy>
-              <%= t('practice_research.show.citation_copy') %>
+              <%= t('hyrax.base.citations.copy') %>
             </button>
-            <span class="pr-cite-copied ml-2" data-citation-copied hidden aria-live="polite"><%= t('practice_research.show.citation_copied') %></span>
+            <span class="pr-cite-copied ml-2" data-citation-copied hidden aria-live="polite"><%= t('hyrax.base.citations.copied') %></span>
           </div>
         </div>
       <% end %>
     <% end %>
 
     <div class="pr-cite-exports">
-      <%= link_to t('practice_research.show.endnote'),
+      <%= link_to t('hyrax.base.citations.endnote'),
                   polymorphic_path([main_app, presenter], format: 'endnote'),
                   class: 'pr-cite-export-link' %>
     </div>

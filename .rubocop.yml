@@ -32,6 +32,10 @@ Rails/Output:
   Exclude:
     - "lib/generators/**/*"
 
+Metrics/ModuleLength:
+  Exclude:
+    - "app/helpers/digital_collection_helper.rb"
+
 Metrics/BlockLength:
   AllowedMethods: ["included"]
   Exclude:

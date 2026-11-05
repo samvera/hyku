@@ -45,5 +45,17 @@ RSpec.describe Hyku::HomePageThemesBehavior do
         expect(callbacks.any? { |callback| callback.filter == :inject_theme_views }).to be true
       end
     end
+
+    it "puts a knapsack's theme views ahead of Hyku's, so a knapsack override wins" do
+      controller = Hyrax::HomepageController.new
+      allow(controller).to receive(:home_page_theme).and_return('digital_collection')
+      allow(Hyku::Application).to receive(:theme_view_path_roots).and_return(['/knapsack', Rails.root.to_s])
+      paths = nil
+
+      controller.inject_theme_views { paths = controller.view_paths.map { |resolver| resolver.to_path.to_s } }
+
+      expect(paths.index('/knapsack/app/views/themes/digital_collection'))
+        .to be < paths.index(Rails.root.join('app', 'views', 'themes', 'digital_collection').to_s)
+    end
   end
 end

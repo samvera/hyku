@@ -1,0 +1,25 @@
+<%# OVERRIDE Blacklight Advanced Search v7.0.0
+    - labels above four-row lists in a two-column grid instead of the horizontal form
+    - list only the facets the catalog sidebar shows and advanced search includes, with option text from each facet's display helper
+%>
+<div class="dc-advanced-fields">
+  <%# OVERRIDE: facet_field_names_for_advanced_search, and skip facets the sidebar would not render %>
+  <% facets_from_request(facet_field_names_for_advanced_search).each do |display_facet| %>
+    <% facet_config = facet_configuration_for_field(display_facet.name) %>
+    <% next unless display_facet.items.present? && should_render_field?(facet_config, display_facet) %>
+    <div class="dc-advanced-field">
+      <%= label_tag display_facet.name.parameterize, facet_field_label(display_facet.name) %>
+      <%= content_tag(:select, multiple: true, size: 4,
+                      name: "f_inclusive[#{display_facet.name}][]",
+                      id: display_facet.name.parameterize,
+                      class: 'form-control advanced-search-facet-select') do %>
+        <% display_facet.items.each do |facet_item| %>
+          <%= content_tag :option, value: facet_item.value, selected: facet_value_checked?(display_facet.name, facet_item.value) do %>
+            <%# OVERRIDE: label through the facet's display helper %>
+            <%= facet_item_presenter(facet_config, facet_item, display_facet.name).label %>&nbsp;&nbsp;(<%= number_with_delimiter facet_item.hits %>)
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

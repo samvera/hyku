@@ -1,0 +1,31 @@
+<%# OVERRIDE Hyrax 5.3.0: an aside with the framed preview, the download button, share links, the file actions and single-use links, beside a main column with the title, then the description before the file details, then activity %>
+<% provide :page_title, @presenter.page_title %>
+<div class="dc-file">
+  <aside class="dc-file-aside">
+    <div class="dc-file-media">
+      <%= render media_display_partial(@presenter), file_set: @presenter %>
+    </div>
+    <%= render 'show_actions', presenter: @presenter %>
+    <%= render 'single_use_links', presenter: @presenter if @presenter.editor? %>
+  </aside>
+
+  <div class="dc-file-main" itemscope itemtype="<%= @presenter.itemtype %>">
+    <div>
+      <%= render 'file_set_title', presenter: @presenter %>
+    </div>
+
+    <% @presenter.show_partials.sort_by { |partial_path| partial_path == 'metadata' ? 0 : 1 }.each do |partial_path| %>
+      <%= render partial_path %>
+    <% end %>
+
+    <%= dc_external_links_in_new_tab(render_compound_cards(@presenter)) %>
+
+    <%= render 'hyrax/users/activity_log', events: @presenter.events %>
+  </div>
+</div>
+
+<% @presenter.member_of_collection_ids.each do |collection_id| %>
+  <span class='hide analytics-event' data-category="file-set-in-collection" data-action="file-set-in-collection-view" data-name="<%= collection_id %>" ></span>
+<% end %>
+<span class='hide analytics-event' data-category="file-set-in-work" data-action="file-set-in-work-view" data-name="<%= @presenter.parent.id %>" ></span>
+<span class='hide analytics-event' data-category="file-set" data-action="file-set-view" data-name="<%= @presenter.id %>" ></span>

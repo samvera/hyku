@@ -1,0 +1,22 @@
+<%# OVERRIDE Blacklight 7.43.0: chips with a labeled search chip, a "Clear search and filters" link after them, and the advanced search match line; date ranges count as constraints; one chip per advanced search value, without the advanced search gem's duplicate group chip %>
+<% current = convert_to_search_state(controller.params != params ? params : search_state) %>
+<% if current.has_constraints? || Deprecation.silence(Blacklight::RenderConstraintsHelperBehavior) { query_has_constraints?(current) } %>
+  <div id="appliedParams" class="dc-constraints constraints-container">
+    <h2 class="sr-only visually-hidden"><%= t('blacklight.search.search_constraints_header') %></h2>
+    <% if (op = dc_advanced_match_op) %>
+      <p class="dc-constraints-match">
+        <%= t('digital_collection.search.results.match_html', op: tag.strong(t("blacklight_advanced_search.#{op}"))) %>
+      </p>
+    <% end %>
+    <div class="dc-constraints-chips">
+      <span class="constraints-label sr-only visually-hidden"><%= t('blacklight.search.filters.title') %></span>
+      <% if (keyword_chips = dc_keyword_chips(current)) %>
+        <%= keyword_chips %>
+      <% elsif current.query_param.present? %>
+        <%= Deprecation.silence(Blacklight::RenderConstraintsHelperBehavior) { render_constraint_element(constraint_query_label(current.params).presence || t('digital_collection.search.results.query_label'), current.query_param, classes: ['query'], remove: remove_constraint_url(current)) } %>
+      <% end %>
+      <%= dc_filter_chips(current) %>
+      <%= link_to t('digital_collection.search.results.clear_all'), start_over_path, class: 'dc-constraints-start-over' %>
+    </div>
+  </div>
+<% end %>

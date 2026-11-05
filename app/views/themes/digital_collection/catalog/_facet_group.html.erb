@@ -1,0 +1,19 @@
+<%# OVERRIDE Blacklight 7.43.0: "Filter results" heading, a labeled toggle with the applied-filter count for tablet and phone, and the date range field labels for the theme script %>
+<% fields = facet_field_names(groupname) %>
+<% if Deprecation.silence(Blacklight::FacetsHelperBehavior) { has_facet_values?(fields, @response) } %>
+  <% applied = dc_applied_filter_count %>
+  <div id="facets" class="facets dc-facets" data-dc-range-from="<%= t('digital_collection.search.results.range_from') %>" data-dc-range-to="<%= t('digital_collection.search.results.range_to') %>" data-dc-range-larger="<%= t('digital_collection.search.results.range_larger') %>" data-dc-range-missing="<%= t('digital_collection.search.results.range_missing') %>">
+    <h2 class="dc-facets-heading"><%= t('digital_collection.search.results.filter_heading') %></h2>
+    <button type="button" class="dc-facets-toggle" data-toggle="collapse" data-target="#facet-panel-collapse" aria-controls="facet-panel-collapse" aria-expanded="false">
+      <span><%= t('digital_collection.search.results.filter_heading') %></span>
+      <% if applied.positive? %>
+        <span class="dc-facets-count"><%= applied %><span class="sr-only"> <%= t('digital_collection.search.results.applied', count: applied) %></span></span>
+      <% end %>
+    </button>
+    <div id="facet-panel-collapse" class="dc-facets-groups collapse">
+      <% Deprecation.silence(Blacklight::FacetsHelperBehavior) do %>
+        <%= render_facet_partials fields, response: @response %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

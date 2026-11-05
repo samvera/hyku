@@ -230,17 +230,6 @@ it:
         sub: Deposita opere nel repository.
         button: Inizia un deposito
     show:
-      citation:
-        heading: "Come citare"
-        style: "Stile di citazione"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "Copia citazione"
-        copied: "Copiato"
-        endnote: "Scarica il record EndNote"
-        note: "Fornita solo come suggerimento. Verificala con la guida di stile che utilizzi."
       files:
         as_format: come %{name}
         heading: File
@@ -895,6 +884,9 @@ it:
         roles:
           remove:
             confirmation: Sei sicuro di voler rimuovere il ruolo "%{role}" dall'utente "%{user}"?
+    users:
+      activity_log:
+        no_user_activity: "Nessuna attività dell'utente"
   permissions:
     collections:
       cannot:
@@ -971,17 +963,8 @@ it:
         one: 1 elemento
         other: "%{count} elementi"
       relationships: Relazioni
-      cite: Cita
-      endnote: Scarica per EndNote
       permalink: Permalink
       contributors: Contributori
-      citation_style: Stile di citazione
-      citation_styles:
-        apa: APA (7ª ed.)
-        mla: MLA (9ª ed.)
-        chicago: Chicago
-      citation_copy: Copia
-      citation_copied: Copiato
   proprietor:
     accounts:
       edit:
@@ -1115,16 +1098,268 @@ it:
         children: "Opere collegate"
       part_of:
         heading: "Fa parte di"
-      citation:
-        heading: "Citazione"
-        style: "Stile di citazione"
-        endnote: "Esporta in EndNote"
-        copy: "Copia"
-        copied: "Copiato"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
+  digital_collection:
+    copy:
+      copied: "Copiato"
+    form:
+      required: "(obbligatorio)"
+    account:
+      sign_in:
+        title: "Accedi"
+        submit: "Accedi"
+      forgot_password:
+        title: "Password dimenticata?"
+        submit: "Inviami le istruzioni per reimpostare la password"
+      change_password:
+        title: "Cambia la tua password"
+        password: "Nuova password"
+        password_confirmation: "Conferma la nuova password"
+        minimum_length: "Minimo %{count} caratteri"
+        submit: "Cambia la mia password"
+      sign_up:
+        title: "Crea un nuovo account"
+        submit: "Crea account"
+      single_signon:
+        title: "Seleziona un provider di accesso unico"
+        redirecting: "Attendi mentre ti reindirizziamo…"
+    file_set:
+      actions:
+        delete: "Elimina questo insieme di file"
+        edit: "Modifica questo insieme di file"
+      activity: "Attività"
+      description: "Descrizione"
+      details:
+        date_modified: "Data di modifica"
+        date_uploaded: "Data di caricamento"
+        depositor: "Depositante"
+        dimensions: "Dimensioni"
+        dimensions_value: "%{width} × %{height} px"
+        fixity: "Controllo di integrità"
+        format: "Formato del file"
+        heading: "Dettagli del file"
+        size: "Dimensione del file"
+      generate_link: "Genera link di download"
+      share:
+        email: "Email"
+        facebook: "Facebook"
+        label: "Condividi"
+        x: "X"
+      technical:
+        alpha_channels: "Canali alfa"
+        byte_order: "Ordine dei byte"
+        capture_device: "Dispositivo di acquisizione"
+        color_map: "Mappa dei colori"
+        color_space: "Spazio colore"
+        compression: "Compressione"
+        duration: "Durata"
+        file_format: "Formato del file"
+        file_size: "Dimensione del file"
+        file_title: "Titolo del file"
+        filename: "Nome del file"
+        format_label: "Etichetta del formato"
+        gps_timestamp: "Data e ora GPS"
+        heading: "Dettagli tecnici"
+        height: "Altezza"
+        image_producer: "Produttore dell'immagine"
+        last_modified: "Ultima modifica"
+        latitude: "Latitudine"
+        longitude: "Longitudine"
+        mime_type: "Tipo MIME"
+        orientation: "Orientamento"
+        original_checksum: "Checksum originale"
+        page_count: "Numero di pagine"
+        profile_name: "Nome del profilo"
+        profile_version: "Versione del profilo"
+        sample_rate: "Frequenza di campionamento"
+        scanning_software: "Software di scansione"
+        well_formed: "Ben formato"
+        width: "Larghezza"
+      user_activity: "Attività utente"
+    work:
+      actions:
+        select: "Seleziona questa opera"
+        header: "Azioni sull'opera"
+        feature: "Metti in evidenza nella home"
+        unfeature: "Rimuovi dalla home"
+      copy_citation: "Copia citazione"
+      part_of:
+        admin_set:
+          one: "Set amministrativo"
+          other: "Set amministrativi"
+        collection:
+          one: "Collezione"
+          other: "Collezioni"
+        parent_work:
+          one: "Opera principale"
+          other: "Opere principali"
+    chrome:
+      account_label:
+        zero: "%{name}"
+        one: "%{name}, 1 notifica non letta"
+        other: "%{name}, %{count} notifiche non lette"
+      announcement_label: "Annuncio"
+      language: "Lingua"
+      masthead_label: "Navigazione del sito"
+      menu:
+        zero: "Menu"
+        one: "Menu, 1 notifica non letta"
+        other: "Menu, %{count} notifiche non lette"
+      notifications:
+        zero: "Notifiche"
+        one: "Notifiche (1)"
+        other: "Notifiche (%{count})"
+      signed_in_as: "Accesso effettuato come"
+      signed_in_as_name: "Accesso effettuato come %{name}"
+    homepage:
+      intro_label: "Introduzione"
+      hero:
+        label: "Collezioni in evidenza"
+        headline: "Esplora le collezioni"
+        featured_collection: "Collezione in evidenza"
+        hold: "Pausa"
+        resume: "Riproduci"
+        segment: "Diapositiva %{number}: %{title}"
+        slide: "Diapositiva %{number} di %{total}"
+      featured_collections:
+        heading: "Collezioni in evidenza"
+        unfeature_confirm: "Rimuovere questa collezione dagli elementi in evidenza?"
+        reorder_hint: "Trascina per riordinare le collezioni in evidenza."
+        save_order: "Salva ordine"
+        remove: "Rimuovi %{title} dalle collezioni in evidenza"
+        empty_admin: "Non ci sono ancora collezioni in evidenza. Apri una collezione e scegli «Metti in evidenza nella home» per mostrarla nel banner della home. Puoi metterne in evidenza fino a %{limit}."
+      browse:
+        heading: "Esplora le collezioni"
+        grid: "Griglia"
+        list: "Elenco"
+        view_label: "Opzioni di visualizzazione delle collezioni"
+        sort: "Ordina"
+        sort_asc: "Dalla A alla Z"
+        sort_desc: "Dalla Z alla A"
+        sort_aria: "Ordina per titolo, attualmente %{direction}. Attiva per invertire."
+        previous: "Precedente"
+        next: "Successivo"
+        page: "Pagina %{number}"
+        pages_label: "Pagine delle collezioni"
+        status: "Visualizzate %{shown} collezioni su %{total}, pagina %{page} di %{pages}, vista %{view}, ordinate %{sort}."
+        works_count:
+          one: "1 opera"
+          other: "%{formatted} opere"
+        empty: "Nessuna collezione è stata ancora aggiunta."
+        all: "Esplora tutte le collezioni"
+      featured:
+        heading: "Opere in evidenza"
+        unfeature_confirm: "Rimuovere questa opera dagli elementi in evidenza?"
+        reorder_hint: "Trascina per riordinare le opere in evidenza."
+        save_order: "Salva ordine"
+        remove: "Rimuovi %{title} dalle opere in evidenza"
+        empty_admin: "Non ci sono ancora opere in evidenza. Apri un’opera e scegli «Metti in evidenza nella home» per elencarla qui. Puoi metterne in evidenza fino a %{limit}."
+      recent:
+        heading: "Aggiunti di recente"
+        view_all: "Vedi tutte le opere recenti"
+      about:
+        heading: "Informazioni sulle collezioni"
+      cta:
+        eyebrow: "Contribuisci"
+        heading: "Condividi il tuo lavoro"
+        sub: "Deposita materiali nel repository."
+        button: "Avvia un deposito"
+      stats:
+        collections:
+          one: "Collezione"
+          other: "Collezioni"
+        works:
+          one: "Opera"
+          other: "Opere"
+    search:
+      advanced: "Ricerca avanzata"
+      submit: "Cerca"
+      results:
+        heading: "Risultati della ricerca"
+        summary:
+          zero: "Nessun risultato"
+          one: "%{formatted} risultato"
+          other: "%{formatted} risultati"
+        summary_query:
+          zero: "Nessun risultato per «%{query}»"
+          one: "%{formatted} risultato per «%{query}»"
+          other: "%{formatted} risultati per «%{query}»"
+        filter_heading: "Filtra i risultati"
+        applied:
+          one: "%{count} filtro applicato"
+          other: "%{count} filtri applicati"
+        range_html: "<strong>%{first}–%{last}</strong> di <strong>%{total}</strong>"
+        sort_label: "Ordina per"
+        per_page_label: "Per pagina"
+        previous: "Precedente"
+        next: "Successivo"
+        more_html: "Altro <span class=\"sr-only\">%{field_name}</span>"
+        range_from: "Da"
+        range_to: "A"
+        range_larger: "Scegli le date in una finestra più grande"
+        range_missing: "Data non specificata"
+        facet_sort_label: "Ordina i valori"
+        facet_sort_count: "Più risultati"
+        facet_pages_label: "Pagine dei valori"
+        query_label: "Ricerca"
+        collection: "Collezione"
+        no_results:
+          heading: "Prova una ricerca diversa"
+          tips:
+            - "Controlla l’ortografia delle parole cercate."
+            - "Usa meno parole o parole più generiche."
+            - "Rimuovi un filtro per ampliare la ricerca."
+        clear_all: "Cancella ricerca e filtri"
+        any_of: "Uno di questi"
+        remove_value: "Rimuovi %{value}"
+        match_html: "Corrispondenti a %{op} questi campi:"
+        from: "Da:"
+        fields:
+          creator: "Autore"
+          date: "Data"
+          part_of: "Parte di"
+          resource_type: "Tipo di risorsa"
+          description: "Descrizione"
+          works: "Opere"
+    advanced:
+      match_html: "Trova gli elementi che corrispondono a %{select_menu} di questi campi"
+      match_label: "Corrispondenza con tutti o con almeno un campo"
+      limits: "E che hanno questi attributi"
+      tips:
+        heading: "Suggerimenti di ricerca"
+        items:
+          - "Seleziona «tutti» per richiedere tutti i campi."
+          - "Seleziona «almeno uno» per trovare almeno un campo."
+          - "Combina parole chiave e attributi per trovare elementi specifici."
+          - "Cerca per data nel formato AAAAMMGG, AAAAMM o AAAA. Non usare «-», «/» o altri caratteri speciali."
+          - "Usa le virgolette per cercare una frase esatta."
+          - "Usa «+» prima di un termine per renderlo obbligatorio. (Altrimenti possono comparire risultati con solo alcuni dei tuoi termini.)"
+          - "Usa «-» prima di una parola o frase per escluderla."
+          - "Usa «OR», «AND» e «NOT» per creare ricerche booleane complesse. Puoi usare le parentesi nelle espressioni."
+          - "Troncamento e caratteri jolly non sono supportati: le varianti delle parole vengono cercate automaticamente."
+    collection:
+      actions:
+        add_to_collection: "Aggiungi a una collezione"
+        add_works: "Aggiungi opere"
+        feature: "Metti in evidenza nella home"
+        unfeature: "Rimuovi dalla home"
+      created_by: "Creato da %{creator}"
+      date_format: "%-d %B %Y"
+      details: "Dettagli della collezione"
+      items:
+        one: "%{count} elemento"
+        other: "%{count} elementi"
+      search_placeholder: "Cerca in questa collezione"
+      updated: "Ultimo aggiornamento: %{date}"
+      no_results: "Nessun elemento di questa collezione corrisponde a «%{query}»."
+      search_results: "Risultati della ricerca (%{number})"
+      subcollections: "Sottocollezioni (%{number})"
+      works: "Opere in questa collezione (%{number})"
+      logo: "Logo di %{title}"
+    show:
+      breadcrumbs: "Percorso di navigazione"
+      new_tab: "(si apre in una nuova scheda)"
+      part_of:
+        heading: Parte di
   screening_room:
     chrome:
       toggle_navigation: Attiva/disattiva la navigazione
@@ -1167,17 +1402,6 @@ it:
         unfeature_confirm: 'Rimuovere questa opera dall''elenco in evidenza?'
         view_work: Vedi l'opera
     show:
-      citation:
-        copied: Copiato
-        copy_visible: Copia la citazione
-        endnote: Scarica il record EndNote
-        heading: Come citare
-        note: Fornito solo come suggerimento. Verificare con la guida di stile preferita.
-        style: Stile di citazione
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 elemento

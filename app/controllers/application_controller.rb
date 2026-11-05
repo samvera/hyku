@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
 
   include HykuHelper
   include DeviseGuestControllersHelpersDecorator
+  include Hyku::AccountPageThemesBehavior
 
   helper_method :current_account, :admin_host?, :home_page_theme, :show_page_theme, :search_results_theme
   helper_method :public_demo_tenant?

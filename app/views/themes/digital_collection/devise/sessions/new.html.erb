@@ -1,0 +1,32 @@
+<%# OVERRIDE Hyku 7.1.0: the contact page's serif title and stacked fields, with translated copy %>
+<% provide :page_title, t('digital_collection.account.sign_in.title') %>
+<% content_for(:extra_body_classes, 'dc-account-page ') %>
+
+<div class="dc-account">
+  <h1 class="dc-account-title"><%= t('digital_collection.account.sign_in.title') %></h1>
+
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'dc-account-form' }) do |f| %>
+    <div class="dc-field">
+      <%= f.label :email %>
+      <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control' %>
+    </div>
+
+    <div class="dc-field">
+      <%= f.label :password %>
+      <%= f.password_field :password, autocomplete: 'current-password', class: 'form-control' %>
+    </div>
+
+    <% if devise_mapping.rememberable? %>
+      <div class="dc-check">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me %>
+      </div>
+    <% end %>
+
+    <%= f.submit t('digital_collection.account.sign_in.submit'), class: 'btn btn-primary dc-account-submit' %>
+  <% end %>
+
+  <div class="dc-account-links">
+    <%= render 'devise/shared/links' %>
+  </div>
+</div>

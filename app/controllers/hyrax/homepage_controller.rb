@@ -116,7 +116,7 @@ module Hyrax
       @presenter = presenter_class.new(current_ability, collections)
       @marketing_text = ContentBlock.for(:marketing)
       @announcement_text = ContentBlock.for(:announcement)
-      @collections = collections(rows: :all)
+      @collections = collections(all: true)
       # rubocop:disable Style/GuardClause
       # TODO: Why not make these helper methods?  As is we rely on a theme to set instance
       # variables.  Which is fragile.
@@ -131,10 +131,11 @@ module Hyrax
       colls.select { |c| c['member_of_collection_ids_ssim'].nil? }
     end
 
-    # Return 6 collections, or every one the visitor can read with rows: :all, sorted by title
-    def collections(rows: 6)
+    # Return 6 collections, or with all: true every one the visitor can read up to the
+    # tenant's solr_max_results, sorted by title
+    def collections(rows: 6, all: false)
       service = Hyrax::CollectionsService.new(self)
-      return service.all_search_results { |builder| builder.merge(sort: "title_ssi asc") } if rows == :all
+      return service.all_search_results { |builder| builder.merge(sort: "title_ssi asc") } if all
 
       service.search_results do |builder|
         builder.rows(rows)

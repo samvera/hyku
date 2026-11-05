@@ -12,8 +12,9 @@ RSpec.describe Hyrax::HyraxHelperBehaviorDecorator, type: :helper do
 
     before do
       blacklight = config
-      helper.define_singleton_method(:blacklight_config) { blacklight }
+      helper.define_singleton_method(:blacklight_config) { Blacklight::Configuration.new }
       helper.define_singleton_method(:search_state) { Blacklight::SearchState.new({}, blacklight) }
+      allow(::CatalogController).to receive(:new).and_return(instance_double(::CatalogController, blacklight_config: config))
     end
 
     context 'with an indexed label the catalog facets on' do
@@ -38,9 +39,27 @@ RSpec.describe Hyrax::HyraxHelperBehaviorDecorator, type: :helper do
     context 'when the catalog has no label facet for the field' do
       let(:link) { helper.link_to_value_facet('car-1', 'Car', 'vehicle_type_sim') }
 
+      before { config.add_facet_field('vehicle_type_sim') }
+
       it 'shows the label and links the stored value through its own facet' do
         expect(anchor.text).to eq 'Car'
         expect(href).to include('f[vehicle_type_sim][]=car-1')
+      end
+    end
+
+    context 'when the catalog facets on neither the label nor the stored value' do
+      let(:link) { helper.link_to_value_facet('car-1', 'Car', 'vehicle_type_sim') }
+
+      it 'shows the label without a link, since Blacklight drops a filter on an unregistered facet' do
+        expect(link).to eq 'Car'
+      end
+
+      context 'with no label and markup in the stored value' do
+        let(:link) { helper.link_to_value_facet('<b>car</b>', nil, 'vehicle_type_sim') }
+
+        it 'shows the stored value escaped' do
+          expect(link).to eq '&lt;b&gt;car&lt;/b&gt;'
+        end
       end
     end
   end

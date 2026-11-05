@@ -11,8 +11,9 @@ RSpec.describe 'records/show_fields/_linked_values.html.erb', type: :view do
 
   before do
     blacklight = config
-    view.define_singleton_method(:blacklight_config) { blacklight }
+    view.define_singleton_method(:blacklight_config) { Blacklight::Configuration.new }
     view.define_singleton_method(:search_state) { Blacklight::SearchState.new({}, blacklight) }
+    allow(::CatalogController).to receive(:new).and_return(instance_double(::CatalogController, blacklight_config: config))
   end
 
   def render_field(key)
@@ -36,6 +37,12 @@ RSpec.describe 'records/show_fields/_linked_values.html.erb', type: :view do
     render_field(:keyword)
 
     expect(page).to have_css('span[itemprop="keywords"]:not([itemscope]) > a', text: 'Pink Pajamas')
+  end
+
+  it 'links the display values of a presenter that has no value and label pairs' do
+    render 'records/show_fields/linked_values', record: double('presenter', display_values_for: ['Pink Pajamas']), key: :creator
+
+    expect(page).to have_link('Pink Pajamas')
   end
 
   it 'renders a bare link for a field with no configured property' do

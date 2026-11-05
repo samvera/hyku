@@ -23,6 +23,7 @@
 # - add search_action_url method from Blacklight 6.23.0 to make facet links to go to /catalog
 # - add .sort_by to return collections in alphabetical order by title on the homepage
 # - add @featured_collection_list to index method
+# - load every collection the visitor can read, up to the tenant's solr_max_results, for themes
 
 module Hyrax
   # Changed to inherit from CatalogController for home page facets
@@ -115,7 +116,7 @@ module Hyrax
       @presenter = presenter_class.new(current_ability, collections)
       @marketing_text = ContentBlock.for(:marketing)
       @announcement_text = ContentBlock.for(:announcement)
-      @collections = collections(rows: 100_000)
+      @collections = collections(all: true)
       # rubocop:disable Style/GuardClause
       # TODO: Why not make these helper methods?  As is we rely on a theme to set instance
       # variables.  Which is fragile.
@@ -130,9 +131,13 @@ module Hyrax
       colls.select { |c| c['member_of_collection_ids_ssim'].nil? }
     end
 
-    # Return 6 collections, sorts by title
-    def collections(rows: 6)
-      Hyrax::CollectionsService.new(self).search_results do |builder|
+    # Return 6 collections, or with all: true every one the visitor can read up to the
+    # tenant's solr_max_results, sorted by title
+    def collections(rows: 6, all: false)
+      service = Hyrax::CollectionsService.new(self)
+      return service.all_search_results { |builder| builder.merge(sort: "title_ssi asc") } if all
+
+      service.search_results do |builder|
         builder.rows(rows)
         builder.merge(sort: "title_ssi asc")
       end

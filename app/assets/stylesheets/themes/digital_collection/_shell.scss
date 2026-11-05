@@ -477,6 +477,7 @@ body.digital_collection_show.public-facing {
     display: flex;
     font-size: $dc-text-sm;
     gap: $dc-space-2;
+    justify-content: center;
     line-height: $dc-leading-snug;
   }
 
@@ -489,7 +490,7 @@ body.digital_collection_show.public-facing {
     margin: 0;
     overflow-wrap: anywhere;
     padding: 0;
-    text-align: left;
+    text-align: center;
 
     p:last-child {
       margin-bottom: 0;

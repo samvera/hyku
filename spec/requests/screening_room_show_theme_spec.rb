@@ -4,7 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'screening_room_show theme', type: :request, singletenant: true, clean_repo: true do
   let(:collection) do
-    indexed(Hyrax::PcdmCollection.new(title: ['Film and Television']))
+    # The work's edit form reads the collection's type to decide who can change sharing
+    indexed(Hyrax::PcdmCollection.new(title: ['Film and Television'],
+                                      collection_type_gid: Hyrax::CollectionType.find_or_create_default_collection_type.to_global_id.to_s))
   end
   let(:work) do
     indexed(GenericWorkResource.new(title: ['Pilot boats in New York harbor'],

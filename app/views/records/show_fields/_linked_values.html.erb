@@ -2,7 +2,8 @@
 <%# TEMPORARY: delete when samvera/hyrax#7724 is in the bundled Hyrax %>
 <% property = Hyrax::Microdata.fetch("#{key}.property") %>
 <% itemtype = Hyrax::Microdata.fetch("#{key}.type") %>
-<% record.value_label_pairs(key).each do |value, label| %>
+<% pairs = record.respond_to?(:value_label_pairs) ? record.value_label_pairs(key) : record.display_values_for(key).map { |value| [value, nil] } %>
+<% pairs.each do |value, label| %>
   <% link = link_to_value_facet(value, label, "#{key}_sim") %>
   <% if itemtype %>
     <span itemprop="<%= property %>" itemscope itemtype="<%= itemtype %>">

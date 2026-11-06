@@ -109,6 +109,12 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       visit "dashboard/collections/#{collection.id}/edit"
       click_link('Discovery')
 
+      within('#discovery') do
+        expect(page).to have_content('These settings determine who is able to discover and view ' \
+                                     "this collection's landing page")
+        expect(page).to have_content('you can still share the collection with specific users and groups ' \
+                                     'using the Sharing tab')
+      end
       within('.set-access-controls') do
         expect(find('input#collection_visibility_restricted').checked?).to eq(true)
         expect(find('input#collection_visibility_open').checked?).to eq(false)

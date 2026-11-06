@@ -31,7 +31,7 @@ RSpec.describe 'Dashboard My Works index', type: :feature, clean: true do
   end
 
   describe 'page header buttons' do
-    # Potential duplicate: spec/features/create_work_spec.rb:51 (Add New Work button on my works)
+    # Potential duplicate: spec/features/create_work_spec.rb:49 (Add New Work button on my works)
     # Potential duplicate: spec/features/work_editor_role_spec.rb:73 (Add New Work button on my works)
     it 'shows "Create batch of works" when batch upload is enabled, alongside "Add New Work"' do
       allow(Flipflop).to receive(:batch_upload?).and_return(true)

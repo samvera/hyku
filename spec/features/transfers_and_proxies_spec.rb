@@ -78,7 +78,7 @@ RSpec.describe 'Transfers and Proxies', type: :feature, js: true, clean: true do
   # `authorize_resource class: '::User'` so it does not apply to #index JSON search.
   # Once fixed, the user_reader context above can likely run as a regular user.
   # `pending` keeps this running: it fails loudly once the bug is fixed.
-  # Potential duplicate: spec/features/work_new_form_spec.rb:187 (same /users.json 403 for regular users)
+  # Potential duplicate: spec/features/work_new_form_spec.rb:204 (same /users.json 403 for regular users)
   it 'lets a regular user find another user in the Manage Proxies picker' do
     pending('Hyku UsersControllerDecorator authorizes Hyrax::UsersController#index, so ' \
             'GET /users.json returns 403 for users without the user_manager/user_reader role')

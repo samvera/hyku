@@ -5,7 +5,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
   let(:user) { create(:user) }
   # OVERRIDE: new (non-hyrax) test cases below
 
-  describe 'default collection sharing', ci: 'skip' do
+  describe 'default collection sharing' do
     let!(:non_role_group) { FactoryBot.create(:group, name: 'town_of_bedrock', humanized_name: 'Town of Bedrock') }
     let(:user) { create(:admin) }
 

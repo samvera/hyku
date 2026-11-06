@@ -7,34 +7,34 @@ assignees: ''
 
 ---
 
-**Describe the bug**
+##Describe the bug##
 A clear and concise description of the bug, e.g., what is not working correctly or what is needed.
 
-**Expected behavior**
+##Expected behavior##
 A clear and concise description of what you expected to happen.
 
-**Actual behavior**
+##Actual behavior##
 A clear and concise description of what actually happened.
 
-**Steps to reproduce**
-Explain step by step how someone else can reproduce this bug.
+##Steps to reproduce##
+Explain, step by step, how someone else can reproduce this bug.
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See the error
 
-**Environment**
+##Environment##
 - Hyku version 
 - URL, if applicable 
 
-**Acceptance criteria**
-List what you need to see for this bug to be fixed.
+##Acceptance criteria##
+List what would need to happen for this bug to be considered fixed.
 
-**Screenshots or CSV files**
+##Screenshots or CSV files##
 If applicable, add screenshots or small CSV files that would help explain your problem.
 
-**Related issues or work**
+##Related issues or work##
 If this is related to another issue, provide the URL(s) here.
 
-**Additional context**
+##Additional context##
 Add any other context about the problem here.

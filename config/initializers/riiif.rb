@@ -9,7 +9,8 @@ Rails.application.reloader.to_prepare do
     resp = Hyrax::SolrService.get("id:#{fs_id}")
     doc = resp['response']['docs'].first
     raise "Unable to find solr document with id:#{fs_id}" unless doc
-    { height: doc['height_is'], width: doc['width_is'], format: doc['mime_type_ssi'], channels: doc['alpha_channels_ssi'] }
+    solr_document = SolrDocument.new(doc)
+    { height: solr_document.height, width: solr_document.width, format: doc['mime_type_ssi'], channels: doc['alpha_channels_ssi'] }
   end
 
   if Hyrax.config.use_valkyrie?
@@ -31,4 +32,5 @@ Rails.application.reloader.to_prepare do
 
   Riiif::Engine.config.cache_duration = 1.year
   Riiif::Engine.config.use_vips = true
+  Riiif::Engine.config.autorotate = true
 end

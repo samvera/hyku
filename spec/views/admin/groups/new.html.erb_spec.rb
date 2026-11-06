@@ -13,6 +13,7 @@ RSpec.describe 'admin/groups/new', type: :view do
       expect(rendered).to have_selector('.nav-tabs .nav-item .nav-link.active', text: 'Description')
     end
 
+    # Potential duplicate: spec/features/manage_users_and_groups_spec.rb:165 (disabled Users/Remove tabs, name/description inputs)
     it 'has disable tabs for actions that require a group to have been created' do
       expect(rendered).to have_selector('.nav-tabs .nav-item a.nav-link.disabled', text: 'Users')
       expect(rendered).to have_selector('.nav-tabs .nav-item a.nav-link.disabled', text: 'Remove')

@@ -5,6 +5,7 @@
 # - ensure user is allowed to change visibility
 # - add the ability to upload a collection thumbnail
 # - add altext to collection banner
+# - keep branding when only members change
 # @TODO clean up of unnecessary methods now that we are using Valkyrie transactions to set branding
 
 module Hyrax
@@ -23,6 +24,7 @@ module Hyrax
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/MethodLength
       def update_valkyrie_collection
+        return update_valkyrie_members if params[:collection]&.keys == ["members"]
         return after_update_errors(form_err_msg(form)) unless form.validate(collection_params)
 
         result = transactions['change_set.update_collection']
@@ -127,6 +129,12 @@ module Hyrax
         # the ability to sort the index with custom fields. However, this also affects the show page.
         # Here we set the sort fields back to the defaults for the show page.
         blacklight_config.sort_fields = CatalogController.blacklight_config.sort_fields
+      end
+
+      # The member buttons send no branding params, which the branding steps read as "remove it all".
+      def update_valkyrie_members
+        process_member_changes
+        after_update_response
       end
 
       ## Branding Methods not used with Valkyrie

@@ -680,7 +680,6 @@ de:
           work_editor: Kann alle Arbeiten in diesem Mandanten erstellen, lesen, bearbeiten und genehmigen sowie Arbeiten zwischen Verwaltungssätzen verschieben und Sperrfristen und Mietverträge verwalten.
       stats:
         collections_over_time: Sammlungen im Zeitverlauf
-        downloads: Downloads
         header: Statistiken für %{application_name}
         tab_collections: Sammlungen
         tab_works: Werke

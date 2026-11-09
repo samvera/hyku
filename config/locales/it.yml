@@ -681,7 +681,6 @@ it:
           work_editor: Può creare, leggere, modificare e approvare qualsiasi lavoro in questo tenant, nonché spostare lavori tra set di amministrazione e gestire embarghi e contratti di locazione
       stats:
         collections_over_time: Raccolte nel tempo
-        downloads: Download
         header: Statistiche per %{application_name}
         tab_collections: Collezioni
         tab_works: Opere

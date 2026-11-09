@@ -24,6 +24,17 @@ RSpec.describe Hyku::HomePageThemesBehavior do
       end
     end
 
+    context 'CatalogController' do
+      it 'responds to #inject_theme_views' do
+        expect(CatalogController.new).to respond_to :inject_theme_views
+      end
+
+      it 'adds the around action once' do
+        callbacks = CatalogController._process_action_callbacks.select { |callback| callback.kind == :around }
+        expect(callbacks.count { |callback| callback.filter == :inject_theme_views }).to eq 1
+      end
+    end
+
     context 'Hyrax::PagesController' do
       it 'responds to #inject_theme_views' do
         expect(Hyrax::PagesController.new).to respond_to :inject_theme_views

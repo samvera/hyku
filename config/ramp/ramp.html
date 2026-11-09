@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="ramp.css">
+        <style>
+          html, body, #root, .iiif-player { margin: 0; height: 100%; }
+          .iiif-player { display: flex; flex-direction: column; }
+          .ramp--media_player { flex: 1 1 auto; min-height: 0; height: 100%; }
+          /* Ramp wraps the player in an unclassed div; without a height here the
+             player's own height:100% resolves against a collapsed box. */
+          .ramp--media_player > div { height: 100%; }
+          .ramp--structured-nav { flex: 0 0 auto; }
+          .ramp--media_player .video-js .vjs-tech { object-fit: contain; }
+        </style>
+    </head>
+    <body>
+    <div id="root"></div>
+    <script type="text/javascript" src="ramp.standalone.umd.js"></script>
+    <script>
+        const { IIIFPlayer, MediaPlayer, React, ReactDOM } = RampIIIF;
+        const manifestUrl = new URLSearchParams(window.location.search).get('manifest');
+        if (manifestUrl) {
+            const tree = React.createElement(
+                IIIFPlayer,
+                { manifestUrl },
+                React.createElement(
+                    'div', { className: 'iiif-player' },
+                    React.createElement(MediaPlayer)
+                )
+            );
+            ReactDOM.createRoot(document.getElementById('root')).render(tree);
+
+            // vjs-fluid sizes by aspect-ratio padding, which overflows this
+            // fixed-height frame; vjs-fill is video.js's container-filling mode.
+            // Observed rather than set once: the player applies fluid on mount.
+            const useFillMode = () => {
+                document.querySelectorAll('.video-js.vjs-fluid').forEach((el) => {
+                    el.classList.replace('vjs-fluid', 'vjs-fill');
+                });
+            };
+            new MutationObserver(useFillMode)
+                .observe(document.getElementById('root'), { childList: true, subtree: true });
+        }
+    </script>
+    </body>
+</html>

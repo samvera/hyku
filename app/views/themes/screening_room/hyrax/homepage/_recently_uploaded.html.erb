@@ -1,0 +1,12 @@
+<section class="scr-recent" aria-labelledby="scr-recent-heading">
+  <div class="scr-section-head">
+    <h2 class="scr-section-title" id="scr-recent-heading"><%= t('screening_room.homepage.recent.heading') %></h2>
+    <%= link_to t('screening_room.homepage.recent.view_all'),
+                main_app.search_catalog_path(sort: "#{::CatalogController.modified_field} desc"),
+                class: 'scr-section-action' %>
+  </div>
+
+  <ul class="scr-recent-list list-unstyled">
+    <%= render partial: 'hyrax/homepage/recent_document', collection: @recent_documents %>
+  </ul>
+</section>

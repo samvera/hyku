@@ -18,7 +18,7 @@ classes:
   AdminSetResource:
     display_label: AdminSetResource
   CollectionResource:
-    display_label: pcdmcollection
+    display_label: Collection
   Hyrax::FileSet:
     display_label: FileSet
 contexts:
@@ -185,6 +185,7 @@ properties:
       required: true
       primary: true
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="creator"]/mods:namePart
       simple_dc_pmh: dc:creator
     property_uri: http://purl.org/dc/elements/1.1/creator
     range: http://www.w3.org/2001/XMLSchema#string
@@ -215,6 +216,7 @@ properties:
     form:
       display: false
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="creator"]/mods:namePart
       simple_dc_pmh: dc:creator
     property_uri: http://purl.org/dc/elements/1.1/creator
     range: http://www.w3.org/2001/XMLSchema#string
@@ -249,6 +251,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     property_uri: http://purl.org/dc/terms/license
     range: http://www.w3.org/2001/XMLSchema#string
@@ -282,6 +285,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:abstract
       simple_dc_pmh: dc:description
     property_uri: http://purl.org/dc/terms/abstract
     range: http://www.w3.org/2001/XMLSchema#string
@@ -318,6 +322,9 @@ properties:
       - Open Access
     view:
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:accessCondition[@type="restriction on access"]
+      simple_dc_pmh: dc:rights
   alternative_title:
     available_on:
       class:
@@ -350,6 +357,9 @@ properties:
       - Alternate Title Example
     view:
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:titleInfo[@type="alternative"]/mods:title
+      simple_dc_pmh: dc:title
   alt_text:
     available_on:
       class:
@@ -431,6 +441,9 @@ properties:
     view:
       render_term: based_near_label
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:subject/mods:geographic
+      simple_dc_pmh: dc:coverage
   bibliographic_citation:
     available_on:
       class:
@@ -460,6 +473,9 @@ properties:
       - Doe, J. (2024). Example Citation. Journal of Examples, 12(3), 45-67.
     view:
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:note[@type="preferred citation"]
+      simple_dc_pmh: dc:relation
   contributor:
     available_on:
       class:
@@ -486,6 +502,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="contributor"]/mods:namePart
       simple_dc_pmh: dc:contributor
     property_uri: http://purl.org/dc/elements/1.1/contributor
     range: http://www.w3.org/2001/XMLSchema#string
@@ -519,6 +536,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateCreated
       simple_dc_pmh: dc:date
     property_uri: http://purl.org/dc/terms/created
     range: http://www.w3.org/2001/XMLSchema#dateTime
@@ -553,6 +571,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:note
       simple_dc_pmh: dc:description
     property_uri: http://purl.org/dc/elements/1.1/description
     range: http://www.w3.org/2001/XMLSchema#string
@@ -590,6 +609,9 @@ properties:
       render_as: linked
       search_field: identifier_tesim
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:identifier
+      simple_dc_pmh: dc:identifier
   import_url:
     available_on:
       class:
@@ -645,6 +667,9 @@ properties:
     view:
       render_as: linked
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:subject/mods:topic
+      simple_dc_pmh: dc:subject
   label:
     available_on:
       class:
@@ -700,6 +725,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:language/mods:languageTerm
       simple_dc_pmh: dc:language
     property_uri: http://purl.org/dc/elements/1.1/language
     range: http://www.w3.org/2001/XMLSchema#string
@@ -735,6 +761,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:originInfo/mods:publisher
       simple_dc_pmh: dc:publisher
     property_uri: http://purl.org/dc/elements/1.1/publisher
     range: http://www.w3.org/2001/XMLSchema#string
@@ -774,6 +801,9 @@ properties:
     view:
       render_as: external_link
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:relatedItem/mods:location/mods:url
+      simple_dc_pmh: dc:relation
   relative_path:
     available_on:
       class:
@@ -827,8 +857,11 @@ properties:
       - Article
       - Conference Proceeding
     view:
-      render_as: linked
+      render_as: faceted
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:genre
+      simple_dc_pmh: dc:type
   oer_resource_type:
     name: resource_type
     available_on:
@@ -856,8 +889,11 @@ properties:
       - Article
       - Conference Proceeding
     view:
-      render_as: linked
+      render_as: faceted
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:genre
+      simple_dc_pmh: dc:type
   rights_notes:
     available_on:
       class:
@@ -883,6 +919,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     property_uri: http://purl.org/dc/elements/1.1/rights
     range: http://www.w3.org/2001/XMLSchema#string
@@ -915,6 +952,7 @@ properties:
       primary: true
       required: true
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     property_uri: http://www.europeana.eu/schemas/edm/rights
     range: http://www.w3.org/2001/XMLSchema#string
@@ -947,6 +985,7 @@ properties:
       primary: false
       required: false
     mappings:
+      mods_oai_pmh: mods:accessCondition[@type="use and reproduction"]
       simple_dc_pmh: dc:rights
     property_uri: http://www.europeana.eu/schemas/edm/rights
     range: http://www.w3.org/2001/XMLSchema#string
@@ -986,6 +1025,8 @@ properties:
       - Digital Archive
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:source
   subject:
     available_on:
       class:
@@ -1012,6 +1053,7 @@ properties:
     form:
       primary: false
     mappings:
+      mods_oai_pmh: mods:subject/mods:topic
       simple_dc_pmh: dc:subject
     property_uri: http://purl.org/dc/elements/1.1/subject
     range: http://www.w3.org/2001/XMLSchema#string
@@ -1045,6 +1087,11 @@ properties:
       - History
     view:
       html_dl: true
+    indexing:
+      - department_sim
+      - department_tesim
+    mappings:
+      simple_dc_pmh: dc:contributor
   course:
     available_on:
       class:
@@ -1091,6 +1138,9 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - PDF
+    mappings:
+      mods_oai_pmh: mods:physicalDescription/mods:form
+      simple_dc_pmh: dc:format
   extent:
     available_on:
       class:
@@ -1116,6 +1166,9 @@ properties:
     sample_values:
       - 300 dpi
       - 1024x768 pixels
+    mappings:
+      mods_oai_pmh: mods:physicalDescription/mods:extent
+      simple_dc_pmh: dc:format
   accessibility_feature:
     available_on:
       class:
@@ -1142,6 +1195,8 @@ properties:
       - Subtitles
       - Audio Description
       - Transcripts
+    mappings:
+      simple_dc_pmh: dc:description
   accessibility_hazard:
     available_on:
       class:
@@ -1166,6 +1221,8 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - Motion Simulation
+    mappings:
+      simple_dc_pmh: dc:description
   accessibility_summary:
     available_on:
       class:
@@ -1192,6 +1249,8 @@ properties:
     sample_values:
       - This resource includes subtitles for all video content.
       - The resource provides text descriptions for all images.
+    mappings:
+      simple_dc_pmh: dc:description
   admin_note:
     available_on:
       class:
@@ -1245,6 +1304,8 @@ properties:
     sample_values:
       - This is some additional information.
       - More details and context.
+    mappings:
+      simple_dc_pmh: dc:description
   alternate_version_id:
     available_on:
       class:
@@ -1267,6 +1328,8 @@ properties:
     sample_values:
       - alt_version_1
       - alt_version_2
+    mappings:
+      simple_dc_pmh: dc:relation
   audience:
     available_on:
       class:
@@ -1294,8 +1357,11 @@ properties:
       - Student
       - Instructor
     view:
+      render_as: faceted
       html_dl: true
-      render_as: linked
+    mappings:
+      mods_oai_pmh: mods:targetAudience
+      simple_dc_pmh: dc:description
   date:
     available_on:
       class:
@@ -1319,6 +1385,9 @@ properties:
     sample_values:
       - "2024-06-07"
       - "2023-05-12"
+    mappings:
+      mods_oai_pmh: mods:originInfo/mods:dateIssued
+      simple_dc_pmh: dc:date
   discipline:
     available_on:
       class:
@@ -1333,9 +1402,10 @@ properties:
         - discipline
     display_label:
       default: blacklight.search.fields.index.discipline_tesim
-    index_documentation: searchable
+    index_documentation: displayable, searchable
     indexing:
       - discipline_tesim
+      - discipline_sim
     form:
       required: true
       primary: true
@@ -1345,8 +1415,10 @@ properties:
       - Languages - Spanish
       - Natural Sciences - Physics
     view:
+      render_as: faceted
       html_dl: true
-      render_as: linked
+    mappings:
+      simple_dc_pmh: dc:subject
   education_level:
     available_on:
       class:
@@ -1374,8 +1446,10 @@ properties:
       - Community college / Lower division
       - College / Upper division
     view:
+      render_as: faceted
       html_dl: true
-      render_as: linked
+    mappings:
+      simple_dc_pmh: dc:description
   learning_resource_type:
     available_on:
       class:
@@ -1403,8 +1477,10 @@ properties:
       - Activity/lab
       - Assessment (test, quizzes, etc.)
     view:
+      render_as: faceted
       html_dl: true
-      render_as: linked
+    mappings:
+      simple_dc_pmh: dc:type
   newer_version_id:
     available_on:
       class:
@@ -1427,6 +1503,8 @@ properties:
     sample_values:
       - new_version_1
       - new_version_2
+    mappings:
+      simple_dc_pmh: dc:relation
   oer_size:
     available_on:
       class:
@@ -1451,6 +1529,8 @@ properties:
     sample_values:
       - 15MB
       - 200 pages
+    mappings:
+      simple_dc_pmh: dc:format
   previous_version_id:
     available_on:
       class:
@@ -1473,6 +1553,8 @@ properties:
     sample_values:
       - prev_version_1
       - prev_version_2
+    mappings:
+      simple_dc_pmh: dc:relation
   related_item_id:
     available_on:
       class:
@@ -1522,6 +1604,8 @@ properties:
     sample_values:
       - John Doe
       - Jane Smith
+    mappings:
+      simple_dc_pmh: dc:rights
   table_of_contents:
     available_on:
       class:
@@ -1547,6 +1631,9 @@ properties:
       - "Chapter 1: Introduction"
       - "Chapter 2: Literature Review"
       - "Chapter 3: Methodology"
+    mappings:
+      mods_oai_pmh: mods:tableOfContents
+      simple_dc_pmh: dc:description
   advisor:
     available_on:
       class:
@@ -1572,6 +1659,9 @@ properties:
     sample_values:
       - Dr. John Doe
       - Dr. Jane Smith
+    mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="thesis advisor"]/mods:namePart
+      simple_dc_pmh: dc:contributor
   committee_member:
     available_on:
       class:
@@ -1597,6 +1687,9 @@ properties:
     sample_values:
       - Dr. John Doe
       - Dr. Jane Smith
+    mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="degree committee member"]/mods:namePart
+      simple_dc_pmh: dc:contributor
   degree_name:
     available_on:
       class:
@@ -1624,6 +1717,8 @@ properties:
       - Master of Arts
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:type
   degree_level:
     available_on:
       class:
@@ -1651,6 +1746,8 @@ properties:
       - Graduate
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:type
   degree_discipline:
     available_on:
       class:
@@ -1678,6 +1775,8 @@ properties:
       - Biology
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:subject
   degree_grantor:
     available_on:
       class:
@@ -1705,6 +1804,9 @@ properties:
       - Example State University
     view:
       html_dl: true
+    mappings:
+      mods_oai_pmh: mods:name[mods:role/mods:roleTerm="degree granting institution"]/mods:namePart
+      simple_dc_pmh: dc:publisher
   bulkrax_identifier:
     available_on:
       class:
@@ -1797,6 +1899,36 @@ properties:
     sample_values:
       - "0"
       - "1"
+  media_viewer:
+    available_on:
+      class:
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - media_viewer
+    display_label:
+      default: Viewer
+    index_documentation: displayable
+    indexing:
+      - media_viewer_ssi
+    form:
+      display: true
+      primary: false
+      required: false
+      multiple: false
+    property_uri: https://hykucommons.org/terms/mediaViewer
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - universal_viewer
+      - clover
   video_embed:
     available_on:
       class:
@@ -2001,6 +2133,9 @@ properties:
     required: true
     form:
       cols: 4
+    mappings:
+      mods_oai_pmh: mods:name/mods:namePart
+      simple_dc_pmh: dc:contributor
   participant_role:
     type: controlled
     name: role
@@ -2012,6 +2147,8 @@ properties:
     values: [Author, Editor, Contributor, Creator, Data Collector, Funder, Publisher, Other]
     form:
       cols: 4
+    mappings:
+      mods_oai_pmh: mods:name/mods:role/mods:roleTerm[@type="text"]
   identifiers:
     available_on:
       class:
@@ -2039,6 +2176,8 @@ properties:
     required: true
     form:
       cols: 6
+    mappings:
+      simple_dc_pmh: dc:identifier
   identifier_type:
     type: controlled
     name: type
@@ -2103,3 +2242,27 @@ properties:
         - relationships
     form:
       cols: 12
+  redirects:
+    available_on:
+      class:
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    display_label:
+      default: Redirects
+    type: hash
+    multiple: true
+    form:
+      display: false
+    indexing:
+      - editor_only
+    property_uri: http://samvera.org/ns/hyku/redirects
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      render_term: redirects_path
+      render_as: redirects_label
+      html_dl: true

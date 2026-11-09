@@ -65,4 +65,49 @@ RSpec.describe Admin::AccountsController, type: :controller do
       end
     end
   end
+
+  context 'as an admin of a public demo tenant' do
+    let(:user) { FactoryBot.create(:admin) }
+    let(:account) { FactoryBot.create(:demo_account) }
+
+    before do
+      Site.update(account:)
+    end
+
+    describe "PUT #update" do
+      it "denies access" do
+        put :update, params: { account: { name: 'vandalized' } }
+        expect(response).to redirect_to(root_path)
+        expect(account.reload.name).not_to eq 'vandalized'
+      end
+    end
+
+    describe "GET #edit" do
+      it "denies access" do
+        get :edit
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
+
+  context 'as a tenant superadmin of a public demo tenant' do
+    let(:user) do
+      u = FactoryBot.create(:tenant_superadmin)
+      u.add_role(:admin, Site.instance)
+      u
+    end
+    let(:account) { FactoryBot.create(:demo_account) }
+
+    before do
+      Site.update(account:)
+    end
+
+    describe "PUT #update" do
+      it "allows the update" do
+        put :update, params: { account: { name: 'legit-update' } }
+        expect(response).to redirect_to(edit_admin_account_path(account))
+        expect(account.reload.name).to eq 'legit-update'
+      end
+    end
+  end
 end

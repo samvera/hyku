@@ -4,8 +4,10 @@
   <% if can? :manage, Site %>
     <li class="nav-item">
       <%= menu.collapsable_section t('hyrax.admin.sidebar.settings'), icon_class: "fa fa-cog", id: 'collapseSettings', open: menu.settings_section?, title: t('hyrax.admin.sidebar.settings') do %>
-        <%= menu.nav_link(main_app.edit_admin_account_path, class: "nav-link", title: t('hyrax.admin.sidebar.accounts')) do %>
-          <span class="fa fa-gear"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.accounts') %></span>
+        <% if can?(:edit, Account) %>
+          <%= menu.nav_link(main_app.edit_admin_account_path, class: "nav-link", title: t('hyrax.admin.sidebar.accounts')) do %>
+            <span class="fa fa-gear"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.accounts') %></span>
+          <% end %>
         <% end %>
         <% if Flipflop.show_identity_provider_in_admin_dashboard? %>
           <%= menu.nav_link(main_app.identity_providers_path, class: 'nav-link', title: t('hyrax.admin.sidebar.identity_provider')) do %>

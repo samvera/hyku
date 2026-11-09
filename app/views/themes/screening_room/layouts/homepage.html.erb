@@ -1,0 +1,6 @@
+<% content_for(:navbar) do %>
+  <%= render 'hyrax/homepage/announcement' if controller_name == 'homepage' %>
+  <%= render '/controls' %>
+<% end %>
+
+<%= render template: 'layouts/hyrax' %>

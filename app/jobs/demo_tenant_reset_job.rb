@@ -38,25 +38,18 @@ class DemoTenantResetJob < ApplicationJob
       return
     end
 
-    DemoTenantResetService.new(account:, **service_options(account)).reset!
+    DemoTenantResetService.new(account:, **service_options).reset!
     self.class.set(wait_until: Date.tomorrow.midnight).perform_later
   end
 
   private
 
-  def service_options(account)
+  def service_options
     {
-      seed_csv_path: seed_csv_path_for(account),
+      seed_csv_path: ENV['DEMO_SEED_CSV_PATH'].presence,
       keep_emails: ENV.fetch('DEMO_KEEP_USERS', '').split(','),
       import_user_email: ENV['DEMO_IMPORT_USER'].presence,
       health_check: ENV['DEMO_HEALTH_CHECK'].presence&.constantize
     }
-  end
-
-  def seed_csv_path_for(account)
-    template = ENV['DEMO_SEED_CSV_PATH'].presence
-    return unless template
-
-    format(template, tenant: account.name)
   end
 end

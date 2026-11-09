@@ -101,9 +101,10 @@ RSpec.describe CatalogController do
       expect(third_ability.admin?).to be false # populate the memoization on the new instance
       third_cache = third_ability.instance_variable_get(:@group_role_memo)
       site_id = Site.instance.id
+      tenant = Apartment::Tenant.current
       admin_role = RolesService::ADMIN_ROLE
-      expect(second_cache[[admin_role, site_id, second_ability.current_user.id]]).to be true
-      expect(third_cache[[admin_role, site_id, third_ability.current_user.id]]).to be false
+      expect(second_cache[[admin_role, tenant, site_id, second_ability.current_user.id]]).to be true
+      expect(third_cache[[admin_role, tenant, site_id, third_ability.current_user.id]]).to be false
       expect(second_cache).not_to eq(third_cache)
     end
   end

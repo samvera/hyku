@@ -1,0 +1,29 @@
+<section class="ref-browse" aria-labelledby="ref-browse-heading">
+  <div class="ref-browse-inner">
+    <div class="ref-section-head">
+      <h2 class="ref-section-title" id="ref-browse-heading"><%= t('reference.homepage.browse.heading') %></h2>
+      <%= link_to t('reference.homepage.browse.all_options'), main_app.search_catalog_path, class: 'ref-section-action' %>
+    </div>
+
+    <div class="ref-browse-columns">
+      <% columns.each do |column| %>
+        <div class="ref-browse-column">
+          <h3 class="ref-browse-label"><%= facet_field_label(column[:field]) %></h3>
+          <ul class="ref-browse-values">
+            <% column[:items].each do |item| %>
+              <li class="ref-browse-value">
+                <%= link_to item.value, main_app.search_catalog_path(f: { column[:field] => [item.value] }), class: 'ref-browse-link' %>
+                <span class="ref-browse-count"><%= number_with_delimiter(item.hits) %></span>
+              </li>
+            <% end %>
+          </ul>
+          <% if column[:more] %>
+            <%= link_to main_app.facet_catalog_path(id: column[:field]), class: 'ref-browse-all', data: { blacklight_modal: 'trigger' } do %>
+              <%= t("reference.homepage.browse.all.#{column[:key]}") %><span aria-hidden="true"> »</span>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

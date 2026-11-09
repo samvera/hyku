@@ -51,8 +51,10 @@ module HyraxHelper
     Site.instance.logo_image? ? Site.instance.logo_image.url : false
   end
 
+  # nil, not false: these values render straight into title and alt attributes,
+  # where a false leaks as the string "false".
   def block_for(name:)
-    ContentBlock.block_for(name:, fallback_value: false)
+    ContentBlock.block_for(name:, fallback_value: nil)
   end
 
   def directory_image

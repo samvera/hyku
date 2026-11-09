@@ -19,20 +19,7 @@
   }
 
   #content-wrapper:has(.pr-show) .breadcrumb {
-    background: #eef1f0;
-    border: 0;
-    border-radius: 0;
-    color: $pr-muted;
-    font-size: 0.75rem;
-    line-height: 1.4;
-    margin: 0;
-    padding-block: 0.7rem;
-
-    @include pr-full-bleed;
-  }
-
-  #content-wrapper:has(.pr-show) .breadcrumb-item + .breadcrumb-item::before {
-    color: #b6bdba;
+    @include pr-breadcrumb;
   }
 
   // ---- masthead ----------------------------------------------------------
@@ -150,20 +137,11 @@
   .pr-show {
     .badge,
     .pr-badge-license {
-      border: 1px solid transparent;
-      border-radius: 0;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      line-height: 1.5;
-      padding: 0.25rem 0.625rem;
-      text-transform: uppercase;
-      vertical-align: baseline;
+      @include pr-badge(0.8125rem, 0.25rem 0.625rem);
     }
 
     .badge-success {
-      background-color: var(--pr-primary, #{$pr-brand-700});
-      color: var(--pr-primary-text, #fff);
+      @include pr-badge-brand;
     }
 
     .badge-primary {
@@ -580,35 +558,12 @@
   }
 
   .pr-pager {
+    @include pr-pager(0.85rem, 0.25rem 0.6rem);
+
     margin-top: 1.25rem;
 
     .pagination {
-      border-radius: 0;
       margin: 0;
-    }
-
-    .page-link,
-    .page-item:first-child .page-link,
-    .page-item:last-child .page-link {
-      border-radius: 0;
-    }
-
-    .page-link {
-      border-color: $pr-border;
-      color: var(--pr-link, #{$pr-brand-700});
-      font-size: 0.85rem;
-      line-height: 1.4;
-      padding: 0.25rem 0.6rem;
-    }
-
-    .page-item.active .page-link {
-      background-color: var(--pr-primary, #{$pr-brand-700});
-      border-color: var(--pr-primary, #{$pr-brand-700});
-      color: var(--pr-primary-text, #fff);
-    }
-
-    .page-item.disabled .page-link {
-      color: $pr-faint;
     }
   }
 

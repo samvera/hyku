@@ -60,11 +60,13 @@ RSpec.describe DemoTenantResetJob do
         original ? ENV['DEMO_SEED_CSV_PATH'] = original : ENV.delete('DEMO_SEED_CSV_PATH')
       end
 
-      it 'expands the tenant name into DEMO_SEED_CSV_PATH' do
+      # Expanding %{tenant} moved into DemoTenantResetService so hyku:demo:reset
+      # gets it too, and is asserted there. This only checks the handover.
+      it 'passes DEMO_SEED_CSV_PATH through for the service to resolve' do
         switch!(account)
         described_class.perform_now
         expect(DemoTenantResetService).to have_received(:new)
-          .with(hash_including(seed_csv_path: "/imports/#{account.name}/metadata.csv"))
+          .with(hash_including(seed_csv_path: '/imports/%{tenant}/metadata.csv'))
       end
     end
   end

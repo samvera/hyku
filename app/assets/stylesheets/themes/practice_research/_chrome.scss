@@ -1,0 +1,905 @@
+// ---- shared page chrome for the practice research themes ----
+
+@import 'themes/practice_research/tokens';
+@import 'themes/practice_research/primitives';
+
+$pr-chrome-home:
+  'body.practice_research.catalog-index',
+  'body.practice_research.catalog-advanced_search',
+  'body.practice_research.advanced-index',
+  'body.practice_research.hyrax-pages-show',
+  'body.practice_research.hyrax-contact_form-new',
+  'body.practice_research.hyrax-contact_form-create';
+
+$pr-chrome-show:
+  'body.practice_research_show.hyrax-collections-show',
+  'body.practice_research_show.hyrax-file_sets-show';
+
+$pr-chrome: join($pr-chrome-home, $pr-chrome-show, comma);
+
+$pr-chrome-paged:
+  'body.practice_research.catalog-index',
+  'body.practice_research_show.hyrax-collections-show';
+
+#{$pr-chrome} {
+  color: $pr-ink;
+
+  @include pr-controls-reset;
+
+  // ---- squared corners ---------------------------------------------------
+
+  .alert,
+  .badge,
+  .card,
+  .card-header,
+  .custom-select,
+  .dropdown-menu,
+  .img-thumbnail,
+  .modal-content,
+  select,
+  textarea {
+    border-radius: 0;
+  }
+
+  // ---- headings ----------------------------------------------------------
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--pr-brand-ink, #{$pr-brand-900});
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  h1 {
+    font-size: 2.125rem;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    margin: 0 0 0.75rem;
+  }
+
+  // ---- badges ------------------------------------------------------------
+
+  // the masthead's notification counter is a .badge too, and resizing it there
+  // widens the utility row on chrome pages but not the homepage
+  #content-wrapper .badge {
+    @include pr-badge;
+  }
+
+  #content-wrapper .badge-success {
+    @include pr-badge-brand;
+  }
+
+  // hyku fills the selected row of a menu with a mid slate that the link
+  // colour cannot be read against
+  #content-wrapper .dropdown-item.active,
+  #content-wrapper .dropdown-item:active {
+    background-color: $pr-hairline;
+    color: $pr-ink;
+    font-weight: 600;
+  }
+
+  // ---- notices -----------------------------------------------------------
+
+  .alert {
+    border-color: $pr-border;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+}
+
+// ---- documents: collection show and file set show ------------------------
+
+#{$pr-chrome-show} {
+  #content-wrapper .breadcrumb {
+    @include pr-breadcrumb;
+  }
+
+  // the file set page opens straight into its title, with no band of its own
+  // to carry the space
+  &.hyrax-file_sets-show #content-wrapper .breadcrumb {
+    margin-bottom: 1.5rem;
+  }
+
+  table.table {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    margin-bottom: 0;
+  }
+
+  table.table thead th {
+    border-bottom: 1px solid $pr-border;
+    border-top: 0;
+    color: $pr-muted;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    padding: 0.6rem 0.75rem 0.6rem 0;
+    text-transform: uppercase;
+    vertical-align: bottom;
+  }
+
+  table.table tbody td {
+    border-bottom: 1px solid $pr-hairline;
+    border-top: 0;
+    overflow-wrap: break-word;
+    padding: 0.7rem 0.75rem 0.7rem 0;
+    vertical-align: middle;
+  }
+
+  table.table tbody tr:last-child td {
+    border-bottom-color: $pr-border;
+  }
+
+  table.table-bordered,
+  table.table-bordered thead th,
+  table.table-bordered tbody td {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+  }
+
+  table.table-striped tbody tr:nth-of-type(odd) {
+    background-color: transparent;
+  }
+}
+
+// ---- paged listings: catalog and collection show --------------------------
+
+#{$pr-chrome-paged} {
+  @include pr-pager;
+}
+
+// ---- catalog -----------------------------------------------------------
+
+body.practice_research.catalog-index,
+body.practice_research.catalog-advanced_search,
+body.practice_research.advanced-index {
+  // ---- facet rail ----
+  // blacklight's own advanced page renders the same limits under a second id
+
+  #facets,
+  #advanced_search_facets {
+    .facets-heading {
+      @include pr-section-title($pr-muted);
+
+      margin-bottom: 0.875rem;
+    }
+
+    .facet-limit {
+      margin-bottom: 0.625rem;
+    }
+
+    .facet-field-heading {
+      border-bottom: 2px solid var(--pr-accent, #f5c400);
+      margin: 0;
+    }
+
+    .facet-field-heading > .btn {
+      border: 0;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      padding: 0.7rem 0.95rem !important;
+      text-transform: uppercase;
+    }
+
+    .facet-content .card-body {
+      padding: 0.35rem 0.95rem 0.6rem;
+    }
+
+    .facet-values li {
+      align-items: baseline;
+      border-bottom: 1px solid $pr-hairline;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: space-between;
+      line-height: 1.5;
+      padding: 0.45rem 0;
+    }
+
+    .facet-values li:last-child {
+      border-bottom: 0;
+    }
+
+    .facet-label {
+      font-size: 0.875rem;
+      overflow-wrap: anywhere;
+    }
+
+    .facet-count {
+      color: $pr-faint;
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+
+    .facet-limit-active .facet-label a {
+      font-weight: 600;
+    }
+
+    // the clear control is an icon, so the link underline reads as a stray mark
+    a.remove {
+      text-decoration: none;
+    }
+  }
+
+  // ---- advanced search ----
+
+  .advanced-search-form {
+    padding: 0;
+  }
+
+  h1.advanced {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .query-criteria-heading {
+    color: $pr-muted;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0 0 1rem;
+
+    select {
+      font-size: 0.9375rem;
+      width: auto;
+    }
+  }
+
+  // chrome paints the selected row of a list box with its own blue and only
+  // honours a background here as a gradient; firefox takes the same rule,
+  // safari keeps the system highlight
+  .advanced-search-facet-select option:checked {
+    background: linear-gradient(0deg, $pr-brand-700 0%, $pr-brand-700 100%);
+    color: #fff;
+  }
+
+  .advanced-search-field {
+    align-items: baseline;
+    border-bottom: 1px solid $pr-hairline;
+    margin: 0;
+    padding: 0.55rem 0;
+
+    // the stock field is a .form-group with col-* children but no .row, so the
+    // columns stack; own that rather than half-applying a grid
+    // blacklight's own advanced page also pins .text-md-right on them
+    .control-label,
+    .col-form-label {
+      color: $pr-muted;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      line-height: 1.5;
+      margin-bottom: 0.25rem;
+      max-width: 100%;
+      padding-left: 0;
+      text-align: left !important;
+    }
+
+    > [class*='col-'] {
+      flex: 1 1 auto;
+      max-width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .form-control {
+      border-color: $pr-border;
+      font-size: 0.9375rem;
+    }
+  }
+
+  .sort-submit-buttons,
+  .submit-buttons {
+    margin-top: 1.25rem;
+  }
+
+  .advanced-help {
+    color: $pr-ink;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    margin: 0;
+    padding-left: 1.1rem;
+
+    li + li {
+      margin-top: 0.35rem;
+    }
+  }
+
+  .card-title {
+    @include pr-section-title($pr-muted);
+
+    margin-bottom: 0.75rem;
+  }
+
+  // ---- results toolbar ----
+
+  #sortAndPerPage {
+    border-bottom: 1px solid $pr-border;
+    padding-bottom: 0.75rem;
+  }
+
+  #sortAndPerPage .page-entries,
+  #sortAndPerPage .page-links {
+    color: $pr-muted;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  #sortAndPerPage .btn {
+    font-size: 0.8125rem;
+    line-height: 1.3;
+    padding: 0.4rem 0.7rem;
+  }
+
+  .view-type-group .btn {
+    margin-left: -1px;
+  }
+
+  // ---- result rows ----
+
+  ul.catalog {
+    margin-top: 1.25rem !important;
+  }
+
+  li.document {
+    border-bottom: 1px solid $pr-hairline;
+    padding: 1.125rem 0 !important;
+  }
+
+  .search-results-title-row {
+    column-gap: 0.625rem;
+    flex-wrap: wrap;
+    padding-bottom: 0.5rem;
+    row-gap: 0.35rem;
+  }
+
+  .search-result-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+    overflow-wrap: break-word;
+
+    p {
+      display: inline;
+      margin: 0;
+    }
+  }
+
+  .list-thumbnail {
+    align-items: center;
+    background: #fff;
+    border: 1px solid $pr-thumb-border;
+    display: flex;
+    justify-content: center;
+    max-width: 170px;
+    overflow: hidden;
+    padding: 0.5rem;
+
+    img {
+      height: auto;
+      max-width: 100%;
+    }
+  }
+
+  .metadata dl {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .metadata dl > .row {
+    flex-wrap: nowrap;
+    padding: 0.15rem 0;
+  }
+
+  .metadata dt {
+    color: $pr-muted;
+    flex: 0 0 150px;
+    font-weight: 600;
+    max-width: 150px;
+    padding-right: 1rem;
+    text-align: left !important;
+  }
+
+  .metadata dd {
+    color: $pr-ink;
+    flex: 1 1 auto;
+    margin: 0;
+    max-width: none;
+    overflow-wrap: anywhere;
+
+    p {
+      display: inline;
+      margin: 0;
+    }
+  }
+
+  .documents-gallery .document .thumbnail-container,
+  .documents-masonry .document .thumbnail-container {
+    background: #fff;
+    border-color: $pr-thumb-border;
+    border-radius: 0;
+  }
+
+  .caption.container {
+    max-width: none;
+    padding: 0.75rem;
+  }
+
+  .caption .documentHeader {
+    margin: 0 0 0.5rem;
+  }
+
+  .caption .index_title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+    overflow-wrap: break-word;
+    padding: 0;
+  }
+
+  .caption dl.document-metadata {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    margin: 0;
+
+    dt {
+      @include pr-eyebrow-label;
+
+      color: $pr-muted;
+      padding: 0.4rem 0 0.1rem;
+    }
+
+    dd {
+      color: $pr-ink;
+      margin: 0;
+      overflow-wrap: break-word;
+      padding: 0;
+    }
+  }
+
+  .collection-counts-item {
+    color: $pr-muted;
+    font-size: 0.8125rem;
+
+    span {
+      color: $pr-ink;
+      font-weight: 600;
+      margin-right: 0.35rem;
+    }
+  }
+}
+
+// ---- content pages and contact form --------------------------------------
+
+body.practice_research.hyrax-pages-show,
+body.practice_research.hyrax-contact_form-new,
+body.practice_research.hyrax-contact_form-create {
+  #content_block_page,
+  form.needs-validation {
+    max-width: 74ch;
+  }
+
+  #content_block_page {
+    color: #3c4543;
+    font-size: 1rem;
+    line-height: 1.65;
+
+    h2 {
+      font-size: 1.375rem;
+      margin: 2rem 0 0.75rem;
+    }
+
+    h3 {
+      font-size: 1.125rem;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    p,
+    li {
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .form-group label {
+    color: $pr-muted;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .form-control {
+    border-color: $pr-border;
+    font-size: 0.9375rem;
+  }
+}
+
+// ---- collection show -----------------------------------------------------
+
+body.practice_research_show.hyrax-collections-show {
+  overflow-x: clip;
+
+  #content-wrapper.container {
+    padding-top: 0 !important;
+  }
+
+  .hyc-header {
+    margin-bottom: 1.75rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .hyc-header > [class*='col-'] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hyc-banner {
+    background-color: var(--pr-band, #f4f6f5);
+    border-bottom: 1px solid var(--pr-hairline, #{$pr-border});
+    border-radius: 0;
+    padding: 1.75rem 0 1.5rem;
+    width: auto;
+
+    @include pr-full-bleed;
+  }
+
+  // flex so the whitespace between the inline-block badges collapses and they
+  // sit flush, the way .pr-badges does on the work show
+  .hyc-title {
+    align-items: center;
+    column-gap: 0;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    row-gap: 0.35rem;
+
+    h1 {
+      font-size: 2.125rem;
+      letter-spacing: -0.015em;
+      line-height: 1.15;
+      margin-right: 0.75rem;
+
+      p {
+        display: inline;
+        margin: 0;
+      }
+    }
+
+    .badge {
+      box-shadow: none;
+      margin-left: 0;
+      vertical-align: middle;
+    }
+  }
+
+  .hyc-banner[style*='url()'] .hyc-title h1 {
+    text-shadow: none;
+  }
+
+  // the same joined action bar the work show masthead uses
+  .show-actions-container {
+    margin-top: 0.875rem;
+
+    .collection-title-row-content {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .btn {
+      font-size: 0.8125rem;
+      line-height: 1.3;
+      margin: 0 0 0 -1px;
+      padding: 0.35rem 0.7rem;
+      white-space: nowrap;
+    }
+
+    // the work show's actions partial emits btn-secondary; this one emits
+    // btn-primary, so the two bars read differently. Appearance pins both
+    // colorways !important, so matching them has to be too.
+    .btn-primary {
+      background-color: var(--pr-button, #fff) !important;
+      border-color: var(--pr-button-edge, #{$pr-border}) !important;
+      color: var(--pr-button-ink, #{$pr-ink}) !important;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active {
+      background-color: var(--pr-button-hover, #{$pr-hairline}) !important;
+      border-color: var(--pr-button-hover-edge, #{$pr-border}) !important;
+      color: var(--pr-button-ink, #{$pr-ink}) !important;
+    }
+
+    .btn:first-of-type {
+      margin-left: 0;
+    }
+
+    .btn:hover,
+    .btn:focus,
+    .btn:active {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  .hyc-banner .space-between {
+    column-gap: 1rem;
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+
+  .hyc-banner .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .hyc-banner .row > [class*='col-'] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hyc-banner[style*='url()'] {
+    .hyc-item-count,
+    .hyc-created-by,
+    .hyc-last-updated {
+      background: transparent;
+      padding: 0;
+      text-shadow: none;
+    }
+
+    .hyc-item-count {
+      color: $pr-muted;
+    }
+
+    .hyc-created-by,
+    .hyc-last-updated {
+      color: $pr-muted;
+    }
+  }
+
+  .hyc-item-count,
+  .hyc-created-by,
+  .hyc-last-updated {
+    border-radius: 0;
+  }
+
+  .hyc-item-count {
+    @include pr-eyebrow-label;
+  }
+
+  .hyc-created-by,
+  .hyc-last-updated {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    margin-top: 1.25rem;
+  }
+
+  .collection-query {
+    border-color: $pr-border;
+  }
+
+  // ---- details ----
+
+  .hyc-body {
+    margin-bottom: 2.25rem;
+  }
+
+  .hyc-metadata {
+    padding: 0 0 0 1.5rem;
+
+    h2 {
+      @include pr-section-title($pr-muted);
+
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      color: #3c4543;
+      font-family: var(--pr-serif, Georgia, 'Times New Roman', serif);
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      max-width: 70ch;
+      overflow-wrap: anywhere;
+    }
+
+    dl {
+      border-top: 0;
+      font-size: 0.875rem;
+    }
+
+    dl > div {
+      border-bottom: 1px solid $pr-hairline;
+      padding: 0.7rem 0;
+    }
+
+    dt {
+      color: $pr-muted;
+      flex-basis: 210px;
+      font-weight: 600;
+    }
+
+    dd {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .representative-media {
+    border: 1px solid $pr-thumb-border;
+    height: auto;
+    max-width: 100%;
+  }
+
+  // ---- works listing ----
+
+  .hyc-blacklight {
+    padding: 0;
+  }
+
+  .hyc-bl-title h2 {
+    @include pr-section-title($pr-muted);
+
+    margin-bottom: 0.375rem;
+  }
+
+  .hyc-bl-sort {
+    border-bottom: 1px solid $pr-border;
+    padding-bottom: 0.75rem;
+
+    // hyrax's own per_page form draws a second rule 29px above this one, and
+    // pads and spaces itself below the controls the theme already spaces
+    form.per_page {
+      border-bottom: 0;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    label,
+    select {
+      font-size: 0.8125rem;
+    }
+
+    .btn {
+      font-size: 0.8125rem;
+      line-height: 1.3;
+      padding: 0.4rem 0.7rem;
+    }
+
+    .view-type-group .btn {
+      margin-left: -1px;
+    }
+  }
+
+  .hyc-bl-results {
+    margin: 1.25rem 0 2rem;
+
+    .media-left img {
+      border: 1px solid $pr-thumb-border;
+    }
+
+    td a {
+      font-weight: 600;
+    }
+  }
+}
+
+// ---- file set show -------------------------------------------------------
+
+body.practice_research_show.hyrax-file_sets-show {
+  overflow-x: clip;
+
+  .ensure-wrapped {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  table.table.single-use-links tbody td {
+    border: 0;
+    padding-bottom: 0.35rem;
+  }
+
+  #content-wrapper.container {
+    padding-top: 0 !important;
+  }
+
+  header h1 {
+    overflow-wrap: anywhere;
+
+    .badge {
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+  }
+
+  h2,
+  h3 {
+    @include pr-section-title($pr-muted);
+
+    border-bottom: 0;
+    margin: 2.25rem 0 0.75rem;
+    padding: 0;
+  }
+
+  header + h2 {
+    margin-top: 1.5rem;
+  }
+
+  dl.file-show-term {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    margin: 0;
+
+    > .row {
+      border-bottom: 1px solid $pr-hairline;
+      margin: 0;
+      padding: 0.7rem 0;
+    }
+
+    dt {
+      color: $pr-muted;
+      font-weight: 600;
+      padding-left: 0;
+    }
+
+    dd {
+      color: $pr-ink;
+      margin: 0;
+      overflow-wrap: anywhere;
+      padding-left: 0;
+    }
+  }
+
+  #file_download {
+    display: inline-block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-top: 0.75rem;
+  }
+
+  .form-actions {
+    margin-top: 1.5rem;
+  }
+}
+
+// ---- narrower viewports --------------------------------------------------
+
+@media (max-width: $pr-frame-tablet-max) {
+  body.practice_research_show.hyrax-collections-show {
+    .hyc-metadata {
+      padding: 1.5rem 15px 0;
+    }
+
+    .hyc-metadata dt {
+      flex-basis: 140px;
+    }
+  }
+}
+
+@media (max-width: $pr-frame-mobile-max) {
+  #{$pr-chrome} {
+    h1 {
+      font-size: 1.625rem;
+    }
+  }
+
+  body.practice_research_show.hyrax-collections-show .hyc-title h1 {
+    font-size: 1.625rem;
+  }
+}

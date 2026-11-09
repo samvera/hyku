@@ -42,7 +42,7 @@ def ensure_standalone_test_core_available
     response = RSolr.connect(url: admin_base).get('/solr/admin/cores', params: { action: 'STATUS', core: core })
     raise "Standalone Solr core #{core.inspect} is missing (STATUS returned no entry)" unless response.dig('status', core)&.any?
     Rails.logger.info "[solr_setup] Standalone Solr core #{core.inspect} verified OK"
-  rescue RSolr::Error::ConnectionRefused, RSolr::Error::Http, StandardError => e
+  rescue StandardError => e
     raise "ensure_standalone_test_core_available: cannot reach Solr core #{core.inspect}: #{e.message}"
   end
 end

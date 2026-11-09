@@ -4,14 +4,7 @@
   </div>
 
   <% if all_authors(presenter).any? %>
-    <%# TODO: dedupe with practice_research — shared citations_for helper %>
-    <%
-      citations = {
-        'apa' => export_as_apa_citation(presenter),
-        'mla' => export_as_mla_citation(presenter),
-        'chicago' => export_as_chicago_citation(presenter)
-      }.select { |_style, text| text.present? }
-    %>
+    <% citations = theme_citations(presenter) %>
     <% if citations.any? %>
       <div data-citation>
         <select class="hrt-cite-picker" data-citation-picker

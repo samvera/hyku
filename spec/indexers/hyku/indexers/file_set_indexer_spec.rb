@@ -19,5 +19,14 @@ RSpec.describe Hyku::Indexers::FileSetIndexer do
 
       expect(resource.to_solr['all_text_tsimv']).to include('Dummy PDF file')
     end
+
+    it 'preserves OCR text for images when PDF.js is on' do
+      allow(Flipflop).to receive(:default_pdf_viewer?).and_return(true)
+      allow(resource).to receive(:original_file).and_return(original_file)
+      allow(original_file).to receive(:pdf?).and_return(false)
+      allow(IiifPrint).to receive(:extract_text_for).and_return('ocr text')
+
+      expect(resource.to_solr['all_text_tsimv']).to eq 'ocr text'
+    end
   end
 end

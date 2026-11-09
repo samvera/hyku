@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+          html, body { margin: 0; height: 100%; }
+          clover-viewer { display: block; height: 100%; }
+          clover-viewer :has(.clover-viewer-content) { height: 100% !important; }
+          .clover-viewer-content { height: 100% !important; }
+          .clover-viewer-player-wrapper,
+          .clover-viewer-painting :has(> .clover-viewer-player-wrapper) { background-color: transparent !important; }
+          .clover-viewer-painting,
+          [data-testid="media"] { padding-left: 16px !important; padding-right: 16px !important; }
+          .clover-viewer-information-panel { overflow-wrap: anywhere; }
+          [data-testid="information-panel-cue"] strong { white-space: nowrap; margin-left: .75rem; }
+        </style>
+    </head>
+    <body>
+    <script type="text/javascript" src="clover.js"></script>
+    <clover-viewer></clover-viewer>
+    <script>
+        const manifestUrl = new URLSearchParams(window.location.search).get('manifest');
+        const viewer = document.querySelector('clover-viewer');
+        // Clover takes the manifest URL from `id`, and setAttribute would stringify
+        // a missing one to "null" rather than leaving it unset.
+        if (manifestUrl) viewer.setAttribute('id', manifestUrl);
+    </script>
+    </body>
+</html>

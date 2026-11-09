@@ -5,6 +5,14 @@ require 'rails_helper'
 RSpec.describe Qa::Authorities::Mesh do
   subject(:authority) { described_class.new }
 
+  # A MeSH import replaces every row, so the dashboard must not offer these terms
+  # for editing.
+  describe '#locally_owned?' do
+    it 'is false, because the terms come from a MeSH release' do
+      expect(authority).not_to be_locally_owned
+    end
+  end
+
   describe '#search' do
     context 'when the mesh authority does not exist' do
       it 'returns an empty array' do
@@ -22,8 +30,14 @@ RSpec.describe Qa::Authorities::Mesh do
     context 'with seeded mesh entries' do
       let!(:mesh_authority) { Qa::LocalAuthority.create!(name: 'mesh') }
 
+      # insert_all rather than create!, matching how `rake mesh:import_tenant`
+      # loads terms. It bypasses the uri presence validation, which is what
+      # keeps the blank-uri fallback below reachable for imported data.
       def add_entry(label, uri: nil)
-        mesh_authority.local_authority_entries.create!(label: label, uri: uri)
+        Qa::LocalAuthorityEntry.insert_all( # rubocop:disable Rails/SkipsModelValidations
+          [{ local_authority_id: mesh_authority.id, label: label, uri: uri,
+             created_at: Time.current, updated_at: Time.current }]
+        )
       end
 
       describe 'ranking tiers' do

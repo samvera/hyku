@@ -171,6 +171,9 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
         # Library of Congress authorities
         expect(remote_authorities).to have_key('loc/subjects')
         expect(remote_authorities).to have_key('loc/names')
+        expect(remote_authorities).to have_key('loc/genreForms')
+        # The spelling profiles used before the dashboard advertised the camelCase
+        # key. Both resolve, so an existing profile keeps working.
         expect(remote_authorities).to have_key('loc/genre_forms')
         expect(remote_authorities).to have_key('loc/countries')
         expect(remote_authorities).to have_key('loc/languages')
@@ -352,6 +355,7 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
         loc/languages
         loc/iso639-1
         loc/iso639-2
+        loc/genreForms
         loc/genre_forms
         loc/countries
         getty/aat

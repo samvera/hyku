@@ -163,5 +163,10 @@ RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
         end
       end
     end
+
+    it 'sends the facet "more" link to the catalog facet action' do
+      get :index
+      expect(controller.send(:search_facet_path, id: 'creator_sim')).to start_with '/catalog/facet/creator_sim'
+    end
   end
 end

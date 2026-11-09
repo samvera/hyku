@@ -7,7 +7,7 @@ module Hyku
       include ScrubText
 
       def to_solr
-        return super unless Flipflop.default_pdf_viewer?
+        return super unless Flipflop.default_pdf_viewer? && resource.original_file&.pdf?
 
         super.tap do |solr_doc|
           solr_doc['all_text_timv'] = solr_doc['all_text_tsimv'] = pdf_text

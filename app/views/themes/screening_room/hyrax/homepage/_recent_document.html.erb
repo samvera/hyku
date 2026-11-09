@@ -1,0 +1,19 @@
+<li class="scr-recent-item">
+  <%= link_to generate_work_url(recent_document, request), class: 'scr-recent-thumb',
+              tabindex: -1, aria: { hidden: true }, data: { turbolinks: block_valkyrie_redirect? } do %>
+    <%= image_tag theme_thumbnail_url(recent_document), alt: '' %>
+  <% end %>
+
+  <h3 class="scr-recent-title">
+    <%= link_to recent_document.title_or_label, generate_work_url(recent_document, request),
+                data: { turbolinks: block_valkyrie_redirect? } %>
+  </h3>
+
+  <% uploaded = Time.zone.parse(recent_document['date_uploaded_dtsi'].to_s) %>
+  <% if uploaded %>
+    <time class="scr-recent-date" datetime="<%= uploaded.iso8601 %>"
+          title="<%= l(uploaded.to_date, format: :long) %>">
+      <%= t('screening_room.homepage.recent.ago', time: time_ago_in_words(uploaded)) %>
+    </time>
+  <% end %>
+</li>

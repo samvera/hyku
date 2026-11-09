@@ -8,6 +8,8 @@ class Ability
   include Hyrax::Ability::UserAbility
   include Hyrax::Ability::WorkAbility
   include Hyrax::Ability::TenantControlAbility
+  include Hyrax::Ability::ControlledVocabularyAbility
+  include Hyrax::Ability::BulkraxAbility
 
   self.ability_logic += %i[
     group_permissions
@@ -17,6 +19,8 @@ class Ability
     work_roles
     featured_collection_abilities
     tenant_control_abilities
+    controlled_vocabulary_abilities
+    bulkrax_default_abilities
   ]
   # If the Groups with Roles feature is disabled, allow registered users to create curation concerns
   # (Works, Collections, and FileSets). Otherwise, omit this ability logic as to not
@@ -40,10 +44,10 @@ class Ability
 
     @user_groups = default_user_groups
     # TODO: necessary to include #hyrax_group_names?
-    @user_groups |= current_user.hyrax_group_names if current_user.respond_to? :hyrax_group_names
-    @user_groups |= ['registered'] if !current_user.new_record? && current_user.roles.count.positive?
+    @user_groups |= current_user_hyrax_groups(Site.instance).map(&:name) if current_user.respond_to?(:hyrax_groups)
     # OVERRIDE: add the names of all user's roles to the array of user_groups
     @user_groups |= all_user_and_group_roles
+    @user_groups |= ['registered'] if !current_user.new_record? && current_user.roles.any?
 
     @user_groups
   end
@@ -87,11 +91,11 @@ class Ability
 
   # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker
   def superadmin?
-    current_user.has_role? :superadmin
+    current_user.has_cached_role? :superadmin
   end
 
   def tenant_superadmin?
-    current_user.has_role?(:superadmin, Site.instance)
+    current_user.has_cached_role?(:superadmin, Site.instance)
   end
 
   # @return [Array<String>] a list of all role names that apply to the user
@@ -108,14 +112,6 @@ class Ability
 
   def featured_collection_abilities
     can %i[create destroy update], FeaturedCollection if admin?
-  end
-
-  def can_import_works?
-    can_create_any_work?
-  end
-
-  def can_export_works?
-    can_create_any_work?
   end
 
   ##

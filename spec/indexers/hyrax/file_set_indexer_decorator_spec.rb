@@ -21,5 +21,13 @@ RSpec.describe Hyrax::FileSetIndexerDecorator, type: :decorator do
       # expect(solr_document['all_text_tsimv'].first).to start_with("; ORIGINALITY AUTHENTICITY LEGACY KJ? Kolbe 6?")
       expect(solr_document).to have_key('all_text_tsimv')
     end
+
+    it 'does not overwrite OCR text for non-PDF files when PDF.js is on' do
+      test_strategy.switch!(:default_pdf_viewer, true)
+      allow(file_set).to receive(:pdf?).and_return(false)
+      indexer = Hyrax::FileSetIndexer.new(file_set)
+      solr_doc = indexer.generate_solr_document
+      expect(solr_doc).not_to have_key('all_text_timv')
+    end
   end
 end

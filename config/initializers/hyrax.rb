@@ -185,8 +185,14 @@ Hyrax.config do |config|
 
     width.nil? || height.nil? ? '320x240' : "#{width}x#{height}"
   end
+  # TODO: remove the webm output and this warning in the next major version. See samvera/hyku#3143.
+  Deprecation.warn(self, 'Generating a webm derivative for videos is deprecated and will be removed in the ' \
+                         'next major version of Hyku (see samvera/hyku#3143). If your site does not need ' \
+                         'webm, remove the `webm` entry from config.derivative_options[:video] in your own ' \
+                         'initializer override.')
   config.derivative_options[:video] = [
     { label: :thumbnail, format: 'jpg', url: 'thumbnail', mime_type: 'image/jpeg', size: video_size },
+    { label: 'webm', format: 'webm', url: 'webm', mime_type: 'video/webm', container: 'service_file', size: video_size },
     { label: 'mp4', format: 'mp4', url: 'mp4', mime_type: 'video/mp4', container: 'service_file', size: video_size }
   ]
 
@@ -259,6 +265,11 @@ Hyrax.config do |config|
   original_translator = config.translate_id_to_uri
   config.translate_id_to_uri = ->(id) { original_translator.call(id.to_s) }
 
+  config.flexible_schema_validators += %w[
+    Hyku::FlexibleSchemaValidators::ModsMappingValidator
+    Hyku::FlexibleSchemaValidators::DublinCoreMappingValidator
+  ]
+
   # Extend the redirects reserved-prefix list with Hyku-specific routes that
   # the upstream Hyrax default doesn't know about. Excludes admin-host-only
   # routes (/account, /proprietor) since those are host-scoped via
@@ -305,6 +316,12 @@ Qa::Authorities::Local.register_subauthority('mesh', 'Qa::Authorities::Mesh')
 Rails.application.config.to_prepare do
   Hyrax.config.file_set_indexer = Hyku::Indexers::FileSetIndexer
 
+  # Resolves a controlled term's id to its label for indexing and display.
+  # Hyrax's own QA resolver sees only the yaml authorities in config/authorities,
+  # so Hyku's subclass adds the dashboard-created ones and keys its cache by
+  # tenant.
+  Hyrax.config.controlled_vocabulary_label_service = Hyku::ControlledVocabularyLabelService.new
+
   # NOTE: Remote authorities like LOC don't need explicit registration
   # They are available by default through the QA engine routes
 
@@ -314,7 +331,7 @@ Rails.application.config.to_prepare do
   require 'hydra/derivatives'
   Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
 
-  Hyrax.publisher.subscribe(HyraxListener.new)
+  Hyku::ListenerSubscription.replace(HyraxListener.new)
 
   unless Hyrax::Transactions::Container.key?('collection_resource.save_collection_thumbnail')
     Hyrax::Transactions::Container.namespace('collection_resource') do |ops|

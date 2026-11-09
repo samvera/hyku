@@ -17,7 +17,7 @@
 
   <div class="hrt-show-body">
     <div class="hrt-show-main">
-      <% if hrt_viewer?(@presenter) %>
+      <% if theme_viewer?(@presenter) %>
         <% if @presenter.video_embed_viewer? %>
           <div class="hrt-viewer hrt-viewer-media"><%= render 'video_embed_viewer', presenter: @presenter %></div>
         <% elsif @presenter.iiif_viewer? %>

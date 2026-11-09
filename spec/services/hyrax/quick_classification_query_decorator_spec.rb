@@ -45,7 +45,7 @@ RSpec.describe Hyrax::QuickClassificationQuery, type: :decorator do
         end
 
         before do
-          allow(Site).to receive(:account).and_return(search_only_account)
+          allow(site).to receive(:account).and_return(search_only_account)
         end
 
         it 'returns Site.instance.available_works without trying to access flexible schema' do

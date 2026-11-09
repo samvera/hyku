@@ -61,7 +61,7 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
   config.force_ssl = true
   config.ssl_options = {
     redirect: {
-      exclude: ->(request) { request.path == '/healthz' }
+      exclude: ->(request) { request.path.start_with?('/healthz') }
     }
   }
   # Skip http-to-https redirect for the default health check endpoint.

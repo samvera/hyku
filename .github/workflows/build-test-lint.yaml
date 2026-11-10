@@ -209,7 +209,7 @@ jobs:
     uses: notch8/actions/.github/workflows/test.yaml@v1.0.6
     with:
       confdir: "/app/samvera/hyrax-webapp/solr/conf"
-      # Runs on six nodes split by the `flexible:` tag (see bin/ci_rspec). Set the repository Actions
+      # Runs on six nodes, three per metadata mode (see bin/ci_rspec). Set the repository Actions
       # variable HYKU_CI_FLEXIBLE_SPLIT to 'false' to fall back to three nodes with flexible metadata off.
       node_index: ${{ vars.HYKU_CI_FLEXIBLE_SPLIT != 'false' && '[0, 1, 2, 3, 4, 5]' || '[0, 1, 2]' }}
       node_total: ${{ vars.HYKU_CI_FLEXIBLE_SPLIT != 'false' && '[6]' || '[3]' }}

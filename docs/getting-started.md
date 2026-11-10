@@ -144,22 +144,19 @@ Run the suite with flexible metadata off and on to cover both modes.
 them twice, once with flexible metadata on and once with it off. One setting says "start the app this
 way", the other says "run these tests", and for untagged specs the two answers don't line up.
 
-Day to day you'll mostly use only `HYKU_TEST_FLEXIBLE_METADATA`. The second setting is mainly for CI, and
-for rerunning exactly what a CI node ran: the node's log prints the full command (see `spec/rails_helper.rb`
-for how the filter works).
+Day to day you'll mostly use only `HYKU_TEST_FLEXIBLE_METADATA`. The second setting is for narrowing a
+run to one group of specs (see `spec/rails_helper.rb` for how the filter works).
 
 This format is intended to be extensible to other configurations that Hyku is able to enable.
 
 #### CI
 
-The main `test` job runs on six nodes, split by the `flexible:` tag (see `bin/ci_rspec`):
+The main `test` job runs on six nodes, three per metadata mode (see `bin/ci_rspec`):
 
 | Node | Examples | Flexible metadata |
 |---|---|---|
-| 0 | `flexible: true` | on |
-| 1 | `flexible: false` | off |
-| 2-3 | untagged, split across the pair | on |
-| 4-5 | untagged, split across the pair | off |
+| 0-2 | untagged and `flexible: true`, split across the three | on |
+| 3-5 | untagged and `flexible: false`, split across the three | off |
 
 Each node prints its mode at the top of its log, with the command to rerun it locally. To fall back to
 three nodes with flexible metadata off, set the repository Actions variable `HYKU_CI_FLEXIBLE_SPLIT` to

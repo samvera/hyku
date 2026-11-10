@@ -81,6 +81,47 @@ RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
       end
     end
 
+    context 'with more collections than a search page holds' do
+      let!(:collections) { %w[Charlie Alpha Bravo].map { |title| FactoryBot.valkyrie_create(:hyku_collection, :public, title: [title]) } }
+
+      def collection_titles
+        assigns(:collections).map { |collection| collection['title_tesim'].first }
+      end
+
+      before do
+        allow(controller.blacklight_config).to receive(:max_per_page).and_return(2)
+        allow(Hyrax.config).to receive(:solr_rows_per_request).and_return(2)
+      end
+
+      it 'lists every collection by title' do
+        get :index
+
+        expect(collection_titles).to eq %w[Alpha Bravo Charlie]
+      end
+
+      it 'lists every collection whatever page the request names' do
+        get :index, params: { page: 2 }
+
+        expect(collection_titles).to eq %w[Alpha Bravo Charlie]
+      end
+
+      it "lists no more collections than the tenant's solr_max_results" do
+        allow(Hyrax.config).to receive(:solr_max_results).and_return(2)
+
+        get :index
+
+        expect(collection_titles).to eq %w[Alpha Bravo]
+      end
+
+      it 'lists no collections when the collection search fails' do
+        allow_any_instance_of(Hyrax::CollectionsService).to receive(:all_search_results).and_raise(Blacklight::Exceptions::InvalidRequest)
+
+        get :index
+
+        expect(assigns(:collections)).to eq []
+      end
+    end
+
     context "with featured works" do
       let!(:my_work) { create(:work, user:) }
 
@@ -146,6 +187,41 @@ RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
           get :index
           expect(response).to be_successful
           expect(assigns(:ir_counts)['facet_counts']['facet_fields']['resource_type_sim']).to include('Article', 1)
+        end
+
+        context 'when the catalog does not facet resource type' do
+          let(:config) do
+            ::CatalogController.blacklight_config.deep_dup.tap do |dup|
+              dup.facet_fields.delete('resource_type_sim')
+              dup.facet_fields.delete('resource_type_label_sim')
+            end
+          end
+
+          before do
+            allow_any_instance_of(::CatalogController).to receive(:blacklight_config).and_return(config)
+          end
+
+          it 'shows the homepage without the stats' do
+            get :index
+            expect(response).to be_successful
+            expect(assigns(:ir_counts)).to be_nil
+          end
+        end
+
+        context 'when the catalog hides the resource type facet' do
+          let(:config) do
+            ::CatalogController.blacklight_config.deep_dup.tap { |dup| dup.facet_fields['resource_type_sim'].if = false }
+          end
+
+          before do
+            allow_any_instance_of(::CatalogController).to receive(:blacklight_config).and_return(config)
+          end
+
+          it 'shows the homepage without the stats, as the sidebar shows nothing' do
+            get :index
+            expect(response).to be_successful
+            expect(assigns(:ir_counts)).to be_nil
+          end
         end
       end
 

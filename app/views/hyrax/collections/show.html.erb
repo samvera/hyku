@@ -72,7 +72,7 @@
       <% unless @presenter.total_viewable_items.blank? %>
         <div class="d-flex space-between">
           <% unless @presenter.creator.blank? %>
-              <div class="hyc-created-by">Created by: <%= @presenter.creator.first %></div>
+              <div class="hyc-created-by">Created by: <%= theme_values(@presenter, :creator).first %></div>
           <% end %>
           <% unless @presenter.modified_date.blank? %>
               <div class="hyc-last-updated">Last Updated: <%= @presenter.modified_date %></div>

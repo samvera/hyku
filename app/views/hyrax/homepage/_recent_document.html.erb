@@ -23,7 +23,7 @@
       <% if Flipflop.home_page_recent_document_show_keyword? %>
         <p class="recent-field">
           <span class="recent-label"><%= t('hyrax.homepage.recently_uploaded.document.keyword_label') %>:</span>
-          <%= link_to_facet_list(recent_document.keyword, 'keyword', t('hyrax.homepage.recently_uploaded.document.keyword_missing')).html_safe %>
+          <%= theme_facet_list(recent_document, :keyword, t('hyrax.homepage.recently_uploaded.document.keyword_missing')).html_safe %>
         </p>
       <% end %>
     </div>

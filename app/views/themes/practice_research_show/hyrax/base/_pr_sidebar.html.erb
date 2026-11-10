@@ -3,7 +3,7 @@
     <%= render 'download_pdf', presenter: presenter %>
   <% end %>
 
-  <% participants = Array(presenter.solr_document.try(:participants)).select { |row| row.is_a?(Hash) } %>
+  <% participants = pr_compound_rows(presenter.solr_document, :participants, schema: compound_schema_for(presenter)) %>
   <% if participants.any? %>
     <section class="pr-card">
       <h2 class="pr-card-head"><%= t('practice_research.show.contributors') %></h2>
@@ -26,7 +26,7 @@
     </section>
   <% end %>
 
-  <% relationships = Array(presenter.solr_document.try(:relationships)).select { |row| row.is_a?(Hash) } %>
+  <% relationships = pr_compound_rows(presenter.solr_document, :relationships, schema: compound_schema_for(presenter)) %>
   <% if relationships.any? %>
     <section class="pr-card">
       <h2 class="pr-card-head"><%= t('practice_research.show.relationships') %></h2>

@@ -28,6 +28,13 @@ RSpec.describe ReferenceHelper, type: :helper do
       expect(helper.ref_creators(object)).to eq('Hine, Lewis Wickes')
     end
 
+    it "shows each controlled creator's indexed label" do
+      document = SolrDocument.new('creator_tesim' => ['http://id.loc.gov/authorities/names/n79021164'],
+                                  'creator_label_tesim' => ['Twain, Mark'])
+
+      expect(helper.ref_creators(document)).to eq('Twain, Mark')
+    end
+
     it 'is nil when there is no creator at all, so the byline is not rendered' do
       expect(helper.ref_creators(double('object', creator: []))).to be_nil
       expect(helper.ref_creators(double('object', creator: nil))).to be_nil
@@ -47,6 +54,16 @@ RSpec.describe ReferenceHelper, type: :helper do
       )
 
       expect(line).to eq('Coast Survey Office · 1912 · Coastal Surveys')
+    end
+
+    it "shows a controlled publisher's indexed label" do
+      line = helper.ref_provenance(
+        document('publisher_tesim' => ['http://id.loc.gov/authorities/names/n80049812'],
+                 'publisher_label_tesim' => ['Coast Survey Office'],
+                 'date_created_tesim' => ['1912'])
+      )
+
+      expect(line).to eq('Coast Survey Office · 1912')
     end
 
     it 'closes the gaps left by the parts a record does not have' do

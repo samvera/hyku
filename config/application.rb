@@ -74,7 +74,7 @@ module Hyku # rubocop:disable Metrics/ModuleLength
       'bulkrax_identifier' => { from: ['source_identifier'], source_identifier: true, generated: true, search_field: 'bulkrax_identifier_tesim' },
       'contributor' => { from: ['contributor'], split: true },
       'create_date' => { from: ['create_date'], split: true },
-      'children' => { from: ['children'], related_children_field_mapping: true },
+      'children' => { from: ['children'], related_children_field_mapping: true, split: '\|' },
       'committee_member' => { from: ['committee_member'], split: '\|' },
       'course' => { from: ['course'] },
       'creator' => { from: ['creator'], split: true },
@@ -114,7 +114,7 @@ module Hyku # rubocop:disable Metrics/ModuleLength
       'oer_size' => { from: ['oer_size'], split: '\|' },
       'on_behalf_of' => { from: ['on_behalf_of'], generated: true },
       'owner' => { from: ['owner'], generated: true },
-      'parents' => { from: ['parents'], related_parents_field_mapping: true },
+      'parents' => { from: ['parents'], related_parents_field_mapping: true, split: '\|' },
       'previous_version' => { from: ['previous_version'], split: '\|' },
       'previous_version_id' => { from: ['previous_version_id'], split: '\|', generated: true },
       'publisher' => { from: ['publisher'], split: true },
@@ -189,9 +189,7 @@ module Hyku # rubocop:disable Metrics/ModuleLength
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    autoload_lib_ignores = %w[assets tasks middleware rubocop]
-    autoload_lib_ignores << 'wings' if ENV["HYRAX_SKIP_WINGS"] == "true"
-    config.autoload_lib(ignore: autoload_lib_ignores)
+    config.autoload_lib(ignore: %w[assets tasks middleware rubocop wings])
     config.add_autoload_paths_to_load_path = true
 
     ##

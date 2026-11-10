@@ -38,4 +38,26 @@ RSpec.describe HyraxListener do
       end
     end
   end
+
+  describe "on_object_deleted" do
+    let(:event) { Dry::Events::Event.new(:on_object_deleted, { object: collection }) }
+    let(:collection) { FactoryBot.build(:hyku_collection, id: 'deleted-collection') }
+
+    before do
+      FeaturedCollection.create!(collection_id: 'deleted-collection')
+      FeaturedCollection.create!(collection_id: 'other-collection')
+    end
+
+    it 'destroys only the deleted collection\'s featured collection' do
+      instance.on_object_deleted(event)
+
+      expect(FeaturedCollection.pluck(:collection_id)).to eq ['other-collection']
+    end
+
+    it 'reads the id when the event carries no object' do
+      instance.on_object_deleted(Dry::Events::Event.new(:on_object_deleted, { id: 'deleted-collection' }))
+
+      expect(FeaturedCollection.pluck(:collection_id)).to eq ['other-collection']
+    end
+  end
 end

@@ -34,7 +34,7 @@
         <ul class="pr-subject-chips" role="list">
           <% subjects.each do |item| %>
             <li>
-              <%= link_to item.value, main_app.search_catalog_path(f: { subject_sim: [item.value] }),
+              <%= link_to item.value, main_app.search_catalog_path(f: { pr_home.subject_field => [item.value] }),
                           class: 'pr-subject-chip' %>
             </li>
           <% end %>

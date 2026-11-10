@@ -85,8 +85,18 @@ class HyraxListener
   # def on_file_set_restored
   # end
 
-  # def on_object_deleted
-  # end
+  ##
+  # Remove a deleted collection from the {FeaturedCollection}. Bulkrax deletes
+  # collections with `object.deleted`, not `collection.deleted`.
+  #
+  # @param event [Dry::Events::Event]
+  def on_object_deleted(event)
+    payload = event.to_h
+    id = payload[:object]&.id || payload[:id]
+    return false if id.blank?
+
+    FeaturedCollection.where(collection_id: id.to_s).destroy_all
+  end
 
   # def on_object_failed_deposit
   # end

@@ -36,5 +36,5 @@ If applicable, add screenshots or small CSV files that would help explain your p
 ## Related issues or work
 If this is related to another issue, provide the URL(s) here.
 
-## Additional context##
+## Additional context
 Add any other context about the problem here.

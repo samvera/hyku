@@ -216,6 +216,15 @@ jobs:
       rspec_cmd: ${{ vars.HYKU_CI_FLEXIBLE_SPLIT != 'false' && 'bin/ci_rspec $CI_NODE_INDEX' || 'gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL' }}
       tag: ${{ github.event_name == 'pull_request' && !contains(fromJSON('["main", "main-test", "staging", "staging-test", "production", "production-test"]'), github.head_ref) && github.event.pull_request.head.sha || github.sha }}
 
+  # The one required test check: its name stays the same however many nodes the test matrix runs on
+  tests-passed:
+    if: always()
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail unless every test node passed
+        run: test "${{ needs.test.result }}" = success
+
   single-tenant-test:
     needs: push
     runs-on: ubuntu-latest

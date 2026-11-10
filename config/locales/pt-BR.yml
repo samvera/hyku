@@ -563,7 +563,6 @@ pt-BR:
           work_editor: Pode ler qualquer Admin Set neste inquilino. Além disso, pode criar, ler, editar e aprovar qualquer Trabalho neste inquilino, bem como mover Obras entre Conjuntos de Administradores e gerenciar Embargos e Locações
       stats:
         collections_over_time: Coleções ao longo do tempo
-        downloads: Downloads
         header: Estatísticas de %{application_name}
         tab_collections: Coleções
         tab_works: Obras

@@ -697,7 +697,6 @@ zh:
           work_editor: 可以创建、阅读、编辑和批准此租户中的任何作品，以及在管理集之间移动作品并管理禁运和租约。
       stats:
         collections_over_time: 收藏随时间变化
-        downloads: 下载
         header: "%{application_name} 的统计信息"
         tab_collections: 收藏
         tab_works: 作品

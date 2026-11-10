@@ -681,7 +681,6 @@ es:
           work_editor: Puede crear, leer, editar y aprobar cualquier Obra en este inquilino, así como mover Obras entre Conjuntos de administración y gestionar Embargos y Arrendamientos.
       stats:
         collections_over_time: Colecciones a lo largo del tiempo
-        downloads: Descargas
         header: Estadísticas de %{application_name}
         tab_collections: Colecciones
         tab_works: Obras

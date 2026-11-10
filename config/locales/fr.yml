@@ -681,7 +681,6 @@ fr:
           work_editor: Permet de créer, lire, modifier et approuver tout travail dans ce locataire, ainsi que de déplacer des travaux entre les ensembles d'administration et de gérer les embargos et les baux.
       stats:
         collections_over_time: Collections au fil du temps
-        downloads: Téléchargements
         header: Statistiques pour %{application_name}
         tab_collections: Collections
         tab_works: Œuvres

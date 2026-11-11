@@ -4,6 +4,7 @@ RSpec.describe Hyrax::MyController, '#blacklight_config' do
   let(:catalog_config) { ::CatalogController.blacklight_config.deep_copy }
 
   before do
+    catalog_config.facet_fields.delete('resource_type_label_sim')
     allow(::CatalogController).to receive(:new).and_return(instance_double(::CatalogController, blacklight_config: catalog_config))
   end
 

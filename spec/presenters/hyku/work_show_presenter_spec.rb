@@ -342,7 +342,8 @@ RSpec.describe Hyku::WorkShowPresenter do
       end
     end
 
-    context "when flexible metadata is enabled" do
+    # Stubs flexible mode on top of a non-flexible boot, so it only runs with flexible off.
+    context "when flexible metadata is enabled", flexible: false do
       let(:enabled_works) { ["GenericWork", "Image", "Etd"] }
 
       before do

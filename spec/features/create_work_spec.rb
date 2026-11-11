@@ -13,10 +13,11 @@ RSpec.describe 'Creating a new Work', type: :feature, clean: true do
     login_as user, scope: :user
   end
 
-  it 'creates the work' do
+  # The work type modal is always in the page, so only a browser can tell whether the click opened it.
+  it 'opens the work type chooser', js: true do
     visit '/'
     click_link "Share Your Work"
-    expect(page).to have_button "Create work"
+    within('#worktypes-to-create', visible: :visible) { expect(page).to have_button "Create work" }
   end
 
   context 'as a user with no roles' do

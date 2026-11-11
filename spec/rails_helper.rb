@@ -222,9 +222,9 @@ RSpec.configure do |config|
 
   # A spec that only works in one metadata mode is tagged `flexible: true` or `flexible: false`;
   # untagged specs run in both. By default, run the examples that apply to this mode.
-  # HYKU_TEST_ONLY_FLEXIBLE_TAG=true|false|untagged keeps only those examples (CI runs one per node;
-  # see bin/ci_rspec). This is one exclusion filter rather than --tag options: a filter value of `true`
-  # matches any truthy tag, and a command-line exclusion on a key drops any inclusion on the same key.
+  # HYKU_TEST_ONLY_FLEXIBLE_TAG=true|false|untagged keeps only those examples. This is one exclusion
+  # filter rather than --tag options: a filter value of `true` matches any truthy tag,
+  # and a command-line exclusion on a key drops any inclusion on the same key.
   # RSpec skips a filter for examples without its key, so untagged examples get `flexible: :untagged`.
   config.define_derived_metadata { |metadata| metadata[:flexible] = :untagged if metadata[:flexible].nil? }
   only_flexible_tag = ENV['HYKU_TEST_ONLY_FLEXIBLE_TAG'].presence

@@ -12,7 +12,9 @@ RSpec.describe Hyrax::QuickClassificationQuery, type: :decorator do
     allow(site).to receive(:available_works).and_return(available_works)
   end
 
-  describe '#initialize' do
+  # Flexible mode also drops work types missing from the metadata profile (see
+  # #filtered_available_works below), so this only holds with flexible off.
+  describe '#initialize', flexible: false do
     it 'uses Site.instance.available_works instead of Hyrax.config.registered_curation_concern_types' do
       expect(subject.instance_variable_get(:@models)).to eq available_works
     end

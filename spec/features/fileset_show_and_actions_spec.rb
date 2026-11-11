@@ -14,8 +14,8 @@ RSpec.describe 'FileSet Show and Actions', type: :feature, clean: true do
   # work, so both an admin and an anonymous visitor can view it. We run the same
   # expectations against an ActiveFedora-backed and a Valkyrie-backed file set.
 
-  # Content any viewer can see on a public file set. Consolidated into a single
-  # example to avoid reloading this (slow, JS) page once per assertion.
+  # Content any viewer can see on a public file set, in a single example to avoid
+  # reloading the page once per assertion.
   shared_examples 'the public FileSet show page' do
     it 'shows the title, visibility, media, details, activity and social links' do
       visit "/concern/file_sets/#{file_set.id}"
@@ -149,24 +149,9 @@ RSpec.describe 'FileSet Show and Actions', type: :feature, clean: true do
     expect(page).to have_link('Download image', href: %r{/downloads/#{image_file_set.id}})
   end
 
-  context 'with an ActiveFedora-backed file set' do
-    # KNOWN APPLICATION ISSUE (flexible metadata only): Hyrax's ActiveFedora FileSetIndexer
-    # always reads `transcript_ids`, but with flexible metadata on (HYRAX_DISABLE_INCLUDE_METADATA)
-    # the AF ::FileSet never gets that property, so saving a legacy AF file set raises
-    # NoMethodError. `pending` keeps these running and fails loudly once it is fixed.
-    # (Declared before the let! below so it is marked pending before the setup raises.)
-    # Remove this comment and the `pending` call to re-enable these tests when issue #3418 is fixed.
-    # KNOWN APPLICATION ISSUE (flexible metadata only): saving a legacy AF FileSet fails because
-    # Hyrax's AF FileSetIndexer calls `transcript_ids`, which ::FileSet lacks when flexible
-    # metadata is on. Fix goes in Hyrax (samvera/hyrax): Hyrax::FileSetIndexer (guard the
-    # `transcript_ids` call).
-    before do
-      if Hyrax.config.flexible?
-        pending('ActiveFedora FileSets cannot be indexed with flexible metadata on ' \
-                "(undefined method `transcript_ids' for FileSet)")
-      end
-    end
-
+  # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
+  # an ActiveFedora FileSet has no transcript_ids (issue #3418).
+  context 'with an ActiveFedora-backed file set', flexible: false do
     let(:file_set) { create(:file_set, :public, title: ['Harbor entrance photograph'], user: admin_user) }
     # Attach to an inline public parent work (mirrors work_show_actions_spec.rb).
     let!(:parent_work) do

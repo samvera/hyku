@@ -13,7 +13,6 @@ RSpec.describe 'Editing an existing Work', type: :feature, js: true, clean: true
   context 'sharing a work' do
     let!(:group) { FactoryBot.create(:group, name: 'dummy') }
 
-    # Potential duplicate: spec/features/work_edit_form_spec.rb:135 (group humanized name offered in the Sharing select)
     it 'displays the groups humanized name' do
       visit "/concern/generic_works/#{ERB::Util.url_encode(work.id)}/edit#share"
 

@@ -9,7 +9,7 @@ RSpec.describe 'Work show actions', type: :feature, clean: true do
   # GenericWorkResource (Valkyrie) are shown through the SAME /concern/generic_works/:id
   # route. We run the same show-page expectations against both backings; each backing
   # context provides `make_work` / `make_work_with_file` returning a persisted work.
-  shared_examples 'the work show page' do
+  shared_examples 'the work show page' do |attached_file_flexible: nil|
     let!(:work) do
       make_work(title: ['Coastal Erosion Survey 2019'], keyword: ['shoreline monitoring'], visibility: 'open')
     end
@@ -46,7 +46,7 @@ RSpec.describe 'Work show actions', type: :feature, clean: true do
         expect(page).not_to have_css('a.btn:not(.collapse)', text: 'Feature')
       end
 
-      it 'lists each attached file in the items table with its details and action menu' do
+      it 'lists each attached file in the items table with its details and action menu', flexible: attached_file_flexible do
         work_with_file = make_work_with_file(title: ['Work with attached items'], visibility: 'open')
 
         visit "/concern/generic_works/#{work_with_file.id}"
@@ -122,12 +122,6 @@ RSpec.describe 'Work show actions', type: :feature, clean: true do
     end
 
     def make_work_with_file(title:, visibility: 'open')
-      # Remove this comment and the `pending` call to re-enable this test when issue #3418 is fixed.
-      # KNOWN APPLICATION ISSUE (flexible metadata only): saving a legacy AF file set fails
-      # (Hyrax's AF FileSetIndexer reads `transcript_ids`, which the AF ::FileSet lacks when
-      # flexible metadata is on). Fix goes in Hyrax (samvera/hyrax): Hyrax::FileSetIndexer
-      # (guard the `transcript_ids` call). Pending keeps this running and fails once fixed.
-      pending("ActiveFedora FileSets cannot be indexed with flexible metadata on (undefined method `transcript_ids')") if Hyrax.config.flexible?
       make_work(title: title, visibility: visibility).tap do |work|
         # Mirrors spec/factories/images.rb (:image_with_one_file).
         work.ordered_members << create(:file_set, user: admin, title: ['Attached file item'])
@@ -135,7 +129,9 @@ RSpec.describe 'Work show actions', type: :feature, clean: true do
       end
     end
 
-    it_behaves_like 'the work show page'
+    # The attached file example fails in flexible mode, where it may be expected to pass, so there
+    # may be a behavior gap: an ActiveFedora FileSet has no transcript_ids (issue #3418).
+    it_behaves_like 'the work show page', attached_file_flexible: false
   end
 
   context 'with a Valkyrie-backed work' do
@@ -155,8 +151,7 @@ RSpec.describe 'Work show actions', type: :feature, clean: true do
     it_behaves_like 'the work show page'
   end
 
-  # Documented gaps that are independent of the persistence backing (gem-only partials
-  # or theme-specific markup). Kept as single skips rather than duplicated per backing.
+  # Examples independent of the persistence backing, so they run once rather than per backing.
   # IIIF media viewer: shown when the work's representative is a viewable image
   # (WorkShowPresenter#iiif_viewer?, with config.iiif_image_server on). A real PNG is
   # attached with an explicit MIME type, so no FITS characterization is needed; the

@@ -131,7 +131,6 @@ RSpec.describe 'Work edit form', type: :feature, js: true, clean: true do
         expect(page).to have_css('#save_perm_note', visible: :all)
       end
 
-      # Potential duplicate: spec/features/edit_work_spec.rb:17 (group humanized name offered in the Sharing select)
       it 'adds a group share, notes it is unsaved, and persists it when the work is saved' do
         visit "/concern/generic_works/#{existing_work.id}/edit"
         click_link 'Sharing'

@@ -381,7 +381,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         visit "/admin/collection_types/#{exhibit_collection_type.id}/edit"
       end
 
-      it 'all settings are disabled', :js, ci: 'skip' do
+      it 'all settings are disabled', :js do
         expect(exhibit_collection_type.collections.any?).to be true
 
         click_link('Settings', href: '#settings')
@@ -456,7 +456,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         visit '/admin/collection_types'
       end
 
-      it 'shows unable to delete dialog and forwards to All Collections with filter applied', :js, ci: 'skip' do
+      it 'shows unable to delete dialog and forwards to All Collections with filter applied', :js do
         expect(page).to have_content(not_empty_collection_type.title)
 
         expect(not_empty_collection_type.collections.to_a).to include(collection)

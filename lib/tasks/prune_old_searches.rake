@@ -18,12 +18,7 @@ namespace :hyku do
                            deleted. (default: false)
   DESC
   task prune_old_searches: :environment do
-    options = {
-      older_than_days: ENV.fetch('OLDER_THAN_DAYS', 30).to_i,
-      batch_size: ENV.fetch('BATCH_SIZE', 5_000).to_i,
-      batch_sleep_seconds: ENV.fetch('BATCH_SLEEP_SECONDS', 1).to_f,
-      dry_run: ActiveModel::Type::Boolean.new.cast(ENV.fetch('DRY_RUN', false))
-    }
+    options = PruneJobs.options_from_env(older_than_days: OldSearchesPruner::DEFAULT_OLDER_THAN_DAYS)
     failed = []
 
     Account.find_each do |account|

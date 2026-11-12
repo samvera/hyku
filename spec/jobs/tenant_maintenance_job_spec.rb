@@ -10,4 +10,17 @@ RSpec.describe TenantMaintenanceJob, type: :job do
       expect { TenantMaintenanceJob.perform_now }.to have_enqueued_job(TenantMaintenanceJob)
     end
   end
+
+  describe 'guest user pruning' do
+    it 'does not enqueue PruneStaleGuestUsersJob by default' do
+      switch!(account)
+      expect { TenantMaintenanceJob.perform_now }.not_to have_enqueued_job(PruneStaleGuestUsersJob)
+    end
+
+    it 'enqueues PruneStaleGuestUsersJob when prune jobs are enabled' do
+      allow(PruneJobs).to receive(:enabled?).and_return(true)
+      switch!(account)
+      expect { TenantMaintenanceJob.perform_now }.to have_enqueued_job(PruneStaleGuestUsersJob)
+    end
+  end
 end

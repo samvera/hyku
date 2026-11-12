@@ -215,7 +215,7 @@ class Account < ApplicationRecord
     ]
 
     jobs_to_schedule << BatchEmailNotificationJob if batch_email_notifications
-    jobs_to_schedule << PruneOldSearchesJob if PruneJobs.enabled?
+    jobs_to_schedule.concat(prune_jobs)
     jobs_to_schedule << DemoTenantResetJob if public_demo_tenant?
 
     if ActiveModel::Type::Boolean.new.cast(ENV.fetch("HYKU_USE_QUEUED_INDEX", false))
@@ -236,6 +236,10 @@ class Account < ApplicationRecord
   end
 
   private
+
+  def prune_jobs
+    PruneJobs.enabled? ? [PruneOldSearchesJob] : []
+  end
 
   def schedule_job(klass)
     klass == DemoTenantResetJob ? klass.schedule_first_run : klass.perform_later

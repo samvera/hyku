@@ -138,6 +138,17 @@ Tenants flagged as public demos are wiped and re-seeded every night by `DemoTena
 | DEMO_HEALTH_CHECK  | Name of a class responding to `.call(account)`, run after each reset. |
 | DEMO_RESET_TIME    | Local time of the nightly reset as `HH:MM`, optionally followed by a time zone name, e.g. `03:00 America/Los_Angeles`. Defaults to midnight in the application time zone (UTC unless configured). An invalid value logs a warning and falls back to midnight. |
 
+## Scheduled Upload Cleanup
+
+Hyrax upload staging files accumulate on disk. When `HYKU_SCHEDULE_UPLOADS_CLEANUP` is on, `TenantMaintenanceJob` enqueues `UploadsCleanupJob` daily, which runs the same cleanup as `bin/rails hyku:cleanup_uploads` and accepts the same environment variables (`DELETE_INGESTED_AFTER_DAYS`, `DELETE_ALL_AFTER_DAYS`, `EXTRA_UPLOAD_PATHS`, `INCLUDE_ORPHANED_TENANT_DIRS`).
+
+Files are deleted permanently. Set `DRY_RUN=true`, on the rake task or on the worker environment, to log the files that would be deleted without deleting anything. The worker that runs the job must mount the uploads volume; tenants whose staging directory is not visible there are skipped.
+
+| Name                           | Description |
+| ------------------------------ | ----------- |
+| HYKU_SCHEDULE_UPLOADS_CLEANUP  | Set to `true` to schedule the daily cleanup. Off by default because it deletes files. |
+| DRY_RUN                        | Set to `true` to log what would be deleted without deleting. |
+
 ## Flexible Metadata
 
 Hyku v6.2 and later includes flexible metadata functionality that allows administrators to configure metadata schemas through the UI using M3 (Machine-readable Metadata Modeling) profiles. This feature is **disabled by default** and must be explicitly enabled.

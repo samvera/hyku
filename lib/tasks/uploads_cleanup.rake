@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Scheduled via cron / Kubernetes CronJob (or similar). Uses ActiveJob only—works with Sidekiq, GoodJob,
-# or any other queue adapter; no GoodJob-specific APIs.
+# Scheduled via cron / Kubernetes CronJob (or similar), or in-app by UploadsCleanupJob. Uses ActiveJob only—works
+# with Sidekiq, GoodJob, or any other queue adapter; no GoodJob-specific APIs.
 
 namespace :hyku do
   desc <<~DESC
@@ -27,6 +27,11 @@ namespace :hyku do
                                     deleted tenants). Files older than DELETE_ALL_AFTER_DAYS are
                                     removed. (default: false)
 
+      DRY_RUN                       Set to "true" to log the files that would be deleted without
+                                    deleting anything. (default: false)
+
+    The same cleanup runs daily as UploadsCleanupJob when HYKU_SCHEDULE_UPLOADS_CLEANUP is on.
+
     Example – one-time cleanup after an HYRAX_UPLOAD_PATH migration:
 
       DELETE_ALL_AFTER_DAYS=60 \\
@@ -35,11 +40,6 @@ namespace :hyku do
       bin/rails hyku:cleanup_uploads
   DESC
   task cleanup_uploads: :environment do
-    UploadsCleanupService.new(
-      delete_ingested_after_days: ENV.fetch("DELETE_INGESTED_AFTER_DAYS", "180").to_i,
-      delete_all_after_days: ENV.fetch("DELETE_ALL_AFTER_DAYS", "730").to_i,
-      extra_upload_paths: ENV.fetch("EXTRA_UPLOAD_PATHS", "").split(",").map(&:strip).reject(&:empty?),
-      include_orphaned_tenant_dirs: ActiveModel::Type::Boolean.new.cast(ENV.fetch("INCLUDE_ORPHANED_TENANT_DIRS", "false"))
-    ).run
+    UploadsCleanupService.new(**UploadsCleanupService.options_from_env).run
   end
 end

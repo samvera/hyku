@@ -17,16 +17,34 @@
 class UploadsCleanupService
   TENANT_UUID_PATTERN = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i
 
+  # Options as read from the environment by the rake task and UploadsCleanupJob.
+  def self.options_from_env
+    {
+      delete_ingested_after_days: ENV.fetch("DELETE_INGESTED_AFTER_DAYS", "180").to_i,
+      delete_all_after_days: ENV.fetch("DELETE_ALL_AFTER_DAYS", "730").to_i,
+      extra_upload_paths: ENV.fetch("EXTRA_UPLOAD_PATHS", "").split(",").map(&:strip).reject(&:empty?),
+      include_orphaned_tenant_dirs: env_boolean("INCLUDE_ORPHANED_TENANT_DIRS"),
+      dry_run: env_boolean("DRY_RUN")
+    }
+  end
+
+  def self.env_boolean(name)
+    ActiveModel::Type::Boolean.new.cast(ENV.fetch(name, "false"))
+  end
+  private_class_method :env_boolean
+
   def initialize(
     delete_ingested_after_days: 180,
     delete_all_after_days: 730,
     extra_upload_paths: [],
-    include_orphaned_tenant_dirs: false
+    include_orphaned_tenant_dirs: false,
+    dry_run: false
   )
     @delete_ingested_after_days = delete_ingested_after_days
     @delete_all_after_days = delete_all_after_days
     @extra_upload_paths = Array(extra_upload_paths).map(&:to_s).reject(&:empty?)
     @include_orphaned_tenant_dirs = include_orphaned_tenant_dirs
+    @dry_run = dry_run
     @queued_paths = Set.new
   end
 
@@ -64,7 +82,7 @@ class UploadsCleanupService
     end
 
     Rails.logger.info "Enqueueing cleanup for #{tenant} → #{uploads_path}"
-    CleanupUploadFilesJob.perform_later(
+    enqueue_job(
       delete_ingested_after_days: @delete_ingested_after_days,
       uploads_path: uploads_path,
       delete_all_after_days: @delete_all_after_days,
@@ -119,12 +137,17 @@ class UploadsCleanupService
 
     Rails.logger.info "Enqueueing orphaned tenant cleanup for #{tenant_id} → #{uploads_path} " \
          "(all files older than #{@delete_all_after_days} days)"
-    CleanupUploadFilesJob.perform_later(
+    enqueue_job(
       delete_ingested_after_days: @delete_all_after_days,
       uploads_path: uploads_path,
       delete_all_after_days: @delete_all_after_days,
       tenant: nil
     )
     @queued_paths << uploads_path
+  end
+
+  def enqueue_job(**args)
+    args[:dry_run] = true if @dry_run
+    CleanupUploadFilesJob.perform_later(**args)
   end
 end

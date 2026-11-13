@@ -51,6 +51,12 @@ A fix that can't wait for the next promotion goes into the environment branch di
 2. Open a PR into `staging`, label it `patch-ver`, and merge. Promote to `production` as usual.
 3. The auto-merger opens merge-down PRs (`staging` -> `main`, and `production` -> `staging`). Review and merge them, so `main` never lacks a commit an environment has. Otherwise the next promotion reverts the fix.
 
+## Dependency updates
+
+Every Monday morning Dependabot opens one grouped minor and patch PR against `main` per ecosystem (bundler, npm, GitHub Actions), plus one PR per major version. Security fixes are grouped into one PR per ecosystem whenever an alert is raised, any day of the week. Gems that track a git branch, such as `hyrax`, are bumped by hand.
+
+A grouped minor or patch PR can merge straight to `main` once Build Test Lint is green, because the image build compiles the assets and runs `yarn install`. For an npm group, also open a work with a file and confirm the viewer loads. Review a major version like any other change.
+
 ## Releases
 
 Release notes are drafted with [release-drafter](https://github.com/release-drafter/release-drafter). Nothing publishes on its own.

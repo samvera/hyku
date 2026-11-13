@@ -71,4 +71,20 @@ RSpec.describe CleanupUploadFilesJob do
       end.not_to have_enqueued_job(CleanupSubDirectoryJob)
     end
   end
+
+  context 'with dry_run: true' do
+    before do
+      allow(Dir).to receive(:exist?).and_call_original
+      allow(Dir).to receive(:exist?).with(carrierwave_dir).and_return(true)
+    end
+
+    it 'passes dry_run to the child job' do
+      expect do
+        described_class.perform_now(delete_ingested_after_days: 180, uploads_path: uploads_path,
+                                    tenant: tenant, dry_run: true)
+      end.to have_enqueued_job(CleanupSubDirectoryJob)
+        .with(delete_ingested_after_days: 180, directory: carrierwave_dir, delete_all_after_days: 730,
+              tenant: tenant, dry_run: true)
+    end
+  end
 end

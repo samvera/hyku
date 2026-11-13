@@ -173,4 +173,17 @@ RSpec.describe CleanupSubDirectoryJob do
         .not_to raise_error
     end
   end
+
+  context 'with dry_run: true' do
+    it 'deletes nothing and counts the files it would delete' do
+      expect(File).not_to receive(:delete)
+      expect(FileUtils).not_to receive(:rmdir)
+
+      job = described_class.new
+      job.perform(delete_ingested_after_days: 180, directory: base_dir, delete_all_after_days: 730,
+                  tenant: tenant, dry_run: true)
+
+      expect(job.files_deleted).to eq 3
+    end
+  end
 end

@@ -15,6 +15,44 @@ RSpec.describe SolrDocument, type: :model do
     allow(Hyrax::SolrService).to receive(:post).and_return(query_result)
   end
 
+  describe 'image dimensions' do
+    let(:autorotate) { true }
+    let(:orientation) { ['normal, rotated ccw 90°'] }
+    let(:solr_document) { described_class.new('width_is' => 300, 'height_is' => 200, 'orientation_tesim' => orientation) }
+
+    before do
+      without_partial_double_verification { allow(Riiif).to receive(:autorotate?).and_return(autorotate) }
+    end
+
+    it 'swaps width and height for a 90 degree orientation' do
+      expect([solr_document.width, solr_document.height]).to eq [200, 300]
+    end
+
+    context 'with a 180 degree orientation' do
+      let(:orientation) { ['normal, rotated 180°'] }
+
+      it 'keeps the stored dimensions' do
+        expect([solr_document.width, solr_document.height]).to eq [300, 200]
+      end
+    end
+
+    context 'without an orientation' do
+      let(:orientation) { nil }
+
+      it 'keeps the stored dimensions' do
+        expect([solr_document.width, solr_document.height]).to eq [300, 200]
+      end
+    end
+
+    context 'when autorotate is off' do
+      let(:autorotate) { false }
+
+      it 'keeps the stored dimensions' do
+        expect([solr_document.width, solr_document.height]).to eq [300, 200]
+      end
+    end
+  end
+
   describe '#load_parent_docs' do
     it 'loads parent documents from Solr' do
       parent_docs = solr_document.load_parent_docs

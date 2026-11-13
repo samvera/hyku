@@ -205,6 +205,7 @@ class Account < ApplicationRecord
     ActiveJob::Base.find_job(klass: klass, tenant_id: self.tenant)
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   def find_or_schedule_jobs
     account = Site.account
     AccountElevator.switch!(self)
@@ -215,6 +216,7 @@ class Account < ApplicationRecord
     ]
 
     jobs_to_schedule << BatchEmailNotificationJob if batch_email_notifications
+    jobs_to_schedule << PruneOldSearchesJob if PruneJobs.enabled?
     jobs_to_schedule << DemoTenantResetJob if public_demo_tenant?
 
     if ActiveModel::Type::Boolean.new.cast(ENV.fetch("HYKU_USE_QUEUED_INDEX", false))
@@ -233,6 +235,7 @@ class Account < ApplicationRecord
 
     account ? AccountElevator.switch!(account) : reset!
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   private
 

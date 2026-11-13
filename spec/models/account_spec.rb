@@ -681,6 +681,31 @@ RSpec.describe Account, type: :model do
       account.find_or_schedule_jobs
     end
 
+    context 'with prune jobs enabled' do
+      before do
+        allow(PruneJobs).to receive(:enabled?).and_return(true)
+        allow(account).to receive(:find_job).and_return(false)
+        allow(EmbargoAutoExpiryJob).to receive(:perform_later)
+        allow(LeaseAutoExpiryJob).to receive(:perform_later)
+      end
+
+      it 'schedules PruneOldSearchesJob' do
+        expect(PruneOldSearchesJob).to receive(:perform_later)
+        account.find_or_schedule_jobs
+      end
+
+      it 'does not schedule it when it already exists' do
+        allow(account).to receive(:find_job).with(PruneOldSearchesJob).and_return(true)
+        expect(PruneOldSearchesJob).not_to receive(:perform_later)
+        account.find_or_schedule_jobs
+      end
+    end
+
+    it 'does not schedule PruneOldSearchesJob by default' do
+      expect(PruneOldSearchesJob).not_to receive(:perform_later)
+      account.find_or_schedule_jobs
+    end
+
     context 'with batch email notifications enabled' do
       before do
         account.settings['batch_email_notifications'] = true

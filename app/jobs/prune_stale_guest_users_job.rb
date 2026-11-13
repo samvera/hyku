@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
+# Users are shared across tenants, so this is not a per-tenant job; TenantMaintenanceJob enqueues it
+# daily when HYKU_SCHEDULE_PRUNE_JOBS is on. Each run is capped by HYKU_PRUNE_MAX_BATCHES.
 class PruneStaleGuestUsersJob < ApplicationJob
   non_tenant_job
-  # TODO: disable this job for deploy
-  # repeat 'every week at 8am' # midnight PST
 
   def perform
-    RolesService.prune_stale_guest_users
+    StaleGuestUsersPruner.call(max_batches: PruneJobs.max_batches)
   end
 end

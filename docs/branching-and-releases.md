@@ -51,6 +51,20 @@ A fix that can't wait for the next promotion goes into the environment branch di
 2. Open a PR into `staging`, label it `patch-ver`, and merge. Promote to `production` as usual.
 3. The auto-merger opens merge-down PRs (`staging` -> `main`, and `production` -> `staging`). Review and merge them, so `main` never lacks a commit an environment has. Otherwise the next promotion reverts the fix.
 
+Security updates branch from `production` instead; see [Dependency updates](#dependency-updates).
+
+## Dependency updates
+
+Every Monday morning Dependabot opens one grouped minor and patch PR against `main` per ecosystem (bundler, npm, GitHub Actions), plus one PR per major version. Security fixes are grouped into one PR per ecosystem whenever an alert is raised, any day of the week. Gems that track a git branch, such as `hyrax`, are bumped by hand.
+
+A grouped minor or patch PR can merge straight to `main` once Build Test Lint is green, because the image build compiles the assets and runs `yarn install`. For an npm group, also open a work with a file and confirm the viewer loads. Review a major version like any other change.
+
+A security PR ships as a hotfix to `production`, so production gets the fix first and it flows down from there. Dependabot only opens security PRs against `main` (`target-branch` doesn't apply to them), so move it by hand:
+
+1. Branch from `production` (`git switch -c hotfix/<name> origin/production`) and cherry-pick the Dependabot PR's commit.
+2. Open a PR into `production`, label it `patch-ver`, and merge.
+3. Merge the auto-merger's merge-down PRs (`production` -> `staging` -> `main`), then close the Dependabot PR.
+
 ## Releases
 
 Release notes are drafted with [release-drafter](https://github.com/release-drafter/release-drafter). Nothing publishes on its own.

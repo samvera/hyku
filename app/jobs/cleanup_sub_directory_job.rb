@@ -19,9 +19,10 @@ class CleanupSubDirectoryJob < ApplicationJob
 
   attr_reader :delete_ingested_after_days, :delete_all_after_days, :directory, :tenant, :files_checked, :files_deleted
 
-  def perform(delete_ingested_after_days:, directory:, delete_all_after_days: 730, tenant: nil)
+  def perform(delete_ingested_after_days:, directory:, delete_all_after_days: 730, tenant: nil, dry_run: false)
     assert_ingest_staging_directory!(directory)
 
+    @dry_run = dry_run
     @directory = directory
     @delete_ingested_after_days = delete_ingested_after_days
     @delete_all_after_days = delete_all_after_days
@@ -30,7 +31,8 @@ class CleanupSubDirectoryJob < ApplicationJob
     @files_deleted = 0
     process_upload_directories
     delete_empty_directories
-    logger.info("Completed #{directory}: checked #{@files_checked}, deleted #{@files_deleted}")
+    verb = @dry_run ? 'would delete' : 'deleted'
+    logger.info("Completed #{directory}: checked #{@files_checked}, #{verb} #{@files_deleted}")
   end
 
   private
@@ -59,13 +61,21 @@ class CleanupSubDirectoryJob < ApplicationJob
       next unless File.file?(path)
       next unless should_be_deleted?(path, uploaded_file_id)
 
-      File.delete(path)
+      delete_file(path)
       @files_deleted += 1
       logger.info("Checked #{@files_checked}, deleted #{@files_deleted} files") if (@files_deleted % 100).zero?
     end
   end
 
+  def delete_file(path)
+    return logger.info("Dry run: would delete #{path}") if @dry_run
+
+    File.delete(path)
+  end
+
   def delete_empty_directories
+    return if @dry_run
+
     Dir.glob("#{directory}/*").select { |path| File.directory?(path) }.each do |dir|
       FileUtils.rmdir(dir)
     rescue Errno::ENOTEMPTY

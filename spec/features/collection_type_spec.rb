@@ -30,6 +30,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
     end
 
     # NOTE(bkiahstroud): set :js to false because the page can't see the modal Delete button if it's true
+    # Potential duplicate: spec/features/collection_management_spec.rb:403 (Edit/Delete buttons per collection type)
     it 'has page title and lists collection types', js: false do
       expect(page).to have_content 'Collection Types'
       expect(page).to have_content 'Admin Set'

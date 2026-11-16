@@ -8,6 +8,7 @@ class TenantMaintenanceJob < ApplicationJob
   def perform
     Account.find_each(&:find_or_schedule_jobs)
     PruneStaleGuestUsersJob.perform_later if PruneJobs.enabled?
+    UploadsCleanupJob.perform_later if UploadsCleanupJob.enabled?
     TenantMaintenanceJob.set(wait_until: Date.tomorrow.midnight).perform_later
   end
 end

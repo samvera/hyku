@@ -18,10 +18,12 @@ RSpec.describe 'admin/groups/index', type: :view do
       render
     end
 
+    # Potential duplicate: spec/features/manage_users_and_groups_spec.rb:104 (total number of groups)
     it 'reports the total number of groups' do
       expect(rendered).to have_selector('b', text: '2 groups')
     end
 
+    # Potential duplicate: spec/features/manage_users_and_groups_spec.rb:111 (group name, user count, created date)
     it 'renders a list of accounts' do
       expect(rendered).to have_selector('td', text: group_1.humanized_name)
       expect(rendered).to have_selector('td', text: group_1.number_of_users)

@@ -146,6 +146,16 @@ Anonymous searches and guest users accumulate without bound. When `HYKU_SCHEDULE
 | ------------------------- | ----------- |
 | HYKU_SCHEDULE_PRUNE_JOBS  | Set to `true` to schedule the jobs. Off by default because they delete rows. |
 | HYKU_PRUNE_MAX_BATCHES    | Batches (5,000 rows each) one run may delete before stopping; a large backlog drains over several days. Defaults to 100. Run the rake tasks once by hand to clear an existing backlog quickly. |
+## Scheduled Upload Cleanup
+
+Hyrax upload staging files accumulate on disk. When `HYKU_SCHEDULE_UPLOADS_CLEANUP` is on, `TenantMaintenanceJob` enqueues `UploadsCleanupJob` daily, which runs the same cleanup as `bin/rails hyku:cleanup_uploads` and accepts the same environment variables (`DELETE_INGESTED_AFTER_DAYS`, `DELETE_ALL_AFTER_DAYS`, `EXTRA_UPLOAD_PATHS`, `INCLUDE_ORPHANED_TENANT_DIRS`).
+
+Files are deleted permanently. Set `DRY_RUN=true`, on the rake task or on the worker environment, to log the files that would be deleted without deleting anything. The worker that runs the job must mount the uploads volume; tenants whose staging directory is not visible there are skipped.
+
+| Name                           | Description |
+| ------------------------------ | ----------- |
+| HYKU_SCHEDULE_UPLOADS_CLEANUP  | Set to `true` to schedule the daily cleanup. Off by default because it deletes files. |
+| DRY_RUN                        | Set to `true` to log what would be deleted without deleting. |
 
 ## Flexible Metadata
 

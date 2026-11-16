@@ -8,7 +8,7 @@ class CleanupUploadFilesJob < ApplicationJob
   CARRIERWAVE_SUBDIR = File.join("hyrax", "uploaded_file", "file").freeze
 
   attr_reader :uploads_path, :tenant
-  def perform(delete_ingested_after_days:, uploads_path:, delete_all_after_days: 730, tenant: nil)
+  def perform(delete_ingested_after_days:, uploads_path:, delete_all_after_days: 730, tenant: nil, dry_run: false)
     @uploads_path = uploads_path
     @tenant = tenant
     carrierwave_dir = File.join(uploads_path, CARRIERWAVE_SUBDIR)
@@ -20,12 +20,14 @@ class CleanupUploadFilesJob < ApplicationJob
 
     logger.info(message(carrierwave_dir, delete_ingested_after_days, delete_all_after_days))
 
-    CleanupSubDirectoryJob.perform_later(
+    child_args = {
       delete_ingested_after_days: delete_ingested_after_days,
       directory: carrierwave_dir,
       delete_all_after_days: delete_all_after_days,
       tenant: tenant
-    )
+    }
+    child_args[:dry_run] = true if dry_run
+    CleanupSubDirectoryJob.perform_later(**child_args)
   end
 
   private

@@ -683,7 +683,8 @@ RSpec.describe Account, type: :model do
 
     context 'with prune jobs enabled' do
       before do
-        allow(PruneJobs).to receive(:enabled?).and_return(true)
+        allow(ENV).to receive(:fetch).and_call_original
+        allow(ENV).to receive(:fetch).with('HYKU_SCHEDULE_PRUNE_JOBS', anything).and_return('true')
         allow(account).to receive(:find_job).and_return(false)
         allow(EmbargoAutoExpiryJob).to receive(:perform_later)
         allow(LeaseAutoExpiryJob).to receive(:perform_later)

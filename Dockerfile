@@ -26,10 +26,10 @@ ARG APP_PATH=.
 COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 
 RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rails secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install
-CMD ./bin/web
+CMD ["./bin/web"]
 
 FROM hyku-web AS hyku-worker
-CMD ./bin/worker
+CMD ["./bin/worker"]
 
 # Solr 8 is EOL; new builds default to 8 - override with --build-arg SOLR_VERSION=9 to build Solr 9
 FROM solr:${SOLR_VERSION} AS hyku-solr

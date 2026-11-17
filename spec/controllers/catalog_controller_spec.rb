@@ -28,7 +28,47 @@ RSpec.describe CatalogController do
     end
   end
 
-  describe "GET /show" do
+  describe "GET /index with a search field" do
+    let(:by_creator) { "creator-#{SecureRandom.uuid}" }
+    let(:by_title) { "title-#{SecureRandom.uuid}" }
+    let(:found) { controller.instance_variable_get(:@response).documents.map(&:id) }
+
+    before do
+      public_work = { has_model_ssim: ['GenericWork'], read_access_group_ssim: ['public'] }
+      Hyrax::SolrService.add(public_work.merge(id: by_creator, title_tesim: ['A memoir'], creator_tesim: ['John Doe']))
+      Hyrax::SolrService.add(public_work.merge(id: by_title, title_tesim: ['John Doe'], creator_tesim: ['Ada Lovelace']))
+      Hyrax::SolrService.commit
+    end
+
+    after do
+      Hyrax::SolrService.delete(by_creator)
+      Hyrax::SolrService.delete(by_title)
+      Hyrax::SolrService.commit
+    end
+
+    it "finds a quoted name in that field" do
+      get :index, params: { q: '"John Doe"', search_field: 'creator' }
+
+      expect(found).to include(by_creator)
+    end
+
+    it "finds a work by its id in the identifier field" do
+      get :index, params: { q: by_title, search_field: 'identifier' }
+
+      expect(found).to eq [by_title]
+    end
+
+    it "leaves out a work with the same words only in another field" do
+      get :index, params: { q: 'John Doe', search_field: 'creator' }
+
+      expect(found).to include(by_creator)
+      expect(found).not_to include(by_title)
+    end
+  end
+
+  # Fails in flexible mode, where it may be expected to pass, so there may be a behavior gap:
+  # an ActiveFedora FileSet has no transcript_ids (issue #3418).
+  describe "GET /show", flexible: false do
     let(:file_set) { create(:file_set) }
 
     context "with access" do

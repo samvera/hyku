@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Runs one of six CI nodes' share of the spec suite, three nodes per metadata mode:
+#
+#   nodes 0-2   untagged and `flexible: true` examples, split across the three, with flexible metadata on
+#   nodes 3-5   untagged and `flexible: false` examples, split across the three, with flexible metadata off
+#
+# Usage: bin/ci_rspec NODE_INDEX    (counts from 0)
+set -euo pipefail
+
+node_index=${1:?usage: bin/ci_rspec NODE_INDEX}
+
+# spec/rails_helper.rb drops the examples tagged for the other mode.
+# rspec_booster numbers its jobs from 1.
+case "$node_index" in
+  0|1|2) mode=true; job="$((node_index + 1))/3" ;;
+  3|4|5) mode=false; job="$((node_index - 2))/3" ;;
+  *) echo "bin/ci_rspec: NODE_INDEX must be 0-5" >&2; exit 1 ;;
+esac
+
+echo "======================================================================"
+echo " CI node ${node_index}: job ${job}, HYKU_TEST_FLEXIBLE_METADATA=${mode}"
+echo " Rerun locally: HYKU_TEST_FLEXIBLE_METADATA=${mode} rspec_booster --job ${job}"
+echo "======================================================================"
+
+export HYKU_TEST_FLEXIBLE_METADATA=$mode
+bundle
+gem install semaphore_test_boosters
+exec rspec_booster --job "$job"

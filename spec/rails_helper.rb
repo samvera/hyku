@@ -2,7 +2,11 @@
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
-ENV['HYRAX_FLEXIBLE'] = 'false'
+# The suite runs without flexible metadata by default, independent of any HYRAX_FLEXIBLE
+# value set for development. Opt in to a flexible-metadata run with HYKU_TEST_FLEXIBLE_METADATA=true
+# (e.g. `HYKU_TEST_FLEXIBLE_METADATA=true bundle exec rspec`). This must be decided before Rails
+# boots: config/initializers/1flexible.rb reads HYRAX_FLEXIBLE to pick the flexible classes.
+ENV['HYRAX_FLEXIBLE'] = ENV.fetch('HYKU_TEST_FLEXIBLE_METADATA', 'false')
 # In test most, unset some variables that can cause trouble
 # before booting up Rails
 ENV['HYKU_ADMIN_HOST'] = 'test.host'
@@ -82,10 +86,18 @@ ActiveRecord::Migration.maintain_test_schema!
 # Uses faster rack_test driver when JavaScript support not needed
 Capybara.default_max_wait_time = 8
 Capybara.default_driver = :rack_test
+# Turn off CSS transitions and jQuery animations in pages served to the browser, so a click never lands while
+# an element is still moving (e.g. a Bootstrap collapse panel expanding above the next radio button).
+Capybara.disable_animation = true
 
 ENV['WEB_HOST'] ||= `hostname -s`.strip
 
 if ENV['CHROME_HOSTNAME'].present?
+  REMOTE_FILE_DETECTOR = lambda do |args|
+    str = args.first.to_s
+    str if File.exist?(str)
+  end
+
   options = Selenium::WebDriver::Options.chrome(args: ["disable-gpu",
                                                        "no-sandbox",
                                                        "whitelisted-ips",
@@ -97,10 +109,7 @@ if ENV['CHROME_HOSTNAME'].present?
                                        capabilities: options,
                                        url: "http://#{ENV['CHROME_HOSTNAME']}:4444/wd/hub")
     # Fix for capybara vs remote files. Selenium handles this for us
-    d.browser.file_detector = lambda do |args|
-      str = args.first.to_s
-      str if File.exist?(str)
-    end
+    d.browser.file_detector = REMOTE_FILE_DETECTOR
     d
   end
   Capybara.server_host = '0.0.0.0'
@@ -207,6 +216,72 @@ RSpec.configure do |config|
       DatabaseCleaner.start
     end
   end
+
+  # In a flexible-metadata run, Valkyrie resources read their schema from the
+  # Hyrax::FlexibleSchema table every time they are loaded, and the cleaner empties that
+  # table between examples. Re-seed the default (m3) profile before each example so
+  # factories and pages have a schema. create_default_schema is a no-op if one exists.
+  config.before do
+    Hyrax::FlexibleSchema.create_default_schema if Hyrax.config.flexible?
+  end
+
+  # A spec that only works in one metadata mode is tagged `flexible: true` or `flexible: false`;
+  # untagged specs run in both. By default, run the examples that apply to this mode.
+  # HYKU_TEST_ONLY_FLEXIBLE_TAG=true|false|untagged keeps only those examples. This is one exclusion
+  # filter rather than --tag options: a filter value of `true` matches any truthy tag,
+  # and a command-line exclusion on a key drops any inclusion on the same key.
+  # RSpec skips a filter for examples without its key, so untagged examples get `flexible: :untagged`.
+  config.define_derived_metadata { |metadata| metadata[:flexible] = :untagged if metadata[:flexible].nil? }
+  only_flexible_tag = ENV['HYKU_TEST_ONLY_FLEXIBLE_TAG'].presence
+  config.filter_run_excluding flexible: lambda { |value|
+    next value.to_s != only_flexible_tag if only_flexible_tag
+    value == !Hyrax.config.flexible? # flexible on: drop `false`; flexible off: drop `true`
+  }
+
+  # Hyrax.config.flexible memoizes with `||=`, so while it is false it re-reads HYRAX_FLEXIBLE on
+  # every call. Restore both after every example so a spec that changes either can't leak into
+  # later ones.
+  flexible_mode = Hyrax.config.flexible?
+  flexible_env = ENV['HYRAX_FLEXIBLE']
+  config.after do
+    ENV['HYRAX_FLEXIBLE'] = flexible_env
+    Hyrax.config.flexible = flexible_mode
+  end
+
+  # The remote Selenium grid ends a browser session after SE_NODE_SESSION_TIMEOUT (300s)
+  # without commands, so a long run of non-JS examples kills it and every later JS example
+  # fails with InvalidSessionIdError. Start a fresh session when the old one is gone.
+  if ENV['CHROME_HOSTNAME'].present?
+    config.before(:each, js: true) do
+      page.driver.browser.window_handles
+    rescue Selenium::WebDriver::Error::WebDriverError, Selenium::WebDriver::Error::ServerError # InvalidSessionIdError, or a 404 once the grid forgets it
+      begin
+        page.driver.quit
+      rescue Selenium::WebDriver::Error::ServerError
+        nil # the grid 404s the DELETE too; quit has already dropped the dead browser
+      end
+      page.driver.browser.file_detector = REMOTE_FILE_DETECTOR
+    end
+
+    # Headless Chrome on the grid occasionally crashes mid-example ("not connected to DevTools").
+    # Retry once; the hook above starts a fresh session for the second try.
+    require 'selenium/webdriver/remote' # defines Error::ServerError, otherwise autoloaded later
+    config.verbose_retry = true
+    config.display_try_failure_messages = true
+    config.exceptions_to_retry = [Selenium::WebDriver::Error::WebDriverError, Selenium::WebDriver::Error::ServerError]
+    config.around(:each, js: true) { |example| example.run_with_retry retry: 2 }
+  end
+
+  # A `login_as` whose example never makes a request stays queued in Warden and signs in the
+  # NEXT example's first request (e.g. a sign-in page then redirects). Clear it after every
+  # example, not just feature specs.
+  config.after { Warden.test_reset! }
+
+  # `Flipflop::FeatureSet.current.test!` (used by some specs) swaps in a test strategy for the
+  # whole process and never restores it, which breaks later specs that use the real strategies
+  # (e.g. the admin Features page). Put the configured strategies back after every example.
+  flipflop_strategies = Flipflop::FeatureSet.current.instance_variable_get(:@strategies)
+  config.after { Flipflop::FeatureSet.current.instance_variable_set(:@strategies, flipflop_strategies) }
 
   config.after(:each, type: :feature) do |example|
     # rubocop:disable Lint/Debugger

@@ -9,8 +9,9 @@
     </h3>
 
     <div class="recent-field">
-      <% if recent_document.resource_type.present? %>
-        <span class="recent-label"><%= markdown(recent_document.resource_type&.first) %></span>
+      <% resource_type = theme_values(recent_document, :resource_type).first %>
+      <% if resource_type.present? %>
+        <span class="recent-label"><%= markdown(resource_type) %></span>
       <% end %>
     </div>
 
@@ -24,7 +25,7 @@
     <% if Flipflop.home_page_recent_document_show_keyword? %>
       <div class="recent-field">
         <span class="recent-label"><%= t('hyrax.homepage.recently_uploaded.document.keyword_label') %>:</span>
-        <%= link_to_facet_list(recent_document.keyword, 'keyword', t('hyrax.homepage.recently_uploaded.document.keyword_missing')).html_safe %>
+        <%= theme_facet_list(recent_document, :keyword, t('hyrax.homepage.recently_uploaded.document.keyword_missing')).html_safe %>
       </div>
     <% end %>
 

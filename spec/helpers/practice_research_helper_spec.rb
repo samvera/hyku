@@ -56,6 +56,45 @@ RSpec.describe PracticeResearchHelper, type: :helper do
     end
   end
 
+  describe '#pr_compound_rows' do
+    let(:rows) { [{ 'type' => 'version-of', 'item' => ['https://example.org/edition'] }, 'not a row'] }
+    let(:document) { SolrDocument.new('relationships_json_ss' => rows.to_json) }
+
+    before do
+      schema = instance_double(Hyrax::CompoundSchema, definition_for: {
+                                 subproperties: { 'type' => { type: 'controlled', values: [['Is Version Of', 'version-of']] },
+                                                  'item' => { type: 'work_or_url' } }
+                               })
+      allow(Hyrax::CompoundSchema).to receive(:for_solr_document).with(document).and_return(schema)
+    end
+
+    it "shows a controlled sub-property by its term's label" do
+      expect(helper.pr_compound_rows(document, :relationships).first['type']).to eq('Is Version Of')
+    end
+
+    it 'leaves other sub-properties as stored' do
+      expect(helper.pr_compound_rows(document, :relationships).first['item']).to eq(['https://example.org/edition'])
+    end
+
+    it 'drops entries that are not rows' do
+      expect(helper.pr_compound_rows(document, :relationships).size).to eq(1)
+    end
+
+    it 'labels with a schema the caller already built' do
+      schema = instance_double(Hyrax::CompoundSchema, definition_for: {
+                                 subproperties: { 'type' => { type: 'controlled', values: [['Version', 'version-of']] } }
+                               })
+
+      expect(helper.pr_compound_rows(document, :relationships, schema:).first['type']).to eq('Version')
+      expect(Hyrax::CompoundSchema).not_to have_received(:for_solr_document)
+    end
+
+    it 'reads no schema for a work without the compound' do
+      expect(helper.pr_compound_rows(SolrDocument.new({}), :relationships)).to eq([])
+      expect(Hyrax::CompoundSchema).not_to have_received(:for_solr_document)
+    end
+  end
+
   describe '#pr_contributor_summary' do
     def document(participants: nil, creators: nil)
       SolrDocument.new(
@@ -88,8 +127,32 @@ RSpec.describe PracticeResearchHelper, type: :helper do
       expect(helper.pr_contributor_summary(doc)).to eq('Neal White')
     end
 
+    it "falls back to the creators' indexed labels" do
+      doc = SolrDocument.new('creator_tesim' => ['http://id.loc.gov/authorities/names/n79021164'],
+                             'creator_label_tesim' => ['Twain, Mark'])
+
+      expect(helper.pr_contributor_summary(doc)).to eq('Twain, Mark')
+    end
+
     it 'is nil when the work credits nobody, so the card drops the line' do
       expect(helper.pr_contributor_summary(document)).to be_nil
+    end
+
+    context 'when the profile makes participant names controlled' do
+      before do
+        schema = instance_double(Hyrax::CompoundSchema, definition_for: {
+                                   subproperties: { 'name' => { type: 'controlled', values: [['Twain, Mark', 'twain']] } }
+                                 })
+        allow(Hyrax::CompoundSchema).to receive(:for_solr_document).and_return(schema)
+      end
+
+      it "names each participant by the term's label" do
+        expect(helper.pr_contributor_summary(document(participants: [{ 'name' => 'twain' }]))).to eq('Twain, Mark')
+      end
+
+      it 'keeps a name the vocabulary does not hold' do
+        expect(helper.pr_contributor_summary(document(participants: [{ 'name' => 'Ama Boateng' }]))).to eq('Ama Boateng')
+      end
     end
 
     it 'survives a malformed participants blob' do

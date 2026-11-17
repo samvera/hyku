@@ -64,6 +64,7 @@ RSpec.describe 'admin/groups/users', type: :view do
       expect(rendered).to have_selector('input', class: 'js-per-page__submit')
     end
 
+    # Potential duplicate: spec/features/manage_users_and_groups_spec.rb:255 (lists group members)
     it 'renders a list of members' do
       expect(rendered).to have_selector('td', text: user_1.name)
       expect(rendered).to have_selector('td', text: user_2.name)

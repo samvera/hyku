@@ -263,13 +263,8 @@ class CatalogController < ApplicationController
     # field.solr_parameters = { "spellcheck.dictionary": "contributor" }
     # inside the add_search_field block
     config.add_search_field('contributor') do |field|
-      # solr_parameters hash are sent to Solr as ordinary url query params.
-      # :solr_local_parameters will be sent using Solr LocalParams
-      # syntax, as eg {! qf=$title_qf }. This is neccesary to use
-      # Solr parameter de-referencing like $title_qf.
-      # See: http://wiki.apache.org/solr/LocalParams
       solr_name = 'contributor_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -277,7 +272,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('creator') do |field|
       solr_name = 'creator_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -285,7 +280,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('title') do |field|
       solr_name = 'title_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -294,7 +289,7 @@ class CatalogController < ApplicationController
     config.add_search_field('description') do |field|
       field.label = "Abstract or Summary"
       solr_name = 'description_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -302,7 +297,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('publisher') do |field|
       solr_name = 'publisher_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -311,7 +306,7 @@ class CatalogController < ApplicationController
     date_fields = ['date_created_tesim', 'sorted_date_isi', 'sorted_month_isi']
 
     config.add_search_field('date_created') do |field|
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: date_fields.join(' '),
         pf: date_fields.join(' ')
       }
@@ -319,7 +314,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('subject') do |field|
       solr_name = 'subject_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -327,7 +322,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('language') do |field|
       solr_name = 'language_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -335,7 +330,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('resource_type') do |field|
       solr_name = 'resource_type_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -344,7 +339,7 @@ class CatalogController < ApplicationController
     config.add_search_field('format') do |field|
       field.include_in_advanced_search = false
       solr_name = 'format_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -352,8 +347,8 @@ class CatalogController < ApplicationController
 
     config.add_search_field('identifier') do |field|
       field.include_in_advanced_search = false
-      solr_name = 'id_tesim'
-      field.solr_local_parameters = {
+      solr_name = 'id'
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -362,7 +357,7 @@ class CatalogController < ApplicationController
     config.add_search_field('based_near_label') do |field|
       field.label = "Location"
       solr_name = 'based_near_label_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -370,7 +365,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('keyword') do |field|
       solr_name = 'keyword_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -378,7 +373,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('depositor') do |field|
       solr_name = 'depositor_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -386,7 +381,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('rights_statement') do |field|
       solr_name = 'rights_statement_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -394,7 +389,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('license') do |field|
       solr_name = 'license_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -402,7 +397,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('extent') do |field|
       solr_name = 'extent_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -410,7 +405,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('source') do |field|
       solr_name = 'source_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -418,7 +413,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('advisor') do |field|
       solr_name = 'advisor_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -426,7 +421,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('accessibility_feature') do |field|
       solr_name = 'accessibility_feature_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -434,7 +429,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('accessibility_hazard') do |field|
       solr_name = 'accessibility_hazard_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -442,7 +437,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('accessibility_summary') do |field|
       solr_name = 'accessibility_summary_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -450,7 +445,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('additional_information') do |field|
       solr_name = 'additional_information_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -458,7 +453,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('alternative_title') do |field|
       solr_name = 'alternative_title_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -466,7 +461,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('audience') do |field|
       solr_name = 'audience_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -474,7 +469,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('bibliographic_citation') do |field|
       solr_name = 'bibliographic_citation_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -482,7 +477,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('committee_member') do |field|
       solr_name = 'committee_member_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -490,7 +485,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('department') do |field|
       solr_name = 'department_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -498,7 +493,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('degree_discipline') do |field|
       solr_name = 'degree_discipline_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -506,7 +501,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('education_level') do |field|
       solr_name = 'education_level_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -514,7 +509,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('degree_grantor') do |field|
       solr_name = 'degree_grantor_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -522,7 +517,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('learning_resource_type') do |field|
       solr_name = 'learning_resource_type_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -530,7 +525,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('degree_level') do |field|
       solr_name = 'degree_level_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -538,7 +533,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('related_url') do |field|
       solr_name = 'related_url_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -546,7 +541,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('rights_holder') do |field|
       solr_name = 'rights_holder_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -554,7 +549,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('rights_notes') do |field|
       solr_name = 'rights_notes_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -562,7 +557,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('size') do |field|
       solr_name = 'size_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }
@@ -570,7 +565,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('table_of_contents') do |field|
       solr_name = 'table_of_contents_tesim'
-      field.solr_local_parameters = {
+      field.solr_parameters = {
         qf: solr_name,
         pf: solr_name
       }

@@ -41,7 +41,7 @@ RSpec.describe DemoTenantResetService do
       let(:health_check) { nil }
       let(:steps) do
         %i[wipe_content! revoke_visitor_access! restore_site!
-           restore_content_blocks! restore_featured_works! import_seed!]
+           restore_content_blocks! ensure_default_admin_set! restore_featured_works! import_seed!]
       end
 
       before do
@@ -75,6 +75,15 @@ RSpec.describe DemoTenantResetService do
 
         it 'runs the seed import' do
           expect(service).to receive(:import_seed!)
+          service.reset!
+        end
+
+        # After the revocation, so visitors get no workflow roles on a new
+        # admin set, and before the import, which reuses it.
+        it 'ensures a default admin set between revoking access and importing' do
+          expect(service).to receive(:revoke_visitor_access!).ordered
+          expect(service).to receive(:ensure_default_admin_set!).ordered
+          expect(service).to receive(:import_seed!).ordered
           service.reset!
         end
       end
@@ -189,7 +198,7 @@ RSpec.describe DemoTenantResetService do
     subject(:pending_count) { described_class.new(account:).send(:pending_good_jobs) }
 
     let(:due) do
-      { queue_name: 'default', scheduled_at: 1.minute.ago, job_class: 'ValkyrieCharacterizationJob',
+      { queue_name: 'default', scheduled_at: 1.minute.ago, job_class: 'Bulkrax::ImportWorkJob',
         serialized_params: { 'tenant' => account.tenant } }
     end
 
@@ -208,8 +217,8 @@ RSpec.describe DemoTenantResetService do
       expect(pending_count).to eq 1
     end
 
-    it 'ignores jobs scheduled into the future, such as the recurring cron' do
-      enqueue(scheduled_at: 1.hour.from_now, job_class: 'EmbargoAutoExpiryJob')
+    it 'ignores Bulkrax jobs scheduled into the future, which the drain pulls forward instead' do
+      enqueue(scheduled_at: 1.hour.from_now)
       expect(pending_count).to eq 0
     end
 
@@ -219,7 +228,12 @@ RSpec.describe DemoTenantResetService do
     end
 
     it 'ignores its own row, which is unfinished for as long as it runs' do
-      enqueue(job_class: described_class::RESET_JOB_CLASS)
+      enqueue(job_class: DemoTenantResetJob.name)
+      expect(pending_count).to eq 0
+    end
+
+    it 'ignores derivatives, which can run for hours after the records exist' do
+      enqueue(job_class: 'ValkyrieCreateLargeDerivativesJob')
       expect(pending_count).to eq 0
     end
 
@@ -228,10 +242,24 @@ RSpec.describe DemoTenantResetService do
       expect(pending_count).to eq 0
     end
 
+    context 'once the import has started' do
+      subject(:service) { draining.tap { |s| s.instance_variable_set(:@import_started_at, 1.minute.ago) } }
+
+      it 'ignores a job left over from before the import, such as one a dead worker never finished' do
+        enqueue(created_at: 5.days.ago, performed_at: 5.days.ago)
+        expect { service.send(:drain_good_job_queue!) }.not_to raise_error
+      end
+
+      it 'still waits on the jobs the import created' do
+        enqueue
+        expect(service.send(:pending_good_jobs)).to eq 1
+      end
+    end
+
     # The production failure was the loop, not the count: it spun for the whole
     # import_timeout because the count could never reach zero.
     it 'returns instead of spinning when only its own row remains' do
-      enqueue(job_class: described_class::RESET_JOB_CLASS)
+      enqueue(job_class: DemoTenantResetJob.name)
       expect { draining.send(:drain_good_job_queue!) }.not_to raise_error
     end
 
@@ -273,12 +301,6 @@ RSpec.describe DemoTenantResetService do
               job_class: 'Bulkrax::CreateRelationshipsJob')
       expect(draining.send(:pull_relationship_jobs_forward!)).to eq 0
     end
-
-    # The constant is a string, so a rename of the job would silently stop the
-    # drain excluding its own row and the hang would return with a green suite.
-    it 'names a job class that exists' do
-      expect(described_class::RESET_JOB_CLASS).to eq DemoTenantResetJob.name
-    end
   end
 
   describe '#delete_stored_files!' do
@@ -319,6 +341,90 @@ RSpec.describe DemoTenantResetService do
       expect(Hyrax.persister).not_to receive(:delete).with(resource: file_metadata)
       expect(Hyrax.persister).to receive(:delete).with(resource: good_metadata)
       service.send(:delete_stored_files!, file_set)
+    end
+  end
+
+  describe 'ensuring a default admin set' do
+    subject(:ensure_admin_set) { described_class.new(account:).send(:ensure_default_admin_set!) }
+
+    def admin_sets
+      Hyrax.query_service.find_all_of_model(model: Hyrax.config.admin_set_class).to_a
+    end
+
+    def admin_group_manages?(admin_set)
+      Hyrax::PermissionTemplate.find_by!(source_id: admin_set.id.to_s).access_grants.exists?(
+        agent_type: 'group', agent_id: ::Ability.admin_group_name, access: Hyrax::PermissionTemplateAccess::MANAGE
+      )
+    end
+
+    def indexed?(admin_set)
+      Hyrax::SolrService.query("id:#{admin_set.id}", rows: 1).present?
+    end
+
+    context 'when the tenant has no admin set' do
+      it 'creates one the admin group manages and indexes it' do
+        expect { ensure_admin_set }.to change { admin_sets.size }.from(0).to(1)
+        expect(admin_group_manages?(admin_sets.first)).to be true
+        expect(indexed?(admin_sets.first)).to be true
+      end
+
+      it 'creates the default groups it needs' do
+        Hyrax::Group.where(name: %w[admin registered public]).destroy_all
+        ensure_admin_set
+        expect(Hyrax::Group.where(name: %w[admin registered public]).count).to eq 3
+      end
+
+      it 'does not add a second one when run again' do
+        ensure_admin_set
+        described_class.new(account:).send(:ensure_default_admin_set!)
+        expect(admin_sets.size).to eq 1
+      end
+
+      it 'still creates one when the saved default id points at a deleted admin set' do
+        Hyrax::DefaultAdministrativeSet.create!(default_admin_set_id: 'deleted-admin-set')
+        expect { ensure_admin_set }.to change { admin_sets.size }.from(0).to(1)
+      end
+    end
+
+    context 'when the tenant already has an admin set' do
+      let!(:existing) { FactoryBot.valkyrie_create(:hyku_admin_set, with_permission_template: true) }
+
+      it 'keeps it as the only one and gives the admin group Manage on it' do
+        ensure_admin_set
+        expect(admin_sets.map(&:id)).to eq [existing.id]
+        expect(admin_group_manages?(existing)).to be true
+        expect(Hyrax::SolrService.query("id:#{existing.id}", rows: 1).first['edit_access_group_ssim'])
+          .to include(::Ability.admin_group_name)
+      end
+
+      it 'indexes it again after the Solr wipe' do
+        Hyrax::SolrService.wipe!
+        ensure_admin_set
+        expect(indexed?(existing)).to be true
+      end
+
+      it 'gives it a template and an active workflow when it has none' do
+        Hyrax::PermissionTemplate.find_by!(source_id: existing.id.to_s).destroy!
+        ensure_admin_set
+        expect(admin_group_manages?(existing)).to be true
+        expect { Sipity::Workflow.find_active_workflow_for(admin_set_id: existing.id) }.not_to raise_error
+      end
+
+      it 'keeps a saved default over any other admin set' do
+        default = FactoryBot.valkyrie_create(:hyku_admin_set, with_permission_template: true)
+        Hyrax::DefaultAdministrativeSet.update(default_admin_set_id: default.id)
+        ensure_admin_set
+        expect(admin_group_manages?(default)).to be true
+        expect(admin_sets.size).to eq 2
+      end
+
+      it 'makes it the default, so the deposit form does not create another' do
+        Hyrax::DefaultAdministrativeSet.create!(default_admin_set_id: 'deleted-admin-set')
+        ensure_admin_set
+        expect(Hyrax::DefaultAdministrativeSet.pluck(:default_admin_set_id)).to eq [existing.id.to_s]
+        expect(Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id).to eq existing.id
+        expect(admin_sets.size).to eq 1
+      end
     end
   end
 

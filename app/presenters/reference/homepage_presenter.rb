@@ -11,7 +11,8 @@ module Reference
                       'publisher_sim' => :publishers }.freeze
 
     def browse_columns
-      @browse_columns ||= BROWSE_FIELDS.filter_map do |field, key|
+      @browse_columns ||= BROWSE_FIELDS.filter_map do |name, key|
+        field = facet_field(name)
         items = facet_items(field, "f.#{field}.facet.limit" => (COLUMN_ROWS + 1).to_s)
         next if items.empty?
 

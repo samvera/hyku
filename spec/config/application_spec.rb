@@ -32,6 +32,14 @@ RSpec.describe Hyku::Application do
     it { is_expected.to eq([GenericWorkResource, ImageResource, EtdResource, OerResource]) }
   end
 
+  describe 'the autoloader' do
+    it 'leaves the Wings namespace to Hyrax, so a code reload keeps its classes' do
+      wings = Rails.autoloaders.main.all_expected_cpaths.values.grep(/\AWings(::|\z)/)
+
+      expect(wings).to be_empty
+    end
+  end
+
   describe 'Hyrax configuration' do
     subject { Hyrax.config }
 

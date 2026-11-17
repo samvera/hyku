@@ -1,3 +1,9 @@
+Each page lists the spec files that cover it. To see the examples they currently run:
+
+```sh
+bundle exec rspec --dry-run -f doc spec/features/global_index_spec.rb
+```
+
 <a id="table-of-contents"></a>
 ## Table of Contents
 - [Global Index / Institution List Page](#global-index--institution-list-page)
@@ -82,6 +88,12 @@
 - [ ] I can click on Accounts, which directs me to the Accounts page for the tenants
 - [ ] I can click on Users, which directs me to the Manage Users page for the users
 
+**Spec coverage**
+
+- _Knapsack only (not tested in base Hyku): the institution list, each institution's theme logo or placeholder,
+  and the link to each institution's tenant, in both the non-signed-in and administrator lists. Base Hyku's
+  global index (app/views/splash/index.html.erb) does not list tenants._
+- [global_index_spec.rb](../../spec/features/global_index_spec.rb)
 
 ## Global Administrator / User Login Page
 [Back to TOC](#table-of-contents)
@@ -96,6 +108,10 @@
 - [ ] I can click Log in, which logs me in and directs me to the Global Index page
 - [ ] I can click on the link to Sign up, which directs me to the Create a new account form
 - [ ] I can click on the link to Forgot your password?, which directs me to the Forgot your password? form
+
+**Spec coverage**
+
+- [global_authentication_spec.rb](../../spec/features/global_authentication_spec.rb)
 
 ## Global Sign Up Page
 [Back to TOC](#table-of-contents)
@@ -115,6 +131,10 @@
 - [ ] I can click on the link to Forgot your password?, which directs me to the Forgot your password? form
 - [ ] I can click on the link to Administrator login (in the footer), which directs me to the Log in form
 
+**Spec coverage**
+
+- [global_authentication_spec.rb](../../spec/features/global_authentication_spec.rb)
+
 ## Global Forgot your Password? Page
 [Back to TOC](#table-of-contents)
 
@@ -132,6 +152,10 @@
 - [ ] I can click on the link to Sign up, which directs me to the Create your account form
 - [ ] I can click on the link to Administrator login (in the footer), which directs me to the Log in form
 
+**Spec coverage**
+
+- [global_authentication_spec.rb](../../spec/features/global_authentication_spec.rb)
+
 ## Change your password page
 [Back to TOC](#table-of-contents)
 
@@ -147,6 +171,10 @@
 - [ ] I can click on the link to Log in, which directs me to the Log in form
 - [ ] I can click on the link to Sign up, which directs me to the Create your account form
 - [ ] I can click on the link to Administrator login (in the footer), which directs me to the Log in form
+
+**Spec coverage**
+
+- [global_authentication_spec.rb](../../spec/features/global_authentication_spec.rb)
 
 ## Global Tenant Accounts Index Page (Admin only)
 [Back to TOC](#table-of-contents)
@@ -168,6 +196,10 @@
 - [ ] I can filter through the tenant accounts using the search bar
 - [ ] I can click Create a new account, which directs me to the Create a new repository form
 
+**Spec coverage**
+
+- [admin_tenant_management_spec.rb](../../spec/features/admin_tenant_management_spec.rb)
+
 ## Global Tenant Account New Page (Admin only)
 [Back to TOC](#table-of-contents)
 
@@ -180,6 +212,10 @@
   - [ ] The form will not submit if the input is empty or invalid
 - [ ] I can click Save, which saves the new tenant and directs me to the Manage Account form
 - [ ] I can click on the link to Cancel, which directs me back to the tenant Accounts page
+
+**Spec coverage**
+
+- [admin_tenant_management_spec.rb](../../spec/features/admin_tenant_management_spec.rb)
 
 ## Global Tenant Account Manage Page (Admin only)
 [Back to TOC](#table-of-contents)
@@ -200,6 +236,11 @@
 - [ ] I can see a list of all users under the All Users tab
   - [ ] I can click Add, which adds the user to the Current Account Administrators
 
+**Spec coverage**
+
+- [admin_tenant_management_spec.rb](../../spec/features/admin_tenant_management_spec.rb)
+- _Gap: inviting a blank or malformed administrator email is accepted instead of refused._
+
 ## Global Tenant Account Edit Page (Admin only)
 [Back to TOC](#table-of-contents)
 
@@ -217,6 +258,12 @@
   - [ ] Fedora Endpoint Base Path
 - [ ] I can click Save changes, which saves my changes and directs me to the Manage Account page
 - [ ] I can click Cancel, which directs me to the tenant Accounts page
+
+**Spec coverage**
+
+- _Knapsack only (not tested in base Hyku): "When this box is checked, the tenant is visible to the public from
+  the Global Index page", because the tenant list on the Global Index is a knapsack feature._
+- [admin_tenant_management_spec.rb](../../spec/features/admin_tenant_management_spec.rb)
 
 ## Global Users Index Page (Admin only)
 [Back to TOC](#table-of-contents)
@@ -241,6 +288,10 @@
 - [ ] I can filter through users using the search box
 - [ ] I can click Create New, directing me to the Create a new user form
 
+**Spec coverage**
+
+- [global_users_management_spec.rb](../../spec/features/global_users_management_spec.rb)
+
 ## Global Users New Page (Admin only)
 [Back to TOC](#table-of-contents)
 
@@ -252,6 +303,10 @@
   - [ ] The form will fail to submit if any of the entered attributes are invalid
 - [ ] I can click Save, which saves the new user and directs me back to the Manage Users page
 - [ ] I can click Cancel, which directs me back to the Manage Users page
+
+**Spec coverage**
+
+- [global_users_management_spec.rb](../../spec/features/global_users_management_spec.rb)
 
 ## Global Users Manage Page (Admin only)
 [Back to TOC](#table-of-contents)
@@ -266,6 +321,10 @@
 - [ ] I can click Cancel, which directs me back to the Manage Users page
 - [ ] I can click Edit, which directs me to the Edit User form
 
+**Spec coverage**
+
+- [global_users_management_spec.rb](../../spec/features/global_users_management_spec.rb)
+
 ## Global Users Edit Page (Admin only)
 [Back to TOC](#table-of-contents)
 
@@ -278,6 +337,10 @@
   - [ ] Email address is filled in
 - [ ] I can click Save changes, which saves my changes and directs me back to the Manage Users page
 - [ ] I can click Cancel, directing me back to the Manage Users page
+
+**Spec coverage**
+
+- [global_users_management_spec.rb](../../spec/features/global_users_management_spec.rb)
 
 ## Homepage
 [Back to TOC](#table-of-contents)
@@ -303,6 +366,11 @@
 
 * Only applies to objects I am authorized to view
 
+**Spec coverage**
+
+- [homepage_spec.rb](../../spec/features/homepage_spec.rb)
+- [ui_ux_and_static_pages_spec.rb](../../spec/features/ui_ux_and_static_pages_spec.rb)
+
 ## Contact Page
 [Back to TOC](#table-of-contents)
 
@@ -320,6 +388,10 @@
 - [ ] I can click Send to send the Contact Form
   - [ ] Form won’t send successfully if any of the fields are invalid
 
+**Spec coverage**
+
+- [contact_form_spec.rb](../../spec/features/contact_form_spec.rb)
+
 ## Catalog (Search Results) Page
 [Back to TOC](#table-of-contents)
 
@@ -332,6 +404,10 @@
 - [ ] I can click Start Over, removing all active filters
 - [ ] If there are multiple pages, I can see a pagination menu at the bottom of the page
 - [ ] I can limit my search by selecting from the metadata dropdown menus on the left
+
+**Spec coverage**
+
+- [catalog_controls_spec.rb](../../spec/features/catalog_controls_spec.rb)
 
 ## Collection Show Page
 [Back to TOC](#table-of-contents)
@@ -346,6 +422,10 @@
 - [ ] I can search for records within this collection from the search bar
 - [ ] I can see a list containing all works within this collection
   - [ ] I can filter through these works in various ways (Sort by, Results per page, Layout)
+
+**Spec coverage**
+
+- [collection_show_spec.rb](../../spec/features/collection_show_spec.rb)
 
 ## Work Show Page
 [Back to TOC](#table-of-contents)
@@ -379,6 +459,10 @@
   - [ ] Add to Collection
   - [ ] Feature (only if the work is set to Public visibility)
 
+**Spec coverage**
+
+- [work_show_actions_spec.rb](../../spec/features/work_show_actions_spec.rb)
+
 ## FileSet Show Page
 [Back to TOC](#table-of-contents)
 
@@ -396,6 +480,10 @@
 - [ ] I can click Edit this File to edit the file
 - [ ] I can click Delete this File to delete the file
 - [ ] I can generate single-use download links by clicking Single-Use Link to File
+
+**Spec coverage**
+
+- [fileset_show_and_actions_spec.rb](../../spec/features/fileset_show_and_actions_spec.rb)
 
 ## Dashboard Page
 [Back to TOC](#table-of-contents)
@@ -422,6 +510,10 @@
     - [ ] Works
     - [ ] Importers
     - [ ] Exporters
+
+**Spec coverage**
+
+- [dashboard_and_admin_dashboard_spec.rb](../../spec/features/dashboard_and_admin_dashboard_spec.rb)
 
 ## Dashboard Page (Admin)
 [Back to TOC](#table-of-contents)
@@ -468,6 +560,10 @@
       - [ ] Available Work Types
     - [ ] Workflow Roles
 
+**Spec coverage**
+
+- [dashboard_and_admin_dashboard_spec.rb](../../spec/features/dashboard_and_admin_dashboard_spec.rb)
+
 ## Profile Page
 [Back to TOC](#table-of-contents)
 
@@ -486,6 +582,9 @@
 - [ ] I can see the email associated with my account
 - [ ] I can click Edit Profile, directing me to the Edit Profile form  \
 
+**Spec coverage**
+
+- [profile_and_notifications_spec.rb](../../spec/features/profile_and_notifications_spec.rb)
 
 ## Profile Edit Page
 [Back to TOC](#table-of-contents)
@@ -504,6 +603,10 @@
   - [ ] Google+ handle
 - [ ] I can click Save Profile, which saves my information and directs me to the Profile page
 
+**Spec coverage**
+
+- [profile_and_notifications_spec.rb](../../spec/features/profile_and_notifications_spec.rb)
+
 ## Notifications Page
 [Back to TOC](#table-of-contents)
 
@@ -520,6 +623,10 @@
 - [ ] I can filter through my notifications using the search bar
 - [ ] I can see the total number of notifications
 - [ ] I can see a pagination menu on the bottom right
+
+**Spec coverage**
+
+- [profile_and_notifications_spec.rb](../../spec/features/profile_and_notifications_spec.rb)
 
 ## Transfers Page
 [Back to TOC](#table-of-contents)
@@ -544,6 +651,10 @@
         - [ ] Authorize depositor as proxy
       - [ ] Reject
 
+**Spec coverage**
+
+- [transfers_and_proxies_spec.rb](../../spec/features/transfers_and_proxies_spec.rb)
+
 ## Manage Proxies Page
 [Back to TOC](#table-of-contents)
 
@@ -555,6 +666,10 @@
 - [ ] I see a search dropdown filter to find users I want to Authorize Proxies for my account
 - [ ] I can see a list of all Current Proxies I have active on my account
   - [ ] I can see a Delete Proxy button to remove an active proxy
+
+**Spec coverage**
+
+- [transfers_and_proxies_spec.rb](../../spec/features/transfers_and_proxies_spec.rb)
 
 ## Dashboard My Collections Index Page
 [Back to TOC](#table-of-contents)
@@ -576,6 +691,10 @@
   - [ ] Last modified
   - [ ] Actions (View, Edit, Delete, Add to collection)
 
+**Spec coverage**
+
+- [collection_management_spec.rb](../../spec/features/collection_management_spec.rb)
+
 ## Dashboard Collection New Page
 [Back to TOC](#table-of-contents)
 
@@ -591,6 +710,10 @@
   - [ ] I can see links to Remove additional fields
 - [ ] I can see a Save button to create my new collection
 - [ ] I can see a link to Cancel my new Collection and redirect me back to the dashboard my collections index page
+
+**Spec coverage**
+
+- [collection_management_spec.rb](../../spec/features/collection_management_spec.rb)
 
 ## Dashboard Collection Edit Page
 [Back to TOC](#table-of-contents)
@@ -653,6 +776,10 @@
 - [ ] I can see a button to Save my changes
 - [ ] I can see a link to Cancel my edits, which redirects me back to the Dashboard Collection show page
 
+**Spec coverage**
+
+- [collection_management_spec.rb](../../spec/features/collection_management_spec.rb)
+
 ## Dashboard Collection Show Page
 [Back to TOC](#table-of-contents)
 
@@ -674,6 +801,10 @@
   - [ ] I can see a link to add an existing work to the collection
   - [ ] I can see a button to remove an individual work from the collection
 
+**Spec coverage**
+
+- [collection_show_spec.rb](../../spec/features/collection_show_spec.rb)
+
 ## Dashboard My Works Index Page
 [Back to TOC](#table-of-contents)
 
@@ -692,6 +823,10 @@
   - [ ] Highlighted
   - [ ] Visibility
   - [ ] Actions (Edit Work, Delete Work, Highlight Work on Profile, Transfer Ownership of Work)
+
+**Spec coverage**
+
+- [dashboard_my_works_spec.rb](../../spec/features/dashboard_my_works_spec.rb)
 
 ## Dashboard Works New by Batch Page
 [Back to TOC](#table-of-contents)
@@ -759,6 +894,10 @@
   - [ ] Add
 - [ ] I can see a list of all the groups / users I am currently sharing my works with, along with their respective access levels
 - [ ] If I add a new group / user, I can see a flash notification informing me that permissions aren’t save until the works are saved
+
+**Spec coverage**
+
+- [batch_work_creation_spec.rb](../../spec/features/batch_work_creation_spec.rb)
 
 ## Dashboard Work New Page
 [Back to TOC](#table-of-contents)
@@ -829,6 +968,12 @@
 - [ ] I can see a list of all the groups / users I am currently sharing my works with, along with their respective access levels
 - [ ] If I add a new group / user, I can see a flash notification informing me that permissions aren’t save until the works are saved
 
+**Spec coverage**
+
+- [work_new_form_spec.rb](../../spec/features/work_new_form_spec.rb)
+- [work_edit_form_spec.rb](../../spec/features/work_edit_form_spec.rb)
+- [workflow_permissions_spec.rb](../../spec/features/workflow_permissions_spec.rb)
+
 ## Dashboard Work Edit Page
 [Back to TOC](#table-of-contents)
 
@@ -889,6 +1034,11 @@
 - [ ] I can see a list of all the groups / users I am currently sharing my works with, along with their respective access levels
 - [ ] If I add a new group / user, I can see a flash notification informing me that permissions aren’t save until the works are saved
 
+**Spec coverage**
+
+- [work_edit_form_spec.rb](../../spec/features/work_edit_form_spec.rb)
+- [workflow_permissions_spec.rb](../../spec/features/workflow_permissions_spec.rb)
+
 ## Review Submissions Page
 [Back to TOC](#table-of-contents)
 
@@ -918,6 +1068,10 @@
   - [ ] Submission Date
   - [ ] Status
 
+**Spec coverage**
+
+- [review_submissions_spec.rb](../../spec/requests/review_submissions_spec.rb)
+
 ## Manage Users Page
 [Back to TOC](#table-of-contents)
 
@@ -933,6 +1087,10 @@
   - [ ] Last Access
   - [ ] Status
 - [ ] I can see a delete button next to each user to remove them from this repository
+
+**Spec coverage**
+
+- [manage_users_and_groups_spec.rb](../../spec/features/manage_users_and_groups_spec.rb)
 
 ## Manage Groups Index Page
 [Back to TOC](#table-of-contents)
@@ -950,6 +1108,10 @@
   - [ ] Date Created
 - [ ] I can see a button next to each group to Edit group and users
 
+**Spec coverage**
+
+- [manage_users_and_groups_spec.rb](../../spec/features/manage_users_and_groups_spec.rb)
+
 ## Manage Groups New Page
 [Back to TOC](#table-of-contents)
 
@@ -965,6 +1127,10 @@
   - [ ] Both tabs are unavailable for new groups and are likewise disabled
 - [ ] I can see a Save button to submit my form and create a new group
 - [ ] I can see a link to Cancel my new group, which redirects me back to the Manage Groups index page
+
+**Spec coverage**
+
+- [manage_users_and_groups_spec.rb](../../spec/features/manage_users_and_groups_spec.rb)
 
 ## Manage Groups Edit Page
 [Back to TOC](#table-of-contents)
@@ -1008,6 +1174,10 @@
 - [ ] I can see a button to remove the group from the repository, effectively deleting it
 - [ ] I can see a warning explaining the irreversible consequences of this action
 
+**Spec coverage**
+
+- [manage_users_and_groups_spec.rb](../../spec/features/manage_users_and_groups_spec.rb)
+
 ## Manage Embargoes Index Page
 [Back to TOC](#table-of-contents)
 
@@ -1045,6 +1215,10 @@
 
 - [ ] I can see a list of all deactivated embargoes, along with their current visibility
 
+**Spec coverage**
+
+- [manage_embargoes_and_leases_spec.rb](../../spec/features/manage_embargoes_and_leases_spec.rb)
+
 ## Manage Embargoes Edit Page
 [Back to TOC](#table-of-contents)
 
@@ -1059,6 +1233,10 @@
 - [ ] I can see a button to return to the work’s / file’s individual edit page
 - [ ] I can see a list of this item’s past embargoes
 
+**Spec coverage**
+
+- [manage_embargoes_and_leases_spec.rb](../../spec/features/manage_embargoes_and_leases_spec.rb)
+
 ## Manage Embargoes Deactivate Page
 [Back to TOC](#table-of-contents)
 
@@ -1068,6 +1246,10 @@
 
 - [ ] I can see a button to also deactivate all the active embargoes on files within the work
 - [ ] I can see a button to leave the active embargoes on the files within the work
+
+**Spec coverage**
+
+- [manage_embargoes_and_leases_spec.rb](../../spec/features/manage_embargoes_and_leases_spec.rb)
 
 ## Manage Leases Index Page
 [Back to TOC](#table-of-contents)
@@ -1106,6 +1288,10 @@
 
 - [ ] I can see a list of all deactivated leases, along with their current visibility
 
+**Spec coverage**
+
+- [manage_embargoes_and_leases_spec.rb](../../spec/features/manage_embargoes_and_leases_spec.rb)
+
 ## Manage Leases Edit Page
 [Back to TOC](#table-of-contents)
 
@@ -1120,6 +1306,10 @@
 - [ ] I can see a button to return to the work’s / file’s individual edit page
 - [ ] I can see a list of this item’s past leases
 
+**Spec coverage**
+
+- [manage_embargoes_and_leases_spec.rb](../../spec/features/manage_embargoes_and_leases_spec.rb)
+
 ## Manage Leases Deactivate Page
 [Back to TOC](#table-of-contents)
 
@@ -1129,6 +1319,10 @@
 
 - [ ] I can see a button to also deactivate all the active leases on files within the work
 - [ ] I can see a button to leave the active leases on the files within the work
+
+**Spec coverage**
+
+- [manage_embargoes_and_leases_spec.rb](../../spec/features/manage_embargoes_and_leases_spec.rb)
 
 ## Settings → Labels Page
 [Back to TOC](#table-of-contents)
@@ -1142,6 +1336,10 @@
   - [ ] Institution name
   - [ ] Full institution name
 - [ ] I can see a button to Save my changes
+
+**Spec coverage**
+
+- [labels_spec.rb](../../spec/features/labels_spec.rb)
 
 ## Settings → Appearance Page
 [Back to TOC](#table-of-contents)
@@ -1199,6 +1397,10 @@
 - [ ] I can see a textarea to enter custom CSS that will can apply throughout the repository
 - [ ] I can see a Save changes button
 
+**Spec coverage**
+
+- [admin_settings_spec.rb](../../spec/features/admin_settings_spec.rb)
+
 ## Settings → Collection Types Index Page
 [Back to TOC](#table-of-contents)
 
@@ -1213,6 +1415,10 @@
   - [ ] I can see a button next to each collection type to Edit it
   - [ ] I can see a button next to each custom, non-default collection type to Delete it
 
+**Spec coverage**
+
+- [collection_management_spec.rb](../../spec/features/collection_management_spec.rb)
+
 ## Settings → Collection Types New Page
 [Back to TOC](#table-of-contents)
 
@@ -1225,6 +1431,10 @@
   - [ ] Type description
 - [ ] I can see a Save button to create my collection type
 - [ ] I can see a link to Cancel the creation of a new collection type, redirecting me back to the collection types index page
+
+**Spec coverage**
+
+- [collection_management_spec.rb](../../spec/features/collection_management_spec.rb)
 
 ## Settings → Collection Types Edit Page
 [Back to TOC](#table-of-contents)
@@ -1277,6 +1487,10 @@
 - [ ] I can see a button to Save my changes
 - [ ] I can see a link to Cancel my changes, redirecting me back to the Collection Types Index page
 
+**Spec coverage**
+
+- [collection_management_spec.rb](../../spec/features/collection_management_spec.rb)
+
 ## Settings → Pages Page
 [Back to TOC](#table-of-contents)
 
@@ -1291,6 +1505,10 @@
   - [ ] Terms of Use
 - [ ] I can see a button to Save my changes
 - [ ] I can see a button to Cancel my changes
+
+**Spec coverage**
+
+- [admin_settings_spec.rb](../../spec/features/admin_settings_spec.rb)
 
 ## Settings → Content Block
 [Back to TOC](#table-of-contents)
@@ -1307,6 +1525,10 @@
 - [ ] I can see a button to Save my changes
 - [ ] I can see a button to Cancel my changes
 
+**Spec coverage**
+
+- [admin_settings_spec.rb](../../spec/features/admin_settings_spec.rb)
+
 ## Settings → Features Page
 [Back to TOC](#table-of-contents)
 
@@ -1316,6 +1538,10 @@
 
 - [ ] I can see a list of different site configuration features to alter how the site functions
   - [ ] Each feature has two options: On and Off
+
+**Spec coverage**
+
+- [admin_settings_spec.rb](../../spec/features/admin_settings_spec.rb)
 
 ## Workflow Roles Page
 [Back to TOC](#table-of-contents)
@@ -1327,3 +1553,9 @@
 - [ ] I can see a form to select an existing user and assign them a specific workflow role
 - [ ] I can see a list of all users within a repository and their corresponding workflow roles
   - [ ] I can see a search bar to search for specific users or roles
+
+**Spec coverage**
+
+- [workflow_permissions_spec.rb](../../spec/features/workflow_permissions_spec.rb)
+- [dashboard_and_admin_dashboard_spec.rb](../../spec/features/dashboard_and_admin_dashboard_spec.rb)
+

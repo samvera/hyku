@@ -81,6 +81,8 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('APARTMENT_DISABLE_INIT', '
       # Same reasoning as above: a memoized Site.instance is only valid for
       # the tenant it was fetched under.
       Site.reset!
+      # Account#switch! resets too; this covers tenants with no Account (the global tenant)
+      Hyku::PerThread.reset!
       account = Account.find_by(tenant: current)
       account&.switch!
     }

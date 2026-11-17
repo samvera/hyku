@@ -12,9 +12,10 @@
 #   look after every reset.
 # * {#reset!} destroys visitor-created content (works, file sets, collections,
 #   featured entries, Bulkrax importers and exporters), revokes visitor
-#   access, restores the snapshot, optionally re-imports a seed corpus
-#   through Bulkrax, restores featured works, runs an injectable health check,
-#   and stamps the account's last_reset_at on success.
+#   access, restores the snapshot, ensures a default admin set the admin
+#   group manages, optionally re-imports a seed corpus through Bulkrax,
+#   restores featured works, runs an injectable health check, and stamps the
+#   account's last_reset_at on success.
 #
 # Both operations refuse to run for accounts not flagged public_demo_tenant.
 #
@@ -61,9 +62,6 @@ class DemoTenantResetService
   # its own mappings up.
   PARSER_KLASS = 'Bulkrax::CsvParser'
 
-  # The service runs inside it, so its row is in the queue it waits on.
-  RESET_JOB_CLASS = 'DemoTenantResetJob'
-
   attr_reader :account, :seed_csv_path, :keep_emails, :import_user_email,
               :health_check, :logger, :import_timeout, :poll_interval
 
@@ -74,7 +72,7 @@ class DemoTenantResetService
   # @param import_user_email [String, nil] owner of the seed import; defaults to the first tenant admin
   # @param health_check [#call, nil] called with the account after restore; a falsey return fails the reset
   # @param logger [Logger]
-  # @param import_timeout [Integer] seconds to wait for background jobs to drain after the import
+  # @param import_timeout [Integer] seconds to wait for the import's Bulkrax jobs to drain
   # @param poll_interval [Integer] seconds between job-queue polls while draining
   # rubocop:disable Metrics/ParameterLists
   def initialize(account:, seed_csv_path: nil, keep_emails: [], import_user_email: nil,
@@ -133,6 +131,7 @@ class DemoTenantResetService
       revoke_visitor_access!
       restore_site!
       restore_content_blocks!
+      ensure_default_admin_set!
       import_seed! if seed_csv_path.present?
       restore_featured_works!
       run_health_check!
@@ -266,12 +265,56 @@ class DemoTenantResetService
     raise ImportFailed, 'Bulkrax is not available in this application' unless defined?(Bulkrax)
     raise ImportFailed, "seed csv not found at #{seed_csv_path}" unless File.exist?(seed_csv_path)
 
-    ensure_default_groups!
+    @import_started_at = Time.current
     importer = create_importer!
     log "running Bulkrax importer ##{importer.id} for #{seed_csv_path}"
     Bulkrax::ImporterJob.perform_now(importer.id)
     drain_import_jobs!
     verify_import!(importer)
+  end
+
+  # Without an admin set the admin group manages, nobody can deposit or import.
+  def ensure_default_admin_set!
+    ensure_default_groups!
+    clear_stale_default_admin_set_ids!
+    register_existing_admin_set_as_default! unless Hyrax::DefaultAdministrativeSet.exists?
+    admin_set = @default_admin_set = Hyrax::AdminSetCreateService.find_or_create_default_admin_set
+    grant_admin_group_manage!(admin_set)
+    # reindex_admin_sets! only queues it, and deposit rights are read from Solr.
+    Hyrax.index_adapter.save(resource: admin_set)
+    log "admin set #{admin_set.id} is in place"
+  end
+
+  # Deleting an admin set leaves its id saved as the default, and Hyrax then
+  # raises instead of creating a new one.
+  def clear_stale_default_admin_set_ids!
+    Hyrax::DefaultAdministrativeSet.find_each do |row|
+      Hyrax.query_service.find_by(id: row.default_admin_set_id)
+    rescue Valkyrie::Persistence::ObjectNotFoundError
+      row.destroy!
+      log "cleared stale default admin set id #{row.default_admin_set_id}"
+    end
+  end
+
+  # Otherwise Hyrax creates a second admin set beside the existing one.
+  def register_existing_admin_set_as_default!
+    existing = Hyrax.query_service.find_all_of_model(model: Hyrax.config.admin_set_class).first
+    Hyrax::DefaultAdministrativeSet.update(default_admin_set_id: existing.id) if existing
+  end
+
+  def grant_admin_group_manage!(admin_set)
+    grant = { agent_type: Hyrax::PermissionTemplateAccess::GROUP, agent_id: ::Ability.admin_group_name,
+              access: Hyrax::PermissionTemplateAccess::MANAGE }
+    template = Hyrax::PermissionTemplate.find_by(source_id: admin_set.id.to_s)
+    return if template&.access_grants&.exists?(grant)
+
+    if template
+      Hyrax::Collections::PermissionsCreateService.add_access(collection_id: admin_set.id, grants: [grant])
+    else
+      # Hyrax saves an admin set before its template and workflows, so a failed create leaves it with neither.
+      Hyrax::AdminSetCreateService.new(admin_set:, creating_user: nil).create!
+    end
+    log "granted the #{::Ability.admin_group_name} group Manage on admin set #{admin_set.id}"
   end
 
   # Tenants provisioned by some earlier account flows lack the default
@@ -298,11 +341,8 @@ class DemoTenantResetService
     )
   end
 
-  # Reuses the existing admin set rather than triggering creation, which runs
-  # workflow grants that fail on partially provisioned tenants.
   def default_admin_set_id
-    existing = Hyrax.query_service.find_all_of_model(model: Hyrax.config.admin_set_class).first
-    (existing&.id || Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id).to_s
+    @default_admin_set.id.to_s
   end
 
   def import_user
@@ -353,17 +393,21 @@ class DemoTenantResetService
 
   # good_jobs is an Apartment excluded model, so one table holds every tenant's
   # rows and both queries below have to say which tenant they mean.
+  #
+  # Only jobs this import created: a row orphaned by a worker that died mid-job
+  # stays unfinished and due for good, and would fail every reset after it.
   def unfinished_jobs_for_tenant
-    GoodJob::Job.where(finished_at: nil)
-                .where("serialized_params->>'tenant' = ?", account.tenant)
+    scope = GoodJob::Job.where(finished_at: nil)
+                        .where("serialized_params->>'tenant' = ?", account.tenant)
+    @import_started_at ? scope.where('created_at >= ?', @import_started_at) : scope
   end
 
-  # Every reset row for the tenant, not only this one: its own is unfinished and
-  # due for as long as the drain runs, so counting it would wait on itself.
+  # Only the import's Bulkrax jobs: restoring featured works needs the records,
+  # not their derivatives, and a video transcode can outlast import_timeout.
   def pending_good_jobs
     unfinished_jobs_for_tenant
       .where('scheduled_at IS NULL OR scheduled_at <= ?', Time.current)
-      .where.not(job_class: RESET_JOB_CLASS)
+      .where('job_class LIKE ?', 'Bulkrax::%')
       .count
   end
 

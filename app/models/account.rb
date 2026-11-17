@@ -104,6 +104,7 @@ class Account < ApplicationRecord
 
   # Make all the account specific connections active
   def switch!
+    Hyku::PerThread.reset!
     solr_endpoint.switch!
     fcrepo_endpoint.switch! unless Hyrax.config.disable_wings
     redis_endpoint.switch!
@@ -227,13 +228,17 @@ class Account < ApplicationRecord
     end
 
     jobs_to_schedule.each do |klass|
-      klass.perform_later unless find_job(klass)
+      schedule_job(klass) unless find_job(klass)
     end
 
     account ? AccountElevator.switch!(account) : reset!
   end
 
   private
+
+  def schedule_job(klass)
+    klass == DemoTenantResetJob ? klass.schedule_first_run : klass.perform_later
+  end
 
   def schedule_jobs_if_settings_changed
     return unless settings

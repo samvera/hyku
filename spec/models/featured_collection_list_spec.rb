@@ -41,6 +41,18 @@ RSpec.describe FeaturedCollectionList, :clean_repo, type: :model do
       end
     end
 
+    context 'when a collection is missing from the index' do
+      before do
+        Hyrax::SolrService.delete(collection1.id)
+        Hyrax::SolrService.commit
+      end
+
+      it 'hides the collection without unfeaturing it' do
+        expect(subject.featured_collections.map(&:collection_id)).to eq [collection2.id]
+        expect(FeaturedCollection.where(collection_id: collection1.id)).to exist
+      end
+    end
+
     context 'when sorting the featured collections' do
       let(:instance) { described_class.new }
 

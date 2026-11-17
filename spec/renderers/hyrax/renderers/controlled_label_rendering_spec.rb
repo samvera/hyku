@@ -34,7 +34,7 @@ RSpec.describe 'controlled label rendering' do
   end
 
   describe 'a property rendered as a facet link' do
-    subject(:html) { rendered(Hyrax::Renderers::FacetedAttributeRenderer, :resource_type, ['oer']) }
+    subject(:html) { rendered(Hyrax::Renderers::FacetedAttributeRenderer, :resource_type, ['oer'], label_facet_registered: true) }
 
     it 'shows the label as the link text' do
       expect(html).to include 'OER'

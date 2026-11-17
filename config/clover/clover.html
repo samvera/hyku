@@ -4,16 +4,33 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <style>
-          html, body { margin: 0; height: 100%; }
+          /* Clover inherits its text colour from this page, and every show theme frames the
+             viewer in black, so a transparent page left the panel black on black. */
+          html, body { margin: 0; height: 100%; background: #000; color: #f2f2f2; color-scheme: dark; }
+          .clover-viewer-information-panel a { color: #7fb8ff; }
           clover-viewer { display: block; height: 100%; }
           clover-viewer :has(.clover-viewer-content) { height: 100% !important; }
           .clover-viewer-content { height: 100% !important; }
           .clover-viewer-player-wrapper,
           .clover-viewer-painting :has(> .clover-viewer-player-wrapper) { background-color: transparent !important; }
-          .clover-viewer-painting,
-          [data-testid="media"] { padding-left: 16px !important; padding-right: 16px !important; }
           .clover-viewer-information-panel { overflow-wrap: anywhere; }
           [data-testid="information-panel-cue"] strong { white-space: nowrap; margin-left: .75rem; }
+          .clover-viewer-information-panel, .clover-viewer-information-panel * { box-sizing: border-box; }
+          .clover-viewer-header > span:first-child { padding-left: 1rem !important; }
+          .clover-viewer-header > div:last-child { padding-right: 1rem !important; }
+          /* Clover caps its player at 500px, which left a black band under it in the taller show page frame. */
+          .clover-viewer-player-wrapper, .clover-viewer-player-wrapper video { height: 100% !important; max-height: none !important; }
+          /* Chrome clips a long cue that liftAudioCaptions has positioned unless it can wrap. */
+          video::cue { font-size: clamp(14px, 2.4vw, 24px); white-space: pre-line; }
+          /* The dark page scheme also darkens Chrome's own player menu, leaving its "Off" unreadable. */
+          audio, video { color-scheme: light; }
+          .captions-toggle {
+            position: absolute; top: 64px; left: 50%; transform: translateX(-50%); z-index: 1;
+            padding: 4px 12px; border: 1px solid #f2f2f2; border-radius: 4px;
+            background: rgba(0, 0, 0, .6); color: #f2f2f2; font: 600 14px/1.4 system-ui, sans-serif; cursor: pointer;
+          }
+          .captions-toggle[aria-pressed="true"] { background: #f2f2f2; color: #000; }
+          .captions-toggle:focus-visible { outline: 3px solid #7fb8ff; outline-offset: 2px; }
         </style>
     </head>
     <body>
@@ -25,6 +42,81 @@
         // Clover takes the manifest URL from `id`, and setAttribute would stringify
         // a missing one to "null" rather than leaving it unset.
         if (manifestUrl) viewer.setAttribute('id', manifestUrl);
+
+        // The web component cannot pass Clover the option to start with its information panel
+        // closed, and Clover opens it once mounted, so close it whenever it opens until the
+        // visitor uses the toggle themselves.
+        const keepPanelClosed = new MutationObserver(() => {
+          const toggle = document.getElementById('information-toggle');
+          if (toggle?.getAttribute('aria-checked') === 'true') toggle.click();
+        });
+        keepPanelClosed.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['aria-checked'] });
+        ['pointerdown', 'keydown'].forEach((type) => {
+          document.addEventListener(type, (event) => {
+            if (event.target.closest?.('#information-toggle')) keepPanelClosed.disconnect();
+          }, true);
+        });
+
+        // An audio item has no picture for the control bar to sit over, so its captions land behind
+        // the bar. Chrome sets a cue's top at its line, so leave room for the bar and two caption lines.
+        const CAPTION_CLEARANCE = 130;
+        const liftAudioCaptions = (media) => {
+          if (media.readyState < 1 || media.videoWidth > 0 || !media.clientHeight) return;
+          const line = Math.max(0, 100 - (CAPTION_CLEARANCE / media.clientHeight) * 100);
+          for (const track of media.textTracks) {
+            for (const cue of track.cues || []) Object.assign(cue, { snapToLines: false, line });
+          }
+        };
+        ['loadedmetadata', 'load'].forEach((type) => {
+          document.addEventListener(type, (event) => {
+            const media = event.target.closest?.('audio, video');
+            if (media) liftAudioCaptions(media);
+          }, true);
+        });
+        window.addEventListener('resize', () => document.querySelectorAll('audio, video').forEach(liftAudioCaptions));
+
+        const captionsShowing = (media) => [...media.textTracks].some((track) => track.mode === 'showing');
+        const captionsToggleFor = (media) => media.closest?.('.clover-viewer-player-wrapper')?.querySelector('.captions-toggle');
+        const syncCaptionsToggle = (media) => {
+          const button = captionsToggleFor(media);
+          if (!button) return;
+          button.hidden = !media.textTracks.length;
+          button.setAttribute('aria-pressed', String(captionsShowing(media)));
+        };
+
+        // Clover keeps the wrapper across items and reuses a player for the same file without a new
+        // loadedmetadata, so tracks are watched from loadstart, which fires even for media that fails.
+        const watchedMedia = new WeakSet();
+        document.addEventListener('loadstart', (event) => {
+          const media = event.target;
+          if (!media.textTracks) return;
+          captionsToggleFor(media)?.remove();
+          if (watchedMedia.has(media)) return;
+          watchedMedia.add(media);
+          ['change', 'addtrack', 'removetrack'].forEach((type) => {
+            media.textTracks.addEventListener(type, () => {
+              liftAudioCaptions(media);
+              syncCaptionsToggle(media);
+            });
+          });
+        }, true);
+
+        // Firefox's controls offer no captions button for audio, so audio items get one of their own.
+        document.addEventListener('loadedmetadata', (event) => {
+          const media = event.target;
+          if (!media.textTracks) return;
+          const wrapper = media.closest('.clover-viewer-player-wrapper');
+          if (!wrapper || media.videoWidth > 0 || captionsToggleFor(media)) return;
+          const button = document.createElement('button');
+          Object.assign(button, { type: 'button', className: 'captions-toggle', textContent: 'CC', title: 'Captions' });
+          button.addEventListener('click', () => {
+            const turnOn = !captionsShowing(media);
+            [...media.textTracks].forEach((track, index) => { track.mode = turnOn && index === 0 ? 'showing' : 'disabled'; });
+            syncCaptionsToggle(media);
+          });
+          wrapper.appendChild(button);
+          syncCaptionsToggle(media);
+        }, true);
     </script>
     </body>
 </html>

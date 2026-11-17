@@ -10,4 +10,18 @@ RSpec.describe TenantMaintenanceJob, type: :job do
       expect { TenantMaintenanceJob.perform_now }.to have_enqueued_job(TenantMaintenanceJob)
     end
   end
+
+  describe 'uploads cleanup' do
+    it 'does not enqueue UploadsCleanupJob by default' do
+      switch!(account)
+      expect { TenantMaintenanceJob.perform_now }.not_to have_enqueued_job(UploadsCleanupJob)
+    end
+
+    it 'enqueues UploadsCleanupJob when scheduled uploads cleanup is enabled' do
+      switch!(account)
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('HYKU_SCHEDULE_UPLOADS_CLEANUP', anything).and_return('true')
+      expect { TenantMaintenanceJob.perform_now }.to have_enqueued_job(UploadsCleanupJob)
+    end
+  end
 end

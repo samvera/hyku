@@ -1175,6 +1175,7 @@ fr:
         keyword: Mots ou expressions que vous sélectionnez pour décrire l'objet du travail. Ils sont utilisés pour rechercher du contenu.
         language: La langue du contenu de l'œuvre.
         license: Informations sur les licences et la distribution régissant l'accès à l'œuvre. Sélectionnez dans la liste déroulante fournie.
+        media_viewer: "Le lecteur qui affiche les fichiers de cette œuvre sur sa page. Laissez vide pour utiliser celui par défaut. PDF.js est le seul visualiseur capable d'afficher les fichiers PDF."
         publisher: La personne ou le groupe qui met le travail à disposition. Il s'agit généralement de l'institution.
         related_url: Un lien vers un site Web ou tout autre contenu spécifique (audio, vidéo, document PDF) lié à l'œuvre. Un exemple est l'URL d'un projet de recherche dont le travail a été dérivé.
         resource_type: Catégories prédéfinies pour décrire le type de contenu en cours de téléchargement, telles que & quot; article & quot; ou & quot; ensemble de données. & quot; Plusieurs types peuvent être sélectionnés.

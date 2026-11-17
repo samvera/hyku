@@ -7,7 +7,7 @@ module ReferenceHelper
   end
 
   def ref_creators(object, limit: 3)
-    names = Array(object.creator).reject(&:blank?)
+    names = theme_values(object, :creator).reject(&:blank?)
     return if names.empty?
 
     shown = names.first(limit).join('; ')
@@ -15,7 +15,7 @@ module ReferenceHelper
   end
 
   def ref_provenance(document)
-    parts = [Array(document.publisher).first,
+    parts = [theme_values(document, :publisher).first,
              Array(document.date_created).first,
              Array(document['member_of_collections_ssim']).first].compact_blank
     parts << t('reference.homepage.recent.embargo') if document.embargo_release_date.present?

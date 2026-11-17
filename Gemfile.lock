@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: cb0013338c37a34be2a5c3e0d882a87498f79ab9
+  revision: c76926f7c546edfce6c264257cc6ec8b8f93c4f6
   branch: main
   specs:
     hyrax (5.3.0)
@@ -117,17 +117,6 @@ GIT
       addressable (~> 2.3)
       nokogiri (~> 1.5)
       omniauth (>= 1.2, < 3)
-
-GIT
-  remote: https://github.com/sul-dlss/riiif.git
-  revision: 9a37564c3842d703bb9df195038eaf7fb037b5df
-  ref: 9a375
-  specs:
-    riiif (2.7.0)
-      deprecation (>= 1.0.0)
-      iiif-image-api (>= 0.1.0)
-      railties (>= 4.2, < 9)
-      ruby-vips
 
 GEM
   remote: https://rubygems.org/
@@ -362,16 +351,16 @@ GEM
     bootstrap-datepicker-rails (1.10.0.1)
       railties (>= 3.0)
     breadcrumbs_on_rails (3.0.1)
-    browse-everything (1.5.0)
+    browse-everything (1.6.1)
       addressable (~> 2.5)
       aws-sdk-s3
       dropbox_api (>= 0.1.20)
+      faraday (~> 2.0)
       google-apis-drive_v3
       googleauth (>= 0.6.6, < 2.0)
       rails (>= 4.2, < 8.1)
       ruby-box
       signet (~> 0.8)
-      typhoeus
     builder (3.3.0)
     bulkrax (10.0.1)
       bagit (~> 0.6.0)
@@ -578,8 +567,6 @@ GEM
     erubi (1.13.1)
     et-orbi (1.3.0)
       tzinfo
-    ethon (0.15.0)
-      ffi (>= 1.15.0)
     excon (0.71.1)
     execjs (2.10.0)
     factory_bot (6.5.5)
@@ -1329,6 +1316,11 @@ GEM
     reverse_markdown (3.0.0)
       nokogiri
     rexml (3.4.4)
+    riiif (2.9.0)
+      deprecation (>= 1.0.0)
+      iiif-image-api (>= 0.1.0)
+      railties (>= 4.2, < 9)
+      ruby-vips
     rolify (6.0.1)
     ros-apartment (3.2.0)
       activerecord (>= 6.1.0, < 8.1)
@@ -1577,8 +1569,6 @@ GEM
       actionpack (>= 3.1)
       jquery-rails
       railties (>= 3.1)
-    typhoeus (1.5.0)
-      ethon (>= 0.9.0, < 0.16.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
@@ -1747,7 +1737,7 @@ DEPENDENCIES
   redis-namespace (~> 1.10)
   redlock (>= 0.1.2, < 2.0)
   request_store (~> 1.7)
-  riiif!
+  riiif (~> 2.9)
   rolify
   ros-apartment
   rsolr (~> 2.0)

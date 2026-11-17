@@ -681,7 +681,6 @@ fr:
           work_editor: Permet de créer, lire, modifier et approuver tout travail dans ce locataire, ainsi que de déplacer des travaux entre les ensembles d'administration et de gérer les embargos et les baux.
       stats:
         collections_over_time: Collections au fil du temps
-        downloads: Téléchargements
         header: Statistiques pour %{application_name}
         tab_collections: Collections
         tab_works: Œuvres
@@ -906,6 +905,7 @@ fr:
         manage_discovery: Vous n'êtes pas autorisé à modifier le paramètre de découverte de cette collection
   practice_research:
     homepage:
+      intro_label: Aperçu du dépôt
       hero:
         title: La recherche par la pratique, réunie
         lede: Œuvres, documentation et écrits, déposés comme des projets complets, dans l'ordre voulu par leurs auteurs.

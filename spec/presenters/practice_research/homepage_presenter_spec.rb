@@ -125,6 +125,26 @@ RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo do
       end
     end
 
+    context 'when the catalog hides the facet a browse widget would use' do
+      let(:config) do
+        ::CatalogController.blacklight_config.deep_dup.tap { |dup| dup.facet_fields['subject_sim'].if = false }
+      end
+      let(:scope) do
+        Struct.new(:blacklight_config, :current_ability, :params, :search_state_class)
+              .new(config, ability, {}, nil)
+      end
+      let(:search_service) do
+        Hyrax::SearchService.new(config:, user_params: {}, scope:, current_ability: ability,
+                                 search_builder_class: Hyrax::HomepageSearchBuilder)
+      end
+
+      it 'offers nothing, as the sidebar shows nothing' do
+        indexed_work('Primary Space', 'open', subject: ['Sculpture'])
+
+        expect(presenter.subjects).to be_empty
+      end
+    end
+
     context 'when the tenant has removed only the work type facet' do
       let(:config) do
         ::CatalogController.blacklight_config.deep_dup.tap { |dup| dup.facet_fields.delete('has_model_ssim') }
@@ -138,12 +158,29 @@ RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo do
                                  search_builder_class: Hyrax::HomepageSearchBuilder)
       end
 
-      it 'falls back to resource type' do
+      # Fails in flexible mode, where the resource type facet is resource_type_label_sim (issue #3505).
+      it 'falls back to resource type', flexible: false do
         indexed_work('Primary Space', 'open', resource_type: ['Poster'])
         indexed_work('Kiln Yard', 'restricted', resource_type: ['Score'])
 
         expect(presenter.browse_types[:field]).to eq('resource_type_sim')
         expect(presenter.browse_types[:items]).to eq('Poster' => 1)
+      end
+
+      context 'when the catalog facets resource type and subject by label' do
+        let(:config) do
+          ::CatalogController.blacklight_config.deep_dup.tap do |dup|
+            dup.facet_fields.delete('has_model_ssim')
+            %w[resource_type_label_sim subject_label_sim].each do |field|
+              dup.add_facet_field(field) unless dup.facet_fields.key?(field)
+            end
+          end
+        end
+
+        it 'browses both through their label facets' do
+          expect(presenter.browse_types[:field]).to eq('resource_type_label_sim')
+          expect(presenter.subject_field).to eq('subject_label_sim')
+        end
       end
 
       it 'names no more types than the tile row holds' do

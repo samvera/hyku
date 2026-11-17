@@ -20,6 +20,14 @@ module Hyku
       end
     end
 
+    # OVERRIDE: Blacklight::BlacklightHelperBehavior#document_presenter_class:
+    #   a collection's show page lists its members as search results
+    def document_presenter_class(document = nil)
+      return super unless controller.is_a?(Hyrax::CollectionsController) && action_name == 'show'
+
+      blacklight_config.view_config(document_index_view_type).document_presenter_class
+    end
+
     # OVERRIDE: Blacklight::UrlHelperBehavior:
     #   override link_to_document to substitute method generate_work_url
     #   to fix URLs for gallery view groupings in shared tenants

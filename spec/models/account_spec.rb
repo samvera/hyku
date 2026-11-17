@@ -734,6 +734,12 @@ RSpec.describe Account, type: :model do
         account.find_or_schedule_jobs
       end
 
+      it 'seeds the chain through DemoTenantResetJob.schedule_first_run' do
+        allow(account).to receive(:find_job).and_return(false)
+        expect(DemoTenantResetJob).to receive(:schedule_first_run)
+        account.find_or_schedule_jobs
+      end
+
       it 'does not schedule if the job already exists' do
         allow(account).to receive(:find_job).and_return(false)
         allow(account).to receive(:find_job).with(DemoTenantResetJob).and_return(true)

@@ -1,13 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Controlled Vocabularies Integration', type: :service do
-  around do |example|
-    original_env = ENV['HYRAX_FLEXIBLE']
-    ENV['HYRAX_FLEXIBLE'] = 'true'
-    example.run
-    ENV['HYRAX_FLEXIBLE'] = original_env
-  end
-
+RSpec.describe 'Controlled Vocabularies Integration', type: :service, flexible: true do
   let(:profile_yaml) do
     <<~YAML
       ---
@@ -228,11 +221,6 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
     context 'when HYRAX_FLEXIBLE is true' do
       let(:profile) { YAML.safe_load(profile_yaml) }
 
-      before do
-        allow(ENV).to receive(:[]).and_call_original
-        allow(ENV).to receive(:[]).with('HYRAX_FLEXIBLE').and_return('true')
-      end
-
       it 'processes profiles with controlled vocabularies correctly' do
         expect(profile['properties']['audience']['controlled_values']['sources']).to eq(['audience'])
         expect(profile['properties']['subject']['controlled_values']['sources']).to eq(['loc/subjects'])
@@ -260,14 +248,7 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
       end
     end
 
-    context 'when HYRAX_FLEXIBLE is false' do
-      around do |example|
-        original_env = ENV['HYRAX_FLEXIBLE']
-        ENV['HYRAX_FLEXIBLE'] = 'false'
-        example.run
-        ENV['HYRAX_FLEXIBLE'] = original_env
-      end
-
+    context 'when HYRAX_FLEXIBLE is false', flexible: false do
       it 'still has access to controlled vocabulary configurations' do
         expect(Hyrax::ControlledVocabularies.services).to be_present
         expect(Hyrax::ControlledVocabularies.remote_authorities).to be_present

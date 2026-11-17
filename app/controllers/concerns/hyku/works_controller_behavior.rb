@@ -12,6 +12,7 @@
 #           - cache a manifest, in the browser, shared caches or Rails.cache, only when an anonymous visitor
 #             asked for a public work, and build its presenter once
 #           - let a controller put its file sets' metadata on its IIIF manifest's pages
+#           - let a controller choose its IIIF manifest's viewing hint
 module Hyku
   # include this module after including Hyrax::WorksControllerBehavior to override
   # Hyrax::WorksControllerBehavior methods with the ones defined here
@@ -29,13 +30,13 @@ module Hyku
       class_attribute :iiif_manifest_presenter_class
       self.iiif_manifest_presenter_class = Hyrax::IiifManifestPresenter
       class_attribute :iiif_file_set_metadata, default: false
+      class_attribute :iiif_viewing_hint, default: Hyku::ViewingHint.default_viewing_hint
 
-      # These cache wrapper methods need to be in the top level so that they override other modules
       def show
         return super if Rails.env.test?
         fresh_when presenter
         expires_in 1.hour, public: true
-        super
+        super unless performed?
       end
 
       def manifest
@@ -47,7 +48,7 @@ module Hyku
         else
           no_store
         end
-        super
+        super unless performed?
         vary_by_cookie if cacheable
       end
     end
@@ -123,6 +124,7 @@ module Hyku
         p.hostname = request.hostname
         p.ability = current_ability
         p.try(:iiif_file_set_metadata=, iiif_file_set_metadata)
+        p.try(:iiif_viewing_hint=, iiif_viewing_hint)
       end
     end
 

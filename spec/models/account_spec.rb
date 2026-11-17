@@ -674,9 +674,11 @@ RSpec.describe Account, type: :model do
     it 'does not schedule jobs that already exist' do
       allow(account).to receive(:find_job).with(EmbargoAutoExpiryJob).and_return(true)
       allow(account).to receive(:find_job).with(LeaseAutoExpiryJob).and_return(true)
+      allow(account).to receive(:find_job).with(PruneOldSearchesJob).and_return(true)
 
       expect(EmbargoAutoExpiryJob).not_to receive(:perform_later)
       expect(LeaseAutoExpiryJob).not_to receive(:perform_later)
+      expect(PruneOldSearchesJob).not_to receive(:perform_later)
 
       account.find_or_schedule_jobs
     end
@@ -706,6 +708,7 @@ RSpec.describe Account, type: :model do
         # Stub default jobs to prevent the error
         allow(account).to receive(:find_job).with(EmbargoAutoExpiryJob).and_return(false)
         allow(account).to receive(:find_job).with(LeaseAutoExpiryJob).and_return(false)
+        allow(account).to receive(:find_job).with(PruneOldSearchesJob).and_return(false)
       end
 
       it 'schedules BatchEmailNotificationJob' do

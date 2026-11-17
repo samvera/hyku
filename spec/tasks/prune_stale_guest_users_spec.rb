@@ -37,12 +37,19 @@ RSpec.describe 'hyku:prune_stale_guest_users' do
   end
 
   it 'honors OLDER_THAN_DAYS' do
-    stub_env('OLDER_THAN_DAYS' => '0')
+    stub_env('OLDER_THAN_DAYS' => '10')
 
     run_task('hyku:prune_stale_guest_users')
 
-    expect(User.unscoped.where(guest: true)).to be_empty
+    expect(User.unscoped.where(guest: true).count).to eq 2
     expect(User.unscoped.find(stale_member.id)).to eq stale_member
+  end
+
+  it 'aborts on an invalid OLDER_THAN_DAYS instead of deleting everything' do
+    stub_env('OLDER_THAN_DAYS' => '0')
+
+    expect(run_task('hyku:prune_stale_guest_users')).to include 'OLDER_THAN_DAYS must be at least 1'
+    expect(User.unscoped.where(guest: true).count).to eq 2
   end
 
   it 'deletes nothing on a dry run' do

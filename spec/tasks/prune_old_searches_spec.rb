@@ -38,11 +38,18 @@ RSpec.describe 'hyku:prune_old_searches' do
   end
 
   it 'honors OLDER_THAN_DAYS' do
-    stub_env('OLDER_THAN_DAYS' => '0')
+    stub_env('OLDER_THAN_DAYS' => '50')
 
     run_task('hyku:prune_old_searches')
 
-    expect(Search.all).to contain_exactly(old_saved)
+    expect(Search.all).to contain_exactly(old_anonymous, recent_anonymous, old_saved)
+  end
+
+  it 'aborts on an invalid OLDER_THAN_DAYS instead of deleting everything' do
+    stub_env('OLDER_THAN_DAYS' => '0')
+
+    expect(run_task('hyku:prune_old_searches')).to include 'OLDER_THAN_DAYS must be at least 1'
+    expect(Search.all).to contain_exactly(old_anonymous, recent_anonymous, old_saved)
   end
 
   it 'deletes nothing on a dry run' do

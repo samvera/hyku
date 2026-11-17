@@ -3,8 +3,7 @@
 namespace :hyku do
   desc <<~DESC
     Delete stale guest users in throttled batches. Users are shared across
-    tenants, so this runs once. Also runs daily as PruneStaleGuestUsersJob when
-    HYKU_SCHEDULE_PRUNE_JOBS is on.
+    tenants, so this runs once. Also runs daily as PruneStaleGuestUsersJob.
 
     Options (all via environment variables):
 
@@ -17,5 +16,7 @@ namespace :hyku do
   task prune_stale_guest_users: :environment do
     options = PruneJobs.options_from_env(older_than_days: StaleGuestUsersPruner::DEFAULT_OLDER_THAN_DAYS)
     StaleGuestUsersPruner.call(**options)
+  rescue ArgumentError => e
+    abort("hyku:prune_stale_guest_users - #{e.message}")
   end
 end

@@ -4,7 +4,7 @@ namespace :hyku do
   desc <<~DESC
     Delete old anonymous (unsaved) Blacklight searches across every tenant, in
     throttled batches. Searches saved by a user (user_id present) are never touched.
-    Also runs daily as PruneOldSearchesJob when HYKU_SCHEDULE_PRUNE_JOBS is on.
+    Also runs daily as PruneOldSearchesJob.
 
     A tenant that fails is logged and skipped; the task exits non-zero at the
     end listing them.
@@ -30,5 +30,7 @@ namespace :hyku do
     end
 
     abort("hyku:prune_old_searches - failed for: #{failed.join(', ')}") if failed.any?
+  rescue ArgumentError => e
+    abort("hyku:prune_old_searches - #{e.message}")
   end
 end

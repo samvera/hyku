@@ -149,6 +149,7 @@ RSpec.describe CreateAccount, clean: true do
         [
           EmbargoAutoExpiryJob,
           LeaseAutoExpiryJob,
+          PruneOldSearchesJob,
           BatchEmailNotificationJob,
           DepositorEmailNotificationJob,
           UserStatCollectionJob
@@ -167,8 +168,8 @@ RSpec.describe CreateAccount, clean: true do
         allow(account).to receive(:analytics).and_return(false)
       end
 
-      it "only enqueues embargo and lease jobs" do
-        [EmbargoAutoExpiryJob, LeaseAutoExpiryJob].each do |klass|
+      it "only enqueues embargo, lease, and prune jobs" do
+        [EmbargoAutoExpiryJob, LeaseAutoExpiryJob, PruneOldSearchesJob].each do |klass|
           expect(account).to receive(:find_job).with(klass).and_return(false)
           expect(klass).to receive(:perform_later)
         end

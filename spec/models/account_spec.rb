@@ -681,10 +681,8 @@ RSpec.describe Account, type: :model do
       account.find_or_schedule_jobs
     end
 
-    context 'with prune jobs enabled' do
+    context 'with prune jobs' do
       before do
-        allow(ENV).to receive(:fetch).and_call_original
-        allow(ENV).to receive(:fetch).with('HYKU_SCHEDULE_PRUNE_JOBS', anything).and_return('true')
         allow(account).to receive(:find_job).and_return(false)
         allow(EmbargoAutoExpiryJob).to receive(:perform_later)
         allow(LeaseAutoExpiryJob).to receive(:perform_later)
@@ -700,11 +698,6 @@ RSpec.describe Account, type: :model do
         expect(PruneOldSearchesJob).not_to receive(:perform_later)
         account.find_or_schedule_jobs
       end
-    end
-
-    it 'does not schedule PruneOldSearchesJob by default' do
-      expect(PruneOldSearchesJob).not_to receive(:perform_later)
-      account.find_or_schedule_jobs
     end
 
     context 'with batch email notifications enabled' do

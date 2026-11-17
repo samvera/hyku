@@ -12,15 +12,8 @@ RSpec.describe TenantMaintenanceJob, type: :job do
   end
 
   describe 'guest user pruning' do
-    it 'does not enqueue PruneStaleGuestUsersJob by default' do
+    it 'enqueues PruneStaleGuestUsersJob' do
       switch!(account)
-      expect { TenantMaintenanceJob.perform_now }.not_to have_enqueued_job(PruneStaleGuestUsersJob)
-    end
-
-    it 'enqueues PruneStaleGuestUsersJob when prune jobs are enabled' do
-      switch!(account)
-      allow(ENV).to receive(:fetch).and_call_original
-      allow(ENV).to receive(:fetch).with('HYKU_SCHEDULE_PRUNE_JOBS', anything).and_return('true')
       expect { TenantMaintenanceJob.perform_now }.to have_enqueued_job(PruneStaleGuestUsersJob)
     end
   end

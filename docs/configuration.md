@@ -140,11 +140,10 @@ Tenants flagged as public demos are wiped and re-seeded every night by `DemoTena
 
 ## Scheduled Cleanup Jobs
 
-Anonymous searches and guest users accumulate without bound. When `HYKU_SCHEDULE_PRUNE_JOBS` is on, `PruneOldSearchesJob` (one per tenant, daily) deletes anonymous searches older than 30 days, and `PruneStaleGuestUsersJob` (once, daily via `TenantMaintenanceJob`) deletes guest users not updated in 7 days. The same cleanups can be run by hand with `hyku:prune_old_searches` and `hyku:prune_stale_guest_users` (both take `DRY_RUN=true`).
+Anonymous searches and guest users accumulate without bound. `PruneOldSearchesJob` (one per tenant, daily) deletes anonymous searches older than 30 days, and `PruneStaleGuestUsersJob` (once, daily via `TenantMaintenanceJob`) deletes guest users not updated in 7 days. The same cleanups can be run by hand with `hyku:prune_old_searches` and `hyku:prune_stale_guest_users` (both take `DRY_RUN=true`).
 
 | Name                      | Description |
 | ------------------------- | ----------- |
-| HYKU_SCHEDULE_PRUNE_JOBS  | Set to `true` to schedule the jobs. Off by default because they delete rows. |
 | HYKU_PRUNE_MAX_BATCHES    | Batches (5,000 rows each) one run may delete before stopping; a large backlog drains over several days. Defaults to 100. Run the rake tasks once by hand to clear an existing backlog quickly. |
 ## Scheduled Upload Cleanup
 

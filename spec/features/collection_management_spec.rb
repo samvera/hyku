@@ -168,7 +168,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
         expect(page).to have_selector('#description input#collection_title')
         expect(page).to have_link('Additional fields')
         expect(page).to have_button('Save changes')
-        expect(page).to have_link('Cancel', href: "/dashboard/collections/#{collection.id}?locale=en")
+        expect(page).to have_link('Cancel', href: "/dashboard/collections/#{collection.id}")
       end
 
       it 'adds and removes descriptor inputs with Add another / Remove and saves the result' do
@@ -204,7 +204,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
           visit "/dashboard/collections/#{collection.id}/edit"
           click_link tab
           click_link 'Cancel'
-          expect(page).to have_current_path("/dashboard/collections/#{collection.id}?locale=en")
+          expect(page).to have_current_path("/dashboard/collections/#{collection.id}")
           expect(page).to have_link('Edit collection')
         end
       end
@@ -248,7 +248,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
             end
           end
           expect(page).to have_button('Save changes')
-          expect(page).to have_link('Cancel', href: "/dashboard/collections/#{collection.id}?locale=en")
+          expect(page).to have_link('Cancel', href: "/dashboard/collections/#{collection.id}")
         end
 
         it 'saves the logo Link URL and Alt Text' do
@@ -294,7 +294,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
           expect(page).to have_selector('input#collection_visibility_restricted')    # Private
         end
         expect(page).to have_button('Save changes')
-        expect(page).to have_link('Cancel', href: "/dashboard/collections/#{collection.id}?locale=en")
+        expect(page).to have_link('Cancel', href: "/dashboard/collections/#{collection.id}")
       end
     end
 
@@ -345,7 +345,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
             expect(page).to have_link('Remove')
           end
           expect(page).to have_button('Save changes')
-          expect(page).to have_link('Cancel', href: "/dashboard/collections/#{collection.id}?locale=en")
+          expect(page).to have_link('Cancel', href: "/dashboard/collections/#{collection.id}")
         end
 
         # Potential duplicate: spec/features/collection_spec.rb:85 (enabled Remove buttons in sharing tables)
@@ -428,7 +428,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
           click_link 'Edit'
         end
 
-        expect(page).to have_current_path("/admin/collection_types/#{exhibit_type.id}/edit?locale=en")
+        expect(page).to have_current_path("/admin/collection_types/#{exhibit_type.id}/edit")
         expect(page).to have_field('collection_type_title', with: 'Exhibit Type')
       end
     end
@@ -446,7 +446,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
 
       it 'returns to the collection types index from Cancel' do
         click_link 'Cancel'
-        expect(page).to have_current_path('/admin/collection_types?locale=en')
+        expect(page).to have_current_path('/admin/collection_types')
       end
     end
 
@@ -496,7 +496,7 @@ RSpec.describe 'Collection Management', type: :feature, js: true, clean: true do
         end
         expect(page).to have_button('Save changes')
         click_link 'Cancel'
-        expect(page).to have_current_path('/admin/collection_types?locale=en')
+        expect(page).to have_current_path('/admin/collection_types')
       end
 
       def participant(agent)

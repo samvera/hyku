@@ -58,7 +58,7 @@ RSpec.describe 'Batch uploads', type: :request, singletenant: true, clean: true 
       }
     end
 
-    expect(response).to redirect_to(hyrax.my_works_path(locale: 'en'))
+    expect(response).to redirect_to(hyrax.my_works_path)
 
     works = Hyrax.query_service.find_all_of_model(model: GenericWork).to_a
     expect(works.map { |work| Array(work.title).first })

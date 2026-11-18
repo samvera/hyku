@@ -14,6 +14,6 @@ RSpec.describe "The splash page", type: :feature, clean: true, multitenant: true
 
   it "shows a link to login" do
     visit '/'
-    expect(page).to have_link 'Login to get started', href: main_app.new_user_session_path(locale: 'en')
+    expect(page).to have_link 'Login to get started', href: main_app.new_user_session_path
   end
 end

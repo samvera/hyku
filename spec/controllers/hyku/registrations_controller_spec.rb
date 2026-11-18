@@ -26,7 +26,7 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
             password_confirmation: "password"
           }
         }
-        expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.dashboard_path(locale: 'en')
+        expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.dashboard_path
         expect(flash[:notice]).to eq 'Welcome! You have signed up successfully.'
       end
     end

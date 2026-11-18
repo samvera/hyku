@@ -719,7 +719,7 @@ tr[data-feature="use-iiif-print"] {
 .hyrax-collections-show {
     .document-metadata {
         dd {
-            word-break: break-all;
+            overflow-wrap: anywhere;
         }
     }
 

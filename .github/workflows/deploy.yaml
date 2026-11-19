@@ -10,7 +10,6 @@ on:
         type: choice
         options:
           - demo
-          - iiif
           - staging
           - test
       debug_enabled:

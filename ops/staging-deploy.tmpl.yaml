@@ -333,9 +333,12 @@ nginx:
       memory: "128Mi"
       cpu: "20m"
   image:
-    registry: ghcr.io
-    repository: notch8/scripts/bitnamilegacy-nginx
-    tag: 1.21.6-debian-11-r21
+    # Bitnami has stopped publishing updates to the legacy registry this
+    # used to pull from (see notch8/notch8-ops#812). The chart's own nginx
+    # templates (not a Bitnami subchart, as of chart 4.0.0+) don't read a
+    # separate `registry` key, so it's folded into `repository` here.
+    repository: nginx/nginx-unprivileged
+    tag: 1.31.9-alpine
   serverBlock: |-
     upstream rails_app {
       server {{ .Values.global.hyraxName }};
@@ -350,7 +353,7 @@ nginx:
                       'request="${DOLLAR}request" status=${DOLLAR}status bytes=${DOLLAR}body_bytes_sent '
                       'referer="${DOLLAR}http_referer" agent="${DOLLAR}http_user_agent" request_time=${DOLLAR}request_time upstream_response_time=${DOLLAR}upstream_response_time upstream_response_length=${DOLLAR}upstream_response_length';
 
-    error_log  /opt/bitnami/nginx/logs/error.log warn;
+    error_log  /var/log/nginx/error.log warn;
     #tcp_nopush     on;
 
     # Cloudflare ips see for refresh
@@ -381,7 +384,6 @@ nginx:
 
     real_ip_header X-Forwarded-For;
     real_ip_recursive on;
-    include /opt/bitnami/nginx/conf/conf.d/*.conf;
     server {
         listen 8080;
         server_name _;
@@ -391,14 +393,12 @@ nginx:
         client_body_in_file_only clean;
         client_body_buffer_size 32K;
         client_max_body_size 0;
-        access_log /opt/bitnami/nginx/logs/access.log loki;
+        access_log /var/log/nginx/access.log loki;
         # if=${DOLLAR}loggable;
 
         sendfile on;
         send_timeout 300s;
 
-        include /opt/bitnami/nginx/conf/bots.d/ddos.conf;
-        include /opt/bitnami/nginx/conf/bots.d/blockbots.conf;
 
         location ~ (\.php|\.aspx|\.asp) {
         	return 404;

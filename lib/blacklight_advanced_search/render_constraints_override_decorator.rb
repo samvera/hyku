@@ -5,20 +5,17 @@ module BlacklightAdvancedSearch
   module RenderConstraintsOverrideDecorator
     # OVERRIDE: BlacklightAdvancedSearch v7.0.0
     #
-    # Builds the "remove" link for an advanced search facet limit. The gem rebuilds the params through
-    # Blacklight::SearchState and then reads them with symbol keys, but SearchState#to_h returns a plain
-    # Hash with string keys, so my_params[:f_inclusive] was nil and every advanced search with a facet
-    # limit (f_inclusive) raised "undefined method `delete' for nil" while rendering its constraints.
-    # Same cause as AdvancedQueryParserDecorator.
+    # Blacklight 7.43 renders advanced search facet limits (f_inclusive) as constraints itself. The gem's
+    # override renders them a second time, and building its "remove" link raised
+    # "undefined method `delete' for nil": it rebuilds the params through Blacklight::SearchState and reads
+    # them with symbol keys, but SearchState#to_h returns a plain Hash with string keys (the same cause as
+    # AdvancedQueryParserDecorator). Every advanced search with a facet limit returned 500.
+    #
+    # Render the filters with Blacklight's own implementation only.
     #
     # TODO: Remove this override after upgrading to BlacklightAdvancedSearch v8.x.x
-    def remove_advanced_filter_group(field, my_params = params)
-      return my_params unless my_params[:f_inclusive]
-
-      my_params = Blacklight::SearchState.new(my_params, blacklight_config).to_h.with_indifferent_access
-      my_params[:f_inclusive] = my_params[:f_inclusive].except(field)
-      my_params.delete(:f_inclusive) if my_params[:f_inclusive].empty?
-      my_params
+    def render_constraints_filters(my_params = params)
+      Blacklight::RenderConstraintsHelperBehavior.instance_method(:render_constraints_filters).bind_call(self, my_params)
     end
   end
 end

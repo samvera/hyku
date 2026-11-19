@@ -197,7 +197,7 @@ jobs:
 
   lint:
     needs: push
-    uses: notch8/actions/.github/workflows/lint.yaml@v1.0.6
+    uses: notch8/actions/.github/workflows/lint.yaml@v1.0.17
     with:
       webTarget: hyku-web
       workerTarget: hyku-worker
@@ -206,7 +206,7 @@ jobs:
 
   test:
     needs: push
-    uses: notch8/actions/.github/workflows/test.yaml@v1.0.6
+    uses: notch8/actions/.github/workflows/test.yaml@v1.0.17
     with:
       confdir: "/app/samvera/hyrax-webapp/solr/conf"
       # Runs on six nodes, three per metadata mode (see bin/ci_rspec). Set the repository Actions
@@ -326,7 +326,7 @@ jobs:
               puts \"Standalone Solr core '#{core}' OK — endpoint: #{account.solr_endpoint.url}\"
             "
       - name: Upload single-tenant logs
-        uses: notch8/actions/after-care@v1.0.6
+        uses: notch8/actions/after-care@v1.0.17
         if: always()
         env:
           COMPOSE_FILE: docker-compose.single.yml
@@ -369,4 +369,4 @@ jobs:
   reports:
     if: always()
     needs: [test, lint, single-tenant-test]
-    uses: notch8/actions/.github/workflows/report.yaml@v1.0.6
+    uses: notch8/actions/.github/workflows/report.yaml@v1.0.17

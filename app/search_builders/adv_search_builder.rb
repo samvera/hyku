@@ -36,4 +36,11 @@ class AdvSearchBuilder < IiifPrint::CatalogSearchBuilder
     filter_query = '-(hide_from_catalog_search_bsi:true)'
     solr_parameters[:fq] << filter_query
   end
+
+  private
+
+  # OVERRIDE Hyrax v5.3.0 to keep collections hidden from catalog search out of OAI ListSets
+  def visible_collections_query
+    Hyrax::SolrQueryService.new(query: ['-hide_from_catalog_search_bsi:true'])
+  end
 end

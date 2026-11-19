@@ -45,7 +45,7 @@ RSpec.describe Hyrax::Admin::AppearancesController, type: :controller, singleten
           expect(Site.instance.banner_image?).to be false
           f = fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg')
           post :update, params: { admin_appearance: { banner_image: f } }
-          expect(response).to redirect_to(hyrax.admin_appearance_path(locale: 'en'))
+          expect(response).to redirect_to(hyrax.admin_appearance_path)
           expect(flash[:notice]).to include("The appearance was successfully updated")
           expect(Site.instance.banner_image?).to be true
         end
@@ -54,14 +54,14 @@ RSpec.describe Hyrax::Admin::AppearancesController, type: :controller, singleten
           expect(Site.instance.directory_image?).to be false
           f = fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg')
           post :update, params: { admin_appearance: { directory_image: f } }
-          expect(response).to redirect_to(hyrax.admin_appearance_path(locale: 'en'))
+          expect(response).to redirect_to(hyrax.admin_appearance_path)
           expect(flash[:notice]).to include("The appearance was successfully updated")
           expect(Site.instance.directory_image?).to be true
         end
 
         it "redirects to the site" do
           put :update, params: { admin_appearance: valid_attributes }
-          expect(response).to redirect_to(hyrax.admin_appearance_path(locale: 'en'))
+          expect(response).to redirect_to(hyrax.admin_appearance_path)
         end
       end
 

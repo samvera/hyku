@@ -21,7 +21,7 @@ RSpec.describe 'Removing a work from a collection on the dashboard', type: :requ
       put hyrax.dashboard_collection_path(collection), params: { collection: { members: 'remove' }, batch_document_ids: [work.id.to_s] }
     end.not_to(change { branding.pluck(:role).sort })
 
-    expect(response).to redirect_to(hyrax.dashboard_collection_path(collection, locale: 'en'))
+    expect(response).to redirect_to(hyrax.dashboard_collection_path(collection))
     expect(Hyrax.custom_queries.find_members_of(collection:).map(&:id)).not_to include(work.id)
   end
 

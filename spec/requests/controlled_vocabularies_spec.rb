@@ -401,7 +401,6 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
 
         expect(vocabulary.label).to eq 'Lab Names'
         expect(vocabulary.description).to eq 'Where the work was done.'
-        # The app appends a locale param, so match the path rather than the whole url.
         expect(response.location).to include '/dashboard/controlled_vocabularies/lab_names'
       end
 

@@ -6,7 +6,7 @@ require 'rails_helper'
 RSpec.describe 'UI/UX and Static Pages', type: :feature, clean: true do
   # The language picker is a dropdown of links (shared/_locale_picker), not a <select>.
   # Hyku carries the chosen locale as a URL parameter: Hyrax sets I18n.locale from
-  # params[:locale] and default_url_options adds `locale` to every generated link, so the
+  # params[:locale] and default_url_options adds a non-default `locale` to every generated link, so the
   # choice persists while navigating the site's links (it is not stored in a session).
   it 'switches the interface language and keeps it across the tenant pages' do
     visit '/'

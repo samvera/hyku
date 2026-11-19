@@ -329,7 +329,6 @@ nginx:
       memory: "128Mi"
       cpu: "20m"
   image:
-    # Chart's nginx template reads `repository` only, not a separate `registry` key.
     repository: nginx/nginx-unprivileged
     tag: 1.31.9-alpine
   serverBlock: |-

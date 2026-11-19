@@ -86,7 +86,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push ${{ matrix.component }} on ${{ matrix.os }}
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v7
         with:
           context: .
           platforms: linux/${{ env.PLATFORM_TAG }}
@@ -144,7 +144,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push solr (Solr 9) on ${{ matrix.os }}
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v7
         with:
           context: .
           platforms: linux/${{ env.PLATFORM_TAG }}

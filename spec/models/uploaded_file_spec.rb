@@ -37,6 +37,113 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
     end
   end
 
+  describe 'per-tenant upload limits' do
+    # world.png is 4218 bytes with content type image/png
+    let(:account) { FactoryBot.build(:account, settings:) }
+    let(:settings) { {} }
+    let(:user) { FactoryBot.create(:user) }
+
+    before { allow(Site).to receive(:account).and_return(account) }
+
+    context 'with no restrictive settings' do
+      it 'accepts the upload' do
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
+      end
+    end
+
+    context 'when no tenant account is present' do
+      let(:account) { nil }
+
+      it 'accepts the upload' do
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
+      end
+    end
+
+    context 'when the file is within the tenant file size limit' do
+      let(:settings) { { file_size_limit: '1000000' } }
+
+      it 'accepts the upload' do
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
+      end
+    end
+
+    context 'when the file exceeds the tenant file size limit' do
+      let(:settings) { { file_size_limit: '1000' } }
+
+      it 'rejects the upload with a readable message' do
+        uploaded = Hyrax::UploadedFile.new(file:, user:)
+
+        expect(uploaded).not_to be_valid
+        expect(uploaded.errors[:base].join).to include('file size limit')
+      end
+
+      it 'still accepts a record with no file content' do
+        expect(Hyrax::UploadedFile.new(user:)).to be_valid
+      end
+    end
+
+    context 'when the limit tightens after the file was stored' do
+      let(:settings) { { file_size_limit: '1000000' } }
+
+      it 'is re-checked on later saves' do
+        uploaded = Hyrax::UploadedFile.create(file:, user:)
+        account.file_size_limit = '1000'
+
+        expect(uploaded.save).to eq(false)
+      end
+    end
+
+    context 'when the content type is allowed' do
+      let(:settings) { { allowed_content_types: 'image/png, application/pdf' } }
+
+      it 'accepts the upload' do
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
+      end
+    end
+
+    context 'when a wildcard content type matches' do
+      let(:settings) { { allowed_content_types: 'image/*' } }
+
+      it 'accepts the upload' do
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
+      end
+    end
+
+    context 'when the content type is not allowed' do
+      let(:settings) { { allowed_content_types: 'application/pdf' } }
+
+      it 'rejects the upload with a readable message' do
+        uploaded = Hyrax::UploadedFile.new(file:, user:)
+
+        expect(uploaded).not_to be_valid
+        expect(uploaded.errors[:base].join).to include('not accepted')
+      end
+    end
+
+    context 'when the tenant has storage remaining under its ceiling' do
+      let(:settings) { { storage_limit: '10000' } }
+
+      before { allow(UploadLimitsService).to receive(:current_storage_usage).and_return(0) }
+
+      it 'accepts the upload' do
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
+      end
+    end
+
+    context 'when the tenant is at its storage ceiling' do
+      let(:settings) { { storage_limit: '10000' } }
+
+      before { allow(UploadLimitsService).to receive(:current_storage_usage).and_return(10_000) }
+
+      it 'rejects the upload with a readable message' do
+        uploaded = Hyrax::UploadedFile.new(file:, user:)
+
+        expect(uploaded).not_to be_valid
+        expect(uploaded.errors[:base].join).to include('storage limit')
+      end
+    end
+  end
+
   # With aws configured, without S3 credentials or stubbing, we would get failures from requests made
   # by the underlying library and errors telling us to:
   #   stub_request(:get, "http://169.254.169.254/latest/meta-data/iam/security-credentials/")

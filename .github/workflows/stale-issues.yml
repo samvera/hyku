@@ -1,0 +1,35 @@
+name: Mark inactive issues
+
+on:
+  schedule:
+    - cron: '23 3 * * *'
+
+permissions:
+  actions: write # Persist the action's progress between runs.
+  issues: write
+  pull-requests: read
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93 # v11.0.0
+        with:
+          days-before-issue-stale: 90
+          # Closure is deliberately disabled. A later policy change can set this
+          # to 30 for closure 30 days after marking (about 120 days total).
+          days-before-issue-close: -1
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
+          remove-pr-stale-when-updated: false
+          # Create this repository label before enabling the workflow.
+          stale-issue-label: stale
+          stale-issue-message: >-
+            This issue has had no activity for 90 days and has been marked stale.
+            Comment or update the issue to remove the stale label. It will not be
+            closed automatically under the current policy.
+          # These labels are not currently defined in Hyku; create them before
+          # applying them to protect security-sensitive or intentionally open issues.
+          exempt-issue-labels: security,pinned,keep-open
+          exempt-all-issue-assignees: true
+          exempt-all-issue-milestones: true

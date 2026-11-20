@@ -23,7 +23,7 @@ jobs:
           days-before-pr-close: -1
           remove-pr-stale-when-updated: false
           # Create this repository label before enabling the workflow.
-          stale-issue-label: Stale
+          stale-issue-label: stale
           stale-issue-message: >-
             This issue has had no activity for 90 days and has been marked stale.
             Comment or update the issue to remove the stale label. It will not be

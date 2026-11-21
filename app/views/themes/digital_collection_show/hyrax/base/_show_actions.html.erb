@@ -1,0 +1,43 @@
+<%# OVERRIDE Hyku 7.1.0: one row of small theme buttons in the order Edit, Add to collection, Feature or Unfeature, Attach Child, File manager, Analytics, Delete, keeping Hyku's permission checks, the collection picker, the feature toggles and the delete confirmation %>
+<h2 class="sr-only"><%= t('digital_collection.work.actions.header') %></h2>
+<% unless workflow_restriction?(presenter) %>
+  <% if presenter.editor? %>
+    <%= link_to t('hyrax.base.show_actions.edit'), edit_polymorphic_path([main_app, presenter]),
+                class: 'btn btn-primary dc-action-primary', data: { turbolinks: block_valkyrie_redirect? } %>
+  <% end %>
+  <% if presenter.show_deposit_for?(collections: @user_collections) %>
+    <input type="checkbox" aria-label="<%= t('digital_collection.work.actions.select') %>" name="batch_document_ids[]" id="batch_document_<%= presenter.id %>" value="<%= presenter.id %>" class="batch_document_selector d-none" checked="checked" />
+    <%= button_tag t('hyrax.dashboard.my.action.add_to_collection'),
+                   class: 'btn btn-secondary dc-action submits-batches submits-batches-add',
+                   data: { toggle: 'modal', target: '#collection-list-container' } %>
+  <% end %>
+  <% if presenter.work_featurable? %>
+    <%= link_to t('digital_collection.work.actions.feature'), hyrax.featured_work_path(presenter, format: :json),
+                data: { behavior: 'feature' },
+                class: token_list('btn btn-secondary dc-action', 'collapse' => !presenter.display_feature_link?) %>
+    <%= link_to t('digital_collection.work.actions.unfeature'), hyrax.featured_work_path(presenter, format: :json),
+                data: { behavior: 'unfeature' },
+                class: token_list('btn btn-secondary dc-action', 'collapse' => !presenter.display_unfeature_link?) %>
+  <% end %>
+  <% if presenter.editor? %>
+    <% if presenter.valid_child_concerns.length.positive? %>
+      <%= render 'hyrax/base/attach_child_control', presenter: presenter %>
+    <% end %>
+    <% if presenter.member_count > 1 %>
+      <%= link_to t('hyrax.file_manager.link_text'), polymorphic_path([main_app, :file_manager, presenter]),
+                  class: 'btn btn-secondary dc-action' %>
+    <% end %>
+  <% end %>
+<% end %>
+<% if current_account.analytics_credentials_present? %>
+  <%= link_to t('hyrax.base.show_actions.analytics'), presenter.stats_path, id: 'stats',
+              class: 'btn btn-secondary dc-action', data: { turbolinks: false } %>
+<% end %>
+<% if presenter.editor? && !workflow_restriction?(presenter) && current_ability.can?(:delete, presenter.solr_document) %>
+  <%= link_to t('hyrax.base.show_actions.delete'), [main_app, presenter], method: :delete,
+              class: 'btn dc-action-danger',
+              data: { confirm: t('hyrax.base.show_actions.confirm_delete', work_type: presenter.human_readable_type) } %>
+<% end %>
+
+<span class="Z3988" title="<%= export_as_openurl_ctx_kev(presenter) %>"></span>
+<%= render 'hyrax/dashboard/collections/form_for_select_collection', user_collections: @user_collections %>

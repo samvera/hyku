@@ -2,7 +2,7 @@
 <% editable = can?(:update, FeaturedWork) && !@featured_work_list.empty? %>
 
 <% if works.any? %>
-  <section id="scr-spotlight" class="carousel slide carousel-fade scr-spotlight"
+  <section id="scr-spotlight" class="carousel slide carousel-fade scr-spotlight" data-theme-spotlight
            data-ride="<%= 'carousel' if works.many? %>"
            data-interval="<%= works.many? ? 6500 : 'false' %>"
            data-pause="false"
@@ -20,11 +20,11 @@
           <% end %>
         </ul>
 
-        <button type="button" class="scr-spotlight-hold" data-scr-spotlight-hold data-held="false"
+        <button type="button" class="scr-spotlight-hold" data-spotlight-hold data-held="false"
                 data-hold-label="<%= t('screening_room.homepage.spotlight.hold') %>"
                 data-resume-label="<%= t('screening_room.homepage.spotlight.resume') %>">
           <span class="scr-spotlight-hold-icon" aria-hidden="true"></span>
-          <span class="sr-only" data-scr-spotlight-hold-label><%= t('screening_room.homepage.spotlight.hold') %></span>
+          <span class="sr-only" data-spotlight-hold-label><%= t('screening_room.homepage.spotlight.hold') %></span>
         </button>
       </div>
     <% end %>

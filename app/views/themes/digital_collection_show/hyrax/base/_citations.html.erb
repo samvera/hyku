@@ -1,0 +1,35 @@
+<%# OVERRIDE Hyrax 5.3.0: citation panel with a labeled style picker, a Copy citation button and the EndNote link on one row %>
+<% citations = dc_creator_names(presenter).any? ? theme_citations(presenter) : {} %>
+<%= render layout: 'hyrax/base/dc_panel',
+           locals: { modifier: 'dc-cite', label_id: 'dc-cite-label', label: t('hyrax.base.citations.header') } do %>
+  <div class="dc-panel-body" data-citation>
+    <% if citations.any? %>
+      <label class="dc-cite-label" for="dc-cite-picker"><%= t('hyrax.base.citations.style') %></label>
+      <select class="dc-cite-picker" id="dc-cite-picker" data-citation-picker>
+        <% citations.each_key do |style| %>
+          <option value="<%= style %>"><%= t("hyrax.citations.work.#{style}") %></option>
+        <% end %>
+      </select>
+
+      <% citations.each_with_index do |(style, text), index| %>
+        <blockquote class="dc-cite-text" data-citation-text="<%= style %>"
+                    <%= 'hidden' unless index.zero? %>><%= text %></blockquote>
+      <% end %>
+
+    <% end %>
+
+    <div class="dc-cite-actions">
+      <% if citations.any? %>
+        <button type="button" class="dc-copy" data-citation-copy>
+          <%= t('digital_collection.work.copy_citation') %>
+        </button>
+      <% end %>
+      <%= link_to t('hyrax.base.citations.endnote'),
+                  polymorphic_path([main_app, presenter], format: 'endnote'),
+                  class: 'dc-cite-export' %>
+      <% if citations.any? %>
+        <span class="dc-copied" data-citation-copied data-citation-copied-text="<%= t('digital_collection.copy.copied') %>" aria-live="polite"></span>
+      <% end %>
+    </div>
+  </div>
+<% end %>

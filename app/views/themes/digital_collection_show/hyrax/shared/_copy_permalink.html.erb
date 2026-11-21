@@ -1,0 +1,4 @@
+<%# OVERRIDE Hyrax 5.3.0: a small theme copy button that says Copied beside itself, in place of a Bootstrap tooltip %>
+<% if copy_permalink_enabled? %>
+  <button type="button" class="dc-copy" data-dc-copy-text="<%= permalink_for(presenter) %>"><%= t('hyrax.copy_permalink.button') %></button><span class="dc-copied" data-dc-copied="<%= t('digital_collection.copy.copied') %>" aria-live="polite"></span>
+<% end %>

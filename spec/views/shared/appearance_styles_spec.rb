@@ -70,7 +70,7 @@ RSpec.describe 'shared/_appearance_styles.html.erb', type: :view do
       allow(view).to receive(:theme_luminance).and_return(0.04)
       allow(view).to receive(:theme_readable_ink).and_return('#ffffff')
       allow(view).to receive(:theme_brand_mix).and_return(60)
-      allow(view).to receive(:theme_brand_mix_on).and_return('60%')
+      allow(view).to receive(:theme_brand_mix_on).and_return(60)
       allow(view).to receive(:theme_ground_for).and_return('#2b2b2b')
     end
   end
@@ -169,7 +169,83 @@ RSpec.describe 'shared/_appearance_styles.html.erb', type: :view do
     end
   end
 
-  { 'heritage' => 'hrt', 'screening_room' => 'scr', 'reference' => 'ref' }.each do |theme, prefix|
+  describe 'digital collection theme colors' do
+    let(:home_page_theme) { 'digital_collection' }
+    let(:link_color) { '#2a6aa3' }
+    let(:chrome) { '#3c3c3c' }
+    let(:chrome_text) { '#dcdcdc' }
+    let(:footer_link) { '#ffebcd' }
+    let(:button_edge) { '#cccccc' }
+
+    def variable(name)
+      rendered[/--dc-#{name}:\s*([^;]+);/, 1]
+    end
+
+    before do
+      allow(appearance).to receive_messages(
+        link_color: link_color,
+        link_hover_color: '#215480',
+        header_and_footer_background_color: chrome,
+        header_and_footer_text_color: chrome_text,
+        footer_link_color: footer_link,
+        default_button_border_color: button_edge
+      )
+      without_partial_double_verification do
+        %i[theme_luminance theme_readable_ink theme_brand_mix theme_brand_mix_on theme_ground_for].each do |name|
+          allow(view).to receive(name).and_call_original
+        end
+      end
+      render
+    end
+
+    it 'emits the 8px radius' do
+      expect(variable('radius')).to eq('8px')
+    end
+
+    it 'emits the on-dark and visited link colors for the default link' do
+      expect(variable('link-on-dark')).to eq('#9cc3e5')
+      expect(variable('link-visited')).to eq('#5b2aa3')
+      expect(variable('link-visited-on-dark')).to eq('#c6b4df')
+    end
+
+    it 'emits status colors and their tints' do
+      %w[info success danger].each do |status|
+        expect(variable(status)).to match(/\A#\h{6}\z/)
+        expect(variable("#{status}-on-dark")).to match(/\A#\h{6}\z/)
+        expect(variable("#{status}-tint")).to match(/\A#\h{6}\z/)
+      end
+    end
+
+    it 'keeps the admin button border as entered, even under 3:1' do
+      expect(variable('button-edge')).to eq('#cccccc')
+    end
+
+    context 'with a link color under 4.5:1 on white' do
+      let(:link_color) { '#4f7cac' }
+
+      it 'keeps the admin link as entered' do
+        expect(variable('link')).to eq('#4f7cac')
+        expect(variable('accent')).to eq('#4f7cac')
+      end
+
+      it 'still builds readable visited and info colors from it' do
+        expect(view.theme_contrast(variable('link-visited'), '#ffffff')).to be >= 4.5
+        expect(view.theme_contrast(variable('info'), '#ffffff')).to be >= 4.5
+      end
+    end
+
+    context 'with a light header and footer' do
+      let(:chrome) { '#f5f5f5' }
+
+      it 'keeps the admin ink and footer link as entered' do
+        expect(variable('chrome')).to eq('#f5f5f5')
+        expect(variable('chrome-ink')).to eq('#dcdcdc')
+        expect(variable('footer-link')).to eq('#ffebcd')
+      end
+    end
+  end
+
+  { 'heritage' => 'hrt', 'screening_room' => 'scr', 'reference' => 'ref', 'digital_collection' => 'dc' }.each do |theme, prefix|
     describe "#{theme} theme CSS custom properties" do
       let(:home_page_theme) { theme }
       let(:headline_font) { 'Cardo' }

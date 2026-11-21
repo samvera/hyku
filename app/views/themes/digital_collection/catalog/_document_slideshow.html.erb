@@ -1,0 +1,52 @@
+<%# OVERRIDE Blacklight Gallery 4.6.4: thumbnails show the whole image over a blurred copy of itself, as in the Grid view, with the plain title as each link's name; Font Awesome pause and play icons in the window %>
+<% view_config = local_assigns[:view_config] || blacklight_config&.view_config(document_index_view_type) %>
+
+<div id="documents" class="<%= (Array(view_config.classes) + ["documents-#{view_config.key}"]).join(' ') %>">
+  <div class="grid">
+    <% documents.each_with_index do |document, index| %>
+      <% title = strip_tags(document_presenter(document).heading.to_s).squish %>
+      <% placeholder = dc_thumb_placeholder_class(document) %>
+      <% thumbnail = document_presenter(document).thumbnail.thumbnail_tag({ alt: title }, suppress_link: true) %>
+      <% thumbnail ||= tag.span(t(:missing_image, scope: %i[blacklight_gallery catalog grid_slideshow]), class: 'thumbnail-placeholder') %>
+      <% content = capture do %>
+        <% if placeholder %>
+          <%= thumbnail %>
+        <% else %>
+          <%= image_tag document['thumbnail_path_ss'], alt: '', class: 'dc-slide-plate-blur', aria: { hidden: true }, loading: 'lazy' %>
+          <span class="dc-slide-plate-scrim"></span>
+          <span class="dc-slide-plate-figure"><%= thumbnail %></span>
+        <% end %>
+      <% end %>
+      <div class="slideshow-preview-thumbnail">
+        <%= link_to_document document, content,
+                             class: token_list('thumbnail dc-slide-thumb', placeholder || 'dc-slide-plate'),
+                             data: { 'context-href': nil, context_href: nil, 'slide-to': index, 'bs-slide-to': index,
+                                     toggle: 'modal', 'bs-toggle': 'modal', target: '#slideshow-modal', 'bs-target': '#slideshow-modal' } %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render layout: 'catalog/slideshow_modal' do %>
+    <div id="slideshow" class="slideshow-presenter">
+      <div class="slideshow-inner">
+        <%= render view_config.document_component.with_collection(documents, counter_offset: @response&.start || 0) %>
+      </div>
+
+      <a class="left carousel-control prev" href="#slideshow" data-slide="prev" data-bs-slide="prev">
+        <%= render Blacklight::Gallery::Icons::ChevronLeftComponent.new additional_options: { label_context: 'previous_image' } %>
+      </a>
+      <a class="right carousel-control next" href="#slideshow" data-slide="next" data-bs-slide="next">
+        <%= render Blacklight::Gallery::Icons::ChevronRightComponent.new additional_options: { label_context: 'next_image' } %>
+      </a>
+
+      <div class="controls text-center">
+        <button class="btn btn-sm btn-link" data-behavior="pause-slideshow" aria-label="<%= t('blacklight_gallery.catalog.slideshow.pause') %>">
+          <span class="fa fa-pause" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-sm btn-link" data-behavior="start-slideshow" aria-label="<%= t('blacklight_gallery.catalog.slideshow.start') %>">
+          <span class="fa fa-play" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  <% end %>
+</div>

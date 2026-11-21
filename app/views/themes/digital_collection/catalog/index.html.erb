@@ -1,0 +1,16 @@
+<%# OVERRIDE Hyrax 5.3.0: page heading above a filters-then-results layout, so reading and focus order match the screen; no filter column when nothing matches %>
+<div class="dc-results">
+  <%= render 'search_results_header' %>
+
+  <div class="<%= token_list('dc-results-body', 'dc-results-empty' => @response.empty?) %>">
+    <% unless @response.empty? %>
+      <div id="sidebar" class="dc-results-filters">
+        <%= render 'search_sidebar' %>
+      </div>
+    <% end %>
+
+    <div id="content" class="dc-results-main">
+      <%= render 'search_results' %>
+    </div>
+  </div>
+</div>

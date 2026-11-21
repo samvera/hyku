@@ -63,11 +63,10 @@ module SharedSearchHelper
   # @param params [Hash] the query parameters, which may include search queries
   # @return [String] the URL with appended query parameters, if applicable
   def append_query_params(url, model, params)
-    if params[:q].present? && model.any_highlighting_in_all_text_fields?
-      "#{url}?parent_query=#{params[:q]}&highlight=true"
-    else
-      url
-    end
+    query = []
+    query << "parent_query=#{CGI.escape(params[:q].to_s)}&highlight=true" if params[:q].present? && model.any_highlighting_in_all_text_fields?
+    query << { locale: I18n.locale }.to_query unless I18n.locale == I18n.default_locale
+    query.empty? ? url : "#{url}?#{query.join('&')}"
   end
 
   # Constructs a URL with the given parameters.

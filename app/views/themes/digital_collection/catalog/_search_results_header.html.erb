@@ -1,0 +1,5 @@
+<%# OVERRIDE Blacklight 7.43.0: a visible "Search results" heading with a results summary instead of a screen-reader-only "Search" %>
+<div class="dc-results-head">
+  <h1 class="dc-results-title"><%= t('digital_collection.search.results.heading') %></h1>
+  <p class="dc-results-summary"><%= dc_results_summary(@response.total, params[:q]) %></p>
+</div>

@@ -1,0 +1,10 @@
+<%# OVERRIDE Hyku 7.1.0: one 4:3 thumbnail box for works and collections, marking Hyrax's stand-in icons; the work thumbnail is a mouse-only duplicate of the title link, so keyboards and screen readers skip it %>
+<div class="<%= token_list('list-thumbnail dc-result-thumb', dc_thumb_placeholder_class(document)) %>">
+  <% if document.collection? %>
+    <%= document_presenter(document)&.thumbnail&.thumbnail_tag({ alt: thumbnail_alt_text_for(document, block_name: 'default_collection_image_text') }, suppress_link: true) %>
+  <% else %>
+    <%= link_to generate_work_url(document, request, params), tabindex: -1, aria: { hidden: true } do %>
+      <%= document_presenter(document)&.thumbnail&.thumbnail_tag({ alt: '' }, suppress_link: true) %>
+    <% end %>
+  <% end %>
+</div>

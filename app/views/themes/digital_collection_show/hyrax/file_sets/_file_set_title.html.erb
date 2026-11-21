@@ -1,0 +1,7 @@
+<%# OVERRIDE Hyrax 5.3.0: the title as the page h1 in the theme's page title size, with the visibility badge beside the first title %>
+<% presenter.title.each_with_index do |title, index| %>
+  <div class="dc-file-title">
+    <h1 class="dc-file-heading ensure-wrapped"><%= title %></h1>
+    <%= presenter.permission_badge if index.zero? %>
+  </div>
+<% end %>

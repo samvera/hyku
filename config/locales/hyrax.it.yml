@@ -302,6 +302,11 @@ it:
     base:
       citations:
         header: Citazioni
+        style: Stile di citazione
+        copy: Copia
+        copied: Copiato
+        endnote: Esporta in EndNote
+        note: Fornita solo come suggerimento. Verificala con la guida di stile che utilizzi.
       download_pdf: Scarica il PDF
       form_child_work_relationships:
         actions:
@@ -402,6 +407,11 @@ it:
         in_this_work: Altre opere in questo lavoro
       progress:
         header: Salva opere
+    citations:
+      work:
+        apa: APA
+        chicago: Chicago
+        mla: MLA
     bread_crumb:
       search_results: Torna ai risultati della ricerca
     collection:
@@ -765,6 +775,10 @@ it:
         title: Attività dell'utente
       user_notifications: Notifiche utente
       view_files: Vedi files
+    digital_collection:
+      show:
+        item_details: Dettagli dell'elemento
+        uploaded: "caricato il %{date}"
     directory:
       suffix: "@ hydrainabox.org"
     document_language: it
@@ -1109,6 +1123,10 @@ it:
         deposit: Depositare
       load:
         state_error: 'Il flusso di lavoro: %{workflow_name} non è stato aggiornato. Stai rimuovendo uno stato: %{state_name} con entità / i %{entity_count}. Uno stato non può essere rimosso mentre ha entità attive!'
+      state:
+        changes_required: Modifiche richieste
+        deposited: Depositato
+        pending_review: In attesa di revisione
       unauthorized: Il lavoro non è attualmente disponibile perché non ha ancora completato il processo di approvazione
     works:
       create:

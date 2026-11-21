@@ -1,0 +1,12 @@
+it:
+  blacklight_advanced_search:
+    all: "tutti"
+    any: "almeno uno"
+    form:
+      title: "Altre opzioni di ricerca"
+      search_context: "All’interno della ricerca"
+      limit_criteria_heading_html: "<strong>E</strong> che hanno questi attributi"
+      query_criteria_heading_html: "Trova gli elementi che corrispondono a %{select_menu} di"
+      sort_label: "Ordina i risultati per"
+      start_over: "Ricomincia"
+      search_btn: "Cerca"

@@ -326,7 +326,6 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
     # This test is heavily inspired by a test in Hyrax v2.9.0, see
     # https://github.com/samvera/hyrax/blob/v2.9.0/spec/features/dashboard/collection_spec.rb#L365-L384
     it 'can destroy a Collection from the Dashboard index view' do
-      skip 'Intermittent dashboard 500, see #3426'
       collection
       visit '/dashboard/collections'
 

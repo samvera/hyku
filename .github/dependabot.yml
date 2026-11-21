@@ -1,0 +1,61 @@
+version: 2
+updates:
+  - package-ecosystem: "bundler"
+    directory: "/"
+    schedule:
+      # Cron, not weekly: hykuup_knapsack's weekly run skipped a Monday after a mid-week config change (2026-10-12).
+      interval: "cron"
+      cronjob: "0 6 * * 1" # Mondays 6am Pacific
+      timezone: "America/Los_Angeles"
+    ignore:
+      # Gems that track a git branch are bumped deliberately, not by Dependabot.
+      - dependency-name: "hyrax"
+      - dependency-name: "hyrax-doi"
+      - dependency-name: "qa"
+      - dependency-name: "hyku_knapsack"
+    groups:
+      bundler:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+      bundler-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "cron"
+      cronjob: "0 6 * * 1" # Mondays 6am Pacific
+      timezone: "America/Los_Angeles"
+    ignore:
+      # Pinned exactly; package.json says why.
+      - dependency-name: "@samvera/clover-iiif"
+    groups:
+      npm:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+      npm-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "cron"
+      cronjob: "0 6 * * 1" # Mondays 6am Pacific
+      timezone: "America/Los_Angeles"
+    groups:
+      github-actions:
+        update-types:
+          - "minor"
+          - "patch"
+      github-actions-security:
+        applies-to: security-updates
+        patterns:
+          - "*"

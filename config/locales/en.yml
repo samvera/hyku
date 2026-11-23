@@ -741,9 +741,9 @@ en:
         system_status: System Status
       users:
         activate:
-          confirmation: Are you sure you want to activate the user "%{user}"?
+          confirmation: "Activate \"%{user}\" without waiting for them to accept their invitation? Their invitation link will stop working, and they will be emailed a link to set their password."
           failure: User "%{user}" could not be activated.
-          success: User "%{user}" has been successfully activated.
+          success: "User \"%{user}\" has been activated and emailed a link to set their password."
         destroy:
           confirmation: Are you sure you wish to delete the user "%{user}"? This action is irreversible.
           failure: User "%{user}" could not be deleted.

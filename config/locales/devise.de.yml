@@ -7,3 +7,10 @@ de:
         sign_up_header: Ein neues Konto erstellen
       shared:
         sign_up: Benutzerkonto anlegen
+    mailer:
+      activation_instructions:
+        activated: "Ein Administrator hat Ihr Konto aktiviert. Wählen Sie über den folgenden Link ein Passwort, um sich anzumelden."
+        expires: "Dieser Link läuft in %{duration} ab. Danach können Sie über „Passwort vergessen?“ auf der Anmeldeseite einen neuen anfordern."
+        hello: "Hallo %{email}!"
+        set_password: "Mein Passwort festlegen"
+        subject: "Ihr Konto wurde aktiviert"

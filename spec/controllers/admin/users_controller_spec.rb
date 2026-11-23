@@ -54,7 +54,56 @@ RSpec.describe Admin::UsersController, type: :controller do
 
       it 'redirects to the admin users path with a success notice' do
         expect(response).to redirect_to(admin_users_path)
-        expect(flash[:notice]).to eq "User \"#{user.email}\" has been successfully activated."
+        expect(flash[:notice]).to eq "User \"#{user.email}\" has been activated and emailed a link to set their password."
+      end
+
+      it 'emails the user a link to set their own password' do
+        mail = ActionMailer::Base.deliveries.last
+        expect(mail.to).to eq([user.email])
+        expect(mail.subject).to eq('Your account has been activated')
+        expect(mail.body.encoded).to include('reset_password_token=')
+        expect(mail.body.encoded).to include('This link expires in about 6 hours')
+        expect(mail.body.encoded).not_to include('ignore this email')
+      end
+
+      it 'sends the email in the locale the activation was made in' do
+        I18n.with_locale(:de) { post :activate, params: { id: User.invite!(email: 'eingeladen@example.com', skip_invitation: true).id, locale: 'de' } }
+        mail = ActionMailer::Base.deliveries.last
+        expect(mail.subject).to eq('Ihr Konto wurde aktiviert')
+        expect(mail.body.encoded).to include('Mein Passwort festlegen')
+      end
+
+      it 'sends one email when Activate is submitted twice' do
+        post :activate, params: { id: user.id }
+        expect(ActionMailer::Base.deliveries.count { |m| m.subject == 'Your account has been activated' }).to eq(1)
+      end
+
+      it 'emails a token that sets a password the user can sign in with' do
+        token = ActionMailer::Base.deliveries.last.body.encoded[/reset_password_token=([^"&]+)/, 1]
+        User.reset_password_by_token(reset_password_token: token, password: 'Chosen-Passw0rd!', password_confirmation: 'Chosen-Passw0rd!')
+
+        expect(user.reload.valid_password?('Chosen-Passw0rd!')).to be(true)
+      end
+    end
+
+    describe 'POST #activate for a user who has already accepted' do
+      let(:user) { create(:user, password: 'Existing-Passw0rd!', password_confirmation: 'Existing-Passw0rd!') }
+
+      it 'leaves their password alone and reports failure' do
+        post :activate, params: { id: user.id }
+        expect(user.reload.valid_password?('Existing-Passw0rd!')).to be(true)
+        expect(flash[:error]).to eq "User \"#{user.email}\" could not be activated."
+      end
+    end
+
+    describe 'POST #activate for a user outside this repository' do
+      let(:user) { User.invite!(email: 'elsewhere@example.com', skip_invitation: true) }
+
+      before { user.roles.destroy_all }
+
+      it 'does not find them' do
+        expect { post :activate, params: { id: user.id } }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(user.reload).not_to be_accepted_or_not_invited
       end
     end
 

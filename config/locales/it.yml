@@ -694,9 +694,9 @@ it:
         system_status: Stato del sistema
       users:
         activate:
-          confirmation: Sei sicuro di voler attivare l'utente "%{user}"?
+          confirmation: "Attivare \"%{user}\" senza attendere che accetti l'invito? Il link di invito smetterà di funzionare e riceverà via email un link per impostare la password."
           failure: Impossibile attivare l'utente "%{user}".
-          success: L'utente "%{user}" è stato attivato con successo.
+          success: "L'utente \"%{user}\" è stato attivato e ha ricevuto via email un link per impostare la password."
         destroy:
           confirmation: Sei sicuro di voler cancellare l'utente "%{user}"? Questa azione è irreversibile.
           failure: L'utente "%{user}" non può essere cancellato.

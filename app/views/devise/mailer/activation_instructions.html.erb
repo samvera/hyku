@@ -1,0 +1,7 @@
+<p><%= t('devise.mailer.activation_instructions.hello', email: @resource.email) %></p>
+
+<p><%= t('devise.mailer.activation_instructions.activated') %></p>
+
+<p><%= link_to t('devise.mailer.activation_instructions.set_password'), edit_password_url(@resource, reset_password_token: @token) %></p>
+
+<p><%= t('devise.mailer.activation_instructions.expires', duration: distance_of_time_in_words(Devise.reset_password_within)) %></p>

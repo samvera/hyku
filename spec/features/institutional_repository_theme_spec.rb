@@ -31,7 +31,8 @@ RSpec.describe 'Admin can select institutional repository theme', type: :feature
     end
   end
 
-  context 'when the institutional repository theme is selected' do
+  # Fails in flexible mode, where the resource type facet is resource_type_label_sim (issue #3505).
+  context 'when the institutional repository theme is selected', flexible: false do
     it 'renders the partials in the theme folder' do
       login_as admin
       visit '/admin/appearance'

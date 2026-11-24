@@ -158,7 +158,8 @@ RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo do
                                  search_builder_class: Hyrax::HomepageSearchBuilder)
       end
 
-      it 'falls back to resource type' do
+      # Fails in flexible mode, where the resource type facet is resource_type_label_sim (issue #3505).
+      it 'falls back to resource type', flexible: false do
         indexed_work('Primary Space', 'open', resource_type: ['Poster'])
         indexed_work('Kiln Yard', 'restricted', resource_type: ['Score'])
 

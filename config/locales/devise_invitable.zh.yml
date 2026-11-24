@@ -4,6 +4,7 @@ zh:
     failure:
       invited: 您有待处理的邀请，接受它以完成创建您的帐户。
     invitations:
+      added_existing_user: "%{email} 已有账户，因此未发送邀请。该用户已被添加到此存储库。"
       edit:
         header: 设置你的密码
         submit_button: 设置我的密码

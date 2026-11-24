@@ -13,7 +13,7 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
 
   describe '#after_invite_path_for' do
     it "returns admin_users_path" do
-      expect(subject.after_invite_path_for(nil)).to eq Hyrax::Engine.routes.url_helpers.admin_users_path(locale: 'en')
+      expect(subject.after_invite_path_for(nil)).to eq Hyrax::Engine.routes.url_helpers.admin_users_path
     end
   end
 
@@ -28,7 +28,7 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
       created_user = User.find_by(email: 'user@guest.org')
       expect(created_user.roles.map(&:name)).to include('manager')
       expect(created_user.roles.map(&:resource_type).uniq).to contain_exactly('Site', 'Hyrax::Group')
-      expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path(locale: 'en')
+      expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path
       expect(flash[:notice]).to eq 'An invitation email has been sent to user@guest.org.'
     end
 
@@ -55,6 +55,35 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
         invitee.reload
         expect(invitee.roles).not_to be_empty
         expect(invitee.groups).to eq([Ability.registered_group_name])
+      end
+    end
+
+    context 'when the invited user has a pending invitation' do
+      let!(:invitee) { User.invite!(email: 'pending@guest.org', skip_invitation: true) }
+      let(:invitation_emails) { ActionMailer::Base.deliveries.select { |mail| mail.subject == 'Invitation instructions' } }
+
+      before { ActionMailer::Base.deliveries.clear }
+
+      it 'resends the invitation with a new token' do
+        expect { post :create, params: { user: { email: invitee.email, role: '' } } }
+          .to(change { invitee.reload.invitation_token })
+        expect(invitation_emails.map(&:to)).to eq([[invitee.email]])
+      end
+    end
+
+    context 'when the invited user has already accepted' do
+      let!(:invitee) { create(:user) }
+
+      before { ActionMailer::Base.deliveries.clear }
+
+      it 'does not send an invitation' do
+        post :create, params: { user: { email: invitee.email, role: '' } }
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+
+      it 'says they were added rather than invited' do
+        post :create, params: { user: { email: invitee.email, role: '' } }
+        expect(flash[:notice]).to eq "#{invitee.email} already has an account, so no invitation was sent. They have been added to this repository."
       end
     end
 
@@ -87,7 +116,7 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
           }
         }
         expect(User.find_by(email: 'colleague@guest.org')).to be_present
-        expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path(locale: 'en')
+        expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path
       end
     end
 
@@ -137,7 +166,7 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
           }
           created_user = User.find_by(email: 'invited@guest.org')
           expect(created_user.roles.map(&:name)).to include('user_manager')
-          expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path(locale: 'en')
+          expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path
         end
       end
     end
@@ -156,7 +185,7 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
           }
         }
         expect(User.find_by(email: 'welcome@guest.org')).to be_present
-        expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path(locale: 'en')
+        expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path
       end
     end
   end

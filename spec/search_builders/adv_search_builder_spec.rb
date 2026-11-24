@@ -88,4 +88,21 @@ RSpec.describe AdvSearchBuilder do
       expect(solr_params[:fq]).to include('-(hide_from_catalog_search_bsi:true)')
     end
   end
+
+  describe '#filter_collection_facet_for_access', :clean_repo do
+    subject(:facet_matches) do
+      solr_params = Blacklight::Solr::Request.new
+      builder.filter_collection_facet_for_access(solr_params)
+      solr_params['f.member_of_collection_ids_ssim.facet.matches']
+    end
+
+    let(:ability) { ::Ability.new(nil) }
+    let!(:public_collection) { FactoryBot.valkyrie_create(:hyrax_collection, :public) }
+    let!(:hidden_collection) { FactoryBot.valkyrie_create(:hyrax_collection, :public, hide_from_catalog_search: true) }
+
+    it 'lists public collections as OAI sets but not ones hidden from catalog search' do
+      expect(facet_matches).to include "^#{public_collection.id}$"
+      expect(facet_matches).not_to include hidden_collection.id.to_s
+    end
+  end
 end

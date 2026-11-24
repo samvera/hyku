@@ -30,6 +30,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
     end
 
     # NOTE(bkiahstroud): set :js to false because the page can't see the modal Delete button if it's true
+    # Potential duplicate: spec/features/collection_management_spec.rb:403 (Edit/Delete buttons per collection type)
     it 'has page title and lists collection types', js: false do
       expect(page).to have_content 'Collection Types'
       expect(page).to have_content 'Admin Set'
@@ -37,14 +38,14 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
       expect(page).to have_content 'Collection Type'
 
       expect(page).to have_link('Edit', count: 3)
-      expect(page).to have_link('Edit', href: hyrax.edit_admin_collection_type_path(admin_set_type.id, locale: 'en'))
+      expect(page).to have_link('Edit', href: hyrax.edit_admin_collection_type_path(admin_set_type.id))
       expect(page).to have_link(
         'Edit',
-        href: hyrax.edit_admin_collection_type_path(user_collection_type.id, locale: 'en')
+        href: hyrax.edit_admin_collection_type_path(user_collection_type.id)
       )
       expect(page).to have_link(
         'Edit',
-        href: hyrax.edit_admin_collection_type_path(exhibit_collection_type.id, locale: 'en')
+        href: hyrax.edit_admin_collection_type_path(exhibit_collection_type.id)
       )
       expect(page).to have_button('Delete', count: 2) # 1: Collection Type, 2: delete modal
     end
@@ -381,7 +382,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         visit "/admin/collection_types/#{exhibit_collection_type.id}/edit"
       end
 
-      it 'all settings are disabled', :js, ci: 'skip' do
+      it 'all settings are disabled', :js do
         expect(exhibit_collection_type.collections.any?).to be true
 
         click_link('Settings', href: '#settings')
@@ -456,7 +457,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         visit '/admin/collection_types'
       end
 
-      it 'shows unable to delete dialog and forwards to All Collections with filter applied', :js, ci: 'skip' do
+      it 'shows unable to delete dialog and forwards to All Collections with filter applied', :js do
         expect(page).to have_content(not_empty_collection_type.title)
 
         expect(not_empty_collection_type.collections.to_a).to include(collection)

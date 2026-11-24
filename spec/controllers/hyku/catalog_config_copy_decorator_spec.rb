@@ -2,7 +2,7 @@
 
 RSpec.describe Hyku::CatalogConfigCopyDecorator do
   let(:catalog_config) do
-    ::CatalogController.blacklight_config.deep_copy.tap { |config| config.add_index_field('extent_tesim', label: 'Extent') }
+    ::CatalogController.blacklight_config.deep_copy.tap { |config| config.add_index_field('spec_only_tesim', label: 'Spec only') }
   end
 
   [Hyrax::GenericWorksController, Hyrax::CollectionsController, Hyrax::FileSetsController,
@@ -20,7 +20,7 @@ RSpec.describe Hyku::CatalogConfigCopyDecorator do
 
       it "keeps the controller's own search settings and leaves its class config alone" do
         expect(controller.blacklight_config.search_builder_class).to eq(copier.blacklight_config.search_builder_class)
-        expect(copier.blacklight_config.index_fields).not_to have_key('extent_tesim')
+        expect(copier.blacklight_config.index_fields).not_to have_key('spec_only_tesim')
       end
 
       it "answers the catalog's field conditions" do

@@ -8,10 +8,11 @@ else
   ENV['DATABASE_URL'] = ENV['DATABASE_URL'].gsub('pool=5', 'pool=30')
 end
 
+# Exec without a shell so the worker, not sh, is PID 1 and receives SIGTERM.
 queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
 case queue
 when 'sidekiq'
-  exec "echo $DATABASE_URL && bundle exec sidekiq"
+  exec('bundle', 'exec', 'sidekiq')
 when 'good_job'
-  exec "echo $DATABASE_URL && bundle exec good_job start"
+  exec('bundle', 'exec', 'good_job', 'start')
 end

@@ -669,7 +669,6 @@ de:
           work_editor: Kann alle Arbeiten in diesem Mandanten erstellen, lesen, bearbeiten und genehmigen sowie Arbeiten zwischen Verwaltungssätzen verschieben und Sperrfristen und Mietverträge verwalten.
       stats:
         collections_over_time: Sammlungen im Zeitverlauf
-        downloads: Downloads
         header: Statistiken für %{application_name}
         tab_collections: Sammlungen
         tab_works: Werke
@@ -867,9 +866,9 @@ de:
         system_status: Systemstatus
       users:
         activate:
-          confirmation: Sind Sie sicher, dass Sie den Benutzer „%{user}“ aktivieren möchten?
+          confirmation: "„%{user}“ aktivieren, ohne auf die Annahme der Einladung zu warten? Der Einladungslink funktioniert dann nicht mehr, und der Benutzer erhält per E-Mail einen Link zum Festlegen seines Passworts."
           failure: Benutzer „%{user}“ konnte nicht aktiviert werden.
-          success: Benutzer „%{user}“ wurde erfolgreich aktiviert.
+          success: "Benutzer „%{user}“ wurde aktiviert und hat per E-Mail einen Link zum Festlegen seines Passworts erhalten."
         destroy:
           confirmation: Möchten Sie den Benutzer "%{user}" wirklich löschen? Diese Aktion lässt sich nicht rückgängig machen.
           failure: Benutzer "%{user}" konnte nicht gelöscht werden.

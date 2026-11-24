@@ -246,4 +246,46 @@ RSpec.describe UploadsCleanupService do
       end
     end
   end
+
+  context 'with dry_run: true' do
+    subject(:service) do
+      described_class.new(delete_ingested_after_days: 180, delete_all_after_days: 730, dry_run: true)
+    end
+
+    it 'enqueues the cleanup job with dry_run' do
+      service.run
+
+      expect(CleanupUploadFilesJob).to have_received(:perform_later).with(
+        delete_ingested_after_days: 180,
+        uploads_path: tenant_path,
+        delete_all_after_days: 730,
+        tenant: tenant_id,
+        dry_run: true
+      )
+    end
+  end
+
+  describe '.options_from_env' do
+    before { allow(ENV).to receive(:fetch).and_call_original }
+
+    it 'defaults to the standard thresholds with deletion enabled' do
+      expect(described_class.options_from_env).to eq(
+        delete_ingested_after_days: 180,
+        delete_all_after_days: 730,
+        extra_upload_paths: [],
+        include_orphaned_tenant_dirs: false,
+        dry_run: false
+      )
+    end
+
+    it 'reads the environment' do
+      allow(ENV).to receive(:fetch).with('DELETE_ALL_AFTER_DAYS', anything).and_return('60')
+      allow(ENV).to receive(:fetch).with('EXTRA_UPLOAD_PATHS', anything).and_return('/a, /b')
+      allow(ENV).to receive(:fetch).with('DRY_RUN', anything).and_return('true')
+
+      expect(described_class.options_from_env).to include(
+        delete_all_after_days: 60, extra_upload_paths: ['/a', '/b'], dry_run: true
+      )
+    end
+  end
 end

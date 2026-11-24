@@ -552,7 +552,6 @@ pt-BR:
           work_editor: Pode ler qualquer Admin Set neste inquilino. Além disso, pode criar, ler, editar e aprovar qualquer Trabalho neste inquilino, bem como mover Obras entre Conjuntos de Administradores e gerenciar Embargos e Locações
       stats:
         collections_over_time: Coleções ao longo do tempo
-        downloads: Downloads
         header: Estatísticas de %{application_name}
         tab_collections: Coleções
         tab_works: Obras
@@ -747,9 +746,9 @@ pt-BR:
         system_status: Status do sistema
       users:
         activate:
-          confirmation: Tem certeza de que deseja ativar o usuário "%{user}"?
+          confirmation: "Ativar \"%{user}\" sem esperar que aceite o convite? O link do convite deixará de funcionar, e o usuário receberá por e-mail um link para definir a senha."
           failure: O usuário "%{user}" não pôde ser ativado.
-          success: O usuário "%{user}" foi ativado com sucesso.
+          success: "O usuário \"%{user}\" foi ativado e recebeu por e-mail um link para definir a senha."
         destroy:
           confirmation: Tem certeza de que deseja excluir o usuário "%{user}"? Esta ação é irreversível.
           failure: O usuário "%{user}" não pôde ser excluído.

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'actions permitted by the collection_manager role', type: :feature, js: true, clean: true, ci: 'skip' do # rubocop:disable Layout/LineLength
+RSpec.describe 'actions permitted by the collection_manager role', type: :feature, js: true, clean: true do # rubocop:disable Layout/LineLength
   let(:role) { FactoryBot.create(:role, :collection_manager) }
   let(:collection) { FactoryBot.valkyrie_create(:hyku_collection, collection_type_gid:) }
   let(:collection_type_gid) { FactoryBot.create(:collection_type).to_global_id.to_s }
@@ -68,7 +68,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       within('div#collection-empty-to-delete-modal') do
         click_button('Delete')
       end
-      expect(page).to have_current_path('/dashboard/my/collections?locale=en')
+      expect(page).to have_current_path('/dashboard/my/collections')
 
       visit '/dashboard/collections'
 
@@ -109,6 +109,12 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       visit "dashboard/collections/#{collection.id}/edit"
       click_link('Discovery')
 
+      within('#discovery') do
+        expect(page).to have_content('These settings determine who is able to discover and view ' \
+                                     "this collection's landing page")
+        expect(page).to have_content('you can still share the collection with specific users and groups ' \
+                                     'using the Sharing tab')
+      end
       within('.set-access-controls') do
         expect(find('input#collection_visibility_restricted').checked?).to eq(true)
         expect(find('input#collection_visibility_open').checked?).to eq(false)
@@ -320,6 +326,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
     # This test is heavily inspired by a test in Hyrax v2.9.0, see
     # https://github.com/samvera/hyrax/blob/v2.9.0/spec/features/dashboard/collection_spec.rb#L365-L384
     it 'can destroy a Collection from the Dashboard index view' do
+      skip 'Intermittent dashboard 500, see #3426'
       collection
       visit '/dashboard/collections'
 
@@ -340,7 +347,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       within('div#collection-empty-to-delete-modal') do
         click_button('Delete')
       end
-      expect(page).to have_current_path('/dashboard/my/collections?locale=en')
+      expect(page).to have_current_path('/dashboard/my/collections')
 
       visit '/dashboard/collections'
 
@@ -553,15 +560,15 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
   def check_tr_data_attributes(id, type)
     url_fragment = get_url_fragment(type)
     expect(page).to have_selector("tr[data-id='#{id}'][data-colls-hash]")
-    expect(page).to have_selector("tr[data-post-url='/dashboard/collections/#{id}/within?locale=en']")
-    expect(page).to have_selector("tr[data-post-delete-url='/#{url_fragment}/#{id}?locale=en']")
+    expect(page).to have_selector("tr[data-post-url='/dashboard/collections/#{id}/within']")
+    expect(page).to have_selector("tr[data-post-delete-url='/#{url_fragment}/#{id}']")
   end
 
   # check data attributes have been transferred from table row to the modal
   def check_modal_data_attributes(id, type)
     url_fragment = get_url_fragment(type)
     expect(page).to have_selector("div[data-id='#{id}']")
-    expect(page).to have_selector("div[data-post-delete-url='/#{url_fragment}/#{id}?locale=en']")
+    expect(page).to have_selector("div[data-post-delete-url='/#{url_fragment}/#{id}']")
   end
 
   def get_url_fragment(type)

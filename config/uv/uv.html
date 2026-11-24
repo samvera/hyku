@@ -18,6 +18,10 @@
         padding: 0;
         overflow: hidden;
       }
+      /* UV forces border-box on the player, so its fixed timer height clips the time text. */
+      #uv .mejs__time {
+        height: auto;
+      }
     </style>
   </head>
   <body>

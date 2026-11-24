@@ -100,7 +100,13 @@ docker compose exec web bash -lc 'cd /app/samvera/hyrax-webapp && HYKU_TEST_FLEX
 ```
 
 Most specs are untagged and run in both modes. Tag a spec only when it works in just one mode:
-`flexible: true` (flexible mode only) or `flexible: false` (non-flexible mode only).
+`flexible: true` (flexible mode only) or `flexible: false` (non-flexible mode only). A tag can go on a
+whole file's `describe` or on a single `describe`, `context` or `it`, for example
+`it 'shows the custom Etd labels', flexible: false do`.
+
+A `flexible: false` tag with a "Fails in flexible mode … behavior gap" comment above it marks a spec
+that passes today only with flexible metadata off. It isn't meant to be non-flexible: the comment
+names the failure, which may point to behavior missing from flexible mode.
 
 Every test run answers two separate questions, each with its own setting:
 
@@ -138,27 +144,23 @@ Run the suite with flexible metadata off and on to cover both modes.
 them twice, once with flexible metadata on and once with it off. One setting says "start the app this
 way", the other says "run these tests", and for untagged specs the two answers don't line up.
 
-Day to day you'll mostly use only `HYKU_TEST_FLEXIBLE_METADATA`. The second setting is mainly for CI, and
-for rerunning exactly what a CI node ran: the node's log prints the full command (see `spec/rails_helper.rb`
-for how the filter works).
+Day to day you'll mostly use only `HYKU_TEST_FLEXIBLE_METADATA`. The second setting is for narrowing a
+run to one group of specs (see `spec/rails_helper.rb` for how the filter works).
 
 This format is intended to be extensible to other configurations that Hyku is able to enable.
 
 #### CI
 
-With the repository Actions variable `HYKU_CI_FLEXIBLE_SPLIT` set to `true` (Settings → Secrets and
-variables → Actions → Variables), the main `test` job runs on six nodes, split by the `flexible:` tag
-(see `bin/ci_rspec`):
+The main `test` job runs on six nodes, three per metadata mode (see `bin/ci_rspec`):
 
 | Node | Examples | Flexible metadata |
 |---|---|---|
-| 0 | `flexible: true` | on |
-| 1 | `flexible: false` | off |
-| 2-3 | untagged, split across the pair | on |
-| 4-5 | untagged, split across the pair | off |
+| 0-2 | untagged and `flexible: true`, split across the three | on |
+| 3-5 | untagged and `flexible: false`, split across the three | off |
 
-Each node prints its mode at the top of its log, with the command to rerun it locally. Without the
-variable, CI runs three nodes with flexible metadata off.
+Each node prints its mode at the top of its log, with the command to rerun it locally. To fall back to
+three nodes with flexible metadata off, set the repository Actions variable `HYKU_CI_FLEXIBLE_SPLIT` to
+`false` (Settings → Secrets and variables → Actions → Variables).
 
 #### Watching browser (JavaScript) specs
 

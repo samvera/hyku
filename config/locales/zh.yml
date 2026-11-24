@@ -687,7 +687,6 @@ zh:
           work_editor: 可以创建、阅读、编辑和批准此租户中的任何作品，以及在管理集之间移动作品并管理禁运和租约。
       stats:
         collections_over_time: 收藏随时间变化
-        downloads: 下载
         header: "%{application_name} 的统计信息"
         tab_collections: 收藏
         tab_works: 作品
@@ -881,9 +880,9 @@ zh:
         system_status: 系统状态
       users:
         activate:
-          confirmation: 您确定要激活用户“%{user}”吗？
+          confirmation: "不等待用户接受邀请就激活“%{user}”吗？其邀请链接将失效，并会通过电子邮件收到设置密码的链接。"
           failure: 无法激活用户“%{user}”。
-          success: 用户“%{user}”已成功激活。
+          success: "用户“%{user}”已激活，并已通过电子邮件收到设置密码的链接。"
         destroy:
           confirmation: 您确定要删除用户“%{user}”吗？这一行动是不可逆转的。
           failure: 无法删除用户“%{user}”。

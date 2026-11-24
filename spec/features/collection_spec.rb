@@ -5,7 +5,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
   let(:user) { create(:user) }
   # OVERRIDE: new (non-hyrax) test cases below
 
-  describe 'default collection sharing', ci: 'skip' do
+  describe 'default collection sharing' do
     let!(:non_role_group) { FactoryBot.create(:group, name: 'town_of_bedrock', humanized_name: 'Town of Bedrock') }
     let(:user) { create(:admin) }
 
@@ -81,6 +81,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
       context 'when the Repository Administrators group is given DEPOSIT access' do
         let(:access) { Hyrax::PermissionTemplateAccess::DEPOSIT }
 
+        # Potential duplicate: spec/features/collection_management_spec.rb:352 (enabled Remove buttons in sharing tables)
         it 'renders an enabled remove button' do
           depositors_row = find(:css, 'table.depositors-table td[data-agent="admin"]')
                            .find(:xpath, '..')

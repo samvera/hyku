@@ -670,7 +670,6 @@ fr:
           work_editor: Permet de créer, lire, modifier et approuver tout travail dans ce locataire, ainsi que de déplacer des travaux entre les ensembles d'administration et de gérer les embargos et les baux.
       stats:
         collections_over_time: Collections au fil du temps
-        downloads: Téléchargements
         header: Statistiques pour %{application_name}
         tab_collections: Collections
         tab_works: Œuvres
@@ -869,9 +868,9 @@ fr:
         technical: Technique
       users:
         activate:
-          confirmation: Etes-vous sûr de vouloir activer l'utilisateur "%{user}" ?
+          confirmation: "Activer \"%{user}\" sans attendre qu'il accepte son invitation ? Son lien d'invitation ne fonctionnera plus, et il recevra par courriel un lien pour définir son mot de passe."
           failure: L'utilisateur "%{user}" n'a pas pu être activé.
-          success: L'utilisateur "%{user}" a été activé avec succès.
+          success: "L'utilisateur \"%{user}\" a été activé et a reçu par courriel un lien pour définir son mot de passe."
         destroy:
           confirmation: Voulez-vous vraiment supprimer l'utilisateur "%{user}"? Cette action est irréversible.
           failure: L'utilisateur "%{user}" n'a pas pu être supprimé.

@@ -541,6 +541,12 @@ span.constraint-value p,
     justify-content: space-between;
 }
 
+// Long titles wrap the badges and Copy permalink onto their own line; keep the staff actions
+// below them from touching it
+.hyc-header .show-actions-container {
+    margin-top: 0.75rem;
+}
+
 .hyc-banner {
     padding: 15px;
 
@@ -722,7 +728,7 @@ tr[data-feature="use-iiif-print"] {
 .hyrax-collections-show {
     .document-metadata {
         dd {
-            word-break: break-all;
+            overflow-wrap: anywhere;
         }
     }
 

@@ -28,7 +28,7 @@ gem 'blacklight_range_limit', '~> 8.5'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', '~> 10.0'
+gem 'bulkrax', '~> 10.0.1'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
@@ -57,7 +57,7 @@ gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
 gem 'iiif_manifest', '>= 1.7.0'
-gem 'iiif_print', '~> 3.1'
+gem 'iiif_print', '~> 3.2', '>= 3.2.2'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'json', '~> 2.0' # avoid v3 breaking changes downstream
@@ -92,7 +92,7 @@ gem 'redis-actionpack'
 gem 'redis-namespace', '~> 1.10' # Hyrax v5 relies on 1.5; but we'd like to have the #clear method so we need 1.10 or greater.
 gem 'redlock', '>= 0.1.2', '< 2.0' # lock redlock per https://github.com/samvera/hyrax/pull/5961
 gem 'request_store', '~> 1.7'
-gem 'riiif', git: 'https://github.com/sul-dlss/riiif.git', ref: '9a375'
+gem 'riiif', '~> 2.9'
 gem 'rolify'
 gem 'ros-apartment', require: 'apartment' # Rails 7.2 compatible apartment fork - drop-in replacement
 gem 'rsolr', '~> 2.0'

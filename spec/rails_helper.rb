@@ -86,10 +86,18 @@ ActiveRecord::Migration.maintain_test_schema!
 # Uses faster rack_test driver when JavaScript support not needed
 Capybara.default_max_wait_time = 8
 Capybara.default_driver = :rack_test
+# Turn off CSS transitions and jQuery animations in pages served to the browser, so a click never lands while
+# an element is still moving (e.g. a Bootstrap collapse panel expanding above the next radio button).
+Capybara.disable_animation = true
 
 ENV['WEB_HOST'] ||= `hostname -s`.strip
 
 if ENV['CHROME_HOSTNAME'].present?
+  REMOTE_FILE_DETECTOR = lambda do |args|
+    str = args.first.to_s
+    str if File.exist?(str)
+  end
+
   options = Selenium::WebDriver::Options.chrome(args: ["disable-gpu",
                                                        "no-sandbox",
                                                        "whitelisted-ips",
@@ -101,10 +109,7 @@ if ENV['CHROME_HOSTNAME'].present?
                                        capabilities: options,
                                        url: "http://#{ENV['CHROME_HOSTNAME']}:4444/wd/hub")
     # Fix for capybara vs remote files. Selenium handles this for us
-    d.browser.file_detector = lambda do |args|
-      str = args.first.to_s
-      str if File.exist?(str)
-    end
+    d.browser.file_detector = REMOTE_FILE_DETECTOR
     d
   end
   Capybara.server_host = '0.0.0.0'
@@ -222,9 +227,9 @@ RSpec.configure do |config|
 
   # A spec that only works in one metadata mode is tagged `flexible: true` or `flexible: false`;
   # untagged specs run in both. By default, run the examples that apply to this mode.
-  # HYKU_TEST_ONLY_FLEXIBLE_TAG=true|false|untagged keeps only those examples (CI runs one per node;
-  # see bin/ci_rspec). This is one exclusion filter rather than --tag options: a filter value of `true`
-  # matches any truthy tag, and a command-line exclusion on a key drops any inclusion on the same key.
+  # HYKU_TEST_ONLY_FLEXIBLE_TAG=true|false|untagged keeps only those examples. This is one exclusion
+  # filter rather than --tag options: a filter value of `true` matches any truthy tag,
+  # and a command-line exclusion on a key drops any inclusion on the same key.
   # RSpec skips a filter for examples without its key, so untagged examples get `flexible: :untagged`.
   config.define_derived_metadata { |metadata| metadata[:flexible] = :untagged if metadata[:flexible].nil? }
   only_flexible_tag = ENV['HYKU_TEST_ONLY_FLEXIBLE_TAG'].presence
@@ -242,6 +247,41 @@ RSpec.configure do |config|
     ENV['HYRAX_FLEXIBLE'] = flexible_env
     Hyrax.config.flexible = flexible_mode
   end
+
+  # The remote Selenium grid ends a browser session after SE_NODE_SESSION_TIMEOUT (300s)
+  # without commands, so a long run of non-JS examples kills it and every later JS example
+  # fails with InvalidSessionIdError. Start a fresh session when the old one is gone.
+  if ENV['CHROME_HOSTNAME'].present?
+    config.before(:each, js: true) do
+      page.driver.browser.window_handles
+    rescue Selenium::WebDriver::Error::WebDriverError, Selenium::WebDriver::Error::ServerError # InvalidSessionIdError, or a 404 once the grid forgets it
+      begin
+        page.driver.quit
+      rescue Selenium::WebDriver::Error::ServerError
+        nil # the grid 404s the DELETE too; quit has already dropped the dead browser
+      end
+      page.driver.browser.file_detector = REMOTE_FILE_DETECTOR
+    end
+
+    # Headless Chrome on the grid occasionally crashes mid-example ("not connected to DevTools").
+    # Retry once; the hook above starts a fresh session for the second try.
+    require 'selenium/webdriver/remote' # defines Error::ServerError, otherwise autoloaded later
+    config.verbose_retry = true
+    config.display_try_failure_messages = true
+    config.exceptions_to_retry = [Selenium::WebDriver::Error::WebDriverError, Selenium::WebDriver::Error::ServerError]
+    config.around(:each, js: true) { |example| example.run_with_retry retry: 2 }
+  end
+
+  # A `login_as` whose example never makes a request stays queued in Warden and signs in the
+  # NEXT example's first request (e.g. a sign-in page then redirects). Clear it after every
+  # example, not just feature specs.
+  config.after { Warden.test_reset! }
+
+  # `Flipflop::FeatureSet.current.test!` (used by some specs) swaps in a test strategy for the
+  # whole process and never restores it, which breaks later specs that use the real strategies
+  # (e.g. the admin Features page). Put the configured strategies back after every example.
+  flipflop_strategies = Flipflop::FeatureSet.current.instance_variable_get(:@strategies)
+  config.after { Flipflop::FeatureSet.current.instance_variable_set(:@strategies, flipflop_strategies) }
 
   config.after(:each, type: :feature) do |example|
     # rubocop:disable Lint/Debugger

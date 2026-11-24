@@ -1,4 +1,4 @@
-<%# OVERRIDE: Hyrax v5.2.0 to use Hyrax::Groups for groups select box %>
+<%# OVERRIDE: Hyrax v5.3.0 to use Hyrax::Groups for groups select box %>
 
 <p><%= t('.directions') %></p>
 <h2 class="h3 mt-4"><%= t('.add_sharing') %></h2>
@@ -14,45 +14,46 @@
 <p class="sr-only"><%= t('.use_add_button', account_label:  t('hyrax.account_label')) %>
 </p>
 
-<fieldset class="form-group row permission-add-group">
-  <legend class="col-sm-3 permissions-add-group-label">
+<fieldset class="form-group permission-add-group">
+  <legend class="h6 font-weight-bold">
     <%= t('hyrax.admin.admin_sets.form_participants.add_group') %>
   </legend>
-  <div class="col-sm-9 form-inline">
+  <div class="form-inline">
     <label for="new_group_name_skel" class="sr-only">Group</label>
     <%# changed select to use Hyrax::Groups %>
     <% hyrax_groups = Hyrax::Group.all.map { |g| [g.humanized_name, g.name] } %>
-    <%= select_tag 'new_group_name_skel', options_for_select(hyrax_groups), prompt: "Select a group...", class: 'form-control' %>
+    <%= select_tag 'new_group_name_skel', options_for_select(hyrax_groups), prompt: "Select a group...", class: 'form-control flex-grow-1 mr-2 mb-2' %>
     <label for="new_group_permission_skel" class="sr-only">Access type to grant</label>
-    <%= select_tag 'new_group_permission_skel', options_for_select(Hyrax.config.permission_options), class: 'form-control' %>
+    <%= select_tag 'new_group_permission_skel', options_for_select(Hyrax.config.permission_options), class: 'form-control mr-2 mb-2' %>
 
-    <button class="btn btn-secondary ml-2" id="add_new_group_skel">
+    <button class="btn btn-secondary mb-2" id="add_new_group_skel">
       <span><%= t(".add_this_group_html") %></span>
     </button>
-    <br /><span id="directory_group_result"></span>
   </div>
+  <span id="directory_group_result"></span>
 </fieldset>
 
-<fieldset class="form-group row permission-add-user">
-  <legend class="col-sm-3 permissions-add-user-label">
+<fieldset class="form-group permission-add-user">
+  <legend class="h6 font-weight-bold">
     <%= t('hyrax.admin.admin_sets.form_participants.add_user') %>
   </legend>
-  <div class="col-sm-9 form-inline">
+  <div class="form-inline">
     <label for="new_user_name_skel" class="sr-only"><%= t('.account_label_without_suffix', account_label: t('hyrax.account_label'), suffix: t('hyrax.directory.suffix')) %> </label>
-    <%= text_field_tag 'new_user_name_skel', nil %>
+    <%= text_field_tag 'new_user_name_skel', nil, class: 'form-control flex-grow-1 mr-2 mb-2' %>
     <label for="new_user_permission_skel" class="sr-only"><%= t('.access_type_to_grant') %></label>
-    <%= select_tag 'new_user_permission_skel', options_for_select(Hyrax.config.permission_options), class: 'form-control' %>
-    <button class="btn btn-secondary ml-2" id="add_new_user_skel">
+    <%= select_tag 'new_user_permission_skel', options_for_select(Hyrax.config.permission_options), class: 'form-control mr-2 mb-2' %>
+    <button class="btn btn-secondary mb-2" id="add_new_user_skel">
       <span>Add<span class="sr-only"> this <%= t('hyrax.account_label') %></span></span>
     </button>
-    <br /> <span id="directory_user_result"></span>
   </div>
+  <span id="directory_user_result"></span>
 </fieldset>
 
 <h2><%= t('.currently_sharing') %></h2>
 
+<div class="overflow-auto">
 <table class="table">
-  <tr id="file_permissions">
+  <tr id="file_permissions" data-next-index="<%= f.object.permissions.size %>">
     <td width="20%">
       <%= Hyrax.config.owner_permission_levels.keys[0] %>
     </td>
@@ -62,20 +63,38 @@
       <% end %>
     </td>
   </tr>
+  <% permission_service = Hyrax::EditPermissionsService.build_service_object_from(form: f, ability: current_ability) %>
   <%= f.fields_for :permissions do |permission_fields| %>
     <% agent = permission_fields.object %>
-    <%# skip the public, registered, and depositor perms as they are displayed first at the top %>
-    <%# OVERRIDE: in addition, skip perms for work roles since they should never be edited / removed %>
-    <% agents_to_skip = ['public', 'registered', depositor] + RolesService::WORK_ROLES %>
-    <% next if agents_to_skip.include? agent.agent_name.downcase %>
-    <tr>
-      <%# OVERRIDE: display access for admin group in a way that does not allow access to be removed or access level to be changed %>
-      <% if agent.agent_name == "#{Hyrax::Group::DEFAULT_NAME_PREFIX}#{Ability.admin_group_name}" %>
+    <% permission_hash = agent.to_hash %>
+    <%# OVERRIDE: display access for admin group in a way that does not allow access to be removed or access level to be changed %>
+    <% if agent.agent_name == "#{Hyrax::Group::DEFAULT_NAME_PREFIX}#{Ability.admin_group_name}" %>
+      <tr>
         <td><%= Hyrax.config.permission_levels.key(agent.access) %></td>
         <td><b><%= display_hyrax_group_name(agent.agent_name) %></b></td>
-      <% else %>
+      </tr>
+      <% next %>
+    <% end %>
+    <%# OVERRIDE: also skip perms for work roles since they should never be edited / removed %>
+    <% next if RolesService::WORK_ROLES.include?(permission_hash[:name].downcase) %>
+    <%# skips the public, registered and depositor perms, which are set elsewhere %>
+    <% permission_service.with_applicable_permission(permission_hash: permission_hash) do |permission| %>
+      <% level = Hyrax.config.permission_levels.value?(permission.access) %>
+      <% editable = level && permission.can_edit? %>
+      <tr>
         <td>
-          <%= permission_fields.select :access, Hyrax.config.permission_levels, {}, class: 'form-control select_perm' %>
+          <% if editable %>
+            <%= permission_fields.select :access, Hyrax.config.permission_levels, {}, class: 'form-control w-auto select_perm' %>
+          <% else %>
+            <%= Hyrax.config.permission_levels.key(permission.access) || permission.access.humanize %>
+            <%# Locked grants are sent unchanged, so saving the agent's other rows keeps them %>
+            <%= permission_fields.hidden_field :access, value: permission.access if level %>
+          <% end %>
+          <%# Hyrax saves a grant change or removal only for rows that name their agent %>
+          <% if level %>
+            <%= permission_fields.hidden_field :type, value: permission_hash[:type] %>
+            <%= permission_fields.hidden_field :name, value: permission_hash[:name] %>
+          <% end %>
         </td>
         <td>
           <%= permission_fields.label :agent_name, class: "control-label" do %>
@@ -85,13 +104,17 @@
             <% else %>
               <%= user_display_name_and_key(agent.agent_name) %>
             <% end %>
+            <%= permission.granted_by_html_hint %>
           <% end %>
-          <button class="btn close remove_perm" data-index="<%= permission_fields.index %>">&times;</button>
+          <% if editable %>
+            <button class="btn close remove_perm" data-index="<%= permission_fields.index %>">&times;</button>
+          <% end %>
         </td>
-      <% end %>
-    </tr>
+      </tr>
+    <% end %>
   <% end %>
 </table>
+</div>
 
 <script type="text/x-tmpl" id="tmpl-work-grant">
 <tr>

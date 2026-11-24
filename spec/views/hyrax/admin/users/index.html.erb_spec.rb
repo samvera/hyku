@@ -33,6 +33,7 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
     expect(page).to have_selector("//input[@value='Invite user']")
   end
 
+  # Potential duplicate: spec/features/manage_users_and_groups_spec.rb:34 (user list columns, status, delete buttons)
   it "draws user list with all users" do
     expect(page).to have_selector("div.users-listing")
     expect(page).to have_content("Username")

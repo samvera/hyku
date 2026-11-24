@@ -7,3 +7,10 @@ pt-BR:
         sign_up_header: Criar uma nova conta
       shared:
         sign_up: Criar Conta em portugues-Brasil
+    mailer:
+      activation_instructions:
+        activated: "Um administrador ativou sua conta. Escolha uma senha pelo link abaixo para entrar."
+        expires: "Este link expira em %{duration}. Depois disso, use \"Esqueceu sua senha?\" na página de login para obter um novo."
+        hello: "Olá %{email}!"
+        set_password: "Definir minha senha"
+        subject: "Sua conta foi ativada"

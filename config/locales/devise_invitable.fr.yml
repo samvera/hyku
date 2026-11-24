@@ -4,6 +4,7 @@ fr:
     failure:
       invited: Vous avez une invitation en attente, acceptez-la pour finir de créer votre compte.
     invitations:
+      added_existing_user: "%{email} a déjà un compte, aucune invitation n'a donc été envoyée. L'utilisateur a été ajouté à ce dépôt."
       edit:
         header: Définir votre mot de passe
         submit_button: Définir mon mot de passe

@@ -106,12 +106,12 @@
               <%# If user accepted invite or was a self-signup, they are active. Otherwise pending %>
               <td><%= user.accepted_or_not_invited? ? t('.status.active') : t('.status.pending') %></td>
               <% if can? :destroy, User %>
-                <td>
+                <td class="text-nowrap">
                   <% if can? :manage, :tenant_controls %>
                     <%= link_to t('.delete'), main_app.admin_user_path(user), class: 'btn btn-danger btn-sm action-delete', method: :delete, data: { confirm: t('hyrax.admin.users.destroy.confirmation', user: user.email) } %>
                   <% end %>
                   <% if user.invited_to_sign_up? && can?(:manage, :tenant_controls) %>
-                    <%= link_to t('.activate'), main_app.activate_admin_user_path(user.id), class: 'btn btn-primary btn-sm', method: :post, data: { confirm: t('hyrax.admin.users.activate.confirmation', user: user.email) } %>
+                    <%= link_to t('.activate'), main_app.activate_admin_user_path(user.id), class: 'btn btn-primary btn-sm ml-1', method: :post, data: { confirm: t('hyrax.admin.users.activate.confirmation', user: user.email) } %>
                   <% end %>
                 </td>
               <% end %>

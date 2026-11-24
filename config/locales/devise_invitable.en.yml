@@ -4,6 +4,7 @@ en:
     failure:
       invited: You have a pending invitation, accept it to finish creating your account.
     invitations:
+      added_existing_user: "%{email} already has an account, so no invitation was sent. They have been added to this repository."
       edit:
         header: Set your password
         submit_button: Set my password

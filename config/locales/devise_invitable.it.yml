@@ -4,6 +4,7 @@ it:
     failure:
       invited: Hai un invito in sospeso, accettalo per completare la creazione dell'account.
     invitations:
+      added_existing_user: "%{email} ha già un account, quindi non è stato inviato alcun invito. L'utente è stato aggiunto a questo repository."
       edit:
         header: Imposta la tua password
         submit_button: Imposta la mia password

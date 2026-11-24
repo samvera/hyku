@@ -12,38 +12,20 @@
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.28.6.tgz#d267a43cb1836dc4d182cce93ae75ba954ef6d2b"
   integrity sha512-05WQkdpL9COIMz4LjTxGpPNCdlpyimKppYNoJ5Di5EUObifl8t4tuLuUBBZEpoLYOmfvIWrsp9fCl0HoPRVTdA==
 
-"@edsilv/http-status-codes@1.0.3", "@edsilv/http-status-codes@^1.0.3":
+"@edsilv/http-status-codes@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@edsilv/http-status-codes/-/http-status-codes-1.0.3.tgz#a1b767c552ac43f2983ab2b9ee20e9c73b79960b"
   integrity sha512-HLK2FS5sZqxPqD53D6hhZxC6C8THTVwlyZDZ7J0iWsrB8JmMA69m/CQuNKZc1kki9WSVeck2fXna26NL0SE7cg==
-
-"@edsilv/jquery-plugins@1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@edsilv/jquery-plugins/-/jquery-plugins-1.0.7.tgz#192ea944112860364aa6bbd849c33a5b05b09ca4"
-  integrity sha512-lz+Rsax7QrBEnHI+WwZ+A4jxqLypTl6RvKP5jI3P2vxG3975fTj2qOvxl1/npxuJ7wCerrvYcBqwZd743iPSdg==
 
 "@edsilv/key-codes@0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@edsilv/key-codes/-/key-codes-0.1.1.tgz#d5b4bc3f7308937607aa80585b5c2823c08f20c0"
   integrity sha512-mSDgQXsHD55C1+qu5MYORrWXndzVn7ecOWt3b7bGenIOVpkWMrnd2V4I8nKYcSOE0+lBCjuZ4jS63c2gWzarIg==
 
-"@edsilv/key-codes@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@edsilv/key-codes/-/key-codes-1.0.0.tgz#2230fde580b496d31d2b752004f5582165b76507"
-  integrity sha512-L4w4xW7u8Gqd1Nsr0S7Q/H+HTHTkiwgZT6cFKPPlw6Fo6lk31hTufdIaYJ9RNk8c05nLAnn2ZI1DzQwIDr6+iA==
-
 "@edsilv/stencil-redux@0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@edsilv/stencil-redux/-/stencil-redux-0.1.1.tgz#1b09e48ca7277f9ee5e3261d06837eb485d23929"
   integrity sha512-J6ArTAknSpunDNMmT41tplg3SdK9kyk3o9nGSc/WMj73nB/m8W2eqYK+loyUrpcNZ3f8IBkcH+xUsdd90vk53w==
-
-"@edsilv/utils@1.0.2", "@edsilv/utils@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@edsilv/utils/-/utils-1.0.2.tgz#8b3c32675d8b835a70f44b450a6d2d789409a54d"
-  integrity sha512-sSq1Rcixz/X1GoL9Bf1LdAZ4icfxXARj5RgysG2eJhSuM/7QXZEbOzoayo/DJro1qJgC4j8oXCneSeKuN9qa+A==
-  dependencies:
-    "@types/jquery" "^2.0.40"
-    "@types/node" "8.10.52"
 
 "@esbuild/aix-ppc64@0.25.12":
   version "0.25.12"
@@ -253,59 +235,16 @@
     url-loader "^4.1.1"
     waveform-panel "^1.2.0"
 
-"@iiif/iiif-gallery-component@^1.1.23":
-  version "1.1.23"
-  resolved "https://registry.yarnpkg.com/@iiif/iiif-gallery-component/-/iiif-gallery-component-1.1.23.tgz#a811c248bdf4abb1c9a4dd480e0ae912a0b66f1d"
-  integrity sha512-r6eUdBlCPhlqWp9fNiTkS0GeYFzFk0yXlEb4z1vRgGYdjRNUyPhe4doQvXgxQt7oShPLdpjfl92etydBwA6pfQ==
-  dependencies:
-    "@edsilv/jquery-plugins" "1.0.7"
-    "@edsilv/utils" "1.0.2"
-    "@iiif/base-component" "2.0.1"
-    "@iiif/manifold" "2.*"
-    "@iiif/vocabulary" "1.0.11"
-    "@types/jquery" "3.3.14"
-    manifesto.js "4.*"
-
-"@iiif/iiif-metadata-component@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@iiif/iiif-metadata-component/-/iiif-metadata-component-1.2.2.tgz#032571637b235d67f0f4b9171e1b3a23031e2e13"
-  integrity sha512-5Ut+zjlmHlBh64t8qBT7kp465WbZ8cV5+DFi6RQibW9dt1rcSjoHywToOcLxSyV2Uq8DSu9FNZ3Fm+a8SNLaQw==
-  dependencies:
-    "@edsilv/jquery-plugins" "1.0.7"
-    "@edsilv/utils" "1.0.2"
-    "@iiif/base-component" "2.*"
-    "@iiif/manifold" "^2.1.1"
-    "@iiif/vocabulary" "1.*"
-    manifesto.js "^4.2.21"
-
-"@iiif/iiif-tree-component@^2.0.7":
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/@iiif/iiif-tree-component/-/iiif-tree-component-2.0.7.tgz#56b5975fdf6b1cde52c1960fa54b35aca91a4ce0"
-  integrity sha512-YRL3r+WOeY/2SM2C5kxHub4dPWLGEzTIBpUwv/CJ9dF/6cjmmf4Af9nItpYW7ajG+7k63+h0P792aRgNQGwEKA==
-  dependencies:
-    "@iiif/base-component" "2.*"
-    "@iiif/manifold" "2.*"
-    manifesto.js "4.*"
-
-"@iiif/manifold@2.*", "@iiif/manifold@^2.1.1":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@iiif/manifold/-/manifold-2.2.0.tgz#7f6f2dcc5d61132fd1647347e5c80be9a85f4e0e"
-  integrity sha512-diiIjI62IvsYDcTGFcyzvxhHupU+nrwCqgnzw8LJKffW9WlP39RVRA0AHEw+xOA9mxodkaN4pvRutL73zRivOw==
+"@iiif/manifold@^2.0.5", "@iiif/manifold@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@iiif/manifold/-/manifold-2.3.0.tgz#bebfeef9c0745046c7655e36c01365932d1730d5"
+  integrity sha512-4kAkZ4p7zyFYZR6BcVeu3TrUpbPwIGVpdY2NdWhAbe2ZhdGzZ3s6npAjVXSTqiO3tDjIGYPMGMI16xP1HkddPg==
   dependencies:
     "@edsilv/http-status-codes" "^1.0.3"
     "@iiif/vocabulary" "^1.0.30"
-    manifesto.js "^4.3.0"
+    manifesto.js "^4.3.3"
   optionalDependencies:
     fsevents "*"
-
-"@iiif/manifold@^2.0.5":
-  version "2.0.23"
-  resolved "https://registry.yarnpkg.com/@iiif/manifold/-/manifold-2.0.23.tgz#0ebed95a985468fa5fb88985fc8bdbaa314d289d"
-  integrity sha512-MPkbjNms5jR1dt3UPusYowigszGktD9XS7MnK6/tPyGbWzuVWbJ8Flt+UMNdu1oQ1s2BIxGPshmvXYQ1ACt+gQ==
-  dependencies:
-    "@edsilv/http-status-codes" "^1.0.3"
-    "@iiif/vocabulary" "^1.0.23"
-    manifesto.js "4.2.16"
 
 "@iiif/parser@^2.1.4":
   version "2.2.14"
@@ -343,20 +282,10 @@
   dependencies:
     "@types/geojson" "^7946.0.7"
 
-"@iiif/vocabulary@1.*", "@iiif/vocabulary@^1.0.28", "@iiif/vocabulary@^1.0.30":
+"@iiif/vocabulary@^1.0.28", "@iiif/vocabulary@^1.0.30", "@iiif/vocabulary@^1.0.31":
   version "1.0.31"
   resolved "https://registry.yarnpkg.com/@iiif/vocabulary/-/vocabulary-1.0.31.tgz#49d3aa005468469b8235e2bee8107b5824bd4a61"
   integrity sha512-j2Y/WKRgyHGO7VkQYg2JPJk6XSdYcZ51J/NHnMygeOAo7rSLVHT9B97+tYlYMqV3Z7EBpXID/zeS5Gn12cyUAA==
-
-"@iiif/vocabulary@1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@iiif/vocabulary/-/vocabulary-1.0.11.tgz#32271acd6d62ee2c7a6ecd18cdb86c304537a6a2"
-  integrity sha512-JjPbZ+SCn0ljsfs9Nf0U1OWNZK7tauw7iHezDJA+28AAzmMwpFS/lTOe/4N0ynZsnk4x7cA9NL6CK3K0zDd50w==
-
-"@iiif/vocabulary@^1.0.23", "@iiif/vocabulary@^1.0.26":
-  version "1.0.26"
-  resolved "https://registry.yarnpkg.com/@iiif/vocabulary/-/vocabulary-1.0.26.tgz#557fab623100ca860daeddf6e4de46a8f94aaf86"
-  integrity sha512-yOsMDg5C90iMfD5HSydoTDzmOM/ki5zGiu4DbHpzRueM7D+12IcDHeai2A8QvEroS8HCJl5M1Edbju5rOlPIpg==
 
 "@ionic/core@^4.11.5":
   version "4.11.13"
@@ -848,21 +777,24 @@
     swiper "^9.0.0"
     uuid "^9.0.1"
 
-"@samvera/ramp@^5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@samvera/ramp/-/ramp-5.1.1.tgz#36ab304dbf7933fdc1b52b744039f493951380d4"
-  integrity sha512-yPnG5TMN0o04F5mK9z330P19BCH8QjflRNUF0mGzfS73N6DR1Rh/+pRr95fSG2IEvsLXGMiJlkvCmCWmuZrjUg==
+"@samvera/ramp@^5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@samvera/ramp/-/ramp-5.2.0.tgz#87cf3925f1796396284b899549b1e642304c30fb"
+  integrity sha512-4N8N4pUytMi7vOTRIXr/ymQVZlRGhHbaDSv8o5b0H4+ljTReji+7fAN7Ca2eyNBwv1B0sA2TeHIK8sDSl2rxGw==
   dependencies:
     "@rollup/plugin-json" "^6.1.0"
     "@silvermine/videojs-quality-selector" "^1.3.1"
     classnames "^2.5.1"
     dompurify "^3.4.1"
+    html-entities "^2.5.2"
+    lodash "^4.17.21"
     mammoth "^1.12.0"
     manifesto.js "^4.3.4"
     mime-types "^3.0.2"
     react-error-boundary "^4.0.11"
     video.js "^8.23.7"
     videojs-markers-plugin "^1.0.2"
+    waveform-data "^4.5.2"
 
 "@silvermine/videojs-quality-selector@^1.3.1":
   version "1.3.1"
@@ -921,18 +853,6 @@
   version "2.0.34"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.34.tgz#27615b369f30e572336126514e74672dda6e3d04"
   integrity sha512-zydaVQrBPlZhn+PwHOPGnvffCppxw01TyYXuD90CcYiAwwkrPheui9WWkpLyKAUVGfYRXmyF8XJS4Qp+obyiUg==
-
-"@types/jquery@3.3.14":
-  version "3.3.14"
-  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.3.14.tgz#7c78e18f8c4bf9a8eae1de62815493ab1d7cc04f"
-  integrity sha512-M6m6Xm6RtsmYOlGk7YS0D7T19Axsc3x30+Mj9b7Fqb4c7c2hPmvBJsrMmuhwJy96iSx/3BQkOmbtEKijs2iQPg==
-  dependencies:
-    "@types/sizzle" "*"
-
-"@types/jquery@^2.0.40":
-  version "2.0.60"
-  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.60.tgz#64d93c39f4c3ace0352081f31140cdbe803a7ddd"
-  integrity sha512-izi6OBEVrAwaHiqWITjOPBbVtcKZKAXTocJqPZsAKA2lvmbpFEyPSAxgcqmisbiMYj9EvrooUEPLHQeQqVMWAg==
 
 "@types/jqueryui@^1.11.36":
   version "1.12.16"
@@ -2415,6 +2335,11 @@ html-encoding-sniffer@^3.0.0:
   dependencies:
     whatwg-encoding "^2.0.0"
 
+html-entities@^2.5.2:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-2.6.0.tgz#7c64f1ea3b36818ccae3d3fb48b6974208e984f8"
+  integrity sha512-kig+rMn/QOVRvr7c86gQ8lWXq+Hkv6CbAH1hLu+RG338StTpE8Z0b44SDVaqVu7HGKf27frdmUYEs9hTUX/cLQ==
+
 html-parse-stringify@^3.0.1:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/html-parse-stringify/-/html-parse-stringify-3.1.0.tgz#507e6ac96596629d7d7797cf7292549942c13d97"
@@ -2638,12 +2563,7 @@ jquery@3.5.0:
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.0.tgz#9980b97d9e4194611c36530e7dc46a58d7340fc9"
   integrity sha512-Xb7SVYMvygPxbFMpTFQiHh1J7HClEaThguL15N/Gg37Lri/qKyhRGZYzHRyLH8Stq3Aow0LsHO2O2ci86fCrNQ==
 
-"jquery@>=1.8.0 <4.0.0", jquery@^3.5.0:
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.3.tgz#23ed2ffed8a19e048814f13391a19afcdba160e6"
-  integrity sha512-bZ5Sy3YzKo9Fyc8wH2iIQK4JImJ6R0GWI9kL1/k7Z91ZBNgkRXE6U0JfHIizZbort8ZunhSI3jw9I6253ahKfg==
-
-jquery@^3.4.1:
+"jquery@>=1.8.0 <4.0.0", jquery@^3.4.1, jquery@^3.5.0:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.7.1.tgz#083ef98927c9a6a74d05a6af02806566d16274de"
   integrity sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==
@@ -2879,37 +2799,7 @@ mammoth@^1.12.0:
     underscore "^1.13.1"
     xmlbuilder "^10.0.0"
 
-manifesto.js@4.*, manifesto.js@^4.2.21, manifesto.js@^4.3.0:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/manifesto.js/-/manifesto.js-4.3.1.tgz#e6650d1541eb555c6d752f6134cb19d39a730976"
-  integrity sha512-jQMTCmpnbW9OeeqgJyxmeaSy62PDsfLDV/LNJPq4LyQdXgcjq4tq2OsVXdXFY7gk8gwACnjdx1ZFJyyGSQ8Tpw==
-  dependencies:
-    "@edsilv/http-status-codes" "^1.0.3"
-    "@iiif/vocabulary" "^1.0.28"
-    isomorphic-unfetch "^3.0.0"
-    lodash "^4.17.21"
-
-manifesto.js@4.2.16:
-  version "4.2.16"
-  resolved "https://registry.yarnpkg.com/manifesto.js/-/manifesto.js-4.2.16.tgz#084adf6662ac2b4df41a44c29939442acc6b08ae"
-  integrity sha512-eDwA1nv2rF0VlsHgXV+/La8XunOl0rYxBiLWDUhvNLHpqFctmjJ2PAMpwnq+SptzEL4HKHXsqcKl4KVBljFZhA==
-  dependencies:
-    "@edsilv/http-status-codes" "^1.0.3"
-    "@iiif/vocabulary" "^1.0.26"
-    isomorphic-unfetch "^3.0.0"
-    lodash "^4.17.21"
-
-manifesto.js@^4.2.4:
-  version "4.2.17"
-  resolved "https://registry.yarnpkg.com/manifesto.js/-/manifesto.js-4.2.17.tgz#9d06dd50f5442a80897ccf7d88dfe861afb6a343"
-  integrity sha512-UjctsJ2PkgwGDUQ/ZzvyObXJO/yiFYwiz49xrzkayi9fhrwUVC3Vc0aQyGm723BZTl5nKYJQ8YdEhJRp08xOtA==
-  dependencies:
-    "@edsilv/http-status-codes" "^1.0.3"
-    "@iiif/vocabulary" "^1.0.26"
-    isomorphic-unfetch "^3.0.0"
-    lodash "^4.17.21"
-
-manifesto.js@^4.3.4:
+manifesto.js@^4.2.4, manifesto.js@^4.3.0, manifesto.js@^4.3.3, manifesto.js@^4.3.4:
   version "4.3.5"
   resolved "https://registry.yarnpkg.com/manifesto.js/-/manifesto.js-4.3.5.tgz#7613ea46c522a53c9b64ef704775af7b5239fea0"
   integrity sha512-BupIjlVpvrIjOIwEgBWmlYs9yoYNmMiDy7XjrhaRcVZ1eiP1ycPZGKGcI7sSGC3idY59ybVeol9GEYQ695qcBw==
@@ -3231,15 +3121,15 @@ once@^1.3.0, once@^1.3.1:
   dependencies:
     wrappy "1"
 
-openseadragon@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-4.0.0.tgz#1832f2048f786c69fd1ced3dee8368487f212d3e"
-  integrity sha512-HsjSgqiiPwLkW5576GxDJ7Rax96iLUET8fnTsJvu7uYYkd+qzen3bflxHyph0OVVgZBKP9SpGH1nPdU4Mz0Z2A==
-
 openseadragon@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-4.1.1.tgz#1aba37c9e36ed17264511fa1b86db2204ea93b81"
   integrity sha512-owU9gsasAcobLN+LM8lN58Xc2VDSDotY9mkrwS/NB6g9KX/PcusV4RZvhHng2RF/Q0pMziwldf62glwXoGnuzg==
+
+openseadragon@^6.0.0:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-6.1.1.tgz#fcdb1a106b4e2440ed4336b5eff4a79c0a3390e6"
+  integrity sha512-g4iKe2q8B642SaBT3+x4ZF3/8b1TxPPydyjmtrOLgDrlYWMKd9ZXM+1Cb/xa9DVySkvs/7l6HR1nHKfD5F3Tsw==
 
 option@~0.2.1:
   version "0.2.4"
@@ -4196,23 +4086,17 @@ universalify@^0.2.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.2.0.tgz#6451760566fa857534745ab1dde952d1b1761be0"
   integrity sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==
 
-universalviewer@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/universalviewer/-/universalviewer-4.2.1.tgz#acd91482106d8966b1dfb75b79119ffbf7b3e7ac"
-  integrity sha512-jUVhMhxtKFuL7u/pLVtU57LabcNpaFubN9iV258ijLSWzZFdho8R7CjFkwjH71QDSTZnbJh55SBdDhkUNTvSJw==
+universalviewer@^4.4.4:
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/universalviewer/-/universalviewer-4.4.4.tgz#a85f71ed99b0ff9e8a95f8da65ffbf9bab25c410"
+  integrity sha512-fdI3Fy6AYOhwZyfWuuVj6gYHEwJlOrZBtUauR6uPrQhO/80MkksENJB3jM2E9wTu9qz7BOwg21iTmSOVv+luWw==
   dependencies:
-    "@edsilv/http-status-codes" "1.0.3"
-    "@edsilv/key-codes" "1.0.0"
-    "@edsilv/utils" "^1.0.2"
     "@google/model-viewer" "^4.0.0"
     "@iiif/base-component" "2.0.1"
     "@iiif/iiif-av-component" "1.2.4"
-    "@iiif/iiif-gallery-component" "^1.1.23"
-    "@iiif/iiif-metadata-component" "^1.2.2"
-    "@iiif/iiif-tree-component" "^2.0.7"
-    "@iiif/manifold" "^2.1.1"
+    "@iiif/manifold" "^2.3.0"
     "@iiif/presentation-3" "^1.0.5"
-    "@iiif/vocabulary" "^1.0.23"
+    "@iiif/vocabulary" "^1.0.31"
     "@openseadragon-imaging/openseadragon-viewerinputhook" "^2.2.1"
     "@universalviewer/aleph" "0.0.21"
     "@universalviewer/uv-ebook-components" "1.0.2"
@@ -4226,10 +4110,10 @@ universalviewer@^4.2.1:
     jquery "3.5.0"
     jsviews "1.0.15"
     less-plugin-clean-css "^1.5.1"
-    manifesto.js "^4.2.21"
+    manifesto.js "^4.3.0"
     mediaelement "4.2.15"
     mediaelement-plugins "5.0.0"
-    openseadragon "4.0.0"
+    openseadragon "^6.0.0"
     pdfjs-dist "3.11.174"
     pdfobject "2.3.0"
     react "^19.0.0"
@@ -4381,10 +4265,10 @@ w3c-xmlserializer@^4.0.0:
   dependencies:
     xml-name-validator "^4.0.0"
 
-waveform-data@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/waveform-data/-/waveform-data-4.3.0.tgz#03fcafa522ec1302f48583cc0c9ffd20737d499d"
-  integrity sha512-gddZgTV1dM8Mfaqn+mCJjwTAc7O/GbX2LgOrijRCHEGC60ZVdd/qTzrgEcCE5MfBoBPgwQ85huy1icSf5IZY5Q==
+waveform-data@^4.3.0, waveform-data@^4.5.2:
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/waveform-data/-/waveform-data-4.5.2.tgz#6818620df01e5aeebab06f477250b30b77454f39"
+  integrity sha512-1wDQ2LmaCM76xXXkOamWui1dp7uS2UHVeNccuHDS/qnoOrczrXR6g7Q9m/UjlibHfukxBrceoRIVTKKY1tDLdA==
 
 waveform-panel@^1.2.0:
   version "1.2.0"

@@ -97,7 +97,7 @@ jobs:
         # workflow_run always runs against the default branch's HEAD by default,
         # not the branch/commit that build-test-lint actually built - override it.
         if: ${{ github.event_name == 'workflow_run' }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0

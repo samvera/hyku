@@ -58,6 +58,30 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
       end
     end
 
+    context 'when the invited user has a pending invitation' do
+      let!(:invitee) { User.invite!(email: 'pending@guest.org', skip_invitation: true) }
+      let(:invitation_emails) { ActionMailer::Base.deliveries.select { |mail| mail.subject == 'Invitation instructions' } }
+
+      before { ActionMailer::Base.deliveries.clear }
+
+      it 'resends the invitation with a new token' do
+        expect { post :create, params: { user: { email: invitee.email, role: '' } } }
+          .to(change { invitee.reload.invitation_token })
+        expect(invitation_emails.map(&:to)).to eq([[invitee.email]])
+      end
+    end
+
+    context 'when the invited user has already accepted' do
+      let!(:invitee) { create(:user) }
+
+      before { ActionMailer::Base.deliveries.clear }
+
+      it 'does not send an invitation' do
+        post :create, params: { user: { email: invitee.email, role: '' } }
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
+
     context 'when the inviter holds no user-management role' do
       let(:user) { create(:user) }
 

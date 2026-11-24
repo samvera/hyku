@@ -7,3 +7,10 @@ es:
         sign_up_header: Crear una cuenta nueva
       shared:
         sign_up: Crear una cuenta
+    mailer:
+      activation_instructions:
+        activated: "Un administrador ha activado su cuenta. Elija una contraseña mediante el siguiente enlace para iniciar sesión."
+        expires: "Este enlace caduca en %{duration}. Después, use \"¿Olvidó su contraseña?\" en la página de inicio de sesión para obtener uno nuevo."
+        hello: "¡Hola %{email}!"
+        set_password: "Establecer mi contraseña"
+        subject: "Su cuenta ha sido activada"

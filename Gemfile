@@ -18,7 +18,7 @@ gem 'rails', '~> 7.2.0'
 gem 'active-fedora'
 gem 'activerecord-nulldb-adapter'
 gem 'activesupport', '>= 4.2.0', group: %i[development test]
-gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
+gem 'addressable', '2.9.2' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
 gem 'aws-sdk-sqs', group: %i[aws]
 gem 'bixby', group: %i[development test]
 gem 'blacklight', '~> 7.38' # Updated for Rails 7.2 compatibility
@@ -43,13 +43,13 @@ gem 'devise'
 gem 'devise-guests', '~> 0.3'
 gem 'devise-i18n'
 gem 'devise_invitable', '~> 2.0'
-gem 'dry-monads', '~> 1.5'
+gem 'dry-monads', '~> 1.11'
 gem 'easy_translate', group: %i[development]
 gem 'factory_bot_rails', group: %i[test]
 gem 'fcrepo_wrapper', '~> 0.4', group: %i[development test]
 gem 'flutie'
-gem 'good_job', '~> 4.10' # Updated for Rails 7.2 compatibility
-gem 'googleauth', '~> 1.9.0'
+gem 'good_job', '~> 4.24' # Updated for Rails 7.2 compatibility
+gem 'googleauth', '~> 1.17.7'
 gem 'google-protobuf'
 gem 'grpc'
 gem 'hyrax', github: 'samvera/hyrax', branch: 'main'
@@ -57,8 +57,8 @@ gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
 gem 'iiif_manifest', '>= 1.7.0'
-gem 'iiif_print', '~> 3.2', '>= 3.2.2'
-gem 'jbuilder', '~> 2.5'
+gem 'iiif_print', '~> 3.3'
+gem 'jbuilder', '~> 2.15'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'json', '~> 2.0' # avoid v3 breaking changes downstream
 gem 'json-canonicalization', "0.3.1" # The maintainers yanked 0.3.2 version (see https://github.com/dryruby/json-canonicalization/issues/2)
@@ -73,7 +73,7 @@ gem 'omniauth-cas', github: 'stanhu/omniauth-cas', ref: '4211e6d05941b4a981f9a36
 gem 'omniauth-multi-provider'
 gem 'omniauth_openid_connect'
 gem 'omniauth-rails_csrf_protection', '~> 1.0'
-gem 'omniauth-saml', '~> 2.1'
+gem 'omniauth-saml', '~> 2.2'
 gem 'openssl', '>= 3.2.0'
 gem 'order_already', '~> 0.3.2'
 gem 'parser', '>= 3.1.0.0'
@@ -102,28 +102,28 @@ gem 'rspec-its', group: %i[test]
 gem 'rspec_junit_formatter', group: %i[test]
 gem 'rspec-rails', '>= 3.6.0', group: %i[development test]
 gem 'rspec-retry', group: %i[test]
-gem 'rubocop', '~> 1.61.0', group: %i[development test]
+gem 'rubocop', '~> 1.92.2', group: %i[development test]
 gem 'rubocop-capybara', group: %i[development test]
 gem 'rubocop-factory_bot', group: %i[development test]
-gem 'rubocop-rails', '~> 2.15', group: %i[development test]
+gem 'rubocop-rails', '~> 2.38', group: %i[development test]
 gem 'rubocop-rspec', '~> 1.22', '<= 1.22.2', group: %i[development test]
 gem 'sass-rails', '~> 6.0' # Use SCSS for stylesheets
 gem 'scss_lint', require: false, group: %i[development]
 gem 'secure_headers'
-gem 'selenium-webdriver', '~> 4.8', group: %i[test] # Updated for Rails 7.2 compatibility
+gem 'selenium-webdriver', '~> 4.52', group: %i[test] # Updated for Rails 7.2 compatibility
 gem 'shoulda-matchers', '~> 4.0', group: %i[test]
 gem 'sidekiq', '~> 7.0' # Updated for Rails 7.2 - REQUIRES Redis 6.2+ (check infrastructure)
 gem 'simplecov', require: false, group: %i[development test]
 gem 'solargraph', group: %i[development]
 gem 'solr_wrapper', '~> 2.0', group: %i[development test]
-gem 'spring', '~> 1.7', group: %i[development]
-gem 'spring-watcher-listen', '~> 2.0.0', group: %i[development]
+gem 'spring', '~> 4.7', group: %i[development]
+gem 'spring-watcher-listen', '~> 2.1.0', group: %i[development]
 gem 'sprockets-rails' # Explicitly required for Rails 7.2 (no longer default dependency)
 gem 'terser' # to support the Safe Navigation / Optional Chaining operator (?.) and avoid uglifier precompile issue
 gem 'tether-rails'
 gem 'turbolinks', '~> 5'
 gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
-gem 'valkyrie', '~> 3.0', '>= 3.1.4' # There's a patch in 3.1.4 that we want
+gem 'valkyrie', '~> 3.6' # There's a patch in 3.1.4 that we want
 gem 'valkyrie-shrine'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
@@ -155,7 +155,7 @@ gem 'willow_sword', github: 'notch8/willow_sword', tag: 'v0.8.5'
 #         of the time use the `samvera-labs/hyku_knapsack` remote branch.
 gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
 
-gem 'bullet', '~> 8.1', group: %i[development test]
+gem 'bullet', '~> 8.3', group: %i[development test]
 
 gem 'benchmark-ips', '~> 2.14', group: %i[development]
 gem 'rack-mini-profiler', '~> 3.3', group: %i[development]

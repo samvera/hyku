@@ -4,6 +4,7 @@ pt-BR:
     failure:
       invited: Você tem um convite pendente, aceite-o para terminar de criar sua conta.
     invitations:
+      added_existing_user: "%{email} já tem uma conta, então nenhum convite foi enviado. O usuário foi adicionado a este repositório."
       edit:
         header: Coloque sua senha
         submit_button: Defina minha senha

@@ -4,6 +4,7 @@ de:
     failure:
       invited: Sie haben eine ausstehende Einladung, akzeptieren sie, um die Erstellung Ihres Kontos zu beenden.
     invitations:
+      added_existing_user: "%{email} hat bereits ein Konto, daher wurde keine Einladung gesendet. Der Benutzer wurde diesem Repository hinzugefügt."
       edit:
         header: Lege ein Passwort fest
         submit_button: Setze mein Passwort ein

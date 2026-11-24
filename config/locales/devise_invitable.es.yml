@@ -4,6 +4,7 @@ es:
     failure:
       invited: Tiene una invitación pendiente, aceptégala para terminar de crear su cuenta.
     invitations:
+      added_existing_user: "%{email} ya tiene una cuenta, por lo que no se envió ninguna invitación. Se ha añadido a este repositorio."
       edit:
         header: Establece tu contraseña
         submit_button: Establecer mi contraseña

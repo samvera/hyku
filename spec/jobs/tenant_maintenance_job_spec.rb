@@ -12,15 +12,17 @@ RSpec.describe TenantMaintenanceJob, type: :job do
   end
 
   describe 'uploads cleanup' do
-    it 'does not enqueue UploadsCleanupJob by default' do
+    # Stub the flag itself: in CI the ENV.fetch stub sometimes did not take effect and the example
+    # failed with "enqueued 0". Reading HYKU_SCHEDULE_UPLOADS_CLEANUP is covered in uploads_cleanup_job_spec.
+    it 'does not enqueue UploadsCleanupJob when scheduled uploads cleanup is disabled' do
       switch!(account)
+      allow(UploadsCleanupJob).to receive(:enabled?).and_return(false)
       expect { TenantMaintenanceJob.perform_now }.not_to have_enqueued_job(UploadsCleanupJob)
     end
 
     it 'enqueues UploadsCleanupJob when scheduled uploads cleanup is enabled' do
       switch!(account)
-      allow(ENV).to receive(:fetch).and_call_original
-      allow(ENV).to receive(:fetch).with('HYKU_SCHEDULE_UPLOADS_CLEANUP', anything).and_return('true')
+      allow(UploadsCleanupJob).to receive(:enabled?).and_return(true)
       expect { TenantMaintenanceJob.perform_now }.to have_enqueued_job(UploadsCleanupJob)
     end
   end

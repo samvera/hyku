@@ -30,7 +30,7 @@ module Hyku
       yield resource if block_given?
 
       # Override destination as this was a success either way
-      set_flash_message :notice, :send_instructions, email: resource.email if is_flashing_format? && resource.invitation_sent_at
+      flash_invite_result(existing_user) if is_flashing_format?
       if method(:after_invite_path_for).arity == 1
         respond_with resource, location: after_invite_path_for(current_inviter)
       else
@@ -45,6 +45,15 @@ module Hyku
     # Reloaded so an Activate that finished after the lookup is respected.
     def resend_invitation(user)
       user.invite!(current_inviter) if user.reload.invited_to_sign_up?
+    end
+
+    # An existing active user is only added to this repository, so say that instead of "invitation sent"
+    def flash_invite_result(existing_user)
+      if existing_user && !existing_user.invited_to_sign_up?
+        set_flash_message :notice, :added_existing_user, email: resource.email
+      elsif resource.invitation_sent_at
+        set_flash_message :notice, :send_instructions, email: resource.email
+      end
     end
 
     def user_params

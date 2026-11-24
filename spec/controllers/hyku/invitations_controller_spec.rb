@@ -80,6 +80,11 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
         post :create, params: { user: { email: invitee.email, role: '' } }
         expect(ActionMailer::Base.deliveries).to be_empty
       end
+
+      it 'says they were added rather than invited' do
+        post :create, params: { user: { email: invitee.email, role: '' } }
+        expect(flash[:notice]).to eq "#{invitee.email} already has an account, so no invitation was sent. They have been added to this repository."
+      end
     end
 
     context 'when the inviter holds no user-management role' do

@@ -16,6 +16,33 @@ RSpec.describe Admin::UsersController, type: :controller do
     end
   end
 
+  context 'as an admin of a public demo tenant' do
+    let(:user) { User.invite!(email: 'invited@example.com', skip_invitation: true) }
+
+    before do
+      allow(Site).to receive_message_chain(:account, :public_demo_tenant?).and_return(true)
+      allow(Site).to receive_message_chain(:account, :search_only?).and_return(false)
+      sign_in create(:admin)
+      ActionMailer::Base.deliveries.clear
+    end
+
+    it 'does not activate a pending user or email them' do
+      post :activate, params: { id: user.id }
+
+      expect(user.reload).not_to be_accepted_or_not_invited
+      expect(ActionMailer::Base.deliveries).to be_empty
+      expect(response).to redirect_to root_path
+    end
+
+    it 'does not remove a user' do
+      member = create(:user, roles: ['admin'])
+      delete :destroy, params: { id: member.to_param }
+
+      expect(member.reload.roles).not_to be_empty
+      expect(response).to redirect_to root_path
+    end
+  end
+
   context 'as an admin user' do
     before do
       sign_in create(:admin)

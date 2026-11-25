@@ -225,15 +225,6 @@ jobs:
       - name: Fail unless every test node passed
         run: test "${{ needs.test.result }}" = success
 
-  # The one required test check: its name stays the same however many nodes the test matrix runs on
-  tests-passed:
-    if: always()
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fail unless every test node passed
-        run: test "${{ needs.test.result }}" = success
-
   single-tenant-test:
     needs: push
     runs-on: ubuntu-latest

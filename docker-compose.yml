@@ -32,6 +32,7 @@ x-app: &app
   environment:
     <<: *app-env
   volumes:
+    - bundle:/usr/local/bundle
     - node_modules:/app/samvera/hyrax-webapp/node_modules:cached
     - uploads:/app/samvera/hyrax-webapp/public/uploads:cached
     - assets:/app/samvera/hyrax-webapp/public/assets:cached
@@ -40,6 +41,7 @@ x-app: &app
 
 volumes:
   assets:
+  bundle:
   cache:
   db:
   fcrepo:
@@ -279,6 +281,7 @@ services:
     entrypoint: ["sh", "-c"]
     command:
       - >
+        (bundle check || bundle install) &&
         solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
         solrcloud-assign-configset.sh &&
         SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&

@@ -3,6 +3,8 @@
 module Admin
   class UsersController < AdminController
     before_action :ensure_admin!, except: [:remove_role]
+    # A public demo tenant publishes its admin login, so these stay with its superadmin
+    before_action -> { authorize! :manage, :tenant_controls }, only: %i[destroy activate]
     before_action :load_user, only: [:destroy]
 
     # NOTE: User creation/invitations handled by devise_invitable

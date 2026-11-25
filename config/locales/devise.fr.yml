@@ -7,3 +7,10 @@ fr:
         sign_up_header: Créer un nouveau compte
       shared:
         sign_up: Créer un compte
+    mailer:
+      activation_instructions:
+        activated: "Un administrateur a activé votre compte. Choisissez un mot de passe via le lien ci-dessous pour vous connecter."
+        expires: "Ce lien expire dans %{duration}. Ensuite, utilisez « Mot de passe oublié ? » sur la page de connexion pour en obtenir un nouveau."
+        hello: "Bonjour %{email} !"
+        set_password: "Définir mon mot de passe"
+        subject: "Votre compte a été activé"

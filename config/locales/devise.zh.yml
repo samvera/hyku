@@ -7,3 +7,10 @@ zh:
         sign_up_header: 创建一个新账户
       shared:
         sign_up: 创建帐号
+    mailer:
+      activation_instructions:
+        activated: "管理员已激活您的账户。请通过下面的链接设置密码以登录。"
+        expires: "此链接将在%{duration}后失效。之后，请在登录页面使用“忘记密码？”获取新链接。"
+        hello: "您好 %{email}！"
+        set_password: "设置我的密码"
+        subject: "您的账户已激活"

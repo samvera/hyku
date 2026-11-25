@@ -20,10 +20,12 @@ module Hyku
     # rubocop:disable Metrics/AbcSize
     def create
       authorize! :grant_admin_role, User if params[:user][:role] == ::RolesService::ADMIN_ROLE
-      self.resource = User.find_by(email: params[:user][:email]) || invite_resource
+      existing_user = User.find_by(email: params[:user][:email])
+      self.resource = existing_user || invite_resource
 
       resource.add_default_group_membership!
       resource.add_role(params[:user][:role], Site.instance) if params[:user][:role].present?
+      resend_invitation(existing_user) if existing_user
 
       yield resource if block_given?
 
@@ -38,6 +40,12 @@ module Hyku
     # rubocop:enable Metrics/AbcSize
 
     protected
+
+    # Inviting a user who has not accepted yet resends their invitation, as the invite form says it does.
+    # Reloaded so an Activate that finished after the lookup is respected.
+    def resend_invitation(user)
+      user.invite!(current_inviter) if user.reload.invited_to_sign_up?
+    end
 
     def user_params
       params.require(:user).permit(:email, :role)

@@ -7,3 +7,10 @@ en:
         sign_up_header: Create a new account
       shared:
         sign_up: Create account
+    mailer:
+      activation_instructions:
+        activated: "An administrator has activated your account. Choose a password through the link below to sign in."
+        expires: "This link expires in %{duration}. After that, use \"Forgot your password?\" on the sign-in page to get a new one."
+        hello: "Hello %{email}!"
+        set_password: "Set my password"
+        subject: "Your account has been activated"

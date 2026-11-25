@@ -7,3 +7,10 @@ it:
         sign_up_header: Creare un nuovo account
       shared:
         sign_up: Creare un profilo
+    mailer:
+      activation_instructions:
+        activated: "Un amministratore ha attivato il tuo account. Scegli una password tramite il link qui sotto per accedere."
+        expires: "Questo link scade tra %{duration}. Dopo, usa \"Password dimenticata?\" nella pagina di accesso per riceverne uno nuovo."
+        hello: "Ciao %{email}!"
+        set_password: "Imposta la mia password"
+        subject: "Il tuo account è stato attivato"

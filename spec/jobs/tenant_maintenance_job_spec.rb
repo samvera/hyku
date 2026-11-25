@@ -11,6 +11,12 @@ RSpec.describe TenantMaintenanceJob, type: :job do
     end
   end
 
+  describe 'guest user pruning' do
+    it 'enqueues PruneStaleGuestUsersJob' do
+      switch!(account)
+      expect { TenantMaintenanceJob.perform_now }.to have_enqueued_job(PruneStaleGuestUsersJob)
+    end
+  end
   describe 'uploads cleanup' do
     # Stub the flag itself: in CI the ENV.fetch stub sometimes did not take effect and the example
     # failed with "enqueued 0". Reading HYKU_SCHEDULE_UPLOADS_CLEANUP is covered in uploads_cleanup_job_spec.

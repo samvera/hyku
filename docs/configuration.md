@@ -138,6 +138,13 @@ Tenants flagged as public demos are wiped and re-seeded every night by `DemoTena
 | DEMO_HEALTH_CHECK  | Name of a class responding to `.call(account)`, run after each reset. |
 | DEMO_RESET_TIME    | Local time of the nightly reset as `HH:MM`, optionally followed by a time zone name, e.g. `03:00 America/Los_Angeles`. Defaults to midnight in the application time zone (UTC unless configured). An invalid value logs a warning and falls back to midnight. |
 
+## Scheduled Cleanup Jobs
+
+Anonymous searches and guest users accumulate without bound. `PruneOldSearchesJob` (one per tenant, daily) deletes anonymous searches older than 30 days, and `PruneStaleGuestUsersJob` (once, daily via `TenantMaintenanceJob`) deletes guest users not updated in 7 days. The same cleanups can be run by hand with `hyku:prune_old_searches` and `hyku:prune_stale_guest_users` (both take `DRY_RUN=true`).
+
+| Name                      | Description |
+| ------------------------- | ----------- |
+| HYKU_PRUNE_MAX_BATCHES    | Batches (5,000 rows each) one run may delete before stopping; a large backlog drains over several days. Defaults to 100. Run the rake tasks once by hand to clear an existing backlog quickly. |
 ## Scheduled Upload Cleanup
 
 Hyrax upload staging files accumulate on disk. When `HYKU_SCHEDULE_UPLOADS_CLEANUP` is on, `TenantMaintenanceJob` enqueues `UploadsCleanupJob` daily, which runs the same cleanup as `bin/rails hyku:cleanup_uploads` and accepts the same environment variables (`DELETE_INGESTED_AFTER_DAYS`, `DELETE_ALL_AFTER_DAYS`, `EXTRA_UPLOAD_PATHS`, `INCLUDE_ORPHANED_TENANT_DIRS`).

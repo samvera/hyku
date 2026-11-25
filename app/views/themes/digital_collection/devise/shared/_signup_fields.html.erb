@@ -1,0 +1,41 @@
+<%# OVERRIDE Hyku 7.1.0: the contact page's stacked fields with a "(required)" marker, keeping the negative captcha %>
+<% required = tag.span(t('digital_collection.form.required'), class: 'dc-field-required') %>
+<% label = ->(attribute) { t("simple_form.labels.user.#{attribute}", default: resource.class.human_attribute_name(attribute)) } %>
+<% if signup_challenge_enabled? %>
+  <%= raw negative_captcha(@captcha) %>
+  <div class="dc-field">
+    <%= negative_label_tag(@captcha, :display_name, safe_join([label.call(:display_name), ' ', required])) %>
+    <%= negative_text_field_tag(@captcha, :display_name, class: 'form-control', required: true, autocomplete: 'name') %>
+  </div>
+  <div class="dc-field">
+    <%= negative_label_tag(@captcha, :email, safe_join([label.call(:email), ' ', required])) %>
+    <%= negative_text_field_tag(@captcha, :email, class: 'form-control', required: true, autofocus: true, autocomplete: 'email', type: 'email') %>
+  </div>
+  <div class="dc-field">
+    <%= negative_label_tag(@captcha, :password, safe_join([label.call(:password), ' ', required])) %>
+    <%= password_field_tag @captcha.fields[:password], '', class: 'form-control', required: true, autocomplete: 'new-password' %>
+    <div style="display: none"><%= password_field_tag :password, '', tabindex: '999', autocomplete: 'off' %></div>
+  </div>
+  <div class="dc-field">
+    <%= negative_label_tag(@captcha, :password_confirmation, safe_join([label.call(:password_confirmation), ' ', required])) %>
+    <%= password_field_tag @captcha.fields[:password_confirmation], '', class: 'form-control', required: true, autocomplete: 'new-password' %>
+    <div style="display: none"><%= password_field_tag :password_confirmation, '', tabindex: '999', autocomplete: 'off' %></div>
+  </div>
+<% else %>
+  <div class="dc-field">
+    <%= f.label :display_name do %><%= label.call(:display_name) %> <%= required %><% end %>
+    <%= f.text_field :display_name, class: 'form-control', required: true, autocomplete: 'name' %>
+  </div>
+  <div class="dc-field">
+    <%= f.label :email do %><%= label.call(:email) %> <%= required %><% end %>
+    <%= f.email_field :email, class: 'form-control', required: true, autofocus: true, autocomplete: 'email' %>
+  </div>
+  <div class="dc-field">
+    <%= f.label :password do %><%= label.call(:password) %> <%= required %><% end %>
+    <%= f.password_field :password, class: 'form-control', required: true, autocomplete: 'new-password' %>
+  </div>
+  <div class="dc-field">
+    <%= f.label :password_confirmation do %><%= label.call(:password_confirmation) %> <%= required %><% end %>
+    <%= f.password_field :password_confirmation, class: 'form-control', required: true, autocomplete: 'new-password' %>
+  </div>
+<% end %>

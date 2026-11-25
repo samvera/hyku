@@ -1,15 +1,15 @@
 <section class="scr-panel scr-cite" aria-labelledby="scr-cite-label">
   <div class="scr-panel-head">
-    <h2 class="scr-panel-label" id="scr-cite-label"><%= t('screening_room.show.citation.heading') %></h2>
+    <h2 class="scr-panel-label" id="scr-cite-label"><%= t('hyrax.base.citations.header') %></h2>
   </div>
 
   <% citations = all_authors(presenter).any? ? theme_citations(presenter) : {} %>
   <% if citations.any? %>
     <div data-citation>
       <select class="scr-cite-picker" data-citation-picker
-              aria-label="<%= t('screening_room.show.citation.style') %>">
+              aria-label="<%= t('hyrax.base.citations.style') %>">
         <% citations.each_key do |style| %>
-          <option value="<%= style %>"><%= t("screening_room.show.citation.styles.#{style}") %></option>
+          <option value="<%= style %>"><%= t("hyrax.citations.work.#{style}") %></option>
         <% end %>
       </select>
 
@@ -20,18 +20,18 @@
 
       <div class="scr-cite-actions">
         <button type="button" class="scr-cite-copy" data-citation-copy>
-          <%= t('screening_room.show.citation.copy_visible') %>
+          <%= t('hyrax.base.citations.copy') %>
         </button>
         <span class="scr-cite-copied" data-citation-copied hidden aria-live="polite">
-          <%= t('screening_room.show.citation.copied') %>
+          <%= t('hyrax.base.citations.copied') %>
         </span>
       </div>
     </div>
   <% end %>
 
-  <p class="scr-cite-note"><%= t('screening_room.show.citation.note') %></p>
+  <p class="scr-cite-note"><%= t('hyrax.base.citations.note') %></p>
 
-  <%= link_to t('screening_room.show.citation.endnote'),
+  <%= link_to t('hyrax.base.citations.endnote'),
               polymorphic_path([main_app, presenter], format: 'endnote'),
               class: 'scr-cite-export' %>
 </section>

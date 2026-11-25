@@ -1,0 +1,12 @@
+fr:
+  blacklight_advanced_search:
+    all: "tous"
+    any: "au moins un"
+    form:
+      title: "Plus d’options de recherche"
+      search_context: "Dans la recherche"
+      limit_criteria_heading_html: "<strong>ET</strong> qui ont ces attributs"
+      query_criteria_heading_html: "Trouver les éléments qui correspondent à %{select_menu} de"
+      sort_label: "Trier les résultats par"
+      start_over: "Recommencer"
+      search_btn: "Rechercher"

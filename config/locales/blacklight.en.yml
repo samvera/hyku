@@ -23,25 +23,36 @@ en:
           accessibility_summary_tesim: Accessibility Summary
           additional_information_tesim: Additional Information
           admin_note_tesim: Admin Note
+          alternate_version_id_tesim: Alternate Version
           alternative_title_tesim: Alternative Title
           alt_text_tesim: Alt Text
           audience_tesim: Audience
           based_near_label_tesim: Location
+          bibliographic_citation_tesim: Bibliographic Citation
           chronology_note_tesim: Chronology Note
+          committee_member_tesim: Committee Member
+          compound_rights_tesim: Rights
           contributing_library_tesim: Contributing Library
           contributor_tesim: Contributor
+          course_tesim: Course
           creator_tesim: Creator
           date_created_tesim: Date Created
           date_modified_dtsi: Date Modified
           date_tesim: Date
           date_uploaded_dtsi: Date Uploaded
+          degree_discipline_tesim: Degree Discipline
+          degree_grantor_tesim: Degree Grantor
+          degree_level_tesim: Degree Level
+          degree_name_tesim: Degree Name
           description_tesim: Description
+          dimensions_tesim: Dimensions
           discipline_tesim: Discipline
           education_level_tesim: Education Level
           extent_tesim: Extent
           file_format_tesim: File Format
           format_tesim: Format
           identifier_tesim: Identifier
+          identifiers_tesim: Identifiers
           keyword_tesim: Keyword
           language_tesim: Language
           learning_resource_type_tesim: Learning Resource Type
@@ -49,16 +60,27 @@ en:
           license_tesim: License
           newer_version_id_tesim: Newer Version Id
           oer_size_tesim: Oer Size
+          participants_tesim: Participants
           previous_version_id_tesim: Previous Version Id
           publisher_tesim: Publisher
+          redirects_tesim: Redirects
           related_item_id_tesim: Related Item Id
           related_url_tesim: Related URL
+          relationships_tesim: Relationships
           resource_type_tesim: Resource Type
           rights_holder_tesim: Rights Holder
           rights_statement_tesim: Rights Statement
           rights_tesim: Rights
           subject_tesim: Subject
           table_of_contents_tesim: Table Of Contents
+        sort:
+          "score desc, system_create_dtsi desc": "Relevance"
+          "title_ssi asc": "Title"
+          "creator_ssi asc": "Author"
+          "date_created_ssi asc": "Published Date (Ascending)"
+          "date_created_ssi desc": "Published Date (Descending)"
+          "system_modified_dtsi asc": "Upload Date (Ascending)"
+          "system_modified_dtsi desc": "Upload Date (Descending)"
         show:
           based_near_label_tesim: Location
           contributor_tesim: Contributor

@@ -1,0 +1,6 @@
+<%# OVERRIDE Hyku 7.1.0: title only, with no badge on the title line, and the full title as a tooltip for titles the theme cuts short %>
+<div class="search-results-title-row dc-result-head">
+  <h3 class="search-result-title">
+    <%= link_to markdown(document.title_or_label), generate_work_url(document, request, params), title: strip_tags(markdown(document.title_or_label)).squish %>
+  </h3>
+</div>

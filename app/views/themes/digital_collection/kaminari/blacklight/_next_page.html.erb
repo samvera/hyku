@@ -1,0 +1,10 @@
+<%# OVERRIDE Blacklight 7.43.0: "Next" without the » mark %>
+<% if current_page.last? %>
+  <li class="page-item disabled">
+    <%= link_to t('digital_collection.search.results.next'), '#', rel: 'next', onclick: 'return false;', class: 'page-link', aria: { label: t('views.pagination.aria.go_to_next_page') } %>
+  </li>
+<% else %>
+  <li class="page-item">
+    <%= link_to t('digital_collection.search.results.next'), url, rel: 'next', remote:, class: 'page-link', aria: { label: t('views.pagination.aria.go_to_next_page') } %>
+  </li>
+<% end %>

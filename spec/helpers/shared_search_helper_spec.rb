@@ -41,6 +41,19 @@ RSpec.describe SharedSearchHelper do
         url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}?parent_query=cat&highlight=true"
         expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
       end
+
+      it 'keeps a chosen language on #generate_work_url' do
+        url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}?locale=es"
+        I18n.with_locale(:es) { expect(helper.generate_work_url(work_hash, request)).to eq(url) }
+      end
+
+      it 'keeps a chosen language after the highlight query on #generate_work_url' do
+        allow(params).to receive(:[]).with(:q).and_return('cat')
+        allow(work_hash).to receive(:any_highlighting_in_all_text_fields?).and_return(true)
+
+        url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}?parent_query=cat&highlight=true&locale=pt-BR"
+        I18n.with_locale(:'pt-BR') { expect(helper.generate_work_url(work_hash, request, params)).to eq(url) }
+      end
     end
 
     context 'in development' do

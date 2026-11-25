@@ -1,5 +1,7 @@
 <%# OVERRIDE Hyrax (rev ab3f45b) app/views/layouts/hyrax/dashboard.html.erb
-    to render the public demo tenant banner on dashboard pages. %>
+    to render the public demo tenant banner on dashboard pages, and the home theme's masthead
+    for themes whose chrome covers the dashboard. %>
+<% themed_masthead = !admin_host? && Hyku::ChromeThemes.dashboard?(home_page_theme) %>
 <!DOCTYPE html>
 <html lang="<%= I18n.locale.to_s %>" prefix="og:http://ogp.me/ns#">
   <head>
@@ -7,11 +9,15 @@
     <%= content_for(:head) %>
   </head>
 
-  <body class="dashboard">
+  <body class="dashboard<%= ' dc-dashboard' if themed_masthead %>">
     <div class="skip-to-content">
       <%= link_to "Skip to Content", "#skip-to-content" %>
     </div>
-    <%= render '/masthead', placement_class: 'fixed-top' %>
+    <% if themed_masthead %>
+      <%= render "themes/#{home_page_theme}/masthead", placement_class: 'fixed-top', account_current: true %>
+    <% else %>
+      <%= render '/masthead', placement_class: 'fixed-top' %>
+    <% end %>
     <%= content_for(:navbar) %>
     <div id="content-wrapper" role="main">
       <div class="sidebar maximized">

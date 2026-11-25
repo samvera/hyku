@@ -1,0 +1,26 @@
+<%# OVERRIDE Hyrax 5.3.0: an "Activity" section whose table shows each event's full date in the reader's language instead of a relative time %>
+<% valid_events = events.reject { |event| event[:action].blank? || event[:timestamp].blank? } %>
+<section class="dc-file-section activity-display" aria-labelledby="dc-file-activity-label">
+  <%= dc_section_head t('digital_collection.file_set.activity'), id: 'dc-file-activity-label' %>
+  <table id="activity" class="dc-activity">
+    <thead>
+      <tr>
+        <th scope="col"><%= t('digital_collection.file_set.user_activity') %></th>
+        <th scope="col" class="activity-date"><%= t('hyrax.users.activity_log.date') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if valid_events.empty? %>
+        <tr><td colspan="2"><%= t('hyrax.users.activity_log.no_user_activity', default: 'No user activity') %></td></tr>
+      <% else %>
+        <% valid_events.each do |event| %>
+          <% time = Time.zone.at(event[:timestamp].to_i) %>
+          <tr>
+            <td class="ensure-wrapped"><%= sanitize event[:action] %></td>
+            <td class="activity-date"><time datetime="<%= time.getutc.iso8601 %>"><%= dc_long_date(time) %></time></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</section>

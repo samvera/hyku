@@ -13,11 +13,5 @@ module Hyku
     prepended do
       around_action :inject_chrome_theme_views, only: :show
     end
-
-    def inject_chrome_theme_views(&block)
-      return yield unless Hyku::ChromeThemes.show?(show_page_theme)
-
-      inject_show_theme_views(&block)
-    end
   end
 end

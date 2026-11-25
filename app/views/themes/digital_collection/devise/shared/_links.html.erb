@@ -1,0 +1,25 @@
+<%# OVERRIDE Hyku 7.1.0: no sign up link, and single sign on providers as buttons ahead of the links %>
+<% if devise_mapping.omniauthable? && (providers = IdentityProvider.all).any? %>
+  <div class="dc-account-providers">
+    <% providers.each do |ip| %>
+      <%= button_to t('single_signon.index.sign_in_with_provider', provider: ip.name), omniauth_authorize_path(resource_name, ip.provider, ip.id),
+                    class: 'btn dc-account-provider', data: { turbo: false } %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if controller_name != 'sessions' %>
+  <%= link_to t('devise.shared.links.sign_in'), new_session_path(resource_name) %>
+<% end %>
+
+<% if devise_mapping.recoverable? && controller_name != 'passwords' %>
+  <%= link_to t('devise.shared.links.forgot_your_password'), new_password_path(resource_name) %>
+<% end %>
+
+<% if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+  <%= link_to t('devise.shared.links.didn_t_receive_confirmation_instructions'), new_confirmation_path(resource_name) %>
+<% end %>
+
+<% if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+  <%= link_to t('devise.shared.links.didn_t_receive_unlock_instructions'), new_unlock_path(resource_name) %>
+<% end %>

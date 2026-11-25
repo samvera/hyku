@@ -5,6 +5,8 @@ es:
     search:
       fields:
         facet:
+          date_range_isim: "Rango de fechas"
+          resource_type_label_sim: "Tipo de recurso"
           based_near_label_sim: Ubicación
           creator_sim: Creador
           date_range_isim: Rango de fechas
@@ -17,31 +19,79 @@ es:
           member_of_collections_ssim: Colecciones
           publisher_sim: Editor
           subject_sim: Tema
+        search:
+          contributor: "Contribuidor"
+          creator: "Creador"
+          title: "Título"
+          description: "Resumen o sumario"
+          publisher: "Editor"
+          date_created: "Fecha de Creacion"
+          subject: "Tema"
+          language: "Idioma"
+          resource_type: "Tipo de recurso"
+          based_near_label: "Ubicación"
+          keyword: "Palabra clave"
+          depositor: "Depositante"
+          rights_statement: "Declaración de derechos"
+          license: "Licencia"
+          extent: "Grado"
+          source: "Fuente"
+          advisor: "Director"
+          accessibility_feature: "Función de accesibilidad"
+          accessibility_hazard: "Riesgo de accesibilidad"
+          accessibility_summary: "Resumen de accesibilidad"
+          additional_information: "información adicional"
+          alternative_title: "Título alternativo"
+          audience: "Audiencia"
+          bibliographic_citation: "Cita bibliográfica"
+          committee_member: "Miembro del comité"
+          department: "Departamento"
+          degree_discipline: "Disciplina del título"
+          education_level: "Nivel de educación"
+          degree_grantor: "Institución que otorga el título"
+          learning_resource_type: "Tipo de recurso de aprendizaje"
+          degree_level: "Nivel del título"
+          related_url: "URL relacionada"
+          rights_holder: "Titular de los derechos"
+          rights_notes: "Notas sobre derechos"
+          size: "Tamaño"
+          table_of_contents: "Tabla de contenido"
         index:
           accessibility_feature_tesim: Función de accesibilidad
           accessibility_hazard_tesim: Riesgo de accesibilidad
           accessibility_summary_tesim: Resumen de accesibilidad
           additional_information_tesim: información adicional
           admin_note_tesim: Nota de administración
+          alternate_version_id_tesim: Versión alternativa
           alternative_title_tesim: Título alternativo
           alt_text_tesim: Texto alternativo
           audience_tesim: Audiencia
           based_near_label_tesim: Ubicación
+          bibliographic_citation_tesim: Cita bibliográfica
           chronology_note_tesim: Nota cronológica
+          committee_member_tesim: Miembro del comité
+          compound_rights_tesim: Derechos
           contributing_library_tesim: Biblioteca colaboradora
           contributor_tesim: Contribuidor
+          course_tesim: Curso
           creator_tesim: Creador
           date_created_tesim: Fecha de Creacion
           date_modified_dtsi: Fecha Modificada
           date_tesim: Fecha
           date_uploaded_dtsi: Fecha de Subida
+          degree_discipline_tesim: Disciplina del título
+          degree_grantor_tesim: Institución que otorga el título
+          degree_level_tesim: Nivel del título
+          degree_name_tesim: Nombre del título
           description_tesim: Descripción
+          dimensions_tesim: Dimensiones
           discipline_tesim: Disciplina
           education_level_tesim: Nivel de educación
           extent_tesim: Grado
           file_format_tesim: Formato de Archivo
           format_tesim: Formato
           identifier_tesim: Identificador
+          identifiers_tesim: Identificadores
           keyword_tesim: Palabra clave
           language_tesim: Idioma
           learning_resource_type_tesim: Tipo de recurso de aprendizaje
@@ -49,16 +99,27 @@ es:
           license_tesim: Licencia
           newer_version_id_tesim: Identificación de versión más nueva
           oer_size_tesim: Tamaño Oer
+          participants_tesim: Participantes
           previous_version_id_tesim: Id. de versión anterior
           publisher_tesim: Editor
+          redirects_tesim: Redirecciones
           related_item_id_tesim: Id. de artículo relacionado
           related_url_tesim: URL relacionada
+          relationships_tesim: Relaciones
           resource_type_tesim: Tipo de recurso
           rights_holder_tesim: Titular de los derechos
           rights_statement_tesim: Declaración de derechos
           rights_tesim: Derechos
           subject_tesim: Tema
           table_of_contents_tesim: Tabla de contenido
+        sort:
+          "score desc, system_create_dtsi desc": "Relevancia"
+          "title_ssi asc": "Título"
+          "creator_ssi asc": "Autor"
+          "date_created_ssi asc": "Fecha de publicación (ascendente)"
+          "date_created_ssi desc": "Fecha de publicación (descendente)"
+          "system_modified_dtsi asc": "Fecha de carga (ascendente)"
+          "system_modified_dtsi desc": "Fecha de carga (descendente)"
         show:
           based_near_label_tesim: Ubicación
           contributor_tesim: Contribuidor

@@ -1,0 +1,22 @@
+<%# OVERRIDE Blacklight Advanced Search 7.0.0: values chosen on the advanced search page show as chosen rows with one remove icon and translated labels, instead of an English "Any of:" box %>
+<% chosen = Array(advanced_query.filters[facet_field.key]) %>
+<div class="advanced_facet_limit">
+  <% if chosen.many? %>
+    <p class="dc-facet-any-of"><%= t('digital_collection.search.results.any_of') %></p>
+  <% end %>
+  <ul class="facet-values list-unstyled dc-facet-chosen">
+    <% chosen.each do |value| %>
+      <% label = Deprecation.silence(Blacklight::FacetsHelperBehavior) { facet_display_value(facet_field.key, value) } %>
+      <li>
+        <span class="facet-label">
+          <span class="selected"><%= label %></span>
+          <%= link_to search_action_path(remove_advanced_facet_param(facet_field.key, value, params).except(:controller, :action)), class: 'remove' do %>
+            <span class="remove-icon" aria-hidden="true"></span>
+            <span class="sr-only"><%= t('digital_collection.search.results.remove_value', value: label) %></span>
+          <% end %>
+        </span>
+      </li>
+    <% end %>
+  </ul>
+  <%= render_facet_limit display_facet, layout: nil, partial: advanced_search_facet_partial_name(display_facet) %>
+</div>

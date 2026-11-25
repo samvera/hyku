@@ -1,0 +1,16 @@
+<%# OVERRIDE Hyrax 5.3.0: a boxed section with an eyebrow heading, the links as a list and a small Generate download link button %>
+<section class="dc-file-links" aria-labelledby="dc-file-links-label">
+  <h2 class="dc-file-links-label" id="dc-file-links-label"><%= t('hyrax.single_use_links.title') %></h2>
+  <table class="table table-sm <%= dom_class(presenter) %> single-use-links">
+    <tbody data-url="<%= hyrax.generated_single_use_links_path(presenter) %>">
+      <% if presenter.single_use_links.empty? %>
+        <tr><td><%= t('hyrax.single_use_links.table.no_links') %></td></tr>
+      <% else %>
+        <%= render 'single_use_link_rows', single_use_links: presenter.single_use_links %>
+      <% end %>
+    </tbody>
+  </table>
+  <%= link_to t('digital_collection.file_set.generate_link'),
+              hyrax.generate_download_single_use_link_path(presenter),
+              class: 'btn btn-secondary dc-action generate-single-use-link' %>
+</section>

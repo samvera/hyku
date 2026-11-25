@@ -1,0 +1,10 @@
+<%# OVERRIDE Blacklight 7.43.0: three suggestions and a Browse all collections link instead of the stock headings and single tip %>
+<div id="documents" class="noresults dc-noresults">
+  <h2 class="dc-noresults-heading"><%= t('digital_collection.search.results.no_results.heading') %></h2>
+  <ul class="dc-noresults-tips">
+    <% t('digital_collection.search.results.no_results.tips').each do |tip| %>
+      <li><%= tip %></li>
+    <% end %>
+  </ul>
+  <%= link_to t('digital_collection.homepage.browse.all'), main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }), class: 'dc-noresults-browse' %>
+</div>

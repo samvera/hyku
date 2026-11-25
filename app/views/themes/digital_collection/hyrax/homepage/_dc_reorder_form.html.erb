@@ -1,0 +1,14 @@
+<%= form_for record do |f| %>
+  <div class="dd dc-reorder" id="<%= nestable_id %>" data-unfeature-confirm="<%= confirm %>">
+    <ol class="dc-featured-list list-unstyled">
+      <%= f.fields_for association do |item| %>
+        <%= render row_partial, f: item %>
+      <% end %>
+    </ol>
+  </div>
+
+  <div class="dc-featured-actions">
+    <p class="dc-featured-hint"><%= hint %></p>
+    <%= f.submit save, class: 'dc-control' %>
+  </div>
+<% end %>

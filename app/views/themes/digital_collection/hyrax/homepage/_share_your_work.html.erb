@@ -1,0 +1,14 @@
+<section class="dc-cta" aria-labelledby="dc-cta-heading">
+  <div class="dc-cta-inner">
+    <div class="dc-cta-copy">
+      <p class="dc-cta-eyebrow"><%= t('digital_collection.homepage.cta.eyebrow') %></p>
+      <h2 class="dc-cta-heading" id="dc-cta-heading"><%= t('digital_collection.homepage.cta.heading') %></h2>
+      <p class="dc-cta-sub"><%= t('digital_collection.homepage.cta.sub') %></p>
+    </div>
+    <div class="dc-cta-actions">
+      <%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path, class: 'dc-cta-terms' %>
+      <% href, data = theme_deposit_target %>
+      <%= link_to t('digital_collection.homepage.cta.button'), href, data:, class: 'dc-cta-button' %>
+    </div>
+  </div>
+</section>
